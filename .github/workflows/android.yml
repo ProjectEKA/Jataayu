@@ -33,4 +33,4 @@ jobs:
           # whether to disable animations - true or false
           disable-animations: true
           # custom script to run - e.g. `./gradlew connectedCheck`
-          script: chmod +x ./gradlew | ./gradlew test connectedCheck
+          script: ls -k && ./gradlew test connectedCheck
