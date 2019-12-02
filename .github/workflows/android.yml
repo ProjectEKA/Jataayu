@@ -13,12 +13,8 @@ jobs:
           java-version: 1.8
       - name: Build with Gradle
         run: ./gradlew clean build test assembleDebug
-
-  test:
-    runs-on: macos-latest
-    steps:
       - uses: ReactiveCircus/android-emulator-runner@v1.0.2
-        name: Android Emulator Runner
+      - name: Android Emulator Runner
         with:
           # API level of the platform and system image - e.g. 23 for Android Marshmallow, 29 for Android 10
           api-level: 23
