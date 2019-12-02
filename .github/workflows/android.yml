@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
       - name: set up JDK 1.8
@@ -15,7 +15,7 @@ jobs:
         run: ./gradlew clean build test assembleDebug
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: ReactiveCircus/android-emulator-runner@v1.0.2
         name: Android Emulator Runner
