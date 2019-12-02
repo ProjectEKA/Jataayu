@@ -12,7 +12,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build with Gradle
-        run: ./gradlew clean build test assembleDebug
+        run: ./gradlew clean build assembleDebug
       - uses: ReactiveCircus/android-emulator-runner@v1.0.2
       - name: Android Emulator Runner
         with:
@@ -29,4 +29,4 @@ jobs:
           # whether to disable animations - true or false
           disable-animations: true
           # custom script to run - e.g. `./gradlew connectedCheck`
-          script: ./gradlew connectedCheck
+        run: ./gradlew test connectedAndroidTest
