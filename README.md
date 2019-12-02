@@ -1,1 +1,1 @@
-# Jataayu
+# Jataayu [![GitHub Actions](https://github.com/ProjectEKA/Jataayu/workflows/GitHub%20Actions/badge.svg)](https://github.com/ProjectEKA/Jataayu/actions)
