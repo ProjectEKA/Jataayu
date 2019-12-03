@@ -93,7 +93,21 @@ android {
             }
         }
     }
+}
 
+task decodeKeystorePrebuildTask(type: Exec) {
+    workingDir "$projectDir"
+
+    //Generate BASE64 encoded keystore with command "openssl base64 -A -in keystore.jks"
+    //and save it to environment variable called "UPLOAD_KEYSTORE_ENCODED"
+    String encodedKeystore = System.getenv("UPLOAD_KEYSTORE_ENCODED")
+    String command = "echo $encodedKeystore | base64 --decode > keystore.jks"
+
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', "$command"
+    } else {
+        commandLine 'sh', '-c', "$command"
+    }
 }
 
 dependencies {
