@@ -1,19 +1,11 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
+apply from: rootProject.file("android-commons.gradle")
 apply from: rootProject.file("jacoco.gradle")
 
 android {
-    compileSdkVersion config.compileSdkVersion
-    buildToolsVersion config.buildTools
     defaultConfig {
-        applicationId config.applicationId
-        minSdkVersion config.minSdkVersion
-        targetSdkVersion config.compileSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
@@ -57,33 +49,9 @@ android {
         }
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
-        androidTest.java.srcDirs += 'src/androidTest/kotlin'
-
-        String sharedTestJavaDir = 'src/sharedTest/java'
-        String sharedTestResourcesDir = 'src/sharedTest/resources'
-
-        test {
-            java.srcDir sharedTestJavaDir
-            resources.srcDir sharedTestResourcesDir
-        }
-        androidTest {
-            java.srcDir sharedTestJavaDir
-            resources.srcDir sharedTestResourcesDir
-        }
-    }
-
     dataBinding {
         enabled = true
         enabledForTests = true
-    }
-
-    kotlin {
-        experimental {
-            coroutines "enable"
-        }
     }
 
     android.testOptions {
@@ -113,12 +81,5 @@ task decodeKeystorePrebuildTask(type: Exec) {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$libVersions.kotlin"
-    implementation "androidx.appcompat:appcompat:$libVersions.appcompat"
-    implementation "androidx.core:core-ktx:$libVersions.coreKtx"
-    implementation "androidx.constraintlayout:constraintlayout:$libVersions.constraintLayout"
-    testImplementation "org.jacoco:org.jacoco.agent:$libVersions.jacoco"
-    testImplementation "junit:junit:$libVersions.jUnit"
-    androidTestImplementation "androidx.test.ext:junit:$libVersions.androidxTest"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$libVersions.espresso"
+    implementation "androidx.constraintlayout:constraintlayout:$LibVersions.constraintLayout"
 }

@@ -1,7 +1,7 @@
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion = "$libVersions.jacoco"
+    toolVersion = LibVersions.jacoco
 }
 
 tasks.withType(Test) {
