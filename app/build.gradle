@@ -81,5 +81,21 @@ task decodeKeystorePrebuildTask(type: Exec) {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.constraintlayout:constraintlayout:$LibVersions.constraintLayout"
+    implementation Deps.constraintLayout
+    implementation Deps.koinAndroid
+    implementation Deps.koinAndroidXScope
+    implementation Deps.koinAndroidXViewModel
+    implementation Deps.androidXLifecyle
+    implementation Deps.androidXLifecyleViewModel
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation Deps.appcompat
+    implementation Deps.coreKtx
+    testImplementation Deps.jUnit
+    androidTestImplementation Deps.androidXTest
+    androidTestImplementation Deps.espresso
+
+    implementation Deps.toolsKotlinStdLib
+
+    testImplementation Deps.toolsJacocoAgent
 }

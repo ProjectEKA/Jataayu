@@ -78,16 +78,7 @@ subprojects {
             //</editor-fold>
             //<editor-fold desc="Common Dependancies DSL">
             dependencies {
-                implementation fileTree(dir: 'libs', include: ['*.jar'])
-                implementation Deps.appcompat
-                implementation Deps.coreKtx
-                testImplementation Deps.jUnit
-                androidTestImplementation Deps.androidXTest
-                androidTestImplementation Deps.espresso
 
-                implementation Deps.toolsKotlinStdLib
-
-                testImplementation Deps.toolsJacocoAgent
             }
             //</editor-fold>
         }

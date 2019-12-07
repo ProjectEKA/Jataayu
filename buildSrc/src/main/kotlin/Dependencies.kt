@@ -2,7 +2,7 @@ import org.gradle.api.JavaVersion
 
 object Config {
     const val applicationId = "in.org.projecteka.jataayu"
-    const val compileSdkVersion = 9
+    const val compileSdkVersion = 29
     const val minSdkVersion = 23
     const val buildToolsVersion = "29.0.2"
     val javaVersion = JavaVersion.VERSION_1_8
@@ -12,6 +12,7 @@ object LibVersions {
     const val appcompat = "1.1.0"
     const val coreKtx = "1.1.0"
     const val androidX = "1.1.1"
+    const val androidXLifecycle = "2.1.0"
     const val jUnit = "4.12"
     const val espresso = "3.2.0"
     const val jacoco = "0.8.5"
@@ -19,19 +20,27 @@ object LibVersions {
     const val kotlin = "1.3.61"
     const val support = "28.0.0"
     const val constraintLayout = "1.1.3"
-    const val retrofit = "2.5.0"
+    const val retrofit = "2.6.2"
     const val gradle = "0.21.0"
     const val androidStudio = "3.5.2"
     const val dicemelonJacoco = "0.1.4"
+    const val loggingInterceptor = "4.0.0"
 }
 
 object Deps {
     const val appcompat = "androidx.appcompat:appcompat:${LibVersions.appcompat}"
     const val coreKtx = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${LibVersions.kotlin}"
     const val androidX = "androidx.core:core-ktx:${LibVersions.androidX}"
+    const val androidXLifecyle = "androidx.lifecycle:lifecycle-extensions:${LibVersions.androidXLifecycle}"
+    const val androidXLifecyleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${LibVersions.androidXLifecycle}"
+    const val constraintLayout = "androidx.constraintlayout:constraintlayout:${LibVersions.constraintLayout}"
     const val koinAndroid = "org.koin:koin-android:${LibVersions.koin}"
     const val koinAndroidXViewModel = "org.koin:koin-androidx-viewmodel:${LibVersions.koin}"
     const val koinAndroidXScope = "org.koin:koin-androidx-scope:${LibVersions.koin}"
+    const val retrofit = "com.squareup.retrofit2:retrofit:${LibVersions.retrofit}"
+    const val retrofitAdapter = "com.squareup.retrofit2:adapter-rxjava2:${LibVersions.retrofit}"
+    const val retrofitConverter = "com.squareup.retrofit2:converter-moshi:${LibVersions.retrofit}"
+    const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${LibVersions.loggingInterceptor}"
 
     const val jUnit = "junit:junit:${LibVersions.jUnit}"
     const val koinText = "org.koin:koin-test:${LibVersions.koin}"
