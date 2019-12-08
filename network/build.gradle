@@ -1,7 +1,7 @@
 apply from: rootProject.file("android-library-commons.gradle")
 
 dependencies {
-    implementation Deps.retrofit
+    api Deps.retrofit
     implementation Deps.retrofitAdapter
     implementation Deps.retrofitConverter
     implementation Deps.loggingInterceptor

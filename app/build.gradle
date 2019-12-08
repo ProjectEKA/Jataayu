@@ -81,6 +81,8 @@ task decodeKeystorePrebuildTask(type: Exec) {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api project(path: ':network')
+
     implementation Deps.constraintLayout
     implementation Deps.koinAndroid
     implementation Deps.koinAndroidXScope

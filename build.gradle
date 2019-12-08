@@ -49,6 +49,12 @@ subprojects {
                     targetCompatibility Config.javaVersion
                 }
 
+                buildTypes {
+                    debug {}
+                    qa {}
+                    release {}
+                }
+
                 //<editor-fold desc="Source Sets DSL">
                 sourceSets {
                     main.java.srcDirs += 'src/main/kotlin'
