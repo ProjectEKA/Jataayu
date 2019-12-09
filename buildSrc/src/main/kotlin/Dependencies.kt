@@ -27,6 +27,11 @@ object LibVersions {
     const val loggingInterceptor = "4.0.0"
 }
 
+object Modules {
+    const val network = ":network"
+    const val utils = ":utils"
+}
+
 object Deps {
     const val appcompat = "androidx.appcompat:appcompat:${LibVersions.appcompat}"
     const val coreKtx = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${LibVersions.kotlin}"

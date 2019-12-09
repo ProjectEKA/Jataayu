@@ -16,8 +16,8 @@ class LauncherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_launcher)
+        binding.lifecycleOwner = this
         observeData()
-        viewModel.getLabel()
     }
 
     private fun observeData() {
@@ -26,5 +26,6 @@ class LauncherActivity : AppCompatActivity() {
                 binding.sampleModel = sampleModel
             }
         })
+        viewModel.getLabel()
     }
 }

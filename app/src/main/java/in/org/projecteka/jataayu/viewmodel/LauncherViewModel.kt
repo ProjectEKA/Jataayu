@@ -2,14 +2,14 @@ package `in`.org.projecteka.jataayu.viewmodel
 
 import `in`.org.projecteka.jataayu.datasource.model.SampleModel
 import `in`.org.projecteka.jataayu.repository.SampleRepository
-import androidx.lifecycle.MutableLiveData
+import `in`.org.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LauncherViewModel(private val sampleRepository: SampleRepository) : ViewModel() {
-    var sampleModel : MutableLiveData<SampleModel> = MutableLiveData()
+    var sampleModel = liveDataOf<SampleModel>()
 
     internal fun getLabel() {
         sampleRepository.getSampleText(id = 1).enqueue(object : Callback<SampleModel> {
