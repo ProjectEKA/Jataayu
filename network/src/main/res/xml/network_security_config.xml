@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <!--Set application-wide security config using base-config tag.-->
-    <base-config cleartextTrafficPermitted="false"/>
+    <base-config cleartextTrafficPermitted="true"/>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">http://10.0.2.2:8000</domain>
+    </domain-config>
     <!--Set domain-specific security config using domain-config tags. -->
     <!--See https://developer.android.com/training/articles/security-config.html for more information.-->
 </network-security-config>

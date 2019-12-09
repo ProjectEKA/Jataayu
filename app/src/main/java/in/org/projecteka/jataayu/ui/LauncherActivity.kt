@@ -2,11 +2,12 @@ package `in`.org.projecteka.jataayu.ui
 
 import `in`.org.projecteka.jataayu.R
 import `in`.org.projecteka.jataayu.databinding.ActivityLauncherBinding
+import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
+import `in`.org.projecteka.jataayu.util.extension.startActivity
 import `in`.org.projecteka.jataayu.viewmodel.LauncherViewModel
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import org.koin.android.ext.android.inject
 
 class LauncherActivity : AppCompatActivity() {
@@ -21,11 +22,12 @@ class LauncherActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        viewModel.sampleModel.observe(this, Observer { sampleModel ->
-            sampleModel?.let {
-                binding.sampleModel = sampleModel
-            }
-        })
-        viewModel.getLabel()
+//        viewModel.sampleModel.observe(this, Observer { sampleModel ->
+//            sampleModel?.let {
+//                binding.sampleModel = sampleModel
+//            }
+//        })
+//        viewModel.getLabel()
+        startActivity(ProviderSearchActivity::class.java)
     }
 }

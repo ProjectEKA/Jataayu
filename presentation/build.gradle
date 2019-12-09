@@ -1,0 +1,6 @@
+apply from: rootProject.file("android-library-commons.gradle")
+apply from: rootProject.file("commons-dependancies.gradle")
+
+dependencies {
+    implementation Deps.material
+}

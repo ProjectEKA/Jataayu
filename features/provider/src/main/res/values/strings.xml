@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Link Provider</string>
+    <string name="search_by_provider_name">Search by provider name</string>
+    <string name="no_results_found">No results found</string>
+</resources>

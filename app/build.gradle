@@ -1,67 +1,7 @@
 apply plugin: 'com.android.application'
 apply from: rootProject.file("android-commons.gradle")
 apply from: rootProject.file("jacoco.gradle")
-
-android {
-    defaultConfig {
-        versionCode 1
-        versionName "1.0"
-    }
-
-    signingConfigs {
-        release {
-            storeFile file("$projectDir/keystore.jks")
-            storePassword System.getenv("UPLOAD_KEY_PASSWORD")
-            keyAlias System.getenv("UPLOAD_KEY")
-            keyPassword System.getenv("UPLOAD_KEY_PASSWORD")
-        }
-    }
-
-    buildTypes {
-        debug {
-            resValue 'string', 'app_name', 'Jataayu Debug'
-            resValue 'color', 'icon_tint_color', '#000'
-            testCoverageEnabled true
-            minifyEnabled false
-            debuggable true
-            applicationIdSuffix '.debug'
-            versionNameSuffix 'debug'
-        }
-        qa {
-            resValue 'string', 'app_name', 'Jataayu'
-            resValue 'color', 'icon_tint_color', '#EC1C23'
-            minifyEnabled true
-            debuggable true
-            shrinkResources true
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            testCoverageEnabled true
-        }
-        release {
-            resValue 'string', 'app_name', 'Jataayu'
-            resValue 'color', 'icon_tint_color', '#EC1C23'
-            debuggable false
-            minifyEnabled true
-            shrinkResources true
-            signingConfig = signingConfigs.release
-            testCoverageEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    dataBinding {
-        enabled = true
-        enabledForTests = true
-    }
-
-    android.testOptions {
-        unitTests.all {
-            jacoco {
-                includeNoLocationClasses = true
-            }
-        }
-    }
-}
+apply from: rootProject.file("commons-dependancies.gradle")
 
 task decodeKeystorePrebuildTask(type: Exec) {
     doFirst {
@@ -80,25 +20,5 @@ task decodeKeystorePrebuildTask(type: Exec) {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api project(Modules.network)
-    implementation project(Modules.utils)
-
-    implementation Deps.constraintLayout
-    implementation Deps.koinAndroid
-    implementation Deps.koinAndroidXScope
-    implementation Deps.koinAndroidXViewModel
-    implementation Deps.androidXLifecyle
-    implementation Deps.androidXLifecyleViewModel
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation Deps.appcompat
-    implementation Deps.coreKtx
-    testImplementation Deps.jUnit
-    androidTestImplementation Deps.androidXTest
-    androidTestImplementation Deps.espresso
-
-    implementation Deps.toolsKotlinStdLib
-
-    testImplementation Deps.toolsJacocoAgent
+    api project(Modules.provider)
 }

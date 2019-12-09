@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="color_primary_dark">#00000000</color>
+    <color name="light_gray">#F0F0F0</color>
+    <color name="white">#ffffff</color>
+    <color name="book_now_gradient_end">#66fffefe</color>
+    <color name="faint_white">#f7f7f7</color>
+    <color name="black">#000000</color>
+    <color name="semi_transparent_chip">#AA000000</color>
+    <color name="app_black">#272727</color>
+    <color name="transparent">#00000000</color>
+    <color name="cherry_red">#EC1C23</color>
+    <color name="cherry_red_error">#FFEFEF</color>
+    <color name="orangey_red">#EE3122</color>
+    <color name="orangey_yellow">#fdb913</color>
+    <color name="semi_transparent">#11000000</color>
+    <color name="semi_transparent_white">#B3FFFFFF</color>
+    <color name="deselected_tab_color">#AAffffff</color>
+    <color name="brown_grey_two">#a8a8a8</color>
+    <color name="light_yellow">#FFF6E1</color>
+    <color name="greyish_brown">#484848</color>
+    <color name="warm_grey">#9b9b9b</color>
+    <color name="light_gray_secondary">#FCFCFC</color>
+    <color name="disabled_color">#D6D6D6</color>
+    <color name="line_color">#F1F1F1</color>
+    <color name="traveller_view_bg_color">#4DF1F1F1</color>
+    <color name="traveller_separator_color">#979797</color>
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#00FFFFFF</color>
+</resources>

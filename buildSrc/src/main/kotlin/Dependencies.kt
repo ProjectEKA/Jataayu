@@ -11,6 +11,7 @@ object Config {
 object LibVersions {
     const val appcompat = "1.1.0"
     const val coreKtx = "1.1.0"
+    const val material = "1.0.0"
     const val androidX = "1.1.1"
     const val androidXLifecycle = "2.1.0"
     const val jUnit = "4.12"
@@ -30,11 +31,14 @@ object LibVersions {
 object Modules {
     const val network = ":network"
     const val utils = ":utils"
+    const val presentation = ":presentation"
+    const val provider = ":features:provider"
 }
 
 object Deps {
     const val appcompat = "androidx.appcompat:appcompat:${LibVersions.appcompat}"
     const val coreKtx = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${LibVersions.kotlin}"
+    const val material = "com.google.android.material:material:${LibVersions.material}"
     const val androidX = "androidx.core:core-ktx:${LibVersions.androidX}"
     const val androidXLifecyle = "androidx.lifecycle:lifecycle-extensions:${LibVersions.androidXLifecycle}"
     const val androidXLifecyleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${LibVersions.androidXLifecycle}"

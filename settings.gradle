@@ -1,2 +1,2 @@
-include ':app', ':network', ':utils'
+include ':app', ':network', ':utils', ':features:provider', ':presentation'
 rootProject.name='Jataayu'

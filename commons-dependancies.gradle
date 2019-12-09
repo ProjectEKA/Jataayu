@@ -1,0 +1,22 @@
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api project(Modules.network)
+    implementation project(Modules.utils)
+
+    implementation Deps.constraintLayout
+    implementation Deps.koinAndroid
+    implementation Deps.koinAndroidXScope
+    implementation Deps.koinAndroidXViewModel
+    implementation Deps.androidXLifecyle
+    implementation Deps.androidXLifecyleViewModel
+
+    implementation Deps.appcompat
+    implementation Deps.coreKtx
+    testImplementation Deps.jUnit
+    androidTestImplementation Deps.androidXTest
+    androidTestImplementation Deps.espresso
+
+    implementation Deps.toolsKotlinStdLib
+
+    testImplementation Deps.toolsJacocoAgent
+}
