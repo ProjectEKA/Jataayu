@@ -32,6 +32,7 @@ object LibVersions {
     const val apacheCommonsIo = "1.3.2"
     const val mockWebServer = "4.2.1"
     const val databindingCompiler = "3.5.3"
+    const val timber = "4.7.1"
 }
 
 object Modules {
@@ -72,6 +73,7 @@ object Deps {
     const val espressoContrib = "androidx.test.espresso:espresso-contrib:${LibVersions.espresso}"
     const val toolsGradleVersions = "com.github.ben-manes:gradle-versions-plugin:${LibVersions.gradle}"
     const val databindingCompiler = "androidx.databinding:databinding-compiler:${LibVersions.databindingCompiler}"
+    const val timber = "com.jakewharton.timber:timber:${LibVersions.timber}"
 
     const val toolsAndroidStudio = "com.android.tools.build:gradle:${LibVersions.androidStudio}"
     const val toolsKotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${LibVersions.kotlin}"
