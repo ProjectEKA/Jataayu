@@ -65,12 +65,12 @@ subprojects {
                     String sharedTestResourcesDir = 'src/sharedTest/resources'
 
                     test {
-                        java.srcDir sharedTestJavaDir
-                        resources.srcDir sharedTestResourcesDir
+                        java.srcDirs += sharedTestJavaDir
+                        resources.srcDirs += sharedTestResourcesDir
                     }
                     androidTest {
-                        java.srcDir sharedTestJavaDir
-                        resources.srcDir sharedTestResourcesDir
+                        java.srcDirs += sharedTestJavaDir
+                        resources.srcDirs += sharedTestResourcesDir
                     }
                 }
                 //</editor-fold>

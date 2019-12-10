@@ -26,6 +26,10 @@ object LibVersions {
     const val androidStudio = "3.5.2"
     const val dicemelonJacoco = "0.1.4"
     const val loggingInterceptor = "4.0.0"
+    const val mockito = "3.2.0"
+    const val coreTesting = "2.1.0"
+    const val moshi = "1.9.2"
+    const val apacheCommonsIo = "1.3.2"
 }
 
 object Modules {
@@ -50,8 +54,13 @@ object Deps {
     const val retrofitAdapter = "com.squareup.retrofit2:adapter-rxjava2:${LibVersions.retrofit}"
     const val retrofitConverter = "com.squareup.retrofit2:converter-moshi:${LibVersions.retrofit}"
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${LibVersions.loggingInterceptor}"
+    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${LibVersions.moshi}"
+    const val moshiKotlinCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${LibVersions.moshi}"
+    const val apacheCommonsIo = "org.apache.commons:commons-io:${LibVersions.apacheCommonsIo}"
 
     const val jUnit = "junit:junit:${LibVersions.jUnit}"
+    const val mockito = "org.mockito:mockito-core:${LibVersions.mockito}"
+    const val coreTesting = "androidx.arch.core:core-testing:${LibVersions.coreTesting}"
     const val koinText = "org.koin:koin-test:${LibVersions.koin}"
 
     const val androidXTest = "androidx.test.ext:junit:${LibVersions.androidX}"

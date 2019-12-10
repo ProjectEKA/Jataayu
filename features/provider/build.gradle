@@ -1,8 +1,29 @@
 apply from: rootProject.file("android-library-commons.gradle")
 apply from: rootProject.file("commons-dependancies.gradle")
 
+android {
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+
+        String sharedTestJavaDir = 'src/sharedTest/java'
+        String sharedTestResourcesDir = 'src/sharedTest/resources'
+
+        test {
+            java.srcDirs += sharedTestJavaDir
+            resources.srcDirs += sharedTestResourcesDir
+        }
+        androidTest {
+            java.srcDirs += sharedTestJavaDir
+            resources.srcDirs += sharedTestResourcesDir
+        }
+    }
+}
+
 dependencies {
     implementation project(Modules.presentation)
 
+    androidTestImplementation Deps.apacheCommonsIo
     implementation Deps.material
 }

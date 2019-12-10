@@ -1,7 +1,7 @@
 package `in`.org.projecteka.jataayu.provider.ui
 
 import `in`.org.projecteka.featuresprovider.R
-import `in`.org.projecteka.jataayu.provider.ui.search.ProviderSearchFragment
+import `in`.org.projecteka.jataayu.provider.ui.fragment.ProviderSearchFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 

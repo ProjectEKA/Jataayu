@@ -1,4 +1,4 @@
-package `in`.org.projecteka.jataayu.provider.ui.search
+package `in`.org.projecteka.jataayu.provider.ui.fragment
 
 import `in`.org.projecteka.featuresprovider.R
 import `in`.org.projecteka.featuresprovider.databinding.ProviderSearchFragmentBinding
@@ -7,6 +7,7 @@ import `in`.org.projecteka.jataayu.presentation.callback.IDataBinding
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.ui.adapter.ProviderSearchAdapter
+import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.showShortToast
 import android.app.Activity
 import android.os.Bundle

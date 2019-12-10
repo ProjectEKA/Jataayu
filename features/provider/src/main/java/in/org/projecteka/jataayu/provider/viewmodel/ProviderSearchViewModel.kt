@@ -1,4 +1,4 @@
-package `in`.org.projecteka.jataayu.provider.ui.search
+package `in`.org.projecteka.jataayu.provider.viewmodel
 
 import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository

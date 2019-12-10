@@ -1,5 +1,6 @@
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     api project(Modules.network)
     implementation project(Modules.utils)
 
@@ -12,11 +13,16 @@ dependencies {
 
     implementation Deps.appcompat
     implementation Deps.coreKtx
-    testImplementation Deps.jUnit
-    androidTestImplementation Deps.androidXTest
-    androidTestImplementation Deps.espresso
-
     implementation Deps.toolsKotlinStdLib
 
     testImplementation Deps.toolsJacocoAgent
+    testImplementation Deps.jUnit
+    testImplementation Deps.mockito
+    testImplementation Deps.coreTesting
+    testImplementation Deps.moshiKotlin
+    testImplementation Deps.moshiKotlinCodegen
+    testImplementation Deps.apacheCommonsIo
+
+    androidTestImplementation Deps.androidXTest
+    androidTestImplementation Deps.espresso
 }

@@ -6,7 +6,7 @@ import `in`.org.projecteka.jataayu.network.createNetworkClient
 import `in`.org.projecteka.jataayu.provider.remote.ProviderSearchApi
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepositoryImpl
-import `in`.org.projecteka.jataayu.provider.ui.search.ProviderSearchViewModel
+import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.repository.SampleRepository
 import `in`.org.projecteka.jataayu.repository.SampleRepositoryImpl
 import `in`.org.projecteka.jataayu.viewmodel.LauncherViewModel
@@ -16,7 +16,11 @@ import retrofit2.Retrofit
 
 val viewModelModule = module {
     viewModel { LauncherViewModel(sampleRepository = get()) }
-    viewModel { ProviderSearchViewModel(providerRepository = get()) }
+    viewModel {
+        ProviderSearchViewModel(
+            providerRepository = get()
+        )
+    }
 }
 
 val repositoryModule = module {
