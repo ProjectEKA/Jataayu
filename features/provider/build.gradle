@@ -2,10 +2,15 @@ apply from: rootProject.file("android-library-commons.gradle")
 apply from: rootProject.file("commons-dependancies.gradle")
 
 android {
+
+    defaultConfig {
+        testInstrumentationRunner "in.org.projecteka.jataayu.provider.JataayuJUnitRunner"
+    }
+
     sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
-        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+        main.java.srcDirs += 'src/main/java'
+        test.java.srcDirs += 'src/test/java'
+        androidTest.java.srcDirs += 'src/androidTest/java'
 
         String sharedTestJavaDir = 'src/sharedTest/java'
         String sharedTestResourcesDir = 'src/sharedTest/resources'
@@ -23,7 +28,9 @@ android {
 
 dependencies {
     implementation project(Modules.presentation)
-
-    androidTestImplementation Deps.apacheCommonsIo
     implementation Deps.material
+    implementation Deps.apacheCommonsIo
+    implementation Deps.mockWebServer
+
+    kaptAndroidTest Deps.databindingCompiler
 }

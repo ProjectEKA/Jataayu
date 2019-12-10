@@ -24,5 +24,7 @@ dependencies {
     testImplementation Deps.apacheCommonsIo
 
     androidTestImplementation Deps.androidXTest
-    androidTestImplementation Deps.espresso
+    androidTestImplementation Deps.espressoCore
+    androidTestImplementation Deps.espressoIntents
+    androidTestImplementation Deps.espressoContrib
 }

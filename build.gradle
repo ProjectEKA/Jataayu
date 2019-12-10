@@ -41,7 +41,6 @@ subprojects {
                 defaultConfig {
                     minSdkVersion Config.minSdkVersion
                     targetSdkVersion Config.compileSdkVersion
-                    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
                 }
 
                 compileOptions {
@@ -57,9 +56,9 @@ subprojects {
 
                 //<editor-fold desc="Source Sets DSL">
                 sourceSets {
-                    main.java.srcDirs += 'src/main/kotlin'
-                    test.java.srcDirs += 'src/test/kotlin'
-                    androidTest.java.srcDirs += 'src/androidTest/kotlin'
+                    main.java.srcDirs += 'src/main/java'
+                    test.java.srcDirs += 'src/test/java'
+                    androidTest.java.srcDirs += 'src/androidTest/java'
 
                     String sharedTestJavaDir = 'src/sharedTest/java'
                     String sharedTestResourcesDir = 'src/sharedTest/resources'
@@ -81,12 +80,6 @@ subprojects {
                     }
                 }
             }
-            //</editor-fold>
-            //<editor-fold desc="Common Dependancies DSL">
-            dependencies {
-
-            }
-            //</editor-fold>
         }
     }
 }

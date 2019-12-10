@@ -20,5 +20,6 @@ task decodeKeystorePrebuildTask(type: Exec) {
 }
 
 dependencies {
+    kapt 'com.android.databinding:compiler:3.5.2'
     api project(Modules.provider)
 }

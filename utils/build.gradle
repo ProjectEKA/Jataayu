@@ -6,7 +6,10 @@ android {
         enabledForTests = true
     }
 }
+
 dependencies {
+    kapt 'com.android.databinding:compiler:3.5.2'
     implementation Deps.androidXLifecyle
     implementation Deps.androidXLifecyleViewModel
+    androidTestImplementation Deps.mockWebServer
 }

@@ -31,7 +31,6 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback {
     private val viewModel: ProviderSearchViewModel by inject()
     private lateinit var binding: ProviderSearchFragmentBinding
     private lateinit var lastQuery: String
-    private var providers: List<ProviderInfo> = ArrayList()
 
     private lateinit var providersList: ProviderSearchAdapter
 

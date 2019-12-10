@@ -1,6 +1,6 @@
-package `in`.org.projecteka.jataayu.module
+package `in`.org.projecteka.jataayu.provider.module
 
-import `in`.org.projecteka.jataayu.BuildConfig
+import `in`.org.projecteka.featuresprovider.BuildConfig
 import `in`.org.projecteka.jataayu.network.createNetworkClient
 import `in`.org.projecteka.jataayu.provider.remote.ProviderSearchApi
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository

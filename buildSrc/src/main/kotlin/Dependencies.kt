@@ -30,6 +30,8 @@ object LibVersions {
     const val coreTesting = "2.1.0"
     const val moshi = "1.9.2"
     const val apacheCommonsIo = "1.3.2"
+    const val mockWebServer = "4.2.1"
+    const val databindingCompiler = "3.5.3"
 }
 
 object Modules {
@@ -57,6 +59,7 @@ object Deps {
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${LibVersions.moshi}"
     const val moshiKotlinCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${LibVersions.moshi}"
     const val apacheCommonsIo = "org.apache.commons:commons-io:${LibVersions.apacheCommonsIo}"
+    const val mockWebServer = "com.squareup.okhttp3:mockwebserver:${LibVersions.mockWebServer}"
 
     const val jUnit = "junit:junit:${LibVersions.jUnit}"
     const val mockito = "org.mockito:mockito-core:${LibVersions.mockito}"
@@ -64,8 +67,11 @@ object Deps {
     const val koinText = "org.koin:koin-test:${LibVersions.koin}"
 
     const val androidXTest = "androidx.test.ext:junit:${LibVersions.androidX}"
-    const val espresso = "androidx.test.espresso:espresso-core:${LibVersions.espresso}"
+    const val espressoCore = "androidx.test.espresso:espresso-core:${LibVersions.espresso}"
+    const val espressoIntents = "androidx.test.espresso:espresso-intents:${LibVersions.espresso}"
+    const val espressoContrib = "androidx.test.espresso:espresso-contrib:${LibVersions.espresso}"
     const val toolsGradleVersions = "com.github.ben-manes:gradle-versions-plugin:${LibVersions.gradle}"
+    const val databindingCompiler = "androidx.databinding:databinding-compiler:${LibVersions.databindingCompiler}"
 
     const val toolsAndroidStudio = "com.android.tools.build:gradle:${LibVersions.androidStudio}"
     const val toolsKotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${LibVersions.kotlin}"
