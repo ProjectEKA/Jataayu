@@ -13,7 +13,6 @@ buildscript {
         classpath Deps.toolsAndroidStudio
         classpath Deps.toolsKotlinGradle
         classpath Deps.toolsGradleVersions
-        classpath Deps.toolsDicemelonJacoco
         classpath Deps.toolsJacocoCore
         classpath Deps.toolsJacocoAgent
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

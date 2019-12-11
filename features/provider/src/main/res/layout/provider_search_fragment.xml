@@ -31,7 +31,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/sv_provider"
                 style="?android:attr/dropDownItemStyle"
                 android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                 tools:ignore="RtlHardcoded">
 
                 <requestFocus android:value="true" />
-            </EditText>
+            </AutoCompleteTextView>
 
             <ImageView
                 android:id="@+id/iv_clear_results"

@@ -6,7 +6,6 @@ import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.util.extension.findView
 import `in`.org.projecteka.jataayu.util.extension.getString
-import `in`.org.projecteka.jataayu.util.extension.toNameCase
 import android.content.Context
 import android.os.Build
 import android.text.Html
@@ -37,18 +36,27 @@ class ProviderSearchAdapter(itemClickCallback: ItemClickCallback, list: List<Pro
 
     private fun highlight(search: String, originalText: String, context: Context): Spanned? {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val startingIndex = originalText.indexOf(search, 0, true)
             return Html.fromHtml(
-                originalText.replace(
-                    search.toNameCase(),
-                    formatBold(search, context)
-                ), Html.FROM_HTML_MODE_LEGACY
+                getDisplayName(originalText, search, startingIndex, context),
+                Html.FROM_HTML_MODE_LEGACY
             )
         }
-        return Html.fromHtml(originalText.replace(search.toNameCase(), formatBold(search, context)))
+        return Html.fromHtml(originalText.replace(search, formatBold(search, context)))
+    }
+
+    private fun getDisplayName(originalText: String, search: String, startingIndex: Int, context: Context
+    ): String {
+        if (startingIndex == -1) return originalText
+        return originalText.replaceFirst(
+            search,
+            formatBold(originalText.substring(startingIndex, (startingIndex + search.length)), context),
+            true
+        )
     }
 
     private fun formatBold(search: String, context: Context): String {
-        return String.format(context.getString(R.string.boldify), search.toNameCase())
+        return String.format(context.getString(R.string.boldify), search)
     }
 
     fun updateData(query: CharSequence, providers: List<ProviderInfo>) {
