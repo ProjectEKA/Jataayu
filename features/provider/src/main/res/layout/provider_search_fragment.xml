@@ -4,10 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="providerInfo"
             type="in.org.projecteka.jataayu.provider.model.ProviderInfo" />
+
+        <variable
+            name="clearButtonVisibility"
+            type="Integer" />
+
+        <variable
+            name="textWatcher"
+            type="in.org.projecteka.jataayu.provider.domain.ProviderNameWatcher" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,11 +38,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <AutoCompleteTextView
+            <EditText
                 android:id="@+id/sv_provider"
                 style="?android:attr/dropDownItemStyle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/search_edittext_height"
+                android:importantForAutofill="no"
                 android:layout_marginStart="@dimen/content_margin_extra_large"
                 android:background="@drawable/rounded_corners_bg"
                 android:clickable="true"
@@ -45,6 +53,7 @@
                 android:focusableInTouchMode="true"
                 android:hint="@string/search_by_provider_name"
                 android:imeOptions="actionSearch"
+                app:onValueChanged="@{textWatcher}"
                 android:paddingEnd="@dimen/content_margin_extra_larger"
                 android:inputType="textAutoComplete|textAutoCorrect"
                 android:padding="@dimen/content_padding"
@@ -55,7 +64,7 @@
                 tools:ignore="RtlHardcoded">
 
                 <requestFocus android:value="true" />
-            </AutoCompleteTextView>
+            </EditText>
 
             <ImageView
                 android:id="@+id/iv_clear_results"
@@ -64,7 +73,7 @@
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/content_margin_extra_large"
                 android:background="@drawable/ic_clear_all"
-                android:visibility="gone"
+                android:visibility="@{clearButtonVisibility}"
                 tools:visibility="visible" />
         </com.google.android.material.card.MaterialCardView>
 

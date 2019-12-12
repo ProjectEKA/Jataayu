@@ -62,9 +62,9 @@ open class GenericRecyclerViewAdapter : RecyclerView.Adapter<GenericRecyclerView
             setItemClickListener(i)
         }
 
-        open fun setItemClickListener(i: IDataBinding) {
+        open fun setItemClickListener(iDataBinding: IDataBinding) {
             itemView.setOnClickListener {
-                itemClickCallback?.performItemClickAction(i, binding)
+                itemClickCallback?.performItemClickAction(iDataBinding, binding)
             }
         }
     }
