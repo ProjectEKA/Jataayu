@@ -1,4 +1,4 @@
-package `in`.org.projecteka.jataayu
+package `in`.org.projecteka.jataayu.provider
 
 import `in`.org.projecteka.jataayu.provider.module.networkModule
 import `in`.org.projecteka.jataayu.provider.module.repositoryModule

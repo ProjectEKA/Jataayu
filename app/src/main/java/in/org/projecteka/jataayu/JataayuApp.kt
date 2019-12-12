@@ -1,8 +1,8 @@
 package `in`.org.projecteka.jataayu
 
-import `in`.org.projecteka.jataayu.provider.module.networkModule
-import `in`.org.projecteka.jataayu.provider.module.repositoryModule
-import `in`.org.projecteka.jataayu.provider.module.viewModelModule
+import `in`.org.projecteka.jataayu.module.networkModule
+import `in`.org.projecteka.jataayu.module.repositoryModule
+import `in`.org.projecteka.jataayu.module.viewModelModule
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

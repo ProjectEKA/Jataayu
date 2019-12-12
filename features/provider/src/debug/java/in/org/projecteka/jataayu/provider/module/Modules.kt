@@ -12,9 +12,7 @@ import retrofit2.Retrofit
 
 val viewModelModule = module {
     viewModel {
-        ProviderSearchViewModel(
-            providerRepository = get()
-        )
+        ProviderSearchViewModel(providerRepository = get())
     }
 }
 

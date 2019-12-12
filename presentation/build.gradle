@@ -1,6 +1,16 @@
 apply from: rootProject.file("android-library-commons.gradle")
 apply from: rootProject.file("commons-dependancies.gradle")
 
+android {
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+            minifyEnabled false
+            debuggable true
+        }
+    }
+}
+
 dependencies {
     implementation Deps.material
 }

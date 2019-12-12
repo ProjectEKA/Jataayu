@@ -1,4 +1,4 @@
-apply from: rootProject.file("jacoco.gradle")
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -13,12 +13,10 @@ dependencies {
     implementation Deps.androidXLifecyleViewModel
 
     implementation Deps.appcompat
-    implementation Deps.coreKtx
     implementation Deps.toolsKotlinStdLib
 
     implementation Deps.timber
 
-    testImplementation Deps.toolsJacocoAgent
     testImplementation Deps.jUnit
     testImplementation Deps.mockito
     testImplementation Deps.coreTesting

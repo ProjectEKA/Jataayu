@@ -53,7 +53,7 @@ open class GenericRecyclerViewAdapter : RecyclerView.Adapter<GenericRecyclerView
     }
 
     open inner class RecyclerViewHolder(
-        protected val binding: ViewDataBinding
+        private val binding: ViewDataBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(i: IDataBinding) {

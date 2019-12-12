@@ -1,4 +1,4 @@
-package `in`.org.projecteka.jataayu.provider.ui.activity
+package `in`.org.projecteka.jataayu.provider.ui
 
 import `in`.org.projecteka.featuresprovider.R
 import android.os.Bundle

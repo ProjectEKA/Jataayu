@@ -9,6 +9,7 @@ import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.ui.adapter.ProviderSearchAdapter
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.showShortToast
+import `in`.org.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
@@ -19,7 +20,6 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.airasia.biglife.ui.utils.UiUtils
 import org.koin.android.ext.android.inject
 
 class ProviderSearchFragment : Fragment(), ItemClickCallback {

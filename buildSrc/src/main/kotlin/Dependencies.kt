@@ -19,7 +19,6 @@ object LibVersions {
     const val jacoco = "0.8.5"
     const val koin = "2.0.1"
     const val kotlin = "1.3.61"
-    const val support = "28.0.0"
     const val constraintLayout = "1.1.3"
     const val retrofit = "2.6.2"
     const val gradle = "0.21.0"
@@ -44,9 +43,8 @@ object Modules {
 
 object Deps {
     const val appcompat = "androidx.appcompat:appcompat:${LibVersions.appcompat}"
-    const val coreKtx = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${LibVersions.kotlin}"
     const val material = "com.google.android.material:material:${LibVersions.material}"
-    const val androidX = "androidx.core:core-ktx:${LibVersions.androidX}"
+    const val androidXCoreKtx = "androidx.core:core-ktx:${LibVersions.androidX}"
     const val androidXLifecyle = "androidx.lifecycle:lifecycle-extensions:${LibVersions.androidXLifecycle}"
     const val androidXLifecyleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${LibVersions.androidXLifecycle}"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:${LibVersions.constraintLayout}"
@@ -64,6 +62,7 @@ object Deps {
 
     const val jUnit = "junit:junit:${LibVersions.jUnit}"
     const val mockito = "org.mockito:mockito-core:${LibVersions.mockito}"
+    const val mockitoAndroid = "org.mockito:mockito-android:${LibVersions.mockito}"
     const val coreTesting = "androidx.arch.core:core-testing:${LibVersions.coreTesting}"
     const val koinText = "org.koin:koin-test:${LibVersions.koin}"
 

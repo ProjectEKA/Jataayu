@@ -1,13 +1,15 @@
 package `in`.org.projecteka.jataayu.provider.ui.fragment
 
 import `in`.org.projecteka.featuresprovider.R
+import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.provider.CustomRecyclerViewMatcher
 import `in`.org.projecteka.jataayu.provider.MockServerDispatcher
-import `in`.org.projecteka.jataayu.provider.ui.activity.TestsOnlyActivity
+import `in`.org.projecteka.jataayu.provider.ui.TestsOnlyActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -61,9 +63,8 @@ class ProviderSearchFragmentTest {
     fun shouldSearchProvidersByGivenName() {
         onView(withId(R.id.sv_provider)).perform(typeText("Max"))
         CustomRecyclerViewMatcher(R.id.rv_search_results).atPositionOnView(0, R.id.provider_name)
-            .matches(
-                allOf(withText("Max Health Care, Bangalore"), isDisplayed())
-            )
+            .matches(allOf(withText("Max Health Care, Bangalore"), isDisplayed()))
+        RecyclerViewActions.actionOnItemAtPosition<GenericRecyclerViewAdapter.RecyclerViewHolder>(0, click())
     }
 
     @Test

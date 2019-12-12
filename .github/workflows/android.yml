@@ -23,7 +23,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build with Gradle
-        run: ./gradlew test
+        run: ./gradlew testDebugUnitTest
 
   ui-test:
     runs-on: macOS-latest
@@ -44,4 +44,4 @@ jobs:
           target: ${{ matrix.target }}
           arch: x86_64
           profile: Nexus 6
-          script: ./gradlew connectedAndroidTest
+          script: ./gradlew connectedDebugAndroidTest

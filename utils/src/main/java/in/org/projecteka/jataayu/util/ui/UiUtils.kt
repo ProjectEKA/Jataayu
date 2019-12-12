@@ -1,4 +1,4 @@
-package com.airasia.biglife.ui.utils
+package `in`.org.projecteka.jataayu.util.ui
 
 import android.app.Activity
 import android.content.Context
@@ -15,13 +15,6 @@ class UiUtils {
             }
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
-
-        fun setLightStatusBar(view: View) {
-            var flags = view.systemUiVisibility
-            flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            view.systemUiVisibility = flags
-        }
-
 
         public fun convertPixelsToDp(context: Context, px: Int): Float {
             return px / context.resources.displayMetrics.density
