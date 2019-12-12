@@ -1,7 +1,6 @@
 package `in`.org.projecteka.jataayu.provider.ui.fragment
 
 import `in`.org.projecteka.featuresprovider.databinding.ProviderSearchFragmentBinding
-import `in`.org.projecteka.featuresprovider.databinding.ProviderSearchResultItemBinding
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBinding
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.provider.callback.TextWatcherCallback
@@ -9,7 +8,6 @@ import `in`.org.projecteka.jataayu.provider.domain.ProviderNameWatcher
 import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.ui.adapter.ProviderSearchAdapter
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
-import `in`.org.projecteka.jataayu.util.extension.showShortToast
 import `in`.org.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
@@ -23,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import org.koin.android.ext.android.inject
 
+
 class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallback {
 
     companion object {
@@ -35,13 +34,14 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
 
     private lateinit var providersList : ProviderSearchAdapter
 
-    private val providersObserver = Observer<List<ProviderInfo>> { providers ->
-        if (providers.isNotEmpty()) {
+    private val providersObserver = Observer<List<ProviderInfo>> { providerNames ->
+        if (providerNames.isNotEmpty()) {
             providersList.updateData(
-                lastQuery, providers)
+                lastQuery, providerNames)
+            setNoResultsFoundViewVisibility(GONE)
         } else {
-            providersList.updateData(
-                lastQuery, noResultsFoundView())
+            providersList.updateData(lastQuery, emptyList())
+            setNoResultsFoundViewVisibility(VISIBLE)
         }
     }
 
@@ -59,7 +59,12 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
     }
 
     private fun renderSearchUi() {
-        binding.ivClearResults.setOnClickListener { binding.svProvider.text.clear() }
+        binding.ivClearResults.setOnClickListener {
+            binding.svProvider.apply {
+                text.clear()
+                isEnabled = true
+            }
+        }
         binding.rvSearchResults.layoutManager =
             androidx.recyclerview.widget.LinearLayoutManager(context)
         providersList = ProviderSearchAdapter(this)
@@ -67,16 +72,18 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
         binding.rvSearchResults.addOnScrollListener(onScrollListener)
     }
 
-    private fun noResultsFoundView() =
-        listOf(ProviderInfo(city = "", name = "", telephone = "", type = ""))
+    private fun setNoResultsFoundViewVisibility(visible : Int) {
+        binding.noResultsFoundView.visibility = visible
+    }
 
     override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeProviders()
     }
 
-    override fun performItemClickAction(iDataBinding : IDataBinding, binding : ViewDataBinding) {
-        showShortToast((binding as ProviderSearchResultItemBinding).providerName.text)
+    override fun performItemClickAction(iDataBinding : IDataBinding,
+                                        itemViewBinding : ViewDataBinding) {
+        binding.svProvider.isEnabled = false
     }
 
     private val onScrollListener =
@@ -97,5 +104,6 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
     override fun onTextCleared(clearButtonVisibility : Int) {
         providersList.updateData(listOf())
         binding.clearButtonVisibility = GONE
+        setNoResultsFoundViewVisibility(GONE)
     }
 }

@@ -40,14 +40,12 @@
 
             <EditText
                 android:id="@+id/sv_provider"
-                style="?android:attr/dropDownItemStyle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/search_edittext_height"
                 android:importantForAutofill="no"
-                android:layout_marginStart="@dimen/content_margin_extra_large"
+                android:paddingStart="@dimen/content_margin_extra_large"
                 android:background="@drawable/rounded_corners_bg"
                 android:clickable="true"
-                android:completionThreshold="@integer/autocomplete_threshold"
                 android:drawablePadding="@dimen/content_padding_small"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -86,6 +84,40 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cv_autocomplete">
+            <LinearLayout
+                android:id="@+id/no_results_found_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_gray"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:paddingStart="@dimen/content_margin_extra_large"
+                android:paddingEnd="@dimen/content_margin_extra_large">
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/provider_name" />
+
+                <TextView
+                    android:id="@+id/provider_name"
+                    style="?android:attr/dropDownItemStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/listPreferredItemHeight"
+                    android:ellipsize="marquee"
+                    android:gravity="start|center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/no_results_found"
+                    android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
+                    android:textSize="@dimen/secondary_text_size"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_search_results"
