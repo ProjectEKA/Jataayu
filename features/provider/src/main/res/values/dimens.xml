@@ -34,7 +34,6 @@
     <dimen name="clear_button_dimensions">20dp</dimen>
     <dimen name="toolbar_elevation">8dp</dimen>
     <dimen name="divider_height">1dp</dimen>
-    <dimen name="line_height_secondary">16sp</dimen>
     <dimen name="line_height_primary_large">24sp</dimen>
     <dimen name="line_spacing_secondary">4sp</dimen>
     <dimen name="line_spacing_tertiary">0.2sp</dimen>
@@ -43,4 +42,7 @@
     <dimen name="listing_item_price_guideline_constraint">120dp</dimen>
     <dimen name="primary_button_radius">7dp</dimen>
     <dimen name="search_edittext_height">64dp</dimen>
+
+    <dimen name="selected_provider_text_size">16sp</dimen>
+    <dimen name="clear_all_button_margin_end">42dp</dimen>
 </resources>

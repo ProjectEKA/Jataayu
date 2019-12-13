@@ -14,6 +14,7 @@ dependencies {
     implementation Deps.androidXLifecyle
     implementation Deps.androidXLifecyleViewModel
     implementation Deps.timber
+    implementation Deps.appcompat
 
     testApi Deps.jUnit
     testApi Deps.mockito

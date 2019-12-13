@@ -20,6 +20,8 @@ inline fun <reified T : View> View.findView(id: Int): T = findViewById(id)
 
 fun View.getString(id: Int): String = context.getString(id)
 
+val String.Companion.EMPTY : String get() = ""
+
 //fun Context.showLongToast(text: CharSequence) = Toast.makeText(this, text, Toast.LENGTH_LONG).show()
 //fun Fragment.showLongToast(text: CharSequence) = context?.showLongToast(text)
 //fun Context.showShortToast(text: CharSequence) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
