@@ -2,6 +2,23 @@ apply plugin: 'com.android.application'
 apply from: rootProject.file("android-commons.gradle")
 apply from: rootProject.file("commons-dependancies.gradle")
 
+android {
+    buildTypes {
+        debug {
+            resValue 'string', 'app_name', 'Jataayu Debug'
+            applicationIdSuffix '.debug'
+        }
+        qa {
+            shrinkResources true
+            resValue 'string', 'app_name', 'Jataayu QA'
+        }
+        release {
+            shrinkResources true
+            resValue 'string', 'app_name', 'Jataayu'
+        }
+    }
+}
+
 task decodeKeystorePrebuildTask(type: Exec) {
     doFirst {
         workingDir "$projectDir"

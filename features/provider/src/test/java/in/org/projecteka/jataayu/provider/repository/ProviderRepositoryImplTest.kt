@@ -1,6 +1,6 @@
 package `in`.org.projecteka.jataayu.provider.repository
 
-import `in`.org.projecteka.jataayu.provider.remote.ProviderSearchApi
+import `in`.org.projecteka.jataayu.provider.remote.ProviderApis
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -10,7 +10,7 @@ import org.mockito.MockitoAnnotations
 class ProviderRepositoryImplTest {
 
     @Mock
-    lateinit var providerSearchApi : ProviderSearchApi
+    lateinit var providerSearchApi : ProviderApis
 
     @Before
     fun setUp() {
@@ -20,7 +20,14 @@ class ProviderRepositoryImplTest {
     @Test
     fun shouldCallGetProviderApi() {
         val query = "Max"
-        ProviderRepositoryImpl(providerSearchApi).getProvider(query)
-        verify(providerSearchApi).getProvider(query)
+        ProviderRepositoryImpl(providerSearchApi).getProviders(query)
+        verify(providerSearchApi).getProviders(query)
+    }
+
+    @Test
+    fun shouldCallGetPatientsApi() {
+        val identifier = "9876543210"
+        ProviderRepositoryImpl(providerSearchApi).getPatients(identifier)
+        verify(providerSearchApi).getPatients(identifier)
     }
 }

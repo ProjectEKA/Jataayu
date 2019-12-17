@@ -4,6 +4,6 @@ import android.view.View
 
 interface ProviderSearchScreenHandler {
     fun onClearTextButtonClick(view: View)
-    fun onClearSelectionButtonClick(view: View)
+    fun onClearSelectionClick(view: View)
     fun onSearchButtonClick(view: View)
 }

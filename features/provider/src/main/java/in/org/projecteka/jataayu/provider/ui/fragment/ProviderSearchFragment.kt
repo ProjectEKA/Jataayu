@@ -5,6 +5,7 @@ import `in`.org.projecteka.jataayu.presentation.callback.IDataBinding
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.provider.callback.TextWatcherCallback
 import `in`.org.projecteka.jataayu.provider.domain.ProviderNameWatcher
+import `in`.org.projecteka.jataayu.provider.model.Patient
 import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.ui.adapter.ProviderSearchAdapter
 import `in`.org.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandler
@@ -33,19 +34,18 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
     private val viewModel : ProviderSearchViewModel by inject()
     private lateinit var binding : ProviderSearchFragmentBinding
     private lateinit var lastQuery : String
+    private val mobile = "9876543210"
     private var selectedProviderName = String.EMPTY
 
     private lateinit var providersList : ProviderSearchAdapter
 
     private val providersObserver = Observer<List<ProviderInfo>> { providerNames ->
-        if (providerNames.isNotEmpty()) {
-            providersList.updateData(
-                lastQuery, providerNames)
-            setNoResultsFoundViewVisibility(GONE)
-        } else {
-            providersList.updateData(lastQuery, emptyList())
-            setNoResultsFoundViewVisibility(VISIBLE)
-        }
+        providersList.updateData(lastQuery, providerNames)
+        showNoResultsFoundView(providerNames.isEmpty())
+    }
+
+    private val patientsObserver = Observer<List<Patient>?> { patients ->
+        //TODO Show patient list screen
     }
 
     private fun observeProviders() {
@@ -65,22 +65,11 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
         binding.inEditMode = true
         binding.selectedProviderName = selectedProviderName
         binding.clickHandler = this
+        binding.mobile = mobile
         binding.textWatcher = ProviderNameWatcher(this, 1)
     }
 
     private fun renderSearchUi() {
-        binding.tvSelectedProvider.setOnClickListener {
-            binding.inEditMode = true
-            binding.svProvider.setText(lastQuery)
-            binding.svProvider.setSelection(lastQuery.length)
-            binding.svProvider.requestFocus()
-        }
-        binding.ivClearResults.setOnClickListener {
-            binding.svProvider.apply {
-                text.clear()
-                binding.inEditMode = true
-            }
-        }
         binding.rvSearchResults.layoutManager =
             androidx.recyclerview.widget.LinearLayoutManager(context)
         providersList = ProviderSearchAdapter(this)
@@ -88,8 +77,8 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
         binding.rvSearchResults.addOnScrollListener(onScrollListener)
     }
 
-    private fun setNoResultsFoundViewVisibility(visible : Int) {
-        binding.noResultsFoundView.visibility = visible
+    private fun showNoResultsFoundView(show : Boolean) {
+        binding.noResultsFoundView.visibility = if (show) VISIBLE else GONE
     }
 
     override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
@@ -103,6 +92,8 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
         binding.inEditMode = false
         UiUtils.hideKeyboard(activity as Activity)
         binding.tvSelectedProvider.text = (iDataBinding as ProviderInfo).nameCityPair()
+        binding.svProvider.clearFocus()
+        binding.tvSelectedProvider.postDelayed({ binding.tvSelectedProvider.requestFocus() }, 100)
     }
 
     private val onScrollListener =
@@ -115,7 +106,7 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
         }
 
     override fun onTextChanged(changedText : CharSequence?, clearButtonVisibility : Int) {
-        viewModel.getProvider(changedText.toString())
+        viewModel.getProviders(changedText.toString())
         lastQuery = changedText.toString()
         binding.clearButtonVisibility = VISIBLE
     }
@@ -123,17 +114,25 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
     override fun onTextCleared(clearButtonVisibility : Int) {
         providersList.updateData(listOf())
         binding.clearButtonVisibility = GONE
-        setNoResultsFoundViewVisibility(GONE)
+        showNoResultsFoundView(false)
     }
 
-    override fun onClearTextButtonClick(view: View) {
-
+    override fun onClearTextButtonClick(view : View) {
+        binding.svProvider.text.clear()
+        binding.inEditMode = true
     }
 
-    override fun onClearSelectionButtonClick(view: View) {
-
+    override fun onClearSelectionClick(view : View) {
+        binding.svProvider.setText(lastQuery)
+        binding.svProvider.setSelection(lastQuery.length)
+        binding.inEditMode = true
+        binding.svProvider.requestFocus()
     }
 
-    override fun onSearchButtonClick(view: View) {
+    override fun onSearchButtonClick(view : View) {
+        viewModel.getPatients(mobile)
+        observePatients()
     }
+
+    private fun observePatients() = viewModel.patients.observe(this, patientsObserver)
 }

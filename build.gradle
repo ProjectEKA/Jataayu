@@ -48,10 +48,32 @@ subprojects {
                     targetCompatibility Config.javaVersion
                 }
 
+                signingConfigs {
+                    release {
+                        storeFile file(String.valueOf(System.getenv("UPLOAD_KEY_PATH")))
+                        storePassword System.getenv("UPLOAD_KEY_PASSWORD")
+                        keyAlias System.getenv("UPLOAD_KEY")
+                        keyPassword System.getenv("UPLOAD_KEY_PASSWORD")
+                    }
+                }
+
                 buildTypes {
-                    debug {}
-                    qa {}
-                    release {}
+                    debug {
+                        testCoverageEnabled true
+                        debuggable true
+                        minifyEnabled false
+                    }
+                    qa {
+                        minifyEnabled true
+                        debuggable true
+                        signingConfig = signingConfigs.release
+                    }
+                    release {
+                        testCoverageEnabled false
+                        minifyEnabled true
+                        debuggable true
+                        signingConfig = signingConfigs.release
+                    }
                 }
 
                 //<editor-fold desc="Source Sets DSL">

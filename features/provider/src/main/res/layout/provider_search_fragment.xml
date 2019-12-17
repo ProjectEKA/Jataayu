@@ -22,6 +22,10 @@
             type="String" />
 
         <variable
+            name="mobile"
+            type="String" />
+
+        <variable
             name="clickHandler"
             type="in.org.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandler" />
 
@@ -59,15 +63,19 @@
             android:layout_marginStart="@dimen/content_margin_primary"
             android:layout_marginTop="@dimen/content_margin_tertiary"
             android:layout_marginEnd="@dimen/content_margin_primary"
-            android:background="@drawable/provider_selector"
+            android:background="@drawable/rounded_corners_bg_disabled"
             android:drawableEnd="@drawable/ic_clear_all"
             android:gravity="start|center_vertical"
             android:padding="@dimen/content_padding"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:paddingStart="@dimen/content_margin_extra_large"
             android:paddingEnd="@dimen/content_margin_extra_large"
             android:popupElevation="0dp"
             android:singleLine="true"
             android:text="@{selectedProviderName}"
+            android:onClick="@{clickHandler::onClearSelectionClick}"
             android:textAppearance="?android:attr/textAppearanceListItem"
             android:textColor="@color/app_black"
             android:textColorHint="@color/brown_grey_two"
@@ -128,6 +136,7 @@
                 android:layout_height="@dimen/clear_button_dimensions"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/content_margin_extra_large"
+                android:onClick="@{clickHandler::onClearTextButtonClick}"
                 android:background="@drawable/ic_clear_all"
                 android:visibility="@{clearButtonVisibility}"
                 tools:visibility="visible" />
@@ -235,7 +244,8 @@
             android:padding="@dimen/content_padding"
             android:paddingStart="@dimen/content_margin_extra_large"
             android:paddingEnd="@dimen/content_margin_extra_larger"
-            android:text="98765 43210"
+            android:text="@{mobile}"
+            tools:text="98765 43210"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/app_black"
             android:textStyle="bold"

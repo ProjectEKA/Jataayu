@@ -55,6 +55,7 @@ object Deps {
     const val retrofitAdapter = "com.squareup.retrofit2:adapter-rxjava2:${LibVersions.retrofit}"
     const val retrofitConverter = "com.squareup.retrofit2:converter-moshi:${LibVersions.retrofit}"
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${LibVersions.loggingInterceptor}"
+    const val moshi = "com.squareup.moshi:moshi:${LibVersions.moshi}"
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${LibVersions.moshi}"
     const val moshiKotlinCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${LibVersions.moshi}"
     const val apacheCommonsIo = "org.apache.commons:commons-io:${LibVersions.apacheCommonsIo}"

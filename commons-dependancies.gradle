@@ -3,29 +3,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     api project(Modules.network)
-    implementation project(Modules.utils)
+    api project(Modules.utils)
 
     implementation Deps.constraintLayout
     implementation Deps.koinAndroid
     implementation Deps.koinAndroidXScope
     implementation Deps.koinAndroidXViewModel
-    implementation Deps.androidXLifecyle
-    implementation Deps.androidXLifecyleViewModel
-
-    implementation Deps.appcompat
     implementation Deps.toolsKotlinStdLib
-
     implementation Deps.timber
-
-    testImplementation Deps.jUnit
-    testImplementation Deps.mockito
-    testImplementation Deps.coreTesting
-    testImplementation Deps.moshiKotlin
-    testImplementation Deps.moshiKotlinCodegen
-    testImplementation Deps.apacheCommonsIo
-
-    androidTestImplementation Deps.androidXTest
-    androidTestImplementation Deps.espressoCore
-    androidTestImplementation Deps.espressoIntents
-    androidTestImplementation Deps.espressoContrib
 }

@@ -3,7 +3,8 @@
     package="in.org.projecteka.featuresprovider">
 
     <application>
-        <activity android:name="in.org.projecteka.jataayu.provider.ui.ProviderSearchActivity"></activity>
+        <activity android:name="in.org.projecteka.jataayu.provider.ui.ProviderSearchActivity"
+            android:windowSoftInputMode="stateHidden" android:screenOrientation="userPortrait"/>
     </application>
 
 </manifest>
