@@ -20,5 +20,6 @@ class LauncherActivity : AppCompatActivity() {
 
     private fun observeData() {
         startActivity(ProviderSearchActivity::class.java)
+        finish()
     }
 }

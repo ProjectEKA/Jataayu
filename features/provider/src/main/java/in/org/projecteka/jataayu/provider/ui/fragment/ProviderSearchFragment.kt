@@ -22,7 +22,7 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallback,
     ProviderSearchScreenHandler {
@@ -31,7 +31,7 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
         fun newInstance() = ProviderSearchFragment()
     }
 
-    private val viewModel : ProviderSearchViewModel by inject()
+    private val viewModel : ProviderSearchViewModel by sharedViewModel()
     private lateinit var binding : ProviderSearchFragmentBinding
     private lateinit var lastQuery : String
 
@@ -94,6 +94,7 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
         binding.inEditMode = false
         UiUtils.hideKeyboard(activity as Activity)
         binding.tvSelectedProvider.text = (iDataBinding as ProviderInfo).nameCityPair()
+        viewModel.selectedProviderName = iDataBinding.nameCityPair()
         binding.svProvider.clearFocus()
         binding.tvSelectedProvider.postDelayed({ binding.tvSelectedProvider.requestFocus() }, 100)
     }
