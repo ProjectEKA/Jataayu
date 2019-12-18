@@ -15,11 +15,11 @@ dependencies {
     api Deps.androidXLifecyleViewModel
     api Deps.timber
     api Deps.appcompat
-    api Deps.moshi
 
     testImplementation Deps.jUnit
     testImplementation Deps.mockito
     testImplementation Deps.coreTesting
+    testImplementation Deps.moshi
     testImplementation Deps.moshiKotlinCodegen
     testImplementation Deps.apacheCommonsIo
 

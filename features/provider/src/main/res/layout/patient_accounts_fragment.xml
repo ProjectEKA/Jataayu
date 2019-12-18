@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data >
+        <variable
+            name="selectedProviderName"
+            type="String" />
+
+        <variable
+            name="mobile"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/content_margin_primary"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_selected_provider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_edittext_height"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="start|center_vertical"
+            android:padding="@dimen/content_padding"
+            android:popupElevation="0dp"
+            android:singleLine="true"
+            android:text="@{selectedProviderName}"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/app_black"
+            android:textColorHint="@color/brown_grey_two"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Max Hospital, Kochi" />
+
+        <TextView
+            android:id="@+id/lbl_primary_identifier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/content_padding_small"
+            android:padding="@dimen/content_padding"
+            android:text="@string/primary_identifier"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_selected_provider" />
+
+        <TextView
+            android:id="@+id/tv_mobile_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{mobile}"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/app_black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_primary_identifier"
+            tools:text="98765 43210" />
+
+        <TextView
+            android:id="@+id/lbl_accounts_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/content_padding_small"
+            android:gravity="right"
+            android:padding="@dimen/content_padding"
+            android:text="@string/accounts_associated_found"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_results"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_accounts_count"
+            tools:listitem="@layout/patient_account_result_item" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

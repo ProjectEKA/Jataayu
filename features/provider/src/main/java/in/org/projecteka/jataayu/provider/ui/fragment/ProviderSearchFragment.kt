@@ -7,10 +7,10 @@ import `in`.org.projecteka.jataayu.provider.callback.TextWatcherCallback
 import `in`.org.projecteka.jataayu.provider.domain.ProviderNameWatcher
 import `in`.org.projecteka.jataayu.provider.model.Patient
 import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
+import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
 import `in`.org.projecteka.jataayu.provider.ui.adapter.ProviderSearchAdapter
 import `in`.org.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandler
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
-import `in`.org.projecteka.jataayu.util.extension.EMPTY
 import `in`.org.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
@@ -34,8 +34,6 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
     private val viewModel : ProviderSearchViewModel by inject()
     private lateinit var binding : ProviderSearchFragmentBinding
     private lateinit var lastQuery : String
-    private val mobile = "9876543210"
-    private var selectedProviderName = String.EMPTY
 
     private lateinit var providersList : ProviderSearchAdapter
 
@@ -45,7 +43,11 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
     }
 
     private val patientsObserver = Observer<List<Patient>?> { patients ->
-        //TODO Show patient list screen
+        showPatientAccountsList()
+    }
+
+    private fun showPatientAccountsList() {
+        (activity as ProviderSearchActivity).showPatientsAccounts()
     }
 
     private fun observeProviders() {
@@ -63,9 +65,9 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
     private fun initBindings() {
         binding.clearButtonVisibility = GONE
         binding.inEditMode = true
-        binding.selectedProviderName = selectedProviderName
+        binding.selectedProviderName = viewModel.selectedProviderName
         binding.clickHandler = this
-        binding.mobile = mobile
+        binding.mobile = viewModel.mobile
         binding.textWatcher = ProviderNameWatcher(this, 1)
     }
 
@@ -130,7 +132,7 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
     }
 
     override fun onSearchButtonClick(view : View) {
-        viewModel.getPatients(mobile)
+        viewModel.getPatients(viewModel.mobile)
         observePatients()
     }
 

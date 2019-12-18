@@ -10,10 +10,12 @@ android {
         }
         qa {
             shrinkResources true
+            minifyEnabled true
             resValue 'string', 'app_name', 'Jataayu QA'
         }
         release {
             shrinkResources true
+            minifyEnabled true
             resValue 'string', 'app_name', 'Jataayu'
         }
     }

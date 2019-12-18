@@ -6,4 +6,7 @@
     <string name="we_will_look_up">We will look up patient information based on</string>
     <string name="mobile_number">Mobile number</string>
     <string name="search">Search</string>
+    <string name="primary_identifier">Primary identifier</string>
+    <string name="patient_id">Patient ID</string>
+    <string name="accounts_associated_found">%d accounts associated found</string>
 </resources>

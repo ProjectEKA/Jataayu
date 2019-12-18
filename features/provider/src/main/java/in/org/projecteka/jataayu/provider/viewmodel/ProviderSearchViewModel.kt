@@ -3,6 +3,7 @@ package `in`.org.projecteka.jataayu.provider.viewmodel
 import `in`.org.projecteka.jataayu.provider.model.Patient
 import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
+import `in`.org.projecteka.jataayu.util.extension.EMPTY
 import `in`.org.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
 import retrofit2.Call
@@ -14,6 +15,10 @@ class ProviderSearchViewModel(val providerRepository : ProviderRepository) : Vie
     val providers = liveDataOf<List<ProviderInfo>>()
 
     val patients = liveDataOf<List<Patient>>()
+
+    internal val mobile = "9876543210"
+
+    internal var selectedProviderName = String.EMPTY
 
     fun getProviders(query : String) {
         providerRepository.getProviders(query).enqueue(object : Callback<List<ProviderInfo>?> {
