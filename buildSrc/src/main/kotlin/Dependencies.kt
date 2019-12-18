@@ -27,7 +27,9 @@ object LibVersions {
     const val loggingInterceptor = "4.0.0"
     const val mockito = "3.2.0"
     const val coreTesting = "2.1.0"
-    const val moshi = "1.9.2"
+//    const val moshi = "1.9.2"
+    const val gson = "2.8.6"
+    const val gson_retrofit_converter = "2.7.0"
     const val apacheCommonsIo = "1.3.2"
     const val mockWebServer = "4.2.1"
     const val databindingCompiler = "3.5.3"
@@ -53,32 +55,35 @@ object Deps {
     const val koinAndroidXScope = "org.koin:koin-androidx-scope:${LibVersions.koin}"
     const val retrofit = "com.squareup.retrofit2:retrofit:${LibVersions.retrofit}"
     const val retrofitAdapter = "com.squareup.retrofit2:adapter-rxjava2:${LibVersions.retrofit}"
-    const val retrofitConverter = "com.squareup.retrofit2:converter-moshi:${LibVersions.retrofit}"
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${LibVersions.loggingInterceptor}"
-    const val moshi = "com.squareup.moshi:moshi:${LibVersions.moshi}"
-    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${LibVersions.moshi}"
-    const val moshiKotlinCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${LibVersions.moshi}"
     const val apacheCommonsIo = "org.apache.commons:commons-io:${LibVersions.apacheCommonsIo}"
     const val mockWebServer = "com.squareup.okhttp3:mockwebserver:${LibVersions.mockWebServer}"
-
     const val jUnit = "junit:junit:${LibVersions.jUnit}"
     const val mockito = "org.mockito:mockito-core:${LibVersions.mockito}"
+
     const val mockitoAndroid = "org.mockito:mockito-android:${LibVersions.mockito}"
     const val coreTesting = "androidx.arch.core:core-testing:${LibVersions.coreTesting}"
     const val koinText = "org.koin:koin-test:${LibVersions.koin}"
-
     const val androidXTest = "androidx.test.ext:junit:${LibVersions.androidX}"
     const val espressoCore = "androidx.test.espresso:espresso-core:${LibVersions.espresso}"
+
     const val espressoIntents = "androidx.test.espresso:espresso-intents:${LibVersions.espresso}"
     const val espressoContrib = "androidx.test.espresso:espresso-contrib:${LibVersions.espresso}"
     const val toolsGradleVersions = "com.github.ben-manes:gradle-versions-plugin:${LibVersions.gradle}"
     const val databindingCompiler = "androidx.databinding:databinding-compiler:${LibVersions.databindingCompiler}"
     const val timber = "com.jakewharton.timber:timber:${LibVersions.timber}"
-
     const val toolsAndroidStudio = "com.android.tools.build:gradle:${LibVersions.androidStudio}"
     const val toolsKotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${LibVersions.kotlin}"
+
     const val toolsKotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${LibVersions.kotlin}"
     const val toolsDicemelonJacoco = "com.dicedmelon.gradle:jacoco-android:${LibVersions.dicemelonJacoco}"
     const val toolsJacocoCore = "org.jacoco:org.jacoco.core:${LibVersions.jacoco}"
     const val toolsJacocoAgent = "org.jacoco:org.jacoco.agent:${LibVersions.jacoco}"
+    const val gson = "com.google.code.gson:gson:${LibVersions.gson}"
+
+    const val gson_converter = "com.squareup.retrofit2:converter-gson:${LibVersions.gson_retrofit_converter}"
+    //    const val moshi = "com.squareup.moshi:moshi:${LibVersions.moshi}"
+    //    const val moshiKotlinCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${LibVersions.moshi}"
+    //    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${LibVersions.moshi}"
+    //    const val retrofitConverter = "com.squareup.retrofit2:converter-moshi:${LibVersions.retrofit}"
 }

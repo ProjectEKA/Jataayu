@@ -12,8 +12,8 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.runner.AndroidJUnit4
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.core.AllOf.allOf
@@ -40,7 +40,7 @@ class ProviderSearchFragmentTest {
         webServer = MockWebServer()
         webServer.start(8080)
 
-        webServer.dispatcher = MockServerDispatcher().RequestDispatcher()
+        webServer.dispatcher = MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
 
         val searchFragment = ProviderSearchFragment()
         activityRule.activity.addFragment(searchFragment)
@@ -60,8 +60,8 @@ class ProviderSearchFragmentTest {
 
     @Test
     fun shouldSearchProvidersByGivenName() {
-        onView(withId(R.id.sv_provider)).perform(typeText("Max"))
-        CustomRecyclerViewMatcher(R.id.rv_search_results).atPositionOnView(0, R.id.provider_name)
+        onView(withId(R.id.sv_provider)).perform(typeText("Health"))
+        CustomRecyclerViewMatcher(R.id.rv_search_results).atPositionOnView(1, R.id.provider_name)
             .matches(allOf(withText("Max Health Care, Bangalore"), isDisplayed()))
     }
 
@@ -90,9 +90,9 @@ class ProviderSearchFragmentTest {
 
     @Test
     fun shouldSelectTheClickedProvider() {
-        onView(withId(R.id.sv_provider)).perform(typeText("Max"))
+        onView(withId(R.id.sv_provider)).perform(typeText("Health"))
         onView(withId(R.id.rv_search_results)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerViewHolder>(
-            0, click()))
+            1, click()))
         onView(allOf(withId(R.id.tv_selected_provider), withText("Max Health Care, Bangalore"))).check(
             matches(allOf(withEffectiveVisibility(Visibility.VISIBLE), isDisplayed())))
         onView(withId(R.id.iv_clear_results)).check(
@@ -104,15 +104,15 @@ class ProviderSearchFragmentTest {
 
     @Test
     fun shouldClearSelectedProviderOnProviderNameClick() {
-        onView(withId(R.id.sv_provider)).perform(typeText("Max"))
+        onView(withId(R.id.sv_provider)).perform(typeText("Health"))
         onView(withId(R.id.rv_search_results)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerViewHolder>(
-            0, click()))
+            1, click()))
         onView(allOf(withId(R.id.tv_selected_provider), withText("Max Health Care, Bangalore"))).perform(click())
         onView(withId(R.id.tv_selected_provider)).check(
             matches(allOf(withEffectiveVisibility(Visibility.GONE), not(isDisplayed()))))
         onView(withId(R.id.iv_clear_results)).check(
             matches(allOf(withEffectiveVisibility(Visibility.VISIBLE), isDisplayed())))
         onView(withId(R.id.sv_provider)).check(
-            matches(allOf(withText("Max"), withEffectiveVisibility(Visibility.VISIBLE), isDisplayed())))
+            matches(allOf(withText("Health"), withEffectiveVisibility(Visibility.VISIBLE), isDisplayed())))
     }
 }

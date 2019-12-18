@@ -3,8 +3,7 @@ import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
+import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
 import org.junit.After
 import org.junit.Before
@@ -52,11 +51,7 @@ class ProviderSearchViewModelTest {
     @Test
     fun shouldFetchProviders() {
         val query = "Health"
-        val moshi = Moshi.Builder().build()
-        val jsonAdapter: JsonAdapter<List<ProviderInfo>> =
-            moshi.adapter<List<ProviderInfo>>(List::class.java)
-        val providers =
-            jsonAdapter.fromJson(TestUtils.readFile("health_insurance_providers.json"))
+        val providers = getData("[\n  {\n    \"name\": \"Infinity Health care & Diagnostics\",\n    \"city\": \"Bangalore\",\n    \"telephone\": \"08080887877\",\n    \"type\": \"prov\"\n  },\n  {\n    \"name\": \"Max Health Care\",\n    \"city\": \"Bangalore\",\n    \"telephone\": \"08080887876\",\n    \"type\": \"prov\"\n  }\n]")
         Mockito.`when`(repository.getProviders(query)).thenReturn(providerInfoCall)
         Mockito.`when`(providerInfoCall.enqueue(ArgumentMatchers.any()))
             .then { invocation ->
@@ -69,14 +64,13 @@ class ProviderSearchViewModelTest {
         assertEquals(providers, viewModel.providers.value)
     }
 
+    private fun getData(fileName : String) = Gson().fromJson<List<ProviderInfo>>(
+        TestUtils.readFile(fileName), List::class.java)!!
+
     @Test
     fun shouldFetchPatients() {
         val identifier = "9876543210"
-        val moshi = Moshi.Builder().build()
-        val jsonAdapter: JsonAdapter<List<Patient>> =
-            moshi.adapter<List<Patient>>(List::class.java)
-        val patients =
-            jsonAdapter.fromJson(TestUtils.readFile("patient_info_from_providers.json"))
+        val patients= Gson().fromJson<List<Patient>>(TestUtils.readFile("[\n  {\n    \"id\": \"TMH12345\",\n    \"name\": \"Olivia Doe\",\n    \"gender\": \"female\",\n    \"contact\": \"7658765456\",\n    \"address\": {\n      \"use\": \"home\",\n      \"line\": \"5, 6rd Cross, Jayanagar\",\n      \"city\": \"Bengaluru\",\n      \"district\": \"Bengaluru\",\n      \"state\": \"Karnataka\",\n      \"postalCode\": \"560015\"\n    }\n  },\n  {\n    \"id\": \"THM54321\",\n    \"name\": \"John Doe\",\n    \"gender\": \"Male\",\n    \"contact\": \"7658765456\",\n    \"address\": {\n      \"use\": \"home\",\n      \"line\": \"5, 6rd Cross, Jayanagar\",\n      \"city\": \"Bengaluru\",\n      \"district\": \"Bengaluru\",\n      \"state\": \"Karnataka\",\n      \"postalCode\": \"560015\"\n    }\n  }\n]"), List::class.java)!!
         Mockito.`when`(repository.getPatients(identifier)).thenReturn(patientsInfoCall)
         Mockito.`when`(patientsInfoCall.enqueue(ArgumentMatchers.any()))
             .then { invocation ->

@@ -1,10 +1,10 @@
 package `in`.org.projecteka.jataayu.provider.model
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
-data class Address(@field:Json(name = "use") val use : String,
-                   @field:Json(name = "line") val line : String,
-                   @field:Json(name = "city") val city : String,
-                   @field:Json(name = "district") val district : String,
-                   @field:Json(name = "state") val state : String,
-                   @field:Json(name = "postalCode") val postalCode : Int)
+data class Address(@SerializedName("use") val use : String,
+                   @SerializedName("line") val line : String,
+                   @SerializedName("city") val city : String,
+                   @SerializedName("district") val district : String,
+                   @SerializedName("state") val state : String,
+                   @SerializedName("postalCode") val postalCode : Int)

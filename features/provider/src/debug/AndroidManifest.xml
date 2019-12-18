@@ -11,7 +11,7 @@
         android:label="Espresso Test Runner"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
-            android:name="in.org.projecteka.jataayu.util.ui.activity.TestsOnlyActivity"
+            android:name="in.org.projecteka.jataayu.provider.ui.TestsOnlyActivity"
             android:screenOrientation="userPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

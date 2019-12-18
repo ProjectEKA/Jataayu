@@ -1,13 +1,19 @@
 package `in`.org.projecteka.jataayu.network
 
+import android.app.Application
+import com.airasia.biglife.util.NetworkConstants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
-fun createNetworkClient(baseUrl: String, debug: Boolean = false) =
-    retrofitClient(baseUrl, httpClient(debug))
+fun createNetworkClient(context : Application, debug : Boolean = false) =
+    retrofitClient(getBaseUrl(context), httpClient(debug))
+
+fun getBaseUrl(context : Application) : String {
+    return if (isTestingMode(context)) NetworkConstants.MOCK_WEB_SERVER_TEST_URL else NetworkConstants.PROD_URL
+}
 
 private fun httpClient(debug: Boolean): OkHttpClient {
     val httpLoggingInterceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
@@ -23,6 +29,8 @@ private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient): Retrofit 
     Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(httpClient)
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
+
+private fun isTestingMode(context : Application) = context.javaClass.simpleName != "JataayuApp"

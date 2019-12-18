@@ -3,13 +3,13 @@ package `in`.org.projecteka.jataayu.provider.model
 import `in`.org.projecteka.featuresprovider.BR
 import `in`.org.projecteka.featuresprovider.R
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBinding
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
-data class Patient(@field:Json(name = "id") val id : String,
-                   @field:Json(name = "name") val name : String,
-                   @field:Json(name = "gender") val gender : String,
-                   @field:Json(name = "contact") val contact : Int,
-                   @field:Json(name = "address") val address : Address): IDataBinding {
+data class Patient(@SerializedName("id") val id : String,
+                   @SerializedName("name") val name : String,
+                   @SerializedName("gender") val gender : String,
+                   @SerializedName("contact") val contact : Int,
+                   @SerializedName("address") val address : Address): IDataBinding {
     override fun layoutResId(): Int = R.layout.patient_account_result_item
 
     override fun dataBindingVariable() = BR.patientAccount

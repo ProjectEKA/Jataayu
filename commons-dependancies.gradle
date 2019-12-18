@@ -11,4 +11,14 @@ dependencies {
     implementation Deps.koinAndroidXViewModel
     implementation Deps.toolsKotlinStdLib
     implementation Deps.timber
+
+    testImplementation Deps.jUnit
+    testImplementation Deps.mockito
+    testImplementation Deps.coreTesting
+
+    androidTestImplementation Deps.mockitoAndroid
+    androidTestImplementation Deps.mockWebServer
+    androidTestImplementation Deps.espressoCore
+    androidTestImplementation Deps.espressoIntents
+    androidTestImplementation Deps.espressoContrib
 }
