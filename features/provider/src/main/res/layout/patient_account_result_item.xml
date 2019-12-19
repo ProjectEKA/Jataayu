@@ -16,16 +16,16 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/content_margin_tertiary"
         android:background="@drawable/rounded_corners_selector"
-        android:clickable="true"
-        android:descendantFocusability="blocksDescendants"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         app:cardCornerRadius="8dp"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:descendantFocusability="blocksDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:padding="@dimen/content_margin_primary">
 
@@ -133,10 +133,10 @@
                 android:maxLines="3"
                 android:text="@{patientAccount.displayAddress()}"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 app:layout_constraintTop_toBottomOf="@+id/lbl_address"
                 app:layout_constraintWidth_default="wrap"
-                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="88/5B, Gujrat colony, Kothrud, Pune - 411038" />
 
             <androidx.constraintlayout.widget.Guideline

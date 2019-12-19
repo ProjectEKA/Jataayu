@@ -14,8 +14,8 @@
             type="String" />
 
         <variable
-            name="accountsCount"
-            type="Integer" />
+            name="accountsCountLabel"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,7 +71,7 @@
             android:gravity="right"
             android:padding="@dimen/content_padding"
             tools:text="5 accounts associated found"
-            android:text="@{String.format(@string/accounts_associated_found, accountsCount)}"
+            android:text="@{accountsCountLabel}"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
