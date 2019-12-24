@@ -2,9 +2,33 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
-android {
-    dataBinding {
-        enabled = true
-        enabledForTests = true
-    }
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api Deps.toolsKotlinStdLib
+
+    api Deps.koinAndroid
+    api Deps.koinAndroidXScope
+    api Deps.koinAndroidXViewModel
+    api Deps.koinTest
+
+    api Deps.androidXCoreKtx
+
+    api Deps.coreTesting
+    api Deps.espressoCore
+    api Deps.espressoIntents
+    api Deps.espressoContrib
+
+    api Deps.mockWebServer
+
+    api Deps.apacheCommonsIo
+
+    testApi Deps.jUnit
+    testApi Deps.mockito
+    testApi Deps.coreTesting
+    testApi Deps.gson
+
+    androidTestApi Deps.mockWebServer
+    androidTestApi Deps.espressoCore
+    androidTestApi Deps.espressoIntents
+    androidTestApi Deps.espressoContrib
 }

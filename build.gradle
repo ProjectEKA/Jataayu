@@ -98,11 +98,20 @@ subprojects {
                 }
                 //</editor-fold>
 
+                dataBinding {
+                    enabled = true
+                    enabledForTests = true
+                }
+
                 kotlin {
                     experimental {
                         coroutines "enable"
                     }
                 }
+            }
+
+            kapt {
+                correctErrorTypes = true
             }
         }
     }

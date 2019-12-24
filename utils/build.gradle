@@ -1,15 +1,5 @@
 apply from: rootProject.file("android-library-commons.gradle")
 
-android {
-    defaultConfig {
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-    dataBinding {
-        enabled = true
-        enabledForTests = true
-    }
-}
-
 dependencies {
     api Deps.androidXLifecyle
     api Deps.androidXLifecyleViewModel
@@ -17,18 +7,5 @@ dependencies {
     api Deps.appcompat
     api Deps.gson
 
-    testImplementation Deps.jUnit
-    testImplementation Deps.mockito
-    testImplementation Deps.coreTesting
-    testImplementation Deps.gson
-    testImplementation Deps.apacheCommonsIo
-
-    androidTestImplementation Deps.jUnit
-    androidTestImplementation Deps.mockito
-    androidTestImplementation Deps.mockitoAndroid
-    androidTestImplementation Deps.coreTesting
-    androidTestImplementation Deps.mockWebServer
-    androidTestImplementation Deps.espressoCore
-    androidTestImplementation Deps.espressoIntents
-    androidTestImplementation Deps.espressoContrib
+    testApi Deps.apacheCommonsIo
 }

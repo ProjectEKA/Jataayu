@@ -1,5 +1,4 @@
 apply from: rootProject.file("android-library-commons.gradle")
-apply from: rootProject.file("commons-dependancies.gradle")
 apply from: rootProject.file("jacoco.gradle")
 
 android {
@@ -36,10 +35,9 @@ android {
 }
 
 dependencies {
-    implementation project(Modules.presentation)
-    implementation Deps.material
-    implementation Deps.apacheCommonsIo
-    implementation Deps.mockWebServer
+    api project(Modules.network)
+    api project(Modules.presentation)
+    api project(Modules.utils)
 
     kaptAndroidTest Deps.databindingCompiler
 }

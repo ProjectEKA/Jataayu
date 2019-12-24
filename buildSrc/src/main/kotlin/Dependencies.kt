@@ -46,7 +46,7 @@ object Modules {
 object Deps {
     const val appcompat = "androidx.appcompat:appcompat:${LibVersions.appcompat}"
     const val material = "com.google.android.material:material:${LibVersions.material}"
-    const val androidXCoreKtx = "androidx.core:core-ktx:${LibVersions.androidX}"
+    const val androidXCoreKtx = "androidx.core:core-ktx:${LibVersions.coreKtx}"
     const val androidXLifecyle = "androidx.lifecycle:lifecycle-extensions:${LibVersions.androidXLifecycle}"
     const val androidXLifecyleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${LibVersions.androidXLifecycle}"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:${LibVersions.constraintLayout}"
@@ -63,7 +63,7 @@ object Deps {
 
     const val mockitoAndroid = "org.mockito:mockito-android:${LibVersions.mockito}"
     const val coreTesting = "androidx.arch.core:core-testing:${LibVersions.coreTesting}"
-    const val koinText = "org.koin:koin-test:${LibVersions.koin}"
+    const val koinTest = "org.koin:koin-test:${LibVersions.koin}"
     const val androidXTest = "androidx.test.ext:junit:${LibVersions.androidX}"
     const val espressoCore = "androidx.test.espresso:espresso-core:${LibVersions.espresso}"
 
@@ -81,7 +81,7 @@ object Deps {
     const val toolsJacocoAgent = "org.jacoco:org.jacoco.agent:${LibVersions.jacoco}"
     const val gson = "com.google.code.gson:gson:${LibVersions.gson}"
 
-    const val gson_converter = "com.squareup.retrofit2:converter-gson:${LibVersions.gson_retrofit_converter}"
+    const val gsonConverter = "com.squareup.retrofit2:converter-gson:${LibVersions.gson_retrofit_converter}"
     //    const val moshi = "com.squareup.moshi:moshi:${LibVersions.moshi}"
     //    const val moshiKotlinCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${LibVersions.moshi}"
     //    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${LibVersions.moshi}"
