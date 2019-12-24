@@ -8,6 +8,9 @@
 # Java class files
 *.class
 
+# Jacoco exec files
+*.exec
+
 # Generated files
 bin/
 gen/

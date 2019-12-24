@@ -1,7 +1,6 @@
 package `in`.org.projecteka.jataayu.network
 
 import android.app.Application
-import com.airasia.biglife.util.NetworkConstants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

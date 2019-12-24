@@ -108,6 +108,10 @@ subprojects {
                         coroutines "enable"
                     }
                 }
+
+                testOptions {
+                    unitTests.returnDefaultValues = true
+                }
             }
 
             kapt {

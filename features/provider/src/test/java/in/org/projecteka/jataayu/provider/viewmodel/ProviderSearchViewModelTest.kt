@@ -1,3 +1,4 @@
+
 import `in`.org.projecteka.jataayu.provider.model.Patient
 import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
@@ -51,7 +52,7 @@ class ProviderSearchViewModelTest {
     @Test
     fun shouldFetchProviders() {
         val query = "Health"
-        val providers = getData("[\n  {\n    \"name\": \"Infinity Health care & Diagnostics\",\n    \"city\": \"Bangalore\",\n    \"telephone\": \"08080887877\",\n    \"type\": \"prov\"\n  },\n  {\n    \"name\": \"Max Health Care\",\n    \"city\": \"Bangalore\",\n    \"telephone\": \"08080887876\",\n    \"type\": \"prov\"\n  }\n]")
+        val providers = getData("health_insurance_providers.json")
         Mockito.`when`(repository.getProviders(query)).thenReturn(providerInfoCall)
         Mockito.`when`(providerInfoCall.enqueue(ArgumentMatchers.any()))
             .then { invocation ->
@@ -70,7 +71,7 @@ class ProviderSearchViewModelTest {
     @Test
     fun shouldFetchPatients() {
         val identifier = "9876543210"
-        val patients= Gson().fromJson<List<Patient>>(TestUtils.readFile("[\n  {\n    \"id\": \"TMH12345\",\n    \"name\": \"Olivia Doe\",\n    \"gender\": \"female\",\n    \"contact\": \"7658765456\",\n    \"address\": {\n      \"use\": \"home\",\n      \"line\": \"5, 6rd Cross, Jayanagar\",\n      \"city\": \"Bengaluru\",\n      \"district\": \"Bengaluru\",\n      \"state\": \"Karnataka\",\n      \"postalCode\": \"560015\"\n    }\n  },\n  {\n    \"id\": \"THM54321\",\n    \"name\": \"John Doe\",\n    \"gender\": \"Male\",\n    \"contact\": \"7658765456\",\n    \"address\": {\n      \"use\": \"home\",\n      \"line\": \"5, 6rd Cross, Jayanagar\",\n      \"city\": \"Bengaluru\",\n      \"district\": \"Bengaluru\",\n      \"state\": \"Karnataka\",\n      \"postalCode\": \"560015\"\n    }\n  }\n]"), List::class.java)!!
+        val patients= Gson().fromJson<List<Patient>>(TestUtils.readFile("patient_info_from_providers.json"), List::class.java)!!
         Mockito.`when`(repository.getPatients(identifier)).thenReturn(patientsInfoCall)
         Mockito.`when`(patientsInfoCall.enqueue(ArgumentMatchers.any()))
             .then { invocation ->

@@ -1,4 +1,4 @@
-package com.airasia.biglife.util
+package `in`.org.projecteka.jataayu.network
 
 class NetworkConstants {
 
