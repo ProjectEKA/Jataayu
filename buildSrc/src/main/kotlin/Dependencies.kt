@@ -37,11 +37,11 @@ object LibVersions {
 }
 
 object Modules {
-    const val network = ":network"
-    const val utils = ":utils"
-    const val logger = ":logger"
-    const val analytics = ":analytics"
-    const val presentation = ":presentation"
+    const val network = ":commons:network"
+    const val utils = ":commons:utils"
+    const val presentation = ":commons:presentation"
+    const val logger = ":addons:logger"
+    const val analytics = ":addons:analytics"
     const val provider = ":features:provider"
 }
 
