@@ -5,23 +5,31 @@ import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapt
 import `in`.org.projecteka.jataayu.provider.CustomRecyclerViewMatcher
 import `in`.org.projecteka.jataayu.provider.MockServerDispatcher
 import `in`.org.projecteka.jataayu.provider.ui.TestsOnlyActivity
+import android.view.View
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.PerformException
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.util.HumanReadables
+import androidx.test.espresso.util.TreeIterables
 import androidx.test.filters.LargeTest
 import androidx.test.runner.AndroidJUnit4
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.not
+import org.hamcrest.Matcher
 import org.hamcrest.core.AllOf.allOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.TimeoutException
 
 
 @LargeTest
@@ -93,6 +101,7 @@ class ProviderSearchFragmentTest {
         onView(withId(R.id.sv_provider)).perform(typeText("Health"))
         onView(withId(R.id.rv_search_results)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerViewHolder>(
             1, click()))
+        waitForId(R.id.tv_selected_provider, 1000)
         onView(allOf(withId(R.id.tv_selected_provider), withText("Max Health Care, Bangalore"))).check(
             matches(allOf(withEffectiveVisibility(Visibility.VISIBLE), isDisplayed())))
         onView(withId(R.id.iv_clear_results)).check(
@@ -114,5 +123,37 @@ class ProviderSearchFragmentTest {
             matches(allOf(withEffectiveVisibility(Visibility.VISIBLE), isDisplayed())))
         onView(withId(R.id.sv_provider)).check(
             matches(allOf(withText("Health"), withEffectiveVisibility(Visibility.VISIBLE), isDisplayed())))
+    }
+}
+
+fun waitForId(viewId: Int, millis: Long): ViewAction? {
+    return object : ViewAction {
+        override fun getConstraints(): Matcher<View> {
+            return isRoot()
+        }
+
+        override fun getDescription(): String {
+            return "wait for a specific view with id <$viewId> during $millis millis."
+        }
+
+        override fun perform(uiController: UiController, view: View?) {
+            uiController.loopMainThreadUntilIdle()
+            val startTime = System.currentTimeMillis()
+            val endTime = startTime + millis
+            val viewMatcher: Matcher<View> = withId(viewId)
+            do {
+                for (child in TreeIterables.breadthFirstViewTraversal(view)) { // found view with required ID
+                    if (viewMatcher.matches(child)) {
+                        return
+                    }
+                }
+                uiController.loopMainThreadForAtLeast(50)
+            } while (System.currentTimeMillis() < endTime)
+            throw PerformException.Builder()
+                .withActionDescription(this.description)
+                .withViewDescription(HumanReadables.describe(view))
+                .withCause(TimeoutException())
+                .build()
+        }
     }
 }

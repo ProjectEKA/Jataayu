@@ -7,15 +7,6 @@
     <string name="mobile_number">Mobile number</string>
     <string name="search">Search</string>
     <string name="primary_identifier">Primary identifier</string>
-    <string name="patient_id">Patient ID</string>
-    <string name="patient_name">Patient name</string>
-    <string name="contact_number">Contact number</string>
-    <string name="address">Address</string>
     <string name="link_provider">Link provider</string>
-
-    <plurals name="accounts_associated_found" >
-        <item quantity="one">%d account associated found</item>
-        <item quantity="other">%d account associated found</item>
-        <item quantity="zero">No accounts associated found</item>
-    </plurals>
+    <string name="select_accounts">Select the accounts to link</string>
 </resources>

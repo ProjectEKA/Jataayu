@@ -10,11 +10,11 @@
             type="String" />
 
         <variable
-            name="mobile"
+            name="name"
             type="String" />
 
         <variable
-            name="accountsCountLabel"
+            name="reference"
             type="String" />
     </data>
 
@@ -39,53 +39,54 @@
             tools:text="Max Hospital, Kochi" />
 
         <TextView
-            android:id="@+id/lbl_primary_identifier"
+            android:id="@+id/tv_patient_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@{name}"
             android:layout_marginTop="@dimen/content_margin_primary"
-            android:text="@string/primary_identifier"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_selected_provider" />
-
-        <TextView
-            android:id="@+id/tv_mobile_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{mobile}"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/app_black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_primary_identifier"
-            tools:text="98765 43210" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_selected_provider"
+            tools:text="RAXXXXXX XXXDE" />
 
         <TextView
-            android:id="@+id/lbl_accounts_count"
+            android:id="@+id/tv_reference_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{reference}"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/app_black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_patient_name"
+            tools:text="ABXXX0111" />
+
+        <TextView
+            android:id="@+id/lbl_select_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/content_margin_primary"
             android:drawablePadding="@dimen/content_padding_small"
-            android:gravity="right"
-            android:padding="@dimen/content_padding"
-            tools:text="5 accounts associated found"
-            android:text="@{accountsCountLabel}"
+            android:text="@string/select_accounts"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_reference_number" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSearchResults"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/content_margin_primary"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_select_account"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_accounts_count"
             tools:layout_editor_absoluteX="1dp"
             tools:listitem="@layout/patient_account_result_item" />
     </androidx.constraintlayout.widget.ConstraintLayout>

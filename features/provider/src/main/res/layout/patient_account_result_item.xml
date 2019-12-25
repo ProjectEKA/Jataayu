@@ -6,148 +6,52 @@
     <data>
 
         <variable
-            name="patientAccount"
-            type="in.org.projecteka.jataayu.provider.model.Patient" />
+            name="careContext"
+            type="in.org.projecteka.jataayu.provider.model.CareContext" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_autocomplete"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/content_margin_tertiary"
-        android:background="@drawable/rounded_corners_selector"
-        app:cardCornerRadius="8dp"
-        app:cardUseCompatPadding="true">
+        android:orientation="vertical"
+        android:padding="@dimen/content_margin_primary"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <CheckBox
+            android:id="@+id/cb_select_account"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:descendantFocusability="blocksDescendants"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical"
-            android:padding="@dimen/content_margin_primary">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/lbl_patient_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/patient_id"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/brown_grey_two"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tv_reference_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/content_margin_secondary"
+            android:maxLines="1"
+            android:text="@{careContext.referenceNumber}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_patient_name"
+            app:layout_constraintStart_toEndOf="@+id/cb_select_account"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="7210XXXXXX765" />
 
-            <TextView
-                android:id="@+id/tv_patient_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:text="@{patientAccount.id}"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lbl_patient_id"
-                tools:text="7210XXXXXX765" />
+        <TextView
+            android:id="@+id/tv_patient_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/content_margin_secondary"
+            android:maxLines="2"
+            android:singleLine="true"
+            android:text="@{careContext.display}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cb_select_account"
+            app:layout_constraintTop_toBottomOf="@+id/tv_reference_number"
+            tools:text="General Diagnosis" />
 
-            <TextView
-                android:id="@+id/lbl_patient_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/content_margin_primary"
-                android:text="@string/patient_name"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/brown_grey_two"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_patient_id" />
 
-            <TextView
-                android:id="@+id/tv_patient_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:singleLine="true"
-                android:text="@{patientAccount.name}"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lbl_patient_name"
-                tools:text="JOXX XXXTH" />
-
-            <TextView
-                android:id="@+id/lbl_contact_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/content_margin_primary"
-                android:text="@string/contact_number"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/brown_grey_two"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_patient_name" />
-
-            <TextView
-                android:id="@+id/tv_contact_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="@{patientAccount.contact}"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lbl_contact_number"
-                tools:layout_editor_absoluteX="4dp"
-                tools:text="98XXX XXX10" />
-
-            <CheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_gender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{patientAccount.gender}"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/checkBox"
-                tools:text="Male" />
-
-            <TextView
-                android:id="@+id/lbl_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/content_margin_primary"
-                android:text="@string/address"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/brown_grey_two"
-                app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/tv_gender" />
-
-            <TextView
-                android:id="@+id/tv_address"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="middle"
-                android:maxLines="3"
-                android:text="@{patientAccount.displayAddress()}"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/lbl_address"
-                app:layout_constraintWidth_default="wrap"
-                tools:text="88/5B, Gujrat colony, Kothrud, Pune - 411038" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintGuide_percent="0.5"
-                app:layout_constraintStart_toStartOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

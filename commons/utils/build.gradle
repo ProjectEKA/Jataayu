@@ -6,5 +6,5 @@ dependencies {
     api Deps.appcompat
     api Deps.gson
 
-    testApi Deps.apacheCommonsIo
+    testImplementation Deps.apacheCommonsIo
 }

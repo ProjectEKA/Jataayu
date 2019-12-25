@@ -27,7 +27,7 @@ class ProviderRepositoryImplTest {
     @Test
     fun shouldCallGetPatientsApi() {
         val identifier = "9876543210"
-        ProviderRepositoryImpl(providerSearchApi).getPatients(identifier)
-        verify(providerSearchApi).getPatients(identifier)
+        ProviderRepositoryImpl(providerSearchApi).getPatientAccounts(identifier)
+        verify(providerSearchApi).getPatientAccounts(identifier)
     }
 }

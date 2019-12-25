@@ -22,13 +22,13 @@ dependencies {
 
     api Deps.apacheCommonsIo
 
-    testApi Deps.jUnit
-    testApi Deps.mockito
-    testApi Deps.coreTesting
-    testApi Deps.gson
+    testImplementation Deps.jUnit
+    testImplementation Deps.mockito
+    testImplementation Deps.coreTesting
+    testImplementation Deps.gson
 
-    androidTestApi Deps.mockWebServer
-    androidTestApi Deps.espressoCore
-    androidTestApi Deps.espressoIntents
-    androidTestApi Deps.espressoContrib
+    androidTestImplementation Deps.mockWebServer
+    androidTestImplementation Deps.espressoCore
+    androidTestImplementation Deps.espressoIntents
+    androidTestImplementation Deps.espressoContrib
 }

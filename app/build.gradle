@@ -10,6 +10,7 @@ android {
         qa {
             shrinkResources true
             minifyEnabled true
+            applicationIdSuffix '.qa'
             resValue 'string', 'app_name', 'Jataayu QA'
         }
         release {

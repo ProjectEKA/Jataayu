@@ -13,6 +13,7 @@ object LibVersions {
     const val coreKtx = "1.1.0"
     const val material = "1.0.0"
     const val androidX = "1.1.1"
+    const val androidXFragmentTesting = "1.1.0"
     const val androidXLifecycle = "2.1.0"
     const val jUnit = "4.12"
     const val espresso = "3.2.0"
@@ -49,6 +50,7 @@ object Deps {
     const val appcompat = "androidx.appcompat:appcompat:${LibVersions.appcompat}"
     const val material = "com.google.android.material:material:${LibVersions.material}"
     const val androidXCoreKtx = "androidx.core:core-ktx:${LibVersions.coreKtx}"
+    const val androidXFragmentTesting = "androidx.fragment:fragment-testing:${LibVersions.androidXFragmentTesting}"
     const val androidXLifecyle = "androidx.lifecycle:lifecycle-extensions:${LibVersions.androidXLifecycle}"
     const val androidXLifecyleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${LibVersions.androidXLifecycle}"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:${LibVersions.constraintLayout}"
@@ -84,8 +86,4 @@ object Deps {
     const val gson = "com.google.code.gson:gson:${LibVersions.gson}"
 
     const val gsonConverter = "com.squareup.retrofit2:converter-gson:${LibVersions.gson_retrofit_converter}"
-    //    const val moshi = "com.squareup.moshi:moshi:${LibVersions.moshi}"
-    //    const val moshiKotlinCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${LibVersions.moshi}"
-    //    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${LibVersions.moshi}"
-    //    const val retrofitConverter = "com.squareup.retrofit2:converter-moshi:${LibVersions.retrofit}"
 }

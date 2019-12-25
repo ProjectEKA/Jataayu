@@ -1,30 +1,16 @@
-[
-  {
-    "id": "TMH12345",
-    "name": "Olivia Doe",
-    "gender": "female",
-    "contact": "7658765456",
-    "address": {
-      "use": "home",
-      "line": "5, 6rd Cross, Jayanagar",
-      "city": "Bengaluru",
-      "district": "Bengaluru",
-      "state": "Karnataka",
-      "postalCode": "560015"
-    }
-  },
-  {
-    "id": "THM54321",
-    "name": "John Doe",
-    "gender": "Male",
-    "contact": "7658765456",
-    "address": {
-      "use": "home",
-      "line": "5, 6rd Cross, Jayanagar",
-      "city": "Bengaluru",
-      "district": "Bengaluru",
-      "state": "Karnataka",
-      "postalCode": "560015"
-    }
+{
+  "patient": {
+    "referenceNumber": "ABCXXX01",
+    "display": "Adxxxx xxxni",
+    "careContexts": [
+      {
+        "referenceNumber": "ABCXXX03",
+        "display": "General Diagnosis"
+      },
+      {
+        "referenceNumber": "ABCXXX02",
+        "display": "Cancer Leukemia"
+      }
+    ]
   }
-]
+}

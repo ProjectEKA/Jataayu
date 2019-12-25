@@ -6,7 +6,6 @@ import `in`.org.projecteka.featuresprovider.databinding.PatientAccountsFragmentB
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBinding
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
-import `in`.org.projecteka.jataayu.provider.model.Patient
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,35 +23,45 @@ class PatientAccountsFragment : Fragment(), ItemClickCallback {
         fun newInstance() = PatientAccountsFragment()
     }
 
-    private val viewModel : ProviderSearchViewModel by sharedViewModel()
-    private val patientsList : List<Patient>? by lazy { viewModel.patients.value }
+    val viewModel : ProviderSearchViewModel by sharedViewModel()
 
-    private lateinit var binding : PatientAccountsFragmentBinding
+    private lateinit var binding: PatientAccountsFragmentBinding
 
-    override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?,
-                              savedInstanceState : Bundle?) : View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = PatientAccountsFragmentBinding.inflate(inflater)
-        initBindings()
-        renderSearchUi()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initBindings()
+        renderPatientAccounts()
     }
 
     private fun initBindings() {
         binding.selectedProviderName = viewModel.selectedProviderName
-        binding.mobile = viewModel.mobile
-        binding.accountsCountLabel = resources.getQuantityString(
-            R.plurals.accounts_associated_found, patientsList?.size!!, patientsList?.size)
+        val patient = viewModel.patientDiscoveryResponse.value?.patient
+        binding.name = patient?.display
+        binding.reference = patient?.referenceNumber
     }
 
-    private fun renderSearchUi() {
+    private fun renderPatientAccounts() {
         binding.rvSearchResults.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = GenericRecyclerViewAdapter(this@PatientAccountsFragment, patientsList!!)
+            adapter = GenericRecyclerViewAdapter(
+                this@PatientAccountsFragment,
+                viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!
+            )
             addItemDecoration(DividerItemDecorator(getDrawable(context!!, R.color.transparent)!!))
         }
     }
 
-    override fun performItemClickAction(iDataBinding : IDataBinding,
-                                        itemViewBinding : ViewDataBinding) {
+    override fun performItemClickAction(
+        iDataBinding: IDataBinding,
+        itemViewBinding: ViewDataBinding
+    ) {
     }
 }

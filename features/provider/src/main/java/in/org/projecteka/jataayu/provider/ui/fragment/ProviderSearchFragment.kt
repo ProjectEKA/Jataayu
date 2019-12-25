@@ -5,7 +5,7 @@ import `in`.org.projecteka.jataayu.presentation.callback.IDataBinding
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.provider.callback.TextWatcherCallback
 import `in`.org.projecteka.jataayu.provider.domain.ProviderNameWatcher
-import `in`.org.projecteka.jataayu.provider.model.Patient
+import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
 import `in`.org.projecteka.jataayu.provider.ui.adapter.ProviderSearchAdapter
@@ -42,7 +42,7 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
         showNoResultsFoundView(providerNames.isEmpty())
     }
 
-    private val patientsObserver = Observer<List<Patient>?> { patients ->
+    private val patientAccountsObserver = Observer<PatientDiscoveryResponse?> { patientDiscoveryResponse ->
         showPatientAccountsList()
     }
 
@@ -133,9 +133,9 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
     }
 
     override fun onSearchButtonClick(view : View) {
-        viewModel.getPatients(viewModel.mobile)
+        viewModel.getPatientAccounts(viewModel.mobile)
         observePatients()
     }
 
-    private fun observePatients() = viewModel.patients.observe(this, patientsObserver)
+    private fun observePatients() = viewModel.patientDiscoveryResponse.observe(this, patientAccountsObserver)
 }
