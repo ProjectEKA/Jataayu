@@ -1,2 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="in.org.projecteka.jataayu.presentation" />
+    package="in.org.projecteka.jataayu.presentation">
+
+    <application>
+        <activity
+            android:name=".ui.fragment.BaseActivity"
+            android:screenOrientation="userPortrait" />
+    </application>
+</manifest>

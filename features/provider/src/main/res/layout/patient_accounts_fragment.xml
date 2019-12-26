@@ -21,8 +21,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/white"
+        android:orientation="vertical"
         android:padding="@dimen/content_margin_primary">
 
         <TextView
@@ -42,8 +42,8 @@
             android:id="@+id/tv_patient_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{name}"
             android:layout_marginTop="@dimen/content_margin_primary"
+            android:text="@{name}"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/app_black"
             android:textStyle="bold"
@@ -83,11 +83,27 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/content_margin_primary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_select_account"
+            app:layout_constraintBottom_toTopOf="@id/button_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_select_account"
             tools:layout_editor_absoluteX="1dp"
             tools:listitem="@layout/patient_account_result_item" />
+
+
+        <FrameLayout
+            android:id="@+id/button_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/content_margin_primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/link_accounts"
+                tools:text="@string/link_accounts" />
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

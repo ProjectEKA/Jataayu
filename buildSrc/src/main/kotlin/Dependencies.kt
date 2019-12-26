@@ -18,6 +18,7 @@ object LibVersions {
     const val jUnit = "4.12"
     const val espresso = "3.2.0"
     const val jacoco = "0.8.5"
+    const val jacocoPalantir = "0.4.0"
     const val koin = "2.0.1"
     const val kotlin = "1.3.61"
     const val constraintLayout = "1.1.3"
@@ -82,6 +83,7 @@ object Deps {
     const val toolsKotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${LibVersions.kotlin}"
     const val toolsDicemelonJacoco = "com.dicedmelon.gradle:jacoco-android:${LibVersions.dicemelonJacoco}"
     const val toolsJacocoCore = "org.jacoco:org.jacoco.core:${LibVersions.jacoco}"
+    const val toolsJacocoPalantir = "com.palantir:jacoco-coverage:${LibVersions.jacocoPalantir}"
     const val toolsJacocoAgent = "org.jacoco:org.jacoco.agent:${LibVersions.jacoco}"
     const val gson = "com.google.code.gson:gson:${LibVersions.gson}"
 

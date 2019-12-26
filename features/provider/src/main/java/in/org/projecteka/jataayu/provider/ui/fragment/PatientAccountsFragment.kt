@@ -6,18 +6,19 @@ import `in`.org.projecteka.featuresprovider.databinding.PatientAccountsFragmentB
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBinding
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
+import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
+import `in`.org.projecteka.jataayu.util.extension.setTitle
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class PatientAccountsFragment : Fragment(), ItemClickCallback {
+class PatientAccountsFragment : BaseFragment(), ItemClickCallback {
 
     companion object {
         fun newInstance() = PatientAccountsFragment()
@@ -63,5 +64,10 @@ class PatientAccountsFragment : Fragment(), ItemClickCallback {
         iDataBinding: IDataBinding,
         itemViewBinding: ViewDataBinding
     ) {
+    }
+
+    override fun onVisible() {
+        super.onVisible()
+        setTitle(R.string.link_accounts)
     }
 }

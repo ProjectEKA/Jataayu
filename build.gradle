@@ -15,8 +15,7 @@ buildscript {
         classpath Deps.toolsGradleVersions
         classpath Deps.toolsJacocoCore
         classpath Deps.toolsDicemelonJacoco
-        classpath 'com.palantir:jacoco-coverage:0.4.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath Deps.toolsJacocoPalantir
     }
 }
 
@@ -111,6 +110,7 @@ subprojects {
 
                 testOptions {
                     unitTests.returnDefaultValues = true
+                    animationsDisabled = true
                 }
             }
 

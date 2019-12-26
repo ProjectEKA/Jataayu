@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
 fun <T> Context.startActivity(clazz: Class<T>) {
@@ -14,13 +15,18 @@ fun <T> Fragment.startActivity(clazz: Class<T>) {
     context?.startActivity(Intent(context, clazz))
 }
 
+fun Fragment.setTitle(@StringRes resourceId: Int) {
+    activity?.setTitle(resourceId)
+}
+
+
 inline fun <reified T : View> Activity.findView(id: Int): T = findViewById(id)
 
 inline fun <reified T : View> View.findView(id: Int): T = findViewById(id)
 
 fun View.getString(id: Int): String = context.getString(id)
 
-val String.Companion.EMPTY : String get() = ""
+val String.Companion.EMPTY: String get() = ""
 
 //fun Context.showLongToast(text: CharSequence) = Toast.makeText(this, text, Toast.LENGTH_LONG).show()
 //fun Fragment.showLongToast(text: CharSequence) = context?.showLongToast(text)

@@ -1,8 +1,10 @@
 package `in`.org.projecteka.jataayu.provider.ui.fragment
 
+import `in`.org.projecteka.featuresprovider.R
 import `in`.org.projecteka.featuresprovider.databinding.ProviderSearchFragmentBinding
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBinding
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
+import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.callback.TextWatcherCallback
 import `in`.org.projecteka.jataayu.provider.domain.ProviderNameWatcher
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
@@ -11,6 +13,7 @@ import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
 import `in`.org.projecteka.jataayu.provider.ui.adapter.ProviderSearchAdapter
 import `in`.org.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandler
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
+import `in`.org.projecteka.jataayu.util.extension.setTitle
 import `in`.org.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
@@ -20,11 +23,11 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallback,
+class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCallback,
     ProviderSearchScreenHandler {
 
     companion object {
@@ -62,6 +65,11 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
         return binding.root
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        setTitle(R.string.link_provider)
+    }
+
     private fun initBindings() {
         binding.clearButtonVisibility = GONE
         binding.inEditMode = true
@@ -72,8 +80,7 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
     }
 
     private fun renderSearchUi() {
-        binding.rvSearchResults.layoutManager =
-            androidx.recyclerview.widget.LinearLayoutManager(context)
+        binding.rvSearchResults.layoutManager = LinearLayoutManager(context)
         providersList = ProviderSearchAdapter(this)
         binding.rvSearchResults.adapter = providersList
         binding.rvSearchResults.addOnScrollListener(onScrollListener)
@@ -81,6 +88,10 @@ class ProviderSearchFragment : Fragment(), ItemClickCallback, TextWatcherCallbac
 
     private fun showNoResultsFoundView(show : Boolean) {
         binding.noResultsFoundView.visibility = if (show) VISIBLE else GONE
+    }
+
+    override fun onVisible() {
+        setTitle(R.string.link_provider)
     }
 
     override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
