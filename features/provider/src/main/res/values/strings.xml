@@ -5,9 +5,11 @@
     <string name="search_health_information_provider">Search health information provider</string>
     <string name="we_will_look_up">We will look up patient information based on</string>
     <string name="mobile_number">Mobile number</string>
-    <string name="search">Search</string>
+    <string name="confirm_provider">Confirm provider</string>
     <string name="primary_identifier">Primary identifier</string>
     <string name="link_provider">Link provider</string>
     <string name="select_accounts">Select the accounts to link</string>
     <string name="link_accounts">Link accounts</string>
+    <string name="looking_up_info">We are looking up for\nyour information\n\nThis may take up a few seconds...</string>
+    <string name="link_selected">Link selected</string>
 </resources>

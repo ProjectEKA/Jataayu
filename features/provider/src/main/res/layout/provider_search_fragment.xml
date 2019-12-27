@@ -32,6 +32,11 @@
         <variable
             name="textWatcher"
             type="in.org.projecteka.jataayu.provider.domain.ProviderNameWatcher" />
+
+        <variable
+            name="progressBarVisibility"
+            type="Integer" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,18 +70,18 @@
             android:layout_marginTop="@dimen/content_margin_tertiary"
             android:layout_marginEnd="@dimen/content_margin_primary"
             android:background="@drawable/rounded_corners_bg_disabled"
-            android:drawableEnd="@drawable/ic_clear_all"
-            android:gravity="start|center_vertical"
-            android:padding="@dimen/content_padding"
             android:clickable="true"
+            android:drawableEnd="@drawable/ic_clear_all"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:gravity="start|center_vertical"
+            android:onClick="@{clickHandler::onClearSelectionClick}"
+            android:padding="@dimen/content_padding"
             android:paddingStart="@dimen/content_margin_extra_large"
             android:paddingEnd="@dimen/content_margin_extra_large"
             android:popupElevation="0dp"
             android:singleLine="true"
             android:text="@{selectedProviderName}"
-            android:onClick="@{clickHandler::onClearSelectionClick}"
             android:textAppearance="?android:attr/textAppearanceListItem"
             android:textColor="@color/app_black"
             android:textColorHint="@color/brown_grey_two"
@@ -137,8 +142,8 @@
                 android:layout_height="@dimen/clear_button_dimensions"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/content_margin_extra_large"
-                android:onClick="@{clickHandler::onClearTextButtonClick}"
                 android:background="@drawable/ic_clear_all"
+                android:onClick="@{clickHandler::onClearTextButtonClick}"
                 android:visibility="@{clearButtonVisibility}"
                 tools:visibility="visible" />
         </com.google.android.material.card.MaterialCardView>
@@ -246,26 +251,64 @@
             android:paddingStart="@dimen/content_margin_extra_large"
             android:paddingEnd="@dimen/content_margin_extra_larger"
             android:text="@{mobile}"
-            tools:text="98765 43210"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/app_black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lbl_mobile_number"
-            app:toggledVisibility="@{!inEditMode}" />
+            app:toggledVisibility="@{!inEditMode}"
+            tools:text="98765 43210" />
 
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:id="@+id/button_bar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin_extra_large"
-            android:layout_marginEnd="16dp"
-            android:onClick="@{clickHandler::onSearchButtonClick}"
-            android:text="@string/search"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_mobile_number"
-            app:toggledVisibility="@{!inEditMode}" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/btn_search"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{clickHandler::onSearchButtonClick}"
+                android:layout_margin="@dimen/content_margin_primary"
+                android:text="@string/link_accounts"
+                tools:text="@string/confirm_provider" />
+        </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CC777777"
+            android:clickable="true"
+            android:descendantFocusability="blocksDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:visibility="@{progressBarVisibility}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/progress_bar"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/looking_up_info"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -50,7 +50,12 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     private fun showPatientAccountsList() {
+        hideSearchLoading()
         (activity as ProviderSearchActivity).showPatientsAccounts()
+    }
+
+    private fun hideSearchLoading() {
+        binding.progressBarVisibility = GONE
     }
 
     private fun observeProviders() {
@@ -77,6 +82,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         binding.clickHandler = this
         binding.mobile = viewModel.mobile
         binding.textWatcher = ProviderNameWatcher(this, 1)
+        binding.progressBarVisibility = GONE
     }
 
     private fun renderSearchUi() {
@@ -145,7 +151,12 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
 
     override fun onSearchButtonClick(view : View) {
         viewModel.getPatientAccounts(viewModel.mobile)
+        showSearchLoding()
         observePatients()
+    }
+
+    private fun showSearchLoding() {
+        binding.progressBarVisibility = VISIBLE
     }
 
     private fun observePatients() = viewModel.patientDiscoveryResponse.observe(this, patientAccountsObserver)

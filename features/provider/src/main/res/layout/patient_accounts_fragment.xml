@@ -95,14 +95,14 @@
             android:id="@+id/button_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/content_margin_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <Button
+                style="@style/ButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/link_accounts"
+                android:text="@string/link_selected"
                 tools:text="@string/link_accounts" />
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
