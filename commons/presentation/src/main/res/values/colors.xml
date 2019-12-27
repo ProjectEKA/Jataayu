@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary">#006353</color>
+    <color name="colorPrimaryDark">#00463A</color>
+    <color name="colorAccent">#006353</color>
+    <color name="textColorPrimary">#fff</color>
+    <color name="textColorSecondary">#666666</color>
+
+    <color name="selected_tab_color">@color/colorPrimary</color>
+    <color name="deselected_tab_color">@color/textColorSecondary</color>
+
+    <color name="gray">#F1F1F1</color>
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="button_background_color" tools:override="true">@color/colorPrimary</color>
+    <color name="button_text_color" tools:override="true">@color/white</color>
+</resources>

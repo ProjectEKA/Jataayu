@@ -44,5 +44,14 @@ class ProviderSearchViewModel(val providerRepository: ProviderRepository) : View
 
             })
     }
+
+    fun canLinkAccounts() : Boolean{
+        for (careContext in patientDiscoveryResponse?.value?.patient?.careContexts!!) {
+            if(careContext.contextChecked) {
+                return true
+            }
+        }
+        return false
+    }
 }
 

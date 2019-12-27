@@ -5,6 +5,7 @@ import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
+import junit.framework.Assert
 import junit.framework.Assert.assertEquals
 import org.junit.After
 import org.junit.Before
@@ -70,8 +71,32 @@ class ProviderSearchViewModelTest {
 
     @Test
     fun shouldFetchPatients() {
+        val patients = setUpPatients()
+        assertEquals(patients, viewModel.patientDiscoveryResponse.value)
+    }
+
+
+    @Test
+    fun shouldReturnTrueIfAtLeastOneCareContextIsSelected() {
+        setUpPatients()
+        viewModel.patientDiscoveryResponse.value?.patient?.careContexts!![1].contextChecked = true
+        Assert.assertTrue(viewModel.canLinkAccounts())
+    }
+
+    @Test
+    fun shouldReturnFalseIfNoCareContextIsSelected() {
+        setUpPatients()
+        viewModel.patientDiscoveryResponse.value?.patient?.careContexts!![0].contextChecked = false
+        viewModel.patientDiscoveryResponse.value?.patient?.careContexts!![1].contextChecked = false
+        Assert.assertFalse(viewModel.canLinkAccounts())
+    }
+
+    private fun setUpPatients(): PatientDiscoveryResponse {
         val identifier = "9876543210"
-        val patients= Gson().fromJson<PatientDiscoveryResponse>(TestUtils.readFile("patient_info_from_providers.json"), PatientDiscoveryResponse::class.java)!!
+        val patients = Gson().fromJson<PatientDiscoveryResponse>(
+            TestUtils.readFile("patient_info_from_providers.json"),
+            PatientDiscoveryResponse::class.java
+        )!!
         Mockito.`when`(repository.getPatientAccounts(identifier)).thenReturn(patientsInfoCall)
         Mockito.`when`(patientsInfoCall.enqueue(ArgumentMatchers.any()))
             .then { invocation ->
@@ -81,6 +106,6 @@ class ProviderSearchViewModelTest {
         viewModel.getPatientAccounts(identifier)
         Mockito.verify(repository).getPatientAccounts(identifier)
         Mockito.verify(patientsInfoCall).enqueue(ArgumentMatchers.any())
-        assertEquals(patients, viewModel.patientDiscoveryResponse.value)
+        return patients
     }
 }

@@ -1,5 +1,5 @@
 package `in`.org.projecteka.jataayu.presentation.callback
 
-interface IDataBindingHeader : IDataBinding {
+interface IDataBindingModelHeader : IDataBindingModel {
     fun viewType(): Int
 }

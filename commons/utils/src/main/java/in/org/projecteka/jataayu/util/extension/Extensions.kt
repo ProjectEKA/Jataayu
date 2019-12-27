@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
@@ -28,7 +29,15 @@ fun View.getString(id: Int): String = context.getString(id)
 
 val String.Companion.EMPTY: String get() = ""
 
-//fun Context.showLongToast(text: CharSequence) = Toast.makeText(this, text, Toast.LENGTH_LONG).show()
-//fun Fragment.showLongToast(text: CharSequence) = context?.showLongToast(text)
-//fun Context.showShortToast(text: CharSequence) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-//fun Fragment.showShortToast(text: CharSequence) = context?.showShortToast(text)
+public fun String.mask(): String? {
+    if (this.length > 4) {
+        return this.substring(0, 2) + this.substring(2, length - 2).replace(Regex("[0-9]"), "X") + this.substring(length-2)
+    } else return this
+}
+
+fun Context.showLongToast(text: CharSequence) = Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+fun Fragment.showLongToast(text: CharSequence) = context?.showLongToast(text)
+fun Context.showShortToast(text: CharSequence) =
+    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+
+fun Fragment.showShortToast(text: CharSequence) = context?.showShortToast(text)

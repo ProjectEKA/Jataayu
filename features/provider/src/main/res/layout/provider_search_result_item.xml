@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/list_selector_background"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
         android:paddingStart="@dimen/content_margin_extra_large"
         android:paddingEnd="@dimen/content_margin_extra_large">
@@ -21,7 +21,7 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/light_gray"
+            android:background="@color/gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/provider_name" />
@@ -36,7 +36,7 @@
             android:singleLine="true"
             android:text="@{providerInfo.name}"
             android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
-            android:textSize="@dimen/secondary_text_size"
+            android:textSize="@dimen/text_size_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

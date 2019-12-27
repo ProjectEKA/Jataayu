@@ -13,14 +13,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
-        android:padding="@dimen/content_margin_primary"
+        android:padding="@dimen/content_margin_medium"
         android:paddingStart="0dp"
         android:paddingEnd="0dp">
 
         <CheckBox
-            android:id="@+id/cb_select_account"
+            android:id="@+id/cb_care_context"
             android:layout_width="wrap_content"
+            android:focusable="false"
+            android:checked="@={careContext.contextChecked}"
+            android:focusableInTouchMode="false"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,25 +34,24 @@
             android:id="@+id/tv_reference_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/content_margin_secondary"
+            android:layout_marginStart="@dimen/content_margin_medium"
             android:maxLines="1"
+            style="@style/TextView.ListItemHeader"
             android:text="@{careContext.referenceNumber}"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tv_patient_name"
-            app:layout_constraintStart_toEndOf="@+id/cb_select_account"
+            app:layout_constraintStart_toEndOf="@+id/cb_care_context"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="7210XXXXXX765" />
 
         <TextView
             android:id="@+id/tv_patient_name"
+            style="@style/TextView.ListItemSubHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/content_margin_secondary"
-            android:maxLines="2"
-            android:singleLine="true"
+            android:layout_marginStart="@dimen/content_margin_medium"
             android:text="@{careContext.display}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cb_select_account"
+            app:layout_constraintStart_toEndOf="@+id/cb_care_context"
             app:layout_constraintTop_toBottomOf="@+id/tv_reference_number"
             tools:text="General Diagnosis" />
 

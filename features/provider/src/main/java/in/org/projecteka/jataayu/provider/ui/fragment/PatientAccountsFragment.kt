@@ -2,13 +2,16 @@ package `in`.org.projecteka.jataayu.provider.ui.fragment
 
 import DividerItemDecorator
 import `in`.org.projecteka.featuresprovider.R
+import `in`.org.projecteka.featuresprovider.databinding.PatientAccountResultItemBinding
 import `in`.org.projecteka.featuresprovider.databinding.PatientAccountsFragmentBinding
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
-import `in`.org.projecteka.jataayu.presentation.callback.IDataBinding
+import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.org.projecteka.jataayu.provider.model.CareContext
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.setTitle
+import `in`.org.projecteka.jataayu.util.extension.showLongToast
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,7 +49,9 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback {
         binding.selectedProviderName = viewModel.selectedProviderName
         val patient = viewModel.patientDiscoveryResponse.value?.patient
         binding.name = patient?.display
-        binding.reference = patient?.referenceNumber
+        binding.accountReferenceNumber = patient?.referenceNumber
+        binding.canLinkAccounts = viewModel.canLinkAccounts()
+
     }
 
     private fun renderPatientAccounts() {
@@ -60,10 +65,9 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback {
         }
     }
 
-    override fun performItemClickAction(
-        iDataBinding: IDataBinding,
-        itemViewBinding: ViewDataBinding
-    ) {
+    override fun onItemClick(iDataBindingModel: IDataBindingModel, itemViewBinding: ViewDataBinding) {
+        (itemViewBinding as PatientAccountResultItemBinding).cbCareContext.toggle()
+        showLongToast((iDataBindingModel as CareContext).display)
     }
 
     override fun onVisible() {

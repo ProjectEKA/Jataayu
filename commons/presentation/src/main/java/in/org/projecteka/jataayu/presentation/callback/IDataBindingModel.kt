@@ -1,6 +1,6 @@
 package `in`.org.projecteka.jataayu.presentation.callback
 
-interface IDataBinding {
+interface IDataBindingModel {
     fun layoutResId(): Int
     fun dataBindingVariable(): Int
 }
