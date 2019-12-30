@@ -1,2 +1,2 @@
-include ':app', ':commons:network', ':commons:utils', ':commons:presentation', ':addons:logger', ':addons:analytics', ':features:provider'
+include ':app', ':commons:network', ':commons:utils', ':commons:presentation', ':addons:logger', ':features:provider'
 rootProject.name='Jataayu'

@@ -38,7 +38,6 @@ dependencies {
     api project(Modules.presentation)
     api project(Modules.utils)
     api project(Modules.logger)
-    api project(Modules.analytics)
 
     kaptAndroidTest Deps.databindingCompiler
 }
