@@ -1,10 +1,12 @@
 apply plugin: 'com.android.application'
 apply from: rootProject.file("android-commons.gradle")
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     buildTypes {
         debug {
-            resValue 'string', 'app_name', 'Jataayu Debug'
+            resValue 'string', 'app_name', 'Roshni Iyer'
             applicationIdSuffix '.debug'
         }
         qa {
@@ -38,7 +40,11 @@ task decodeKeystorePrebuildTask(type: Exec) {
 }
 
 dependencies {
-    kapt 'com.android.databinding:compiler:3.5.2'
+
     api project(Modules.provider)
+    api project(Modules.consent)
+    api project(Modules.utils)
     api project(Modules.presentation)
+
+    kapt 'com.android.databinding:compiler:3.5.2'
 }

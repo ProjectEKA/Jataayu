@@ -4,6 +4,6 @@
     <application>
         <activity
             android:name=".ui.fragment.BaseActivity"
-            android:screenOrientation="userPortrait" />
+             />
     </application>
 </manifest>

@@ -45,6 +45,7 @@ object Modules {
     const val logger = ":addons:logger"
     const val analytics = ":addons:analytics"
     const val provider = ":features:provider"
+    const val consent = ":features:consent"
 }
 
 object Deps {

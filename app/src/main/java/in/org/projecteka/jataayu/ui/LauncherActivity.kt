@@ -1,25 +1,44 @@
 package `in`.org.projecteka.jataayu.ui
 
 import `in`.org.projecteka.jataayu.R
+import `in`.org.projecteka.jataayu.consent.ConsentActivity
 import `in`.org.projecteka.jataayu.databinding.ActivityLauncherBinding
 import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
-import `in`.org.projecteka.jataayu.util.extension.startActivity
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_launcher.*
 
 class LauncherActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLauncherBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_launcher)
-        binding.lifecycleOwner = this
-        observeData()
+        binding = DataBindingUtil.setContentView<ActivityLauncherBinding>(
+            this,
+            R.layout.activity_launcher
+        )
+
+        initBindings()
+        setSupportActionBar(toolbar)
+
+        fab.setOnClickListener {
+            startActivity(Intent(this, ProviderSearchActivity::class.java))
+        }
     }
 
-    private fun observeData() {
-        startActivity(ProviderSearchActivity::class.java)
-        finish()
+    private fun initBindings() {
+        binding.bottomNavListener =
+            BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+                if (menuItem.itemId == R.id.action_consents) {
+                    showConsentScreen()
+                }
+                false
+            }
+    }
+
+    private fun showConsentScreen() {
+        startActivity(Intent(this, ConsentActivity::class.java))
     }
 }

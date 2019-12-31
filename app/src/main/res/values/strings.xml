@@ -1,2 +1,8 @@
 <resources>
+
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="action_profile">Profile</string>
+    <string name="no_linked_accounts">No linked Accounts</string>
+    <string name="my_accounts">My Accounts</string>
+    <string name="consents">Consent</string>
 </resources>
