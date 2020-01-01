@@ -6,7 +6,7 @@
 
         <variable
             name="providerInfo"
-            type="in.org.projecteka.jataayu.provider.model.ProviderInfo" />
+            type="in.org.projecteka.jataayu.core.model.ProviderInfo" />
     </data>
 
     <LinearLayout

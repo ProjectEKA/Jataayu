@@ -1,7 +1,7 @@
 package `in`.org.projecteka.jataayu.provider.viewmodel
 import TestUtils
+import `in`.org.projecteka.jataayu.core.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
-import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson

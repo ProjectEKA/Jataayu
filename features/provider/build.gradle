@@ -1,5 +1,7 @@
 apply from: rootProject.file("android-library-commons.gradle")
 apply from: rootProject.file("jacoco.gradle")
+//apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-android-extensions'
 
 android {
     defaultConfig {
@@ -34,10 +36,5 @@ android {
 }
 
 dependencies {
-    api project(Modules.network)
-    api project(Modules.presentation)
-    api project(Modules.utils)
-    api project(Modules.logger)
-
-    kaptAndroidTest Deps.databindingCompiler
+    api project(Modules.core)
 }

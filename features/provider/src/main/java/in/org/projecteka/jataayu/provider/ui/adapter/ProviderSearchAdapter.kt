@@ -1,9 +1,9 @@
 package `in`.org.projecteka.jataayu.provider.ui.adapter
 
 import `in`.org.projecteka.featuresprovider.R
+import `in`.org.projecteka.jataayu.core.model.ProviderInfo
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
-import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.util.extension.findView
 import `in`.org.projecteka.jataayu.util.extension.getString
 import android.content.Context

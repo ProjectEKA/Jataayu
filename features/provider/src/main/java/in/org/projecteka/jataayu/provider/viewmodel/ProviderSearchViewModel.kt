@@ -1,7 +1,7 @@
 package `in`.org.projecteka.jataayu.provider.viewmodel
 
+import `in`.org.projecteka.jataayu.core.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
-import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.org.projecteka.jataayu.util.extension.EMPTY
 import `in`.org.projecteka.jataayu.util.extension.liveDataOf

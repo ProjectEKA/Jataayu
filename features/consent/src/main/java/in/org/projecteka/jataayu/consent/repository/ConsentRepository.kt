@@ -1,22 +1,15 @@
-package `in`.org.projecteka.jataayu.provider.repository
+package `in`.org.projecteka.jataayu.consent.repository
 
-import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
-import `in`.org.projecteka.jataayu.provider.model.ProviderInfo
-import `in`.org.projecteka.jataayu.provider.remote.ProviderApis
+import `in`.org.projecteka.jataayu.consent.model.ConsentsListResponse
+import `in`.org.projecteka.jataayu.consent.remote.ConsentApis
 import retrofit2.Call
 
 interface ConsentRepository {
-    fun getProviders(name: String): Call<List<ProviderInfo>>
-    fun getPatientAccounts(identifier : String): Call<PatientDiscoveryResponse>
+    fun getConsents(): Call<ConsentsListResponse>
 }
 
-class ProviderRepositoryImpl(private val providerApi: ProviderApis) : ProviderRepository {
-    override fun getProviders(name: String): Call<List<ProviderInfo>> {
-        return providerApi.getProviders(name)
+class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentRepository {
+    override fun getConsents(): Call<ConsentsListResponse> {
+        return consentApi.getConsents()
     }
-
-    override fun getPatientAccounts(identifier: String): Call<PatientDiscoveryResponse> {
-        return providerApi.getPatientAccounts(identifier)
-    }
-
 }

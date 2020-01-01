@@ -17,5 +17,7 @@ class ConsentActivity : BaseActivity() {
         viewPager.adapter = sectionsPagerAdapter
         val tabs = binding.tabs
         tabs.setupWithViewPager(viewPager)
+
+        
     }
 }

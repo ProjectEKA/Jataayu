@@ -2,13 +2,13 @@ package `in`.org.projecteka.jataayu.provider.ui.fragment
 
 import DividerItemDecorator
 import `in`.org.projecteka.featuresprovider.R
-import `in`.org.projecteka.featuresprovider.databinding.PatientAccountResultItemBinding
 import `in`.org.projecteka.featuresprovider.databinding.PatientAccountsFragmentBinding
+import `in`.org.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.org.projecteka.jataayu.provider.model.CareContext
+import `in`.org.projecteka.jataayu.core.model.CareContext
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.setTitle
 import `in`.org.projecteka.jataayu.util.extension.showLongToast

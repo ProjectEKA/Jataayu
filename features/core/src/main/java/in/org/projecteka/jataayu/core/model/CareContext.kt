@@ -1,7 +1,7 @@
-package `in`.org.projecteka.jataayu.provider.model
+package `in`.org.projecteka.jataayu.core.model
 
-import `in`.org.projecteka.featuresprovider.BR
-import `in`.org.projecteka.featuresprovider.R
+import `in`.org.projecteka.jataayu.core.BR
+import `in`.org.projecteka.jataayu.core.R
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import androidx.databinding.BaseObservable
 import com.google.gson.annotations.SerializedName

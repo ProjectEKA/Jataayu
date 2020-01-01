@@ -1,5 +1,6 @@
 package `in`.org.projecteka.jataayu.provider.model
 
+import `in`.org.projecteka.jataayu.core.model.CareContext
 import com.google.gson.annotations.SerializedName
 
 data class Patient(

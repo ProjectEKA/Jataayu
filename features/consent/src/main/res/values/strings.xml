@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">consent</string>
-    <string name="title_activity_consent">Consents</string>
-    <string name="tab_requests">Requests</string>
-    <string name="tab_consents">Consents</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_consent">Consent</string>
+    <string name="tab_requests">requests</string>
+    <string name="tab_consents">conents</string>
 </resources>

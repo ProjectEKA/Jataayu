@@ -46,6 +46,7 @@ object Modules {
     const val analytics = ":addons:analytics"
     const val provider = ":features:provider"
     const val consent = ":features:consent"
+    const val core = ":features:core"
 }
 
 object Deps {
@@ -55,6 +56,7 @@ object Deps {
     const val androidXFragmentTesting = "androidx.fragment:fragment-testing:${LibVersions.androidXFragmentTesting}"
     const val androidXLifecyle = "androidx.lifecycle:lifecycle-extensions:${LibVersions.androidXLifecycle}"
     const val androidXLifecyleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${LibVersions.androidXLifecycle}"
+    const val androidXLegacy = "androidx.legacy:legacy-support-v4:${LibVersions.material}"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:${LibVersions.constraintLayout}"
     const val koinAndroid = "org.koin:koin-android:${LibVersions.koin}"
     const val koinAndroidXViewModel = "org.koin:koin-androidx-viewmodel:${LibVersions.koin}"
