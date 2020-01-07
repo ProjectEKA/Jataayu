@@ -6,8 +6,8 @@ import `in`.org.projecteka.jataayu.util.ui.fragment.TestsOnlyFragment
 import android.view.View
 import androidx.annotation.IntegerRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.runner.AndroidJUnit4
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

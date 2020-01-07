@@ -5,11 +5,12 @@
     <dimen name="text_size_large">20sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_extra_small">12sp</dimen>
 
     <dimen name="toolbar_title_text_size">26sp</dimen>
 
     <dimen name="content_padding_extra_small">2dp</dimen>
-    <dimen name="content_padding_small">4dp</dimen>
+    <dimen name="content_padding_small">4dp</dimen>∂
     <dimen name="content_padding_medium">6dp</dimen>
     <dimen name="content_padding_large">8dp</dimen>
     <dimen name="content_padding_extra_large">10dp</dimen>
@@ -21,6 +22,7 @@
     <dimen name="content_margin_medium">16dp</dimen>
     <dimen name="content_margin_large">18dp</dimen>
     <dimen name="content_margin_extra_large">20dp</dimen>
+    <dimen name="content_margin_extra_extra_large">24dp</dimen>
 
     <dimen name="toolbar_elevation">8dp</dimen>
 
@@ -39,4 +41,11 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="tab_indictor_height">3dp</dimen>
+
+    <dimen name="secondary_button_height">36dp</dimen>
+    <dimen name="request_info_type_bg_corner_radius">40dp</dimen>
+
+    <dimen name="fab_margin_bottom">68dp</dimen>
 </resources>

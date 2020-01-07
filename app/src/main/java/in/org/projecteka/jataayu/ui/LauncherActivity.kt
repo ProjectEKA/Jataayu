@@ -1,7 +1,7 @@
 package `in`.org.projecteka.jataayu.ui
 
 import `in`.org.projecteka.jataayu.R
-import `in`.org.projecteka.jataayu.consent.ConsentActivity
+import `in`.org.projecteka.jataayu.consent.ui.activity.ConsentActivity
 import `in`.org.projecteka.jataayu.databinding.ActivityLauncherBinding
 import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
 import android.content.Intent

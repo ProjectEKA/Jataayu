@@ -1,7 +1,7 @@
 package `in`.org.projecteka.jataayu.provider.model
 
+import `in`.org.projecteka.featuresprovider.BR
 import `in`.org.projecteka.featuresprovider.R
-import `in`.org.projecteka.jataayu.core.BR
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import com.google.gson.annotations.SerializedName
 

@@ -16,4 +16,14 @@
 
     <color name="button_background_color" tools:override="true">@color/colorPrimary</color>
     <color name="button_text_color" tools:override="true">@color/white</color>
+    <color name="bottom_bar_bg_color">#E8EDE8</color>
+    
+    <color name="light_grey_background">#FAFAFA</color>
+    <color name="grey_background">#EDEDED</color>
+    <color name="grey_light">#F6F6F6</color>
+    <color name="rounded_grey_background" tools:override="true">#C4C4C4</color>
+    <color name="secondary_button_text_color" tools:override="true">@color/colorPrimary</color>
+    <color name="deny_button_text_color" tools:override="true">@color/red</color>
+
+    <color name="red">#C81800</color>
 </resources>

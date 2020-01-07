@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="requestCount"
+            type="String" />
+
+        <variable
+            name="hideRequestsList"
+            type="Boolean" />
+
+        <variable
+            name="listener"
+            type="android.widget.AdapterView.OnItemSelectedListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextView.ListItemHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_new_consent_requests"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:toggledVisibility="@{hideRequestsList}" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/sp_request_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/content_margin_small"
+            android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+            android:drawSelectorOnTop="true"
+            app:toggledVisibility="@{!hideRequestsList}"
+            android:drawablePadding="6dp"
+            android:fontFamily="sans-serif-medium"
+            app:onItemSelected="@{listener}"
+            android:spinnerMode="dropdown"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@android:layout/simple_list_item_1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvConsents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sp_request_filter"
+            app:toggledVisibility="@{!hideRequestsList}"
+            tools:listitem="@layout/consent_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

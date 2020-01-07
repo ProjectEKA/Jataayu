@@ -1,27 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="consent"
-            type="in.org.projecteka.jataayu.core.model.ConsentModel" />
+            type="in.org.projecteka.jataayu.core.model.Consent" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent_layout"
+        android:layout_marginBottom="14dp"
+        android:paddingLeft="@dimen/content_margin_small"
+        android:paddingRight="@dimen/content_margin_small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:orientation="vertical"
-        android:padding="@dimen/content_margin_medium"
-        android:paddingStart="0dp"
-        android:paddingEnd="0dp">
+        android:orientation="vertical">
 
         <TextView
+            android:layout_marginRight="12dp"
+            android:id="@+id/tv_requested_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@{consent.getRequestStatus()}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_extra_small"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/request_expired" />
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@{consent.consentExpiry}" />
+            android:layout_height="wrap_content"
+            app:strokeColor="@color/black"
+            app:cardUseCompatPadding="true"
+            app:cardBackgroundColor="@color/light_grey"
+            card_view:cardElevation="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_requested_date">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:padding="@dimen/content_margin_small"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_requester_name"
+                    android:layout_width="wrap_content"
+                    style="@style/ConsentRequestHiuDetails"
+                    android:text="@{consent.requester.name}"
+                    android:layout_height="match_parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Name" />
+
+                <TextView
+                    android:id="@+id/tv_requester_organization"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{consent.hiu.name}"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    style="@style/ConsentRequestHiuDetails"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_requester_name"
+                    tools:text="Infinity Health care and diagnostics" />
+
+                <View
+                    android:id="@+id/seperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginTop="@dimen/height_9"
+                    android:background="@color/black"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_requester_organization" />
+
+                <ImageView
+                    android:id="@+id/ic_purpose_of_request"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_purpose_of_request"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_purpose_of_request_label" />
+
+                <TextView
+                    style="@style/ConsentRequestItemHeader"
+                    android:id="@+id/tv_purpose_of_request_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/content_margin_small"
+                    android:layout_marginTop="@dimen/content_margin_extra_small"
+                    android:text="@string/purpose_of_request"
+                    app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
+                    app:layout_constraintTop_toBottomOf="@id/seperator" />
+
+                <TextView
+                    style="@style/ConsentRequestItemValue"
+                    android:id="@+id/tv_purpose_of_request"
+                    android:text="@{consent.purpose.text}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/content_margin_small"
+                    app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_purpose_of_request_label"
+                    tools:text="General Consulting" />
+
+                <ImageView
+                    android:id="@+id/ic_requests_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_requests_info"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label" />
+
+                <TextView
+                    android:id="@+id/tv_requests_information_duration_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/content_margin_small"
+                    style="@style/ConsentRequestItemHeader"
+                    android:layout_marginTop="@dimen/content_margin_extra_small"
+                    android:text="@string/requests_information"
+                    app:layout_constraintLeft_toRightOf="@+id/ic_requests_info"
+                    app:layout_constraintTop_toBottomOf="@id/ic_purpose_of_request" />
+
+
+                <TextView
+                    style="@style/ConsentRequestItemHeader"
+                    android:id="@+id/tv_requests_information_from_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/content_margin_small"
+                    app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
+                    android:text="From" />
+
+                <TextView
+                    android:layout_marginLeft="@dimen/content_padding_medium"
+                    style="@style/ConsentRequestItemValue"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_requests_information_from_label"
+                    tools:text="31/12/17"
+                    android:text="@{consent.getPermissionStartDate()}"
+                    android:id="@+id/tv_requests_info_from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    style="@style/ConsentRequestItemHeader"
+                    android:id="@+id/tv_requests_information_to_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/content_padding_medium"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_requests_info_from"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
+                    android:text="to" />
+
+                <TextView
+                    android:text="@{consent.getPermissionToDate()}"
+                    android:layout_marginLeft="@dimen/content_padding_medium"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_requests_information_to_label"
+                    tools:text="31/12/19"
+                    android:id="@+id/tv_requests_info_to"
+                    style="@style/ConsentRequestItemValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    app:layout_constraintTop_toTopOf="@id/tv_requests_info_to"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
+                    android:src="@drawable/ic_arrow_right"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

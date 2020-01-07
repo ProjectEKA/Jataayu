@@ -2,7 +2,6 @@ package `in`.org.projecteka.jataayu.provider.model
 
 import `in`.org.projecteka.featuresprovider.BR
 import `in`.org.projecteka.featuresprovider.R
-import `in`.org.projecteka.jataayu.core.model.ProviderInfo
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

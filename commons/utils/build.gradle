@@ -5,6 +5,13 @@ dependencies {
     api Deps.androidXLifecyleViewModel
     api Deps.appcompat
     api Deps.gson
+    api Deps.mockito
 
     testImplementation Deps.apacheCommonsIo
+}
+
+android {
+    defaultConfig {
+        testInstrumentationRunner "in.org.projecteka.jataayu.provider.JataayuJUnitRunner"
+    }
 }

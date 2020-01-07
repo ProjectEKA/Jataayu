@@ -1,25 +1,18 @@
-package `in`.org.projecteka.jataayu.provider.ui.adapter
+package `in`.org.projecteka.jataayu.presentation.adapter
 
-import `in`.org.projecteka.jataayu.provider.domain.ProviderNameWatcher
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.widget.EditText
+import android.widget.AdapterView
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
 
 object BindingAdapters {
-    @BindingAdapter("app:onValueChanged")
-    @JvmStatic
-    fun onValueChanged(editText: EditText, providerNameWatcher: ProviderNameWatcher) {
-        editText.addTextChangedListener(providerNameWatcher)
-    }
 
     @BindingAdapter("app:toggledVisibility")
     @JvmStatic
     fun conditionalVisibility(view: View, shouldShow: Boolean) {
-        view.visibility = if (shouldShow) VISIBLE else GONE
+        view.visibility = if (shouldShow) View.VISIBLE else View.GONE
     }
 
     @BindingAdapter("app:selected")
@@ -33,4 +26,11 @@ object BindingAdapters {
     fun setOnNavigationItemSelectedListener(view: BottomNavigationView, listener: OnNavigationItemSelectedListener) {
         view.setOnNavigationItemSelectedListener(listener)
     }
+
+    @BindingAdapter("app:onItemSelected")
+    @JvmStatic
+    fun onItemSelected(spinner: AppCompatSpinner, onItemSelectedListener: AdapterView.OnItemSelectedListener) {
+        spinner.onItemSelectedListener = onItemSelectedListener
+    }
+
 }
