@@ -8,10 +8,8 @@ import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapt
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.org.projecteka.jataayu.core.model.CareContext
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.setTitle
-import `in`.org.projecteka.jataayu.util.extension.showLongToast
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +65,7 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback {
 
     override fun onItemClick(iDataBindingModel: IDataBindingModel, itemViewBinding: ViewDataBinding) {
         (itemViewBinding as PatientAccountResultItemBinding).cbCareContext.toggle()
-        showLongToast((iDataBindingModel as CareContext).display)
+        binding.canLinkAccounts = viewModel.canLinkAccounts()
     }
 
     override fun onVisible() {

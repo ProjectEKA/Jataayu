@@ -21,8 +21,7 @@ class ConsentViewModel(val repository: ConsentRepository) : ViewModel() {
     var requests = emptyList<Consent>()
 
     fun getConsents() {
-        repository.getConsents()
-            .enqueue(object : Callback<ConsentsListResponse> {
+        repository.getConsents().enqueue(object : Callback<ConsentsListResponse> {
                 override fun onFailure(call: Call<ConsentsListResponse>, t: Throwable) {
 
                 }
@@ -48,7 +47,7 @@ class ConsentViewModel(val repository: ConsentRepository) : ViewModel() {
         return items
     }
 
-    private fun getFormattedItem(filterItem: String, requestStatus: RequestStatus): String {
+     private fun getFormattedItem(filterItem: String, requestStatus: RequestStatus): String {
         var count = 0
         requests.forEach {
             if (requestStatus == it.status) {
