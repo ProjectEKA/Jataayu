@@ -1,0 +1,52 @@
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "createdAt": "2020-01-02T05:55:33.317Z",
+  "purpose": {
+    "text": "General Consulting",
+    "code": "string",
+    "refUri": "string"
+  },
+  "patient": {
+    "referenceNumber": "ABCXXX01",
+    "careContexts": [
+      {
+        "referenceNumber": "string"
+      }
+    ]
+  },
+  "hip": {
+    "id": "string",
+    "name": "string"
+  },
+  "hiu": {
+    "id": "string",
+    "name": "Max Health Care"
+  },
+  "requester": {
+    "name": "Dr. Shruthi Nair",
+    "identifier": {
+      "value": "string",
+      "type": "string",
+      "system": "string"
+    }
+  },
+  "hiTypes": [
+    {
+      "type": "Condition",
+      "description": "Medication Request"
+    }
+  ],
+  "permission": {
+    "accessMode": "VIEW",
+    "dateRange": {
+      "from": "2019-01-06T05:55:33.318Z",
+      "to": "2020-01-06T05:55:33.318Z"
+    },
+    "dataExpiryAt": "2020-01-06T05:55:33.318Z",
+    "frequency": {
+      "unit": "HOUR",
+      "value": 0
+    }
+  },
+  "status": "REQUESTED"
+}

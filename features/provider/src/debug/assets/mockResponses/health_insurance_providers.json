@@ -1,14 +1,47 @@
 [
   {
-    "name": "Infinity Health care & Diagnostics",
+    "identifier": {
+      "id": "ABC123",
+      "name": "Infinity Health care & Diagnostics"
+    },
     "city": "Bangalore",
     "telephone": "08080887877",
     "type": "prov"
   },
   {
-    "name": "Max Health Care",
+    "identifier": {
+      "id": "ABC123",
+      "name": "Max Health Care"
+    },
     "city": "Bangalore",
     "telephone": "08080887876",
+    "type": "prov"
+  },
+  {
+    "identifier": {
+      "id": "ABC123",
+      "name": "Tata Memorial Hospital"
+    },
+    "city": "Mumbai",
+    "telephone": "09876543210",
+    "type": "prov"
+  },
+  {
+    "identifier": {
+      "id": "ABC123",
+      "name": "Sahyadi Hospital"
+    },
+    "city": "Pune",
+    "telephone": "09123456789",
+    "type": "prov"
+  },
+  {
+    "identifier": {
+      "id": "ABC123",
+      "name": "Dr. Lal Pathlabs"
+    },
+    "city": "Kochi",
+    "telephone": "08765432198",
     "type": "prov"
   }
 ]

@@ -2,6 +2,26 @@ apply from: rootProject.file("android-library-commons.gradle")
 apply from: rootProject.file("jacoco.gradle")
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
+android {
+    sourceSets {
+        main.java.srcDirs += 'src/main/java'
+        test.java.srcDirs += 'src/test/java'
+        androidTest.java.srcDirs += 'src/androidTest/java'
+
+        String sharedTestJavaDir = 'src/sharedTest/java'
+        String sharedTestResourcesDir = 'src/sharedTest/resources'
+
+        test {
+            java.srcDirs += sharedTestJavaDir
+            resources.srcDirs += sharedTestResourcesDir
+        }
+        androidTest {
+            java.srcDirs += sharedTestJavaDir
+            resources.srcDirs += sharedTestResourcesDir
+        }
+    }
+}
 dependencies {
     api project(Modules.network)
     api project(Modules.presentation)

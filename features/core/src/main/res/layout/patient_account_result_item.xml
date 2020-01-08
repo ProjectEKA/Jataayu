@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/content_margin_medium"
             android:maxLines="1"
-            style="@style/TextView.ListItemHeader"
+            style="@style/TextAppearance.ListItemHeader"
             android:text="@{careContext.referenceNumber}"
             app:layout_constraintBottom_toTopOf="@+id/tv_patient_name"
             app:layout_constraintStart_toEndOf="@+id/cb_care_context"
@@ -45,7 +45,7 @@
 
         <TextView
             android:id="@+id/tv_patient_name"
-            style="@style/TextView.ListItemSubHeader"
+            style="@style/TextAppearance.ListItemSubHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/content_margin_medium"

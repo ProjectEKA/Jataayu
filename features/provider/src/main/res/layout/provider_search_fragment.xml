@@ -261,7 +261,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#CC777777"
+            android:background="@color/progressbar_dimmed_bg"
             android:clickable="true"
             android:descendantFocusability="blocksDescendants"
             android:focusable="true"

@@ -33,4 +33,6 @@ object BindingAdapters {
         spinner.onItemSelectedListener = onItemSelectedListener
     }
 
+
+
 }

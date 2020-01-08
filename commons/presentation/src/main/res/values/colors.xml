@@ -26,4 +26,5 @@
     <color name="deny_button_text_color" tools:override="true">@color/red</color>
 
     <color name="red">#C81800</color>
+    <color name="progressbar_dimmed_bg">#CC333333</color>
 </resources>

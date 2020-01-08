@@ -2,5 +2,6 @@
     <string name="app_name">core</string>
     <string name="purpose_of_request">Purpose of request</string>
     <string name="requests_information">Requests information</string>
+    <string name="requested_timespan">Requested %s</string>
     <string name="request_expired">Request expired</string>
 </resources>

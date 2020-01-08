@@ -6,11 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textAppearance">@style/TextView</item>
+        <item name="android:textAppearance">@style/TextAppearance</item>
         <item name="toolbarStyle">@style/Toolbar</item>
 <!--        <item name="buttonStyle">@style/Button</item>-->
         <item name="android:tabWidgetStyle">@style/AppTabLayout</item>
-        <item name="android:textViewStyle">@style/TextView</item>
+        <item name="android:textViewStyle">@style/TextAppearance</item>
     </style>
 
     <style name="AppTabLayout" parent="Widget.Design.TabLayout">
@@ -44,17 +44,17 @@
 
     <style name="Button.Secondary" parent="Widget.MaterialComponents.Button">
         <item name="android:height">@dimen/secondary_button_height</item>
-        <item name="android:textAppearance">@style/TextView.Button</item>
+        <item name="android:textAppearance">@style/TextAppearance.Button</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:background">@drawable/secondary_button_background</item>
         <item name="android:textColor">@color/secondary_button_text_color</item>
     </style>
 
-    <style name="Button.Deny" parent="Widget.MaterialComponents.Button">
+    <style name="Button.Negative" parent="Widget.MaterialComponents.Button">
         <item name="android:drawablePadding">@dimen/content_padding_medium</item>
         <item name="android:height">@dimen/secondary_button_height</item>
-        <item name="android:textAppearance">@style/TextView.Button</item>
+        <item name="android:textAppearance">@style/TextAppearance.Button</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:background">@drawable/secondary_button_background_red</item>
@@ -64,7 +64,7 @@
 
     <style name="Button" parent="Widget.MaterialComponents.Button">
         <item name="android:height">@dimen/button_height</item>
-        <item name="android:textAppearance">@style/TextView.Button</item>
+        <item name="android:textAppearance">@style/TextAppearance.Button</item>
         <item name="android:elevation">4dp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:drawablePadding">@dimen/content_margin_small</item>
@@ -77,25 +77,25 @@
         <item name="android:colorAccent">@color/button_background_color</item>
     </style>
 
-    <style name="TextView">
+    <style name="TextAppearance">
+        <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">sans-serif</item>
-
     </style>
 
-    <style name="TextView.Button" parent="TextAppearance.AppCompat.Button"></style>
+    <style name="TextAppearance.Button" parent="TextAppearance.AppCompat.Button"/>
 
-    <style name="TextView.ListItemHeader" parent="TextView">
+    <style name="TextAppearance.Heavy" parent="TextAppearance">
         <item name="android:letterSpacing">0.03</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
-
         <item name="android:textStyle">bold</item>
-
         <item name="android:fontFamily">sans-serif-medium</item>
-
     </style>
 
-    <style name="TextView.ListItemSubHeader" parent="TextView">
+    <style name="TextAppearance.ListItemHeader" parent="TextAppearance.Heavy">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="TextAppearance.ListItemSubHeader" parent="TextAppearance">
         <item name="android:letterSpacing">0.05</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
 

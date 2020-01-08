@@ -26,7 +26,7 @@ class ProviderSearchAdapter(itemClickCallback : ItemClickCallback, list : List<P
         val searchResultView = holder.itemView.findView<TextView>(R.id.provider_name)
         val providerInfo = suggestions[position]
         searchResultView.text = highlight(query.toString(),
-            if (providerInfo.name.isEmpty()) searchResultView.getString(R.string.no_results_found)
+            if (providerInfo.providerIdentifier.name.isEmpty()) searchResultView.getString(R.string.no_results_found)
             else providerInfo.nameCityPair(), context = searchResultView.context)
     }
 

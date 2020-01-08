@@ -13,61 +13,61 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parent_layout"
-        android:layout_marginBottom="14dp"
-        android:paddingLeft="@dimen/content_margin_small"
-        android:paddingRight="@dimen/content_margin_small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginBottom="14dp"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/content_margin_small"
+        android:paddingRight="@dimen/content_margin_small">
 
         <TextView
-            android:layout_marginRight="12dp"
             android:id="@+id/tv_requested_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
             android:gravity="right"
-            android:text="@{consent.getRequestStatus()}"
+            android:text="@{consent.getRequestIssueRelativeTimeSpan(context)}"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_extra_small"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/request_expired" />
+            tools:text="@string/requested_timespan" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:strokeColor="@color/black"
-            app:cardUseCompatPadding="true"
             app:cardBackgroundColor="@color/light_grey"
-            card_view:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_requested_date">
+            app:layout_constraintTop_toBottomOf="@id/tv_requested_date"
+            app:strokeColor="@color/black"
+            card_view:cardElevation="8dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:padding="@dimen/content_margin_small"
+                android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
-                android:layout_height="wrap_content">
+                android:padding="@dimen/content_margin_small">
 
                 <TextView
                     android:id="@+id/tv_requester_name"
-                    android:layout_width="wrap_content"
                     style="@style/ConsentRequestHiuDetails"
-                    android:text="@{consent.requester.name}"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:text="@{consent.requester.name}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Name" />
 
                 <TextView
                     android:id="@+id/tv_requester_organization"
+                    style="@style/ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{consent.hiu.name}"
-                    android:singleLine="true"
                     android:ellipsize="end"
-                    style="@style/ConsentRequestHiuDetails"
+                    android:singleLine="true"
+                    android:text="@{consent.hiu.name}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_requester_name"
                     tools:text="Infinity Health care and diagnostics" />
@@ -91,8 +91,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_purpose_of_request_label" />
 
                 <TextView
-                    style="@style/ConsentRequestItemHeader"
                     android:id="@+id/tv_purpose_of_request_label"
+                    style="@style/ConsentRequestItemHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_margin_small"
@@ -102,12 +102,12 @@
                     app:layout_constraintTop_toBottomOf="@id/seperator" />
 
                 <TextView
-                    style="@style/ConsentRequestItemValue"
                     android:id="@+id/tv_purpose_of_request"
-                    android:text="@{consent.purpose.text}"
+                    style="@style/ConsentRequestItemValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_margin_small"
+                    android:text="@{consent.purpose.text}"
                     app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
                     app:layout_constraintTop_toBottomOf="@+id/tv_purpose_of_request_label"
                     tools:text="General Consulting" />
@@ -122,10 +122,10 @@
 
                 <TextView
                     android:id="@+id/tv_requests_information_duration_label"
+                    style="@style/ConsentRequestItemHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_margin_small"
-                    style="@style/ConsentRequestItemHeader"
                     android:layout_marginTop="@dimen/content_margin_extra_small"
                     android:text="@string/requests_information"
                     app:layout_constraintLeft_toRightOf="@+id/ic_requests_info"
@@ -133,54 +133,54 @@
 
 
                 <TextView
-                    style="@style/ConsentRequestItemHeader"
                     android:id="@+id/tv_requests_information_from_label"
+                    style="@style/ConsentRequestItemHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_margin_small"
+                    android:text="From"
                     app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
-                    android:text="From" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label" />
 
                 <TextView
-                    android:layout_marginLeft="@dimen/content_padding_medium"
-                    style="@style/ConsentRequestItemValue"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_requests_information_from_label"
-                    tools:text="31/12/17"
-                    android:text="@{consent.getPermissionStartDate()}"
                     android:id="@+id/tv_requests_info_from"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    style="@style/ConsentRequestItemHeader"
-                    android:id="@+id/tv_requests_information_to_label"
+                    style="@style/ConsentRequestItemValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_padding_medium"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_requests_info_from"
+                    android:text="@{consent.getPermissionStartDate()}"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_requests_information_from_label"
                     app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
-                    android:text="to" />
+                    tools:text="31/12/17" />
 
                 <TextView
-                    android:text="@{consent.getPermissionToDate()}"
+                    android:id="@+id/tv_requests_information_to_label"
+                    style="@style/ConsentRequestItemHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_padding_medium"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_requests_information_to_label"
-                    tools:text="31/12/19"
+                    android:text="to"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_requests_info_from"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label" />
+
+                <TextView
                     android:id="@+id/tv_requests_info_to"
                     style="@style/ConsentRequestItemValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/content_padding_medium"
+                    android:text="@{consent.getPermissionToDate()}"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_requests_information_to_label"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
+                    tools:text="31/12/19" />
 
                 <ImageView
-                    app:layout_constraintTop_toTopOf="@id/tv_requests_info_to"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/ic_arrow_right"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label"
+                    app:layout_constraintTop_toTopOf="@id/tv_requests_info_to" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
