@@ -1,4 +1,4 @@
-// Top-level build file where you can add configuration options common_build to all sub-projects/modules.
+import dependancies.*
 
 buildscript {
     ext.kotlin_version = '1.3.61'
@@ -10,12 +10,12 @@ buildscript {
     }
 
     dependencies {
-        classpath Deps.toolsAndroidStudio
-        classpath Deps.toolsKotlinGradle
-        classpath Deps.toolsGradleVersions
-        classpath Deps.toolsJacocoCore
-        classpath Deps.toolsDicemelonJacoco
-        classpath Deps.toolsJacocoPalantir
+        classpath Deps.Tools.androidStudio
+        classpath Deps.Tools.kotlinGradle
+        classpath Deps.Tools.gradleVersions
+        classpath Deps.Tools.jacocoCore
+        classpath Deps.Tools.dicemelonJacoco
+        classpath Deps.Tools.jacocoPalantir
     }
 }
 

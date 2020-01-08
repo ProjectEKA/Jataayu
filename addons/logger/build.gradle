@@ -1,5 +1,7 @@
+import dependancies.Deps
+
 apply from: rootProject.file("android-library-commons.gradle")
 
 dependencies {
-    api Deps.timber
+    api Deps.Logger.timber
 }

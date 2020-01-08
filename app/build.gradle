@@ -1,3 +1,5 @@
+import dependancies.*
+
 apply plugin: 'com.android.application'
 apply from: rootProject.file("android-commons.gradle")
 apply plugin: 'kotlin-android'
@@ -40,11 +42,10 @@ task decodeKeystorePrebuildTask(type: Exec) {
 }
 
 dependencies {
+    kapt Deps.AndroidX.dataBindingCompiler
 
     api project(Modules.provider)
     api project(Modules.consent)
     api project(Modules.utils)
     api project(Modules.presentation)
-
-    kapt 'com.android.databinding:compiler:3.5.2'
 }

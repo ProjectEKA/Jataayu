@@ -1,34 +1,32 @@
+import dependancies.*
+
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-    api Deps.toolsKotlinStdLib
+    api Deps.Tools.kotlinStdLib
 
-    api Deps.koinAndroid
-    api Deps.koinAndroidXScope
-    api Deps.koinAndroidXViewModel
-    api Deps.koinTest
+    api Deps.Koin.main
+    api Deps.Koin.androidXScope
+    api Deps.Koin.androidXViewModel
+    api Deps.Koin.test
+    api Deps.AndroidX.coreKtx
+    api Deps.AndroidX.coreTesting
+    api Deps.AndroidX.espressoCore
+    api Deps.AndroidX.espressoIntents
+    api Deps.AndroidX.espressoContrib
+    api Deps.MockWebServer.main
+    api Deps.Testing.Helpers.apacheCommonsIo
 
-    api Deps.androidXCoreKtx
+    testImplementation Deps.Testing.jUnit
+    testImplementation Deps.Testing.mockito
+    testImplementation Deps.Testing.coreTesting
+    testImplementation Deps.Testing.Helpers.gson
 
-    api Deps.coreTesting
-    api Deps.espressoCore
-    api Deps.espressoIntents
-    api Deps.espressoContrib
-
-    api Deps.mockWebServer
-
-    api Deps.apacheCommonsIo
-
-    testImplementation Deps.jUnit
-    testImplementation Deps.mockito
-    testImplementation Deps.coreTesting
-    testImplementation Deps.gson
-
-    androidTestImplementation Deps.mockWebServer
-    androidTestImplementation Deps.espressoCore
-    androidTestImplementation Deps.espressoIntents
-    androidTestImplementation Deps.espressoContrib
+    androidTestImplementation Deps.Testing.espressoCore
+    androidTestImplementation Deps.Testing.espressoIntents
+    androidTestImplementation Deps.Testing.espressoContrib
+    androidTestImplementation Deps.MockWebServer.main
 }
