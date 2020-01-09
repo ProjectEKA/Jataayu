@@ -7,4 +7,5 @@
     <string name="strikethrough"><![CDATA[<strike>%s</strike>]]></string>
     <string name="title_transition_string">Title Transition</string>
     <string name="image_transition_string">Image Transition</string>
+    <string name="hint_endpoint">http://10.132.3.152:8080</string>
 </resources>

@@ -1,7 +1,7 @@
 package `in`.org.projecteka.jataayu.provider.ui
 
 import `in`.org.projecteka.featuresprovider.R
-import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseActivity
+import `in`.org.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.org.projecteka.jataayu.provider.ui.fragment.PatientAccountsFragment
 import `in`.org.projecteka.jataayu.provider.ui.fragment.ProviderSearchFragment
 import `in`.org.projecteka.jataayu.util.extension.findView

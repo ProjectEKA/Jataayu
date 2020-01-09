@@ -1,7 +1,7 @@
 package `in`.org.projecteka.jataayu.consent.ui.activity
 
 import `in`.org.projecteka.jataayu.consent.R
-import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseActivity
+import `in`.org.projecteka.jataayu.presentation.ui.BaseActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_consent_details.*
 
