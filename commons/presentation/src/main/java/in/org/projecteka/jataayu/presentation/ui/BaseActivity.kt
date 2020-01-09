@@ -97,12 +97,12 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    protected fun replaceFragment(fragment: Fragment) {
+    protected open fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.container, fragment)
             .addToBackStack(fragment.javaClass.name).commit()
     }
 
-    protected fun addFragment(fragment: Fragment) {
+    protected open fun addFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().add(R.id.container, fragment)
             .addToBackStack(fragment.javaClass.name).commit()
     }

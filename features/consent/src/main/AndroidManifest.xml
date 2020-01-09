@@ -5,9 +5,6 @@
     <application>
         <activity android:name=".ui.activity.ConsentDetailsActivity">
         </activity>
-        <activity
-            android:name=".ui.activity.ConsentActivity"
-            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

@@ -8,9 +8,9 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ProviderApis {
-    @GET("providers/")
+    @GET("providers")
     fun getProviders(@Query("name") name: String): Call<List<ProviderInfo>>
 
-    @POST("patients/")
+    @POST("patients")
     fun getPatientAccounts(@Query("identifier") identifier: String): Call<PatientDiscoveryResponse>
 }

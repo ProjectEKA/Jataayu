@@ -1,6 +1,7 @@
 package `in`.org.projecteka.jataayu.consent.ui.fragment
 
-import `in`.org.projecteka.jataayu.consent.R
+import `in`.org.projecteka.jataayu.consent.databinding.FragmentConsentHostBinding
+import `in`.org.projecteka.jataayu.consent.ui.adapter.SectionsPagerAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
@@ -11,7 +12,7 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 
 
-class ConsentListFragment : BaseFragment(), ItemClickCallback {
+class ConsentHostFragment : BaseFragment(), ItemClickCallback {
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
         itemViewBinding: ViewDataBinding
@@ -19,18 +20,27 @@ class ConsentListFragment : BaseFragment(), ItemClickCallback {
 
     }
 
+    private lateinit var binding: FragmentConsentHostBinding
+
     companion object {
-        fun newInstance() = ConsentListFragment()
+        fun newInstance() = ConsentHostFragment()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_consent_list, container, false)
+        binding = FragmentConsentHostBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sectionsPagerAdapter = SectionsPagerAdapter(context!!, activity!!.supportFragmentManager)
+        val viewPager = binding.viewPager
+        viewPager.adapter = sectionsPagerAdapter
+        val tabs = binding.tabs
+        tabs.setupWithViewPager(viewPager)
     }
 }
 

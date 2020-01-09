@@ -5,6 +5,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface ConsentApis {
-    @GET("requests/")
+    @GET("requests")
     fun getConsents(): Call<ConsentsListResponse>
 }
