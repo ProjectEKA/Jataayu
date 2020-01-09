@@ -1,7 +1,6 @@
-import dependancies.*
+import dependancies.Modules
 
 apply from: rootProject.file("android-library-commons.gradle")
-apply from: rootProject.file("jacoco.gradle")
 
 android {
     buildTypes {

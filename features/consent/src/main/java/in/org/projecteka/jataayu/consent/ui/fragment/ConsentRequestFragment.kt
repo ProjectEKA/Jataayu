@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.consent_request_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -82,7 +83,7 @@ class ConsentRequestFragment : BaseFragment(), ItemClickCallback, AdapterView.On
 
     private fun renderPatientAccounts(requests : List<Consent>, selectedSpinnerPosition: Int) {
         binding.hideRequestsList = !viewModel.isRequestAvailable()
-        binding.rvConsents.apply {
+        rvConsents.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = GenericRecyclerViewAdapter(
                 this@ConsentRequestFragment,

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">account</string>
+    <string name="no_linked_accounts">No linked Accounts</string>
+</resources>

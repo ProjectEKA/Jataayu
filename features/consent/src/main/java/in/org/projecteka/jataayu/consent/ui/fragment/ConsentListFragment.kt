@@ -1,24 +1,14 @@
 package `in`.org.projecteka.jataayu.consent.ui.fragment
 
 import `in`.org.projecteka.jataayu.consent.R
-import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
-import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
 
 
-class ConsentListFragment : BaseFragment(), ItemClickCallback {
-    override fun onItemClick(
-        iDataBindingModel: IDataBindingModel,
-        itemViewBinding: ViewDataBinding
-    ) {
-
-    }
-
+class ConsentListFragment : BaseFragment() {
     companion object {
         fun newInstance() = ConsentListFragment()
     }

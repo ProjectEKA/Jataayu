@@ -47,6 +47,7 @@ object Modules {
     const val provider = ":features:provider"
     const val consent = ":features:consent"
     const val core = ":features:core"
+    const val account = ":user:account"
 }
 
 object Deps {

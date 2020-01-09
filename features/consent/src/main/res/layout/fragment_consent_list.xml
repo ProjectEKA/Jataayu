@@ -6,6 +6,8 @@
     tools:context=".ui.fragment.ConsentRequestFragment">
 
     <TextView
+        android:text="Consents will be shown here"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

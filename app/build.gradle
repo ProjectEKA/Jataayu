@@ -48,4 +48,5 @@ dependencies {
     api project(Modules.consent)
     api project(Modules.utils)
     api project(Modules.presentation)
+    api project(Modules.account)
 }

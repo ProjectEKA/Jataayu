@@ -47,7 +47,7 @@
     <dimen name="secondary_button_height">36dp</dimen>
     <dimen name="request_info_type_bg_corner_radius">40dp</dimen>
 
-    <dimen name="fab_margin_bottom">68dp</dimen>
+    <dimen name="fab_margin_bottom">72dp</dimen>
     <dimen name="design_bottom_navigation_item_max_width" tools:override="true">600dp</dimen>
     <dimen name="design_bottom_navigation_active_item_max_width" tools:override="true">600dp</dimen>
 </resources>
