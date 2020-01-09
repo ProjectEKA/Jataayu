@@ -43,7 +43,6 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <include layout="@layout/content_launcher" />
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
@@ -55,12 +54,11 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
+            style="@style/Widget.BottomNavigationView"
             android:layout_width="match_parent"
-            android:background="@color/bottom_bar_bg_color"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:itemIconTint="@color/colorPrimary"
-            app:itemTextColor="@color/colorPrimary"
+            app:itemIconTint="@drawable/bottom_nav_tab_color"
             app:menu="@menu/menu_bottom_nav"
             app:onNavigationItemSelected="@{bottomNavListener}" />
 

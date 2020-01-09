@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:top="-100dp" android:right="-100dp" android:left="-100dp">
+        <shape>
+            <solid android:color="@color/bottom_bar_bg_color" />
+            <stroke
+                android:width="@dimen/tab_indictor_height"
+                android:color="@color/colorPrimary" />
+        </shape>
+    </item>
+</layer-list>

@@ -83,6 +83,21 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
+
+    <style name="TextAppearance.AllCaps" parent="TextAppearance">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.AllCaps.Active" parent="TextAppearance.AllCaps">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="TextAppearance.AllCaps.Inactive" parent="TextAppearance.AllCaps">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_extra_small</item>
+    </style>
+
     <style name="TextAppearance.Button" parent="TextAppearance.AppCompat.Button"/>
 
     <style name="TextAppearance.Heavy" parent="TextAppearance">
@@ -119,6 +134,17 @@
 
     <style name="ConsentRequestItemValue" parent="ConsentRequestItem">
         <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/text_size_extra_small</item>
+        <item name="itemBackground">@drawable/bottom_nav_tab_bg_color</item>
+        <item name="tabIndicatorHeight">@dimen/tab_indictor_height</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.AllCaps.Active</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.AllCaps.Inactive</item>
     </style>
 
 </resources>

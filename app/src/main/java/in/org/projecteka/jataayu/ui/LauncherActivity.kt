@@ -34,7 +34,7 @@ class LauncherActivity : AppCompatActivity() {
                 if (menuItem.itemId == R.id.action_consents) {
                     showConsentScreen()
                 }
-                false
+                true
             }
     }
 

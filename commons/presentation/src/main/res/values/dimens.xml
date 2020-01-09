@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources >
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="toolbar_size">56dp</dimen>
 
     <dimen name="text_size_large">20sp</dimen>
@@ -48,4 +48,6 @@
     <dimen name="request_info_type_bg_corner_radius">40dp</dimen>
 
     <dimen name="fab_margin_bottom">68dp</dimen>
+    <dimen name="design_bottom_navigation_item_max_width" tools:override="true">600dp</dimen>
+    <dimen name="design_bottom_navigation_active_item_max_width" tools:override="true">600dp</dimen>
 </resources>
