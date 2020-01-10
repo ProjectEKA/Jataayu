@@ -27,6 +27,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import timber.log.Timber
 
 class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCallback,
     ProviderSearchScreenHandler {
@@ -47,7 +48,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     private val patientAccountsObserver =
-        Observer<PatientDiscoveryResponse?> { patientDiscoveryResponse ->
+        Observer<PatientDiscoveryResponse?> { _ ->
             showPatientAccountsList()
         }
 
@@ -139,6 +140,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     override fun onTextCleared(clearButtonVisibility: Int) {
+        viewModel.clearList()
         providersList.updateData(listOf())
         binding.clearButtonVisibility = GONE
         showNoResultsFoundView(false)

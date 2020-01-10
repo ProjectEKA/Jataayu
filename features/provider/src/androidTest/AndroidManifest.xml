@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="in.org.projecteka.jataayu.core.JataayuApp"
+        android:name="in.org.projecteka.jataayu.provider.JataayuApp"
         android:label="Espresso Test Runner"
         android:theme="@style/Theme.AppCompat.Light">
         <activity

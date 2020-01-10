@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 fun <T> Context.startActivity(clazz: Class<T>) {
     startActivity(Intent(this, clazz))
@@ -44,3 +46,5 @@ fun Context.showShortToast(text: CharSequence) =
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 
 fun Fragment.showShortToast(text: CharSequence) = context?.showShortToast(text)
+
+public inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)

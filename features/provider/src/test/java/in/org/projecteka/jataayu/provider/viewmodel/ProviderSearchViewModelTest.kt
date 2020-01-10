@@ -3,6 +3,7 @@ import TestUtils
 import `in`.org.projecteka.jataayu.core.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
+import `in`.org.projecteka.jataayu.util.extension.fromJson
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import junit.framework.Assert
@@ -15,6 +16,7 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
@@ -51,7 +53,7 @@ class ProviderSearchViewModelTest {
     }
 
     @Test
-    fun shouldFetchProviders() {
+    fun shouldFetchProvidersIfProvidersListIsEmpty() {
         val query = "Health"
         val providers = getData("health_insurance_providers.json")
         Mockito.`when`(repository.getProviders(query)).thenReturn(providerInfoCall)
@@ -66,8 +68,18 @@ class ProviderSearchViewModelTest {
         assertEquals(providers, viewModel.providers.value)
     }
 
-    private fun getData(fileName : String) = Gson().fromJson<List<ProviderInfo>>(
-        TestUtils.readFile(fileName), List::class.java)!!
+
+    @Test
+    fun shouldNotFetchProvidersIfProvidersListIsNotEmpty() {
+        val query = "Health"
+        val providers = getData("health_insurance_providers.json")
+        viewModel.providersList = ArrayList<ProviderInfo>(providers)
+
+        viewModel.getProviders(query)
+        verifyNoInteractions(repository)
+    }
+
+    private fun getData(fileName : String) = Gson().fromJson<List<ProviderInfo>>(TestUtils.readFile(fileName))
 
     @Test
     fun shouldFetchPatients() {

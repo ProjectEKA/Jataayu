@@ -14,21 +14,27 @@ import timber.log.Timber
 class ProviderSearchViewModel(val providerRepository: ProviderRepository) : ViewModel() {
     val mobile = "9876543210"
     val providers = liveDataOf<List<ProviderInfo>>()
-
+    var providersList = emptyList<ProviderInfo>()
     val patientDiscoveryResponse = liveDataOf<PatientDiscoveryResponse>()
 
     internal var selectedProviderName = String.EMPTY
 
     fun getProviders(query: String) {
-        providerRepository.getProviders(query).enqueue(object : Callback<List<ProviderInfo>?> {
-            override fun onFailure(call: Call<List<ProviderInfo>?>, t: Throwable) {
-                Timber.e(t, "Failed to get providers list")
-            }
-
-            override fun onResponse(call: Call<List<ProviderInfo>?>, response: Response<List<ProviderInfo>?>) {
-                response.body()?.let { providers.value = response.body() }
-            }
-        })
+        if (providersList.isEmpty()){
+            providerRepository.getProviders(query).enqueue(object : Callback<List<ProviderInfo>?> {
+                override fun onFailure(call: Call<List<ProviderInfo>?>, t: Throwable) {
+                    Timber.e(t, "Failed to get providers list")
+                }
+                override fun onResponse(call: Call<List<ProviderInfo>?>, response: Response<List<ProviderInfo>?>) {
+                    response.body()?.let {
+                        providers.value = response.body()
+                        providersList = response.body()!!.toList()
+                    }
+                 }
+            })
+        } else{
+            providers.postValue(providersList.filter { it.providerIdentifier.name.contains(query, true) })
+        }
     }
 
     fun getPatientAccounts(identifier: String) {
@@ -52,6 +58,10 @@ class ProviderSearchViewModel(val providerRepository: ProviderRepository) : View
             }
         }
         return false
+    }
+
+    fun clearList() {
+        providersList = emptyList()
     }
 }
 
