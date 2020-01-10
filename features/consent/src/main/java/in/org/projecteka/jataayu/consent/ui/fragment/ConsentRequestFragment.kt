@@ -33,10 +33,10 @@ class ConsentRequestFragment : BaseFragment(), ItemClickCallback, AdapterView.On
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            1 -> renderPatientAccounts((viewModel.requests).filter { it.status.equals(RequestStatus.REQUESTED) }, position)
-            2 -> renderPatientAccounts((viewModel.requests).filter { it.status.equals(RequestStatus.EXPIRED)}, position)
+            1 -> renderConsentRequests((viewModel.requests).filter { it.status.equals(RequestStatus.REQUESTED) }, position)
+            2 -> renderConsentRequests((viewModel.requests).filter { it.status.equals(RequestStatus.EXPIRED)}, position)
             else ->
-                renderPatientAccounts(viewModel.requests, position)
+                renderConsentRequests(viewModel.requests, position)
         }
     }
 
@@ -47,7 +47,7 @@ class ConsentRequestFragment : BaseFragment(), ItemClickCallback, AdapterView.On
     private val viewModel: ConsentViewModel by sharedViewModel()
     private lateinit var binding: ConsentRequestFragmentBinding
 
-    private val consentObserver = Observer<ConsentsListResponse?> { renderPatientAccounts(it?.requests!!, binding.spRequestFilter.selectedItemPosition) }
+    private val consentObserver = Observer<ConsentsListResponse?> { renderConsentRequests(it?.requests!!, binding.spRequestFilter.selectedItemPosition) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,6 +72,7 @@ class ConsentRequestFragment : BaseFragment(), ItemClickCallback, AdapterView.On
         binding.requestCount = getString(`in`.org.projecteka.jataayu.consent.R.string.all_requests, 0)
         binding.listener = this
         binding.hideRequestsList = true
+        binding.progressBarVisibility = View.GONE
         initSpinner(0)
     }
 
@@ -79,9 +80,11 @@ class ConsentRequestFragment : BaseFragment(), ItemClickCallback, AdapterView.On
         super.onViewCreated(view, savedInstanceState)
         viewModel.consentsListResponse.observe(this, consentObserver)
         viewModel.getConsents()
+        binding.progressBarVisibility = View.VISIBLE
     }
 
-    private fun renderPatientAccounts(requests : List<Consent>, selectedSpinnerPosition: Int) {
+    private fun renderConsentRequests(requests : List<Consent>, selectedSpinnerPosition: Int) {
+        hideRequestLoading()
         binding.hideRequestsList = !viewModel.isRequestAvailable()
         rvConsents.apply {
             layoutManager = LinearLayoutManager(context)
@@ -99,6 +102,10 @@ class ConsentRequestFragment : BaseFragment(), ItemClickCallback, AdapterView.On
             )
         }
         initSpinner(selectedSpinnerPosition)
+    }
+
+    private fun hideRequestLoading() {
+        binding.progressBarVisibility = View.GONE
     }
 
     override fun onItemClick(
