@@ -3,6 +3,9 @@ package `in`.org.projecteka.jataayu.ui
 import `in`.org.projecteka.jataayu.R
 import `in`.org.projecteka.jataayu.consent.ui.fragment.ConsentHostFragment
 import `in`.org.projecteka.jataayu.databinding.ActivityLauncherBinding
+import `in`.org.projecteka.jataayu.module.networkModule
+import `in`.org.projecteka.jataayu.module.repositoryModule
+import `in`.org.projecteka.jataayu.module.viewModelModule
 import `in`.org.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
 import `in`.org.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
@@ -14,12 +17,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
 import kotlinx.android.synthetic.main.activity_launcher.*
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 
 
 class LauncherActivity : BaseActivity() {
     private lateinit var binding: ActivityLauncherBinding
 
-    val stateChangeListener = object : View.OnAttachStateChangeListener {
+    private val stateChangeListener = object : View.OnAttachStateChangeListener {
         override fun onViewDetachedFromWindow(v: View?) {
 
         }
@@ -27,7 +33,6 @@ class LauncherActivity : BaseActivity() {
         override fun onViewAttachedToWindow(v: View?) {
             bottom_navigation.selectedItemId = bottom_navigation.menu.getItem(0).itemId
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,9 +53,9 @@ class LauncherActivity : BaseActivity() {
 
     private fun initBindings() {
         binding.bottomNavListener = OnNavigationItemSelectedListener { menuItem ->
-            when {
-                menuItem.itemId == R.id.action_consents -> showConsent()
-                menuItem.itemId == R.id.action_accounts -> showAccounts()
+            when (menuItem.itemId) {
+                R.id.action_consents -> showConsent()
+                R.id.action_accounts -> showAccounts()
             }
             true
         }

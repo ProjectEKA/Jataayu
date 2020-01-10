@@ -7,7 +7,11 @@ import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCKOON_URL
 import `in`.org.projecteka.jataayu.util.constant.NetworkConstants.Companion.PROD_URL
 import `in`.org.projecteka.jataayu.util.constant.NetworkConstants.Companion.TEST_URL
-import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager
+import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.getBaseUrl
+import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.getEndpointIndex
+import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.setAuthToken
+import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.setNetworkPref
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MenuItem
@@ -18,6 +22,30 @@ import androidx.fragment.app.Fragment
 
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var networkPrefDialogBinding: NetworkPrefDialogBinding
+
+    private val okListener = DialogInterface.OnClickListener { _, _ ->
+        networkPrefDialogBinding.apply {
+            etEndpoint.text?.toString()?.let {
+                setNetworkPref(this@BaseActivity, selectedEnvironmentIndex!!, it)
+            }
+            etAuthToken.text?.toString()?.let {
+                setAuthToken(context = this@BaseActivity, authToken = etAuthToken.text.toString())
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.provider_search_activity)
+
+        supportFragmentManager.apply {
+            addOnBackStackChangedListener {
+                if (fragments.isNotEmpty()) fragments.last { (it as BaseFragment).onVisible()
+                    return@last true
+                }
+            }
+        }
+    }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         if (BuildConfig.DEBUG) {
@@ -33,52 +61,24 @@ abstract class BaseActivity : AppCompatActivity() {
         val alertDialogBuilder = AlertDialog.Builder(this)
         networkPrefDialogBinding = NetworkPrefDialogBinding.inflate(layoutInflater)
 
-        alertDialogBuilder.setCancelable(false)
-        alertDialogBuilder.setTitle("Network settings")
+        networkPrefDialogBinding.apply {
+            endpoint = getBaseUrl(this@BaseActivity)
+            rgEnvironmentOptions.check(rgEnvironmentOptions.getChildAt(getEndpointIndex(this@BaseActivity)).id)
+            selectedEnvironmentIndex = getEndpointIndex(this@BaseActivity)
 
-        networkPrefDialogBinding.etEndpoint.setText(NetworkSharedPrefsManager.getBaseUrl(this))
-
-        networkPrefDialogBinding.rgEnvironmentOptions.check(
-            networkPrefDialogBinding.rgEnvironmentOptions.getChildAt(
-                NetworkSharedPrefsManager.getEndpointIndex(
-                    this
-                )
-            ).id
-        )
-        networkPrefDialogBinding.selectedEnvironmentIndex = NetworkSharedPrefsManager.getEndpointIndex(this)
-        var radioButton: RadioButton =
-            networkPrefDialogBinding.rgEnvironmentOptions.findViewById(networkPrefDialogBinding.rgEnvironmentOptions.checkedRadioButtonId)
-        radioButton.isChecked = true
-
-        networkPrefDialogBinding.rgEnvironmentOptions
-            .setOnCheckedChangeListener { _, _ ->
-                radioButton =
-                    networkPrefDialogBinding.rgEnvironmentOptions.findViewById(networkPrefDialogBinding.rgEnvironmentOptions.checkedRadioButtonId)
-                networkPrefDialogBinding.selectedEnvironmentIndex =
-                    networkPrefDialogBinding.rgEnvironmentOptions.indexOfChild(radioButton)
-                networkPrefDialogBinding.etEndpoint.setText(getUrlForSelectedEnvironment(networkPrefDialogBinding.selectedEnvironmentIndex!!))
-                radioButton.isChecked = true
-            }
-
-        alertDialogBuilder.setCancelable(false).setPositiveButton(getString(android.R.string.ok)) { _, _ ->
-            run {
-                networkPrefDialogBinding.apply {
-                    etEndpoint.text?.toString()?.let {
-                        NetworkSharedPrefsManager.setNetworkPref(
-                            context = this@BaseActivity,
-                            environmentIndex = rgEnvironmentOptions.indexOfChild(radioButton), endpoint = it
-                        )
-                    }
-                    etAuthToken.text?.toString()?.let {
-                        NetworkSharedPrefsManager.setAuthToken(context = this@BaseActivity,
-                            authToken = etAuthToken.text.toString()
-                        )
-                    }
+            rgEnvironmentOptions.setOnCheckedChangeListener { _, _ ->
+                    selectedEnvironmentIndex = rgEnvironmentOptions.indexOfChild(rgEnvironmentOptions.findViewById<RadioButton>(rgEnvironmentOptions.checkedRadioButtonId))
+                    etEndpoint.setText(getUrlForSelectedEnvironment(selectedEnvironmentIndex!!))
                 }
-            }
-        }.setNegativeButton(getString(android.R.string.cancel)) { dialog, _ -> dialog.cancel() }
-        alertDialogBuilder.setView(networkPrefDialogBinding.root)
-        alertDialogBuilder.show()
+        }
+
+        alertDialogBuilder.apply {
+            setCancelable(false).setTitle("Network settings")
+                .setCancelable(false).setPositiveButton(getString(android.R.string.ok), okListener)
+                .setNegativeButton(getString(android.R.string.cancel)) { dialog, _ -> dialog.cancel() }
+            setView(networkPrefDialogBinding.root)
+            show()
+        }
     }
 
     private fun getUrlForSelectedEnvironment(selectedEnvironmentIndex: Int): String {
@@ -86,20 +86,6 @@ abstract class BaseActivity : AppCompatActivity() {
             0 -> PROD_URL
             1 -> TEST_URL
             else -> MOCKOON_URL
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.provider_search_activity)
-
-        supportFragmentManager.addOnBackStackChangedListener {
-            if (supportFragmentManager.fragments.isNotEmpty()) {
-                supportFragmentManager.fragments.last {
-                    (it as BaseFragment).onVisible()
-                    return@last true
-                }
-            }
         }
     }
 

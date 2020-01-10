@@ -5,6 +5,9 @@
     <data>
 
         <variable
+            name="endpoint"
+            type="String" />
+        <variable
             name="selectedEnvironmentIndex"
             type="Integer" />
     </data>
@@ -62,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:enabled="@{selectedEnvironmentIndex == 2 ? true : false}"
                 android:inputType="textPersonName"
-                android:text="@string/hint_endpoint" />
+                android:text="@{endpoint}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
