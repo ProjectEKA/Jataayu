@@ -1,57 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <variable name="selectedEnvironmentIndex" type="Integer"/>
+
+        <variable
+            name="selectedEnvironmentIndex"
+            type="Integer" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_root"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:padding="10dp">
+        android:id="@+id/layout_root"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <RadioGroup
-                android:id="@+id/rg_environment_options"
-                android:layout_width="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/rg_environment_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/rb_prod"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="8dp">
-            <RadioButton
-                    android:id="@+id/rb_prod"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:text="@string/env_prod"/>
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="@string/env_prod" />
 
             <RadioButton
-                    android:id="@+id/rb_test"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/env_test"/>
+                android:id="@+id/rb_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/env_test" />
 
             <RadioButton
-                    android:id="@+id/rb_custom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/env_custom"/>
+                android:id="@+id/rb_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/env_custom" />
         </RadioGroup>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_endpoint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/content_padding_large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rg_environment_options">
+            <EditText
                 android:id="@+id/et_endpoint"
                 android:layout_width="match_parent"
-                android:inputType="textPersonName"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_endpoint"
                 android:enabled="@{selectedEnvironmentIndex == 2 ? true : false}"
+                android:inputType="textPersonName"
+                android:text="@string/hint_endpoint" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_endpoint">
+            <EditText
+                android:id="@+id/et_auth_token"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/content_padding_large"
+                android:hint="@string/hint_authtoken"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rg_environment_options"
-                android:layout_marginBottom="@dimen/content_padding_large">
-        </EditText>
+                app:layout_constraintTop_toBottomOf="@id/rg_environment_options" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

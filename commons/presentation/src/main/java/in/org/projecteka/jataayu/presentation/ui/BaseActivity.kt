@@ -62,12 +62,18 @@ abstract class BaseActivity : AppCompatActivity() {
 
         alertDialogBuilder.setCancelable(false).setPositiveButton(getString(android.R.string.ok)) { _, _ ->
             run {
-                networkPrefDialogBinding.etEndpoint.text?.toString()?.let {
-                    NetworkSharedPrefsManager.setNetworkPref(
-                        context = this@BaseActivity,
-                        environmentIndex = networkPrefDialogBinding.rgEnvironmentOptions.indexOfChild(radioButton),
-                        endpoint = it
-                    )
+                networkPrefDialogBinding.apply {
+                    etEndpoint.text?.toString()?.let {
+                        NetworkSharedPrefsManager.setNetworkPref(
+                            context = this@BaseActivity,
+                            environmentIndex = rgEnvironmentOptions.indexOfChild(radioButton), endpoint = it
+                        )
+                    }
+                    etAuthToken.text?.toString()?.let {
+                        NetworkSharedPrefsManager.setAuthToken(context = this@BaseActivity,
+                            authToken = etAuthToken.text.toString()
+                        )
+                    }
                 }
             }
         }.setNegativeButton(getString(android.R.string.cancel)) { dialog, _ -> dialog.cancel() }

@@ -4,4 +4,5 @@
     <string name="env_test">Test</string>
     <string name="env_custom">Custom</string>
     <string name="hint_endpoint">http://10.132.3.152:8080</string>
+    <string name="hint_authtoken">Auth Token</string>
 </resources>
