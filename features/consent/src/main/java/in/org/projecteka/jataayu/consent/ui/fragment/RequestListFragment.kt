@@ -1,6 +1,7 @@
 package `in`.org.projecteka.jataayu.consent.ui.fragment
 
 import DividerItemDecorator
+import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
 import `in`.org.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.org.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
@@ -11,6 +12,7 @@ import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapt
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.org.projecteka.jataayu.util.extension.startActivity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,15 +21,17 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.consent_request_fragment.*
+import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 
-class ConsentRequestFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener {
+class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 
@@ -41,7 +45,7 @@ class ConsentRequestFragment : BaseFragment(), ItemClickCallback, AdapterView.On
     }
 
     companion object {
-        fun newInstance() = ConsentRequestFragment()
+        fun newInstance() = RequestListFragment()
     }
 
     private val viewModel: ConsentViewModel by sharedViewModel()
@@ -69,7 +73,7 @@ class ConsentRequestFragment : BaseFragment(), ItemClickCallback, AdapterView.On
     }
 
     private fun initBindings() {
-        binding.requestCount = getString(`in`.org.projecteka.jataayu.consent.R.string.all_requests, 0)
+        binding.requestCount = getString(R.string.all_requests, 0)
         binding.listener = this
         binding.hideRequestsList = true
         binding.progressBarVisibility = View.GONE
@@ -89,17 +93,10 @@ class ConsentRequestFragment : BaseFragment(), ItemClickCallback, AdapterView.On
         rvConsents.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = GenericRecyclerViewAdapter(
-                this@ConsentRequestFragment,
+                this@RequestListFragment,
                 requests
             )
-            addItemDecoration(
-                DividerItemDecorator(
-                    ContextCompat.getDrawable(
-                        context!!,
-                        `in`.org.projecteka.jataayu.consent.R.color.transparent
-                    )!!
-                )
-            )
+            addItemDecoration(DividerItemDecorator(getDrawable(context!!, R.color.transparent)!!))
         }
         initSpinner(selectedSpinnerPosition)
     }
@@ -108,11 +105,8 @@ class ConsentRequestFragment : BaseFragment(), ItemClickCallback, AdapterView.On
         binding.progressBarVisibility = View.GONE
     }
 
-    override fun onItemClick(
-        iDataBindingModel: IDataBindingModel,
-        itemViewBinding: ViewDataBinding
-    ) {
-        activity?.startActivity(Intent(getActivity(), ConsentDetailsActivity::class.java))
+    override fun onItemClick(iDataBindingModel: IDataBindingModel, itemViewBinding: ViewDataBinding) {
+        startActivity(ConsentDetailsActivity::class.java)
+        EventBus.getDefault().postSticky(iDataBindingModel as Consent)
     }
-
 }

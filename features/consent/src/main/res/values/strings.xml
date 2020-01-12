@@ -13,11 +13,13 @@
     <string name="edit">Edit</string>
     <string name="requests_informatio_type">Requests information type</string>
     <string name="deny">deny</string>
-    <string name="grand_request">grand request</string>
+    <string name="grant_request">Grant request</string>
     <string name="consent_expiry">Consent expiry</string>
     <string name="no_new_consent_requests">No new consent requests</string>
 
     <string name="status_all_requests">All requests (%d)</string>
     <string name="status_active_requests">Requested (%d)</string>
     <string name="status_expired_requests">Expired (%d)</string>
+    <string name="to">to</string>
+    <string name="from">From</string>
 </resources>

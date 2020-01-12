@@ -1,4 +1,4 @@
-import dependancies.Modules
+import dependancies.*
 
 apply from: rootProject.file("android-library-commons.gradle")
 apply from: rootProject.file("jacoco.gradle")
@@ -15,4 +15,6 @@ android {
 
 dependencies {
     api project(Modules.core)
+
+    implementation Deps.GreenRobot.eventBus
 }

@@ -39,4 +39,8 @@ data class Consent(
     fun getRequestIssueRelativeTimeSpan(context: Context): String {
         return String.format(context.getString(R.string.requested_timespan), DateTimeUtils.getRelativeTimeSpan(createdAt))
     }
+
+    fun getConsentExpiry(): String {
+        return DateTimeUtils.getFormattedDateTime(permission.dataExpiryAt)
+    }
 }

@@ -36,6 +36,7 @@ object LibVersions {
     const val mockWebServer = "4.2.1"
     const val timber = "4.7.1"
     const val jacocoPalantir = "0.4.0"
+    const val eventBus = "3.1.1"
 }
 
 object Modules {
@@ -103,6 +104,10 @@ object Deps {
 
     object Logger {
         const val timber = "com.jakewharton.timber:timber:${LibVersions.timber}"
+    }
+
+    object GreenRobot {
+        const val eventBus = "org.greenrobot:eventbus:${LibVersions.eventBus}"
     }
 
     object Tools {

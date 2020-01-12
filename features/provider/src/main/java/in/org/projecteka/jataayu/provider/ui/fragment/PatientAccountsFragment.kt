@@ -25,7 +25,7 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback {
         fun newInstance() = PatientAccountsFragment()
     }
 
-    val viewModel : ProviderSearchViewModel by sharedViewModel()
+    private val viewModel : ProviderSearchViewModel by sharedViewModel()
 
     private lateinit var binding: PatientAccountsFragmentBinding
 
