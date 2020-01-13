@@ -3,9 +3,6 @@ package `in`.org.projecteka.jataayu.ui
 import `in`.org.projecteka.jataayu.R
 import `in`.org.projecteka.jataayu.consent.ui.fragment.ConsentHostFragment
 import `in`.org.projecteka.jataayu.databinding.ActivityLauncherBinding
-import `in`.org.projecteka.jataayu.module.networkModule
-import `in`.org.projecteka.jataayu.module.repositoryModule
-import `in`.org.projecteka.jataayu.module.viewModelModule
 import `in`.org.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
 import `in`.org.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
@@ -17,9 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
 import kotlinx.android.synthetic.main.activity_launcher.*
-import org.koin.core.context.loadKoinModules
-import org.koin.core.context.startKoin
-import org.koin.core.context.stopKoin
 
 
 class LauncherActivity : BaseActivity() {

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Link Provider</string>
-    <string name="search_by_provider_name">Search by provider name</string>
     <string name="no_results_found">No results found</string>
     <string name="search_health_information_provider">Search by provider\'s name or location</string>
     <string name="we_will_look_up">We will look up patient information based on</string>
@@ -11,7 +10,6 @@
     <string name="select_accounts">Select the accounts to link</string>
     <string name="link_accounts">Link accounts</string>
     <string name="looking_up_info">We are looking up for\nyour information\n\nThis may take up a few seconds...</string>
-    <string name="loading_requests">We are loading your consent requests\n\nThis may take up a few seconds...</string>
     <string name="link_selected">Link selected</string>
     <string name="we_will_be_sending_info_to">We will be sending following information to</string>
     <string name="we_found_following_accounts_with">We found following accounts with</string>

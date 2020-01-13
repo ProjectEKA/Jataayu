@@ -41,7 +41,7 @@ subprojects {
                     minSdkVersion Config.minSdkVersion
                     targetSdkVersion Config.compileSdkVersion
 
-                    testInstrumentationRunner "in.org.projecteka.jataayu.provider.JataayuJUnitRunner"
+                    testInstrumentationRunner "in.org.projecteka.jataayu.testUtil.JataayuJUnitRunner"
                 }
 
                 compileOptions {
@@ -76,26 +76,6 @@ subprojects {
                         signingConfig = signingConfigs.release
                     }
                 }
-
-                //<editor-fold desc="Source Sets DSL">
-                sourceSets {
-                    main.java.srcDirs += 'src/main/java'
-                    test.java.srcDirs += 'src/test/java'
-                    androidTest.java.srcDirs += 'src/androidTest/java'
-
-                    String sharedTestJavaDir = 'src/sharedTest/java'
-                    String sharedTestResourcesDir = 'src/sharedTest/resources'
-
-                    test {
-                        java.srcDirs += sharedTestJavaDir
-                        resources.srcDirs += sharedTestResourcesDir
-                    }
-                    androidTest {
-                        java.srcDirs += sharedTestJavaDir
-                        resources.srcDirs += sharedTestResourcesDir
-                    }
-                }
-                //</editor-fold>
 
                 dataBinding {
                     enabled = true

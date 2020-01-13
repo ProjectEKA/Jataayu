@@ -45,7 +45,6 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback{
         eventBusInstance.removeStickyEvent(consent)
     }
 
-
     @Subscribe
     public fun onConsentReceived(consent: Consent) {}
 

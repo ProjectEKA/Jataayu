@@ -156,7 +156,6 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         binding.svProvider.setSelection(lastQuery.length)
         binding.inEditMode = true
         binding.svProvider.requestFocus()
-        binding.tvSearchProviderLabel.text = getString(R.string.search_by_provider_name)
         setTitle(R.string.link_provider)
         binding.btnSearch.text = getString(R.string.link_provider)
     }

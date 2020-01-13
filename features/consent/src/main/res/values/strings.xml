@@ -16,7 +16,7 @@
     <string name="grant_request">Grant request</string>
     <string name="consent_expiry">Consent expiry</string>
     <string name="no_new_consent_requests">No new consent requests</string>
-
+    <string name="loading_requests">We are loading your consent requests\n\nThis may take up a few seconds...</string>
     <string name="status_all_requests">All requests (%d)</string>
     <string name="status_active_requests">Requested (%d)</string>
     <string name="status_expired_requests">Expired (%d)</string>

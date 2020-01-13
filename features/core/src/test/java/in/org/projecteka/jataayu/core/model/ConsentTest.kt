@@ -1,6 +1,6 @@
 package `in`.org.projecteka.jataayu.core.model
 
-import TestUtils
+import `in`.org.projecteka.jataayu.util.TestUtils
 import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
 import org.junit.Before

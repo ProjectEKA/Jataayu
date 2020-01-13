@@ -1,0 +1,16 @@
+{
+  "patient": {
+    "referenceNumber": "ABCXXX01",
+    "display": "Adxxxx xxxni",
+    "careContexts": [
+      {
+        "referenceNumber": "ABCXXX03",
+        "display": "General Diagnosis"
+      },
+      {
+        "referenceNumber": "ABCXXX02",
+        "display": "Cancer Leukemia"
+      }
+    ]
+  }
+}
