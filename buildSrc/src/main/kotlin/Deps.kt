@@ -1,3 +1,4 @@
+
 package dependancies
 
 import org.gradle.api.JavaVersion
@@ -37,6 +38,7 @@ object LibVersions {
     const val timber = "4.7.1"
     const val jacocoPalantir = "0.4.0"
     const val eventBus = "3.1.1"
+    const val kappuccino = "1.2.1"
 }
 
 object Modules {
@@ -95,6 +97,7 @@ object Deps {
         object Helpers {
             const val gson = "com.google.code.gson:gson:${LibVersions.gson}"
             const val apacheCommonsIo = "org.apache.commons:commons-io:${LibVersions.apacheCommonsIo}"
+            const val kappuccino = "br.com.concretesolutions:kappuccino:${LibVersions.kappuccino}"
         }
     }
 

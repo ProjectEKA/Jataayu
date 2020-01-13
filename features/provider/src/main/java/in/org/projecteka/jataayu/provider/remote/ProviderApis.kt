@@ -11,6 +11,6 @@ interface ProviderApis {
     @GET("providers")
     fun getProviders(@Query("name") name: String): Call<List<ProviderInfo>>
 
-    @POST("patients")
+    @POST("patients/discover")
     fun getPatientAccounts(@Query("identifier") identifier: String): Call<PatientDiscoveryResponse>
 }

@@ -47,5 +47,7 @@ dependencies {
     api project(Modules.presentation)
     api project(Modules.account)
 
+    androidTestImplementation Deps.Testing.Helpers.kappuccino
+
     kaptAndroidTest Deps.AndroidX.dataBindingCompiler
 }
