@@ -29,9 +29,11 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/lbl_no_new_requests"
             style="@style/TextAppearance.ListItemHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            tools:visibility="gone"
             android:text="@string/no_new_consent_requests"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -42,7 +44,7 @@
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_request_filter"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="@dimen/content_margin_small"
             android:layout_marginTop="@dimen/content_margin_extra_extra_large"
             android:drawSelectorOnTop="true"
@@ -58,16 +60,20 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvConsents"
+            android:fadingEdge="vertical"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="@dimen/recycler_view_fading_edge_length"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sp_request_filter"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:toggledVisibility="@{!hideRequestsList}"
             tools:listitem="@layout/consent_item" />
 
 
         <RelativeLayout
+            android:id="@+id/progressbar_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/progressbar_dimmed_bg"
@@ -88,7 +94,7 @@
                 android:layout_centerInParent="true" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/progressbar_text"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

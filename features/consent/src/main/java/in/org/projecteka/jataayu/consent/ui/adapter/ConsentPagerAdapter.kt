@@ -26,9 +26,6 @@ class ConsentPagerAdapter(private val context: Context, fm: FragmentManager) :
             ConsentListFragment.newInstance()
         }
     }
-    override fun getItemPosition(`object`: Any): Int {
-        return PagerAdapter.POSITION_NONE
-    }
 
     override fun getPageTitle(position: Int): CharSequence? {
         return context.resources.getString(TAB_TITLES[position])

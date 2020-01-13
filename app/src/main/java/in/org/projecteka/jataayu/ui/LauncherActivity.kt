@@ -18,6 +18,9 @@ import kotlinx.android.synthetic.main.activity_launcher.*
 
 class LauncherActivity : BaseActivity() {
     private lateinit var binding: ActivityLauncherBinding
+    lateinit var active: Fragment
+    lateinit var accountsFragment: Fragment
+    lateinit var consentFragment: Fragment
 
     private val stateChangeListener = object : View.OnAttachStateChangeListener {
         override fun onViewDetachedFromWindow(v: View?) {
@@ -35,7 +38,7 @@ class LauncherActivity : BaseActivity() {
             this,
             R.layout.activity_launcher
         )
-
+        initFragments()
         initBindings()
 
         bottom_navigation.addOnAttachStateChangeListener(stateChangeListener)
@@ -45,38 +48,43 @@ class LauncherActivity : BaseActivity() {
         }
     }
 
+    private fun initFragments() {
+        accountsFragment = UserAccountsFragment.newInstance()
+        consentFragment = ConsentHostFragment.newInstance()
+        active = accountsFragment
+
+        getFragmentTransaction(ConsentHostFragment::class.java.name, consentFragment).hide(consentFragment).commit()
+        getFragmentTransaction(UserAccountsFragment::class.java.name, accountsFragment).commit()
+    }
+
+    private fun getFragmentTransaction(tag: String, fragment: Fragment): FragmentTransaction {
+        return supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment, tag)
+    }
+
     private fun initBindings() {
         binding.bottomNavListener = OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_consents -> showConsent()
-                R.id.action_accounts -> showAccounts()
+                R.id.action_accounts -> {
+                    showAccounts()
+                }
+                R.id.action_consents -> {
+                    showConsent()
+                }
             }
             true
         }
     }
 
-    override fun replaceFragment(fragment: Fragment) {
-        val backStateName = fragment.javaClass.name
-
-        val manager = supportFragmentManager
-        val popped = manager.popBackStackImmediate(backStateName, 0)
-
-        if (!popped && manager.findFragmentByTag(backStateName) == null) { //fragment not in back stack, create it.
-            manager.beginTransaction()
-            .replace(R.id.fragment_container, fragment, backStateName)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            .commit()
-            manager.executePendingTransactions()
-        }
-    }
-
     private fun showAccounts() {
+        supportFragmentManager.beginTransaction().hide(active).show(accountsFragment).commit();
+        active = accountsFragment
         fab.show()
-        replaceFragment(UserAccountsFragment.newInstance())
     }
 
     private fun showConsent() {
         fab.hide()
-        replaceFragment(ConsentHostFragment.newInstance())
+        supportFragmentManager.beginTransaction().hide(active).show(consentFragment).commit();
+        active = consentFragment
     }
+
 }

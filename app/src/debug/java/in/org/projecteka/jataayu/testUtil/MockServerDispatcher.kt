@@ -4,6 +4,7 @@ import android.content.Context
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
+import java.util.concurrent.TimeUnit
 
 
 class MockServerDispatcher {
@@ -18,6 +19,11 @@ class MockServerDispatcher {
             return when {
                 request.path!!.startsWith("/providers?name=H") -> successResponse.setBody(
                     AssetReaderUtil.asset(context, "health_insurance_providers.json"))
+
+                request.path!!.startsWith("/requests") -> successResponse.setBody(
+                    AssetReaderUtil.asset(context, "consent_list_response.json"))
+                    .setBodyDelay(300, TimeUnit.MILLISECONDS)
+
                 else -> successResponse.setBody(emptyProvidersResponse)
             }
         }

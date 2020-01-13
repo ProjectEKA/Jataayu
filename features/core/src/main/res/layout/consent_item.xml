@@ -42,7 +42,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_requested_date"
             app:strokeColor="@color/black"
-            card_view:cardElevation="8dp">
+            card_view:cardElevation="@dimen/cardview_elevation">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

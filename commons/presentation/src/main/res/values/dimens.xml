@@ -15,7 +15,7 @@
     <dimen name="content_padding_large">8dp</dimen>
     <dimen name="content_padding_extra_large">10dp</dimen>
 
-    <dimen name="carview_elevation">4dp</dimen>
+    <dimen name="cardview_elevation" tools:ignore="MissingDefaultResource">5dp</dimen>
 
     <dimen name="content_margin_extra_small">12dp</dimen>
     <dimen name="content_margin_small">14dp</dimen>
@@ -50,4 +50,5 @@
     <dimen name="fab_margin_bottom">72dp</dimen>
     <dimen name="design_bottom_navigation_item_max_width" tools:override="true">600dp</dimen>
     <dimen name="design_bottom_navigation_active_item_max_width" tools:override="true">600dp</dimen>
+    <dimen name="recycler_view_fading_edge_length">20dp</dimen>
 </resources>

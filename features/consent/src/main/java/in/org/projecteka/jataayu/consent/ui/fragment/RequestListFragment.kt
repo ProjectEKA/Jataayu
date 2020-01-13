@@ -32,24 +32,13 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener {
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        when (position) {
-            1 -> renderConsentRequests((viewModel.requests).filter { it.status.equals(RequestStatus.REQUESTED) }, position)
-            2 -> renderConsentRequests((viewModel.requests).filter { it.status.equals(RequestStatus.EXPIRED)}, position)
-            else ->
-                renderConsentRequests(viewModel.requests, position)
-        }
-    }
+    private lateinit var binding: ConsentRequestFragmentBinding
 
     companion object {
         fun newInstance() = RequestListFragment()
-    }
 
+    }
     private val viewModel: ConsentViewModel by sharedViewModel()
-    private lateinit var binding: ConsentRequestFragmentBinding
 
     private val consentObserver = Observer<ConsentsListResponse?> { renderConsentRequests(it?.requests!!, binding.spRequestFilter.selectedItemPosition) }
 
@@ -108,5 +97,16 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
     override fun onItemClick(iDataBindingModel: IDataBindingModel, itemViewBinding: ViewDataBinding) {
         startActivity(ConsentDetailsActivity::class.java)
         EventBus.getDefault().postSticky(iDataBindingModel as Consent)
+    }
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when (position) {
+            1 -> renderConsentRequests((viewModel.requests).filter { it.status.equals(RequestStatus.REQUESTED) }, position)
+            2 -> renderConsentRequests((viewModel.requests).filter { it.status.equals(RequestStatus.EXPIRED)}, position)
+            else ->
+                renderConsentRequests(viewModel.requests, position)
+        }
     }
 }

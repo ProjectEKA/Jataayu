@@ -8,8 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.fragment_consent_host.*
-
+import kotlinx.android.synthetic.main.activity_consent.*
 
 class ConsentHostFragment : BaseFragment() {
 
@@ -19,9 +18,8 @@ class ConsentHostFragment : BaseFragment() {
         fun newInstance() = ConsentHostFragment()
     }
 
-    val onPageChangeListener = object : ViewPager.OnPageChangeListener {
+    private val onPageChangeListener = object : ViewPager.OnPageChangeListener {
         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            view_pager.adapter?.notifyDataSetChanged()
         }
 
         override fun onPageSelected(position: Int) {
@@ -29,7 +27,6 @@ class ConsentHostFragment : BaseFragment() {
         }
 
         override fun onPageScrollStateChanged(state: Int) {
-            view_pager.adapter?.notifyDataSetChanged()
         }
 
     }
