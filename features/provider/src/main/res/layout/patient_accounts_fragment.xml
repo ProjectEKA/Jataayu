@@ -20,6 +20,10 @@
         <variable
             name="canLinkAccounts"
             type="Boolean" />
+        
+        <variable
+            name="clickHandler"
+            type="in.org.projecteka.jataayu.provider.ui.handler.PatientAccountsScreenHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -111,6 +115,7 @@
             <Button
                 android:enabled="@{canLinkAccounts}"
                 style="@style/Button"
+                android:onClick="@{clickHandler::onLinkAccountsClick}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/link_selected"

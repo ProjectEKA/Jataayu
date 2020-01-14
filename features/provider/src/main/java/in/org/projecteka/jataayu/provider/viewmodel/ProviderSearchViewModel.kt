@@ -1,6 +1,7 @@
 package `in`.org.projecteka.jataayu.provider.viewmodel
 
 import `in`.org.projecteka.jataayu.core.model.ProviderInfo
+import `in`.org.projecteka.jataayu.provider.model.LinkAccountsResponse
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.org.projecteka.jataayu.util.extension.EMPTY
@@ -16,6 +17,7 @@ class ProviderSearchViewModel(val providerRepository: ProviderRepository) : View
     val providers = liveDataOf<List<ProviderInfo>>()
     var providersList = emptyList<ProviderInfo>()
     val patientDiscoveryResponse = liveDataOf<PatientDiscoveryResponse>()
+    val linkAccountsResponse = liveDataOf<LinkAccountsResponse>()
 
     internal var selectedProviderName = String.EMPTY
 
@@ -27,8 +29,8 @@ class ProviderSearchViewModel(val providerRepository: ProviderRepository) : View
                 }
                 override fun onResponse(call: Call<List<ProviderInfo>?>, response: Response<List<ProviderInfo>?>) {
                     response.body()?.let {
-                        providers.value = response.body()
-                        providersList = response.body()!!.toList()
+                        providers.value = it
+                        providersList = it.toList()
                     }
                  }
             })
@@ -45,9 +47,22 @@ class ProviderSearchViewModel(val providerRepository: ProviderRepository) : View
                 }
 
                 override fun onResponse(call: Call<PatientDiscoveryResponse>, response: Response<PatientDiscoveryResponse>) {
-                    response.body()?.let { patientDiscoveryResponse.value = response.body() }
+                    response.body()?.let { patientDiscoveryResponse.value = it }
                 }
 
+            })
+    }
+
+    fun linkPatientAccounts(patientDiscoveryResponse: PatientDiscoveryResponse) {
+        providerRepository.linkPatientAccounts(patientDiscoveryResponse)
+            .enqueue(object: Callback<LinkAccountsResponse>{
+                override fun onFailure(call: Call<LinkAccountsResponse>, t: Throwable) {
+                    Timber.e(t, "Failed to link patients accounts")
+                }
+
+                override fun onResponse(call: Call<LinkAccountsResponse>, response: Response<LinkAccountsResponse>) {
+                    response.body()?.let { linkAccountsResponse.value = it }
+                }
             })
     }
 

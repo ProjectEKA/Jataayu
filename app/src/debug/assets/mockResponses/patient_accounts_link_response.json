@@ -1,0 +1,12 @@
+{
+  "transactionId": "string",
+  "link": {
+    "referenceNumber": "string",
+    "authenticationType": "DIRECT",
+    "meta": {
+      "communicationMedium": "M0BILE",
+      "communicationHint": "string",
+      "communicationExpiry": "2019-12-30T12:01:55Z"
+    }
+  }
+}
