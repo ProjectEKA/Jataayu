@@ -34,7 +34,7 @@
             android:ellipsize="marquee"
             android:gravity="start|center_vertical"
             android:singleLine="true"
-            android:text="@{providerInfo.providerIdentifier.name}"
+            android:text="@{providerInfo.hip.name}"
             android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
             android:textSize="@dimen/text_size_small"
             app:layout_constraintEnd_toEndOf="parent"

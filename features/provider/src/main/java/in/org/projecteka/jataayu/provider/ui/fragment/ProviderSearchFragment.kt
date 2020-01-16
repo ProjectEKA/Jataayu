@@ -2,6 +2,7 @@ package `in`.org.projecteka.jataayu.provider.ui.fragment
 
 import `in`.org.projecteka.featuresprovider.R
 import `in`.org.projecteka.featuresprovider.databinding.ProviderSearchFragmentBinding
+import `in`.org.projecteka.jataayu.core.model.Hip
 import `in`.org.projecteka.jataayu.core.model.ProviderInfo
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
@@ -27,19 +28,18 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import timber.log.Timber
 
 class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCallback,
     ProviderSearchScreenHandler {
+    private lateinit var binding: ProviderSearchFragmentBinding
 
     companion object {
         fun newInstance() = ProviderSearchFragment()
+
     }
-
     private val viewModel: ProviderSearchViewModel by sharedViewModel()
-    private lateinit var binding: ProviderSearchFragmentBinding
     private lateinit var lastQuery: String
-
+    private lateinit var selectedProvider : ProviderInfo
     private lateinit var providersList: ProviderSearchAdapter
 
     private val providersObserver = Observer<List<ProviderInfo>> { providerNames ->
@@ -114,8 +114,9 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         providersList.updateData(lastQuery, emptyList())
         binding.inEditMode = false
         UiUtils.hideKeyboard(activity as Activity)
-        binding.tvSelectedProvider.text = (iDataBindingModel as ProviderInfo).nameCityPair()
-        viewModel.selectedProviderName = iDataBindingModel.nameCityPair()
+        selectedProvider = iDataBindingModel as ProviderInfo
+        binding.tvSelectedProvider.text = selectedProvider.nameCityPair()
+        viewModel.selectedProviderName = selectedProvider.nameCityPair()
         binding.tvSearchProviderLabel.text = getString(R.string.we_will_be_sending_info_to)
         binding.svProvider.clearFocus()
         binding.tvSelectedProvider.postDelayed({ binding.tvSelectedProvider.requestFocus() }, 100)
@@ -161,12 +162,12 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     override fun onSearchButtonClick(view: View) {
-        viewModel.getPatientAccounts(viewModel.mobile)
-        showSearchLoding()
+        viewModel.getPatientAccounts(Hip(selectedProvider.hip.id, selectedProvider.hip.name))
+        showSearchLoading()
         observePatients()
     }
 
-    private fun showSearchLoding() {
+    private fun showSearchLoading() {
         binding.progressBarVisibility = VISIBLE
     }
 

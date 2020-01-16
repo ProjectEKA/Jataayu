@@ -1,5 +1,6 @@
 package `in`.org.projecteka.jataayu.provider.viewmodel
 
+import `in`.org.projecteka.jataayu.core.model.Hip
 import `in`.org.projecteka.jataayu.core.model.ProviderInfo
 import `in`.org.projecteka.jataayu.provider.model.LinkAccountsResponse
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
@@ -35,12 +36,12 @@ class ProviderSearchViewModel(val providerRepository: ProviderRepository) : View
                  }
             })
         } else{
-            providers.postValue(providersList.filter { it.providerIdentifier.name.contains(query, true) })
+            providers.postValue(providersList.filter { it.hip.name.contains(query, true) })
         }
     }
 
-    fun getPatientAccounts(identifier: String) {
-        providerRepository.getPatientAccounts(identifier)
+    fun getPatientAccounts(hip: Hip) {
+        providerRepository.getPatientAccounts(hip)
             .enqueue(object : Callback<PatientDiscoveryResponse> {
                 override fun onFailure(call: Call<PatientDiscoveryResponse>, t: Throwable) {
                     Timber.e(t, "Failed to get patients accounts")

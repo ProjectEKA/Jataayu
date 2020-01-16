@@ -53,6 +53,7 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
         binding.name = patient?.display
         binding.accountReferenceNumber = patient?.referenceNumber
         binding.canLinkAccounts = viewModel.canLinkAccounts()
+        binding.clickHandler = this
     }
 
     private fun renderPatientAccounts() {

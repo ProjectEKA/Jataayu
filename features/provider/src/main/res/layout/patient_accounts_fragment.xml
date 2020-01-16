@@ -114,8 +114,10 @@
 
             <Button
                 android:enabled="@{canLinkAccounts}"
+                android:clickable="@{canLinkAccounts}"
                 style="@style/Button"
                 android:onClick="@{clickHandler::onLinkAccountsClick}"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/link_selected"

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ProviderInfo(
     @SerializedName("city") val city: String,
-    @SerializedName("identifier") val providerIdentifier: ProviderIdentifier,
+    @SerializedName("identifier") val hip: Hip,
     @SerializedName("telephone") val telephone: String,
     @SerializedName("type") val type: String
 ) : IDataBindingModel {
@@ -15,5 +15,5 @@ data class ProviderInfo(
 
     override fun dataBindingVariable() = BR.providerInfo
 
-    fun nameCityPair() = "${providerIdentifier.name}, $city"
+    fun nameCityPair() = "${hip.name}, $city"
 }
