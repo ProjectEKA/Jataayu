@@ -14,6 +14,8 @@
     <color name="black">#000</color>
     <color name="transparent">#00000000</color>
 
+    <color name="chip_background">#DDDDDD</color>
+
     <color name="button_background_color" tools:override="true">@color/colorPrimary</color>
     <color name="button_text_color" tools:override="true">@color/white</color>
     <color name="bottom_bar_bg_color">#E8EDE8</color>

@@ -12,7 +12,6 @@ data class Consent(
     @SerializedName("id") val id: String,
     @SerializedName("createdAt") val createdAt: String,
     @SerializedName("purpose") val purpose: Purpose,
-    @SerializedName("patient") val patient: Patient,
     @SerializedName("hip") val hip: Hip,
     @SerializedName("hiu") val hiu: HiuRequester,
     @SerializedName("requester") val requester: Requester,

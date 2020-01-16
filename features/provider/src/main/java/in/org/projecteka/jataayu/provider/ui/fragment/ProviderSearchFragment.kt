@@ -97,7 +97,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     override fun onVisible() {
-        if (!binding?.inEditMode!!)
+        if (!binding.inEditMode!!)
             setTitle(R.string.confirm_provider)
     }
 

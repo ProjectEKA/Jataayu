@@ -35,7 +35,7 @@
                     android:id="@+id/btn_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/secondary_button_height"
-                    android:background="@drawable/secondary_button_background"
+                    style="@style/Button.Secondary"
                     android:foreground="?attr/selectableItemBackground"
                     android:text="@string/edit"
                     app:layout_constraintRight_toRightOf="parent"
@@ -150,16 +150,15 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_requests_information_from_label" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvRequestInfoTypes"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cg_request_info_types"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/content_margin_medium"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/content_margin_medium"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_requests_info_type_label"
-                    tools:listitem="@layout/consent_request_info_type_item"
-                    tools:visibility="gone" />
+                    android:layout_height="wrap_content" >
+                </com.google.android.material.chip.ChipGroup>
 
                 <TextView
                     android:id="@+id/tv_expiry_label"
@@ -169,7 +168,7 @@
                     android:layout_marginTop="@dimen/content_margin_extra_small"
                     android:text="@string/consent_expiry"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rvRequestInfoTypes" />
+                    app:layout_constraintTop_toBottomOf="@id/cg_request_info_types" />
 
                 <TextView
                     android:id="@+id/tv_expiry"
@@ -207,6 +206,7 @@
                 android:background="@drawable/secondary_button_background_red"
                 android:drawableLeft="@drawable/ic_deny"
                 android:text="@string/deny"
+                android:textColor="@color/red"
                 tools:textColor="@color/red" />
 
             <Button

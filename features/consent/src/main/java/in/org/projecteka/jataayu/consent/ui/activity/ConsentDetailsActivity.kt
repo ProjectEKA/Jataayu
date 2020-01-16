@@ -13,6 +13,5 @@ class ConsentDetailsActivity : BaseActivity() {
         DataBindingUtil.setContentView<ActivityConsentDetailsBinding>(this, R.layout.activity_consent_details)
         setSupportActionBar(toolbar)
         setTitle(R.string.new_request)
-        replaceFragment(ConsentDetailsFragment.newInstance())
     }
 }

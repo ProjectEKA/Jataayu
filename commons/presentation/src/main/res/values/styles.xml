@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textAppearance">@style/TextAppearance</item>
         <item name="toolbarStyle">@style/Toolbar</item>
-<!--        <item name="buttonStyle">@style/Button</item>-->
+        <item name="chipStyle">@style/Chip</item>
+        <item name="buttonStyle">@style/Button</item>
         <item name="android:tabWidgetStyle">@style/AppTabLayout</item>
         <item name="android:textViewStyle">@style/TextAppearance</item>
     </style>
@@ -65,7 +66,7 @@
     <style name="Button" parent="Widget.MaterialComponents.Button">
         <item name="android:height">@dimen/button_height</item>
         <item name="android:textAppearance">@style/TextAppearance.Button</item>
-        <item name="android:elevation">4dp</item>
+        <item name="android:elevation">@dimen/cardview_elevation</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:drawablePadding">@dimen/content_margin_small</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
@@ -147,4 +148,14 @@
         <item name="itemTextAppearanceInactive">@style/TextAppearance.AllCaps.Inactive</item>
     </style>
 
+    <style name="Chip" parent="Widget.MaterialComponents.Chip.Choice">
+    </style>
+
+    <style name="Chip.Editable" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/white</item>
+        <item name="chipIcon">@drawable/chip_selector</item>
+        <item name="chipIconVisible">true</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStrokeColor">@color/colorPrimary</item>
+    </style>
 </resources>
