@@ -2,6 +2,8 @@ import dependancies.*
 
 apply from: rootProject.file("android-library-commons.gradle")
 apply from: rootProject.file("jacoco.gradle")
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     buildTypes {
@@ -17,4 +19,5 @@ dependencies {
     api project(Modules.core)
 
     implementation Deps.GreenRobot.eventBus
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

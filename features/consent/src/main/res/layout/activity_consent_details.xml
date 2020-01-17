@@ -23,13 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ui.fragment.BaseActivity">
-
-            <fragment
-                android:id="@+id/consent_details_fragment"
-                android:name="in.org.projecteka.jataayu.consent.ui.activity.ConsentDetailsFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:layout="@layout/consent_details_fragment" />
         </FrameLayout>
 
     </LinearLayout>

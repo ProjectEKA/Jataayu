@@ -11,7 +11,12 @@ class ConsentDetailsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DataBindingUtil.setContentView<ActivityConsentDetailsBinding>(this, R.layout.activity_consent_details)
+        addFragment(ConsentDetailsFragment.newInstance())
         setSupportActionBar(toolbar)
         setTitle(R.string.new_request)
+    }
+
+    fun editConsentDetails(){
+        addFragment(EditConsentDetailsFragment.newInstance())
     }
 }

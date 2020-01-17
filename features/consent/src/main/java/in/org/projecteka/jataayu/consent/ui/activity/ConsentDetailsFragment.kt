@@ -2,6 +2,7 @@ package `in`.org.projecteka.jataayu.consent.ui.activity
 
 
 
+import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.ConsentDetailsFragmentBinding
 import `in`.org.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.org.projecteka.jataayu.core.model.Consent
@@ -9,6 +10,7 @@ import `in`.org.projecteka.jataayu.core.model.RequestStatus
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.org.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,13 +20,17 @@ import com.google.android.material.chip.Chip
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-class ConsentDetailsFragment : BaseFragment(), ItemClickCallback{
+class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetailsClickHandler {
     private lateinit var binding: ConsentDetailsFragmentBinding
 
     private val eventBusInstance = EventBus.getDefault()
+
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
         itemViewBinding: ViewDataBinding) {
+    }
+    override fun onEditClick(view: View) {
+        (activity as ConsentDetailsActivity).editConsentDetails()
     }
 
     private val viewModel: ConsentViewModel by sharedViewModel()
@@ -45,11 +51,12 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback{
         val consent = eventBusInstance.getStickyEvent(Consent::class.java)
         binding.consent = consent
         binding.requestExpired = consent.status == RequestStatus.REQUESTED
-        eventBusInstance.removeStickyEvent(consent)
 
         for (hiType in consent.hiTypes) {
             binding.cgRequestInfoTypes.addView(newChip(hiType.description))
         }
+
+        binding.editClickHandler = this
     }
 
     @Subscribe
@@ -67,7 +74,7 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback{
     }
 
     private fun newChip(description: String): Chip? {
-        val chip = Chip(context)
+        val chip = Chip(context, null, R.style.Chip_NonEditable)
         chip.text = description
         return chip
     }

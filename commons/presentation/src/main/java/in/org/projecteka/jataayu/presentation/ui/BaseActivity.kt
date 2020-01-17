@@ -13,6 +13,7 @@ import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Com
 import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.setNetworkPref
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.widget.RadioButton
@@ -40,7 +41,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
         supportFragmentManager.apply {
             addOnBackStackChangedListener {
-                if (fragments.isNotEmpty()) fragments.last { (it as BaseFragment).onVisible()
+                if (fragments.isNotEmpty()) fragments.last {
+                    (it as BaseFragment).onVisible()
                     return@last true
                 }
             }
@@ -67,9 +69,11 @@ abstract class BaseActivity : AppCompatActivity() {
             selectedEnvironmentIndex = getEndpointIndex(this@BaseActivity)
 
             rgEnvironmentOptions.setOnCheckedChangeListener { _, _ ->
-                    selectedEnvironmentIndex = rgEnvironmentOptions.indexOfChild(rgEnvironmentOptions.findViewById<RadioButton>(rgEnvironmentOptions.checkedRadioButtonId))
-                    etEndpoint.setText(getUrlForSelectedEnvironment(selectedEnvironmentIndex!!))
-                }
+                selectedEnvironmentIndex = rgEnvironmentOptions.indexOfChild(
+                    rgEnvironmentOptions.findViewById<RadioButton>(rgEnvironmentOptions.checkedRadioButtonId)
+                )
+                etEndpoint.setText(getUrlForSelectedEnvironment(selectedEnvironmentIndex!!))
+            }
         }
 
         alertDialogBuilder.apply {
@@ -95,8 +99,10 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     protected open fun addFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().add(R.id.container, fragment)
-            .addToBackStack(fragment.javaClass.name).commit()
+        supportFragmentManager.beginTransaction().add(R.id.container, fragment).addToBackStack(fragment.javaClass.name)
+            .commit()
+
+        Log.d("TAG", "Backstack ${supportFragmentManager.backStackEntryCount}")
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

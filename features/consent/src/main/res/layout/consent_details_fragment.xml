@@ -11,6 +11,9 @@
         <variable
             name="requestExpired"
             type="Boolean" />
+        <variable
+            name="editClickHandler"
+            type="in.org.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,6 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/secondary_button_height"
                     style="@style/Button.Secondary"
+                    android:onClick="@{editClickHandler::onEditClick}"
                     android:foreground="?attr/selectableItemBackground"
                     android:text="@string/edit"
                     app:layout_constraintRight_toRightOf="parent"

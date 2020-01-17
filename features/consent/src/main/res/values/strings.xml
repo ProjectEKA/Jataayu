@@ -22,4 +22,7 @@
     <string name="status_expired_requests">Expired (%d)</string>
     <string name="to">to</string>
     <string name="from">From</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
