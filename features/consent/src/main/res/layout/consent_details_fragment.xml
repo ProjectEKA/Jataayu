@@ -8,9 +8,11 @@
         <variable
             name="consent"
             type="in.org.projecteka.jataayu.core.model.Consent" />
+
         <variable
             name="requestExpired"
             type="Boolean" />
+
         <variable
             name="editClickHandler"
             type="in.org.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler" />
@@ -33,14 +35,13 @@
                 android:layout_height="1000dp"
                 android:background="@drawable/grey_background_with_border"
                 android:padding="@dimen/content_margin_medium">
-
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/secondary_button_height"
                     style="@style/Button.Secondary"
+                    app:toggledVisibility="@{requestExpired}"
                     android:onClick="@{editClickHandler::onEditClick}"
-                    android:foreground="?attr/selectableItemBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/button_height"
                     android:text="@string/edit"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -50,10 +51,10 @@
                     style="@style/ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Dr. Shruti Nair"
                     android:text="@{consent.requester.name}"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_edit" />
+                    app:layout_constraintTop_toBottomOf="@+id/btn_edit"
+                    tools:text="Dr. Shruti Nair" />
 
                 <TextView
                     android:id="@+id/tv_requester_organization"
@@ -62,13 +63,13 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    tools:text="Infinity Health care and diagnostics"
                     android:text="@{consent.hiu.name}"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_requester_name" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_requester_name"
+                    tools:text="Infinity Health care and diagnostics" />
 
                 <TextView
-                    android:id="@+id/tv_purpose_of_request_label"
+                    android:id="@+id/lbl_purpose_of_request"
                     style="@style/ConsentRequestItemHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -84,13 +85,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_margin_small"
-                    tools:text="General Consulting"
                     android:text="@{consent.purpose.text}"
                     app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_purpose_of_request_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_purpose_of_request"
+                    tools:text="General Consulting" />
 
                 <TextView
-                    android:id="@+id/tv_requests_information_duration_label"
+                    android:id="@+id/lbl_requests_information_duration"
                     style="@style/ConsentRequestItemHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -102,14 +103,14 @@
 
 
                 <TextView
-                    android:id="@+id/tv_requests_information_from_label"
+                    android:id="@+id/lbl_requests_information_from"
                     style="@style/ConsentRequestItemHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_margin_small"
                     android:text="@string/from"
                     app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration" />
 
                 <TextView
                     android:id="@+id/tv_requests_info_from"
@@ -117,20 +118,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_padding_medium"
-                    tools:text="01/01/17"
                     android:text="@{consent.getPermissionStartDate()}"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_requests_information_from_label"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label" />
+                    app:layout_constraintLeft_toRightOf="@+id/lbl_requests_information_from"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration"
+                    tools:text="01/01/17" />
 
                 <TextView
-                    android:id="@+id/tv_requests_information_to_label"
+                    android:id="@+id/lbl_requests_information_to"
                     style="@style/ConsentRequestItemHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_padding_medium"
                     android:text="@string/to"
                     app:layout_constraintLeft_toRightOf="@+id/tv_requests_info_from"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration" />
 
 
                 <TextView
@@ -139,30 +140,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_padding_medium"
-                    tools:text="05/12/19"
-                    android:text="@{consent.permissionToDate}"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_requests_information_to_label"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_requests_information_duration_label" />
+                    android:text="@{consent.permissionEndDate}"
+                    app:layout_constraintLeft_toRightOf="@+id/lbl_requests_information_to"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration"
+                    tools:text="05/12/19" />
 
                 <TextView
-                    android:id="@+id/tv_requests_info_type_label"
+                    android:id="@+id/lbl_requests_info_type"
                     style="@style/ConsentRequestItemHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:text="@string/requests_informatio_type"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_requests_information_from_label" />
+                    app:layout_constraintTop_toBottomOf="@id/lbl_requests_information_from" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/cg_request_info_types"
                     android:layout_width="match_parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_requests_info_type_label"
-                    android:layout_height="wrap_content" >
-                </com.google.android.material.chip.ChipGroup>
+                    app:layout_constraintTop_toBottomOf="@id/lbl_requests_info_type"/>
 
                 <TextView
                     android:id="@+id/tv_expiry_label"
@@ -179,10 +179,10 @@
                     style="@style/ConsentRequestItemValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="5 pm, 05/12/19"
                     android:text="@{consent.getConsentExpiry()}"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_expiry_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_expiry_label"
+                    tools:text="5 PM, 05/12/19" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
@@ -199,25 +199,23 @@
             app:layout_constraintRight_toRightOf="parent"
             app:toggledVisibility="@{requestExpired}">
 
-            <Button
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_deny"
-                style="@style/Button"
+                style="@style/Button.Negative"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/button_height"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="8dp"
                 android:layout_weight=".3"
-                android:background="@drawable/secondary_button_background_red"
-                android:drawableLeft="@drawable/ic_deny"
                 android:text="@string/deny"
                 android:textColor="@color/red"
                 tools:textColor="@color/red" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_grant"
-                style="@style/Button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/button_height"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="6dp"
                 android:layout_weight=".7"

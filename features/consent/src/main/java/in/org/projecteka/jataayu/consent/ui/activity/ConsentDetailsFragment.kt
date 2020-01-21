@@ -23,6 +23,8 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetailsClickHandler {
     private lateinit var binding: ConsentDetailsFragmentBinding
 
+    private lateinit var consentCopy: Consent
+
     private val eventBusInstance = EventBus.getDefault()
 
     override fun onItemClick(
@@ -49,8 +51,14 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val consent = eventBusInstance.getStickyEvent(Consent::class.java)
+        eventBusInstance.removeStickyEvent(Consent::class.java)
+
         binding.consent = consent
+        consentCopy = consent.copy(consent.id, consent.createdAt, consent.purpose, consent.hip, consent.hiu,
+            consent.requester, consent.hiTypes, consent.permission, consent.status)
         binding.requestExpired = consent.status == RequestStatus.REQUESTED
+
+        eventBusInstance.postSticky(consentCopy)
 
         for (hiType in consent.hiTypes) {
             binding.cgRequestInfoTypes.addView(newChip(hiType.description))
@@ -77,5 +85,10 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         val chip = Chip(context, null, R.style.Chip_NonEditable)
         chip.text = description
         return chip
+    }
+
+    override fun onVisible() {
+        super.onVisible()
+
     }
 }

@@ -9,6 +9,7 @@
         <item name="android:textAppearance">@style/TextAppearance</item>
         <item name="toolbarStyle">@style/Toolbar</item>
         <item name="chipStyle">@style/Chip</item>
+        <item name="materialButtonStyle">@style/Button</item>
         <item name="buttonStyle">@style/Button</item>
         <item name="android:tabWidgetStyle">@style/AppTabLayout</item>
         <item name="android:textViewStyle">@style/TextAppearance</item>
@@ -42,30 +43,36 @@
     </style>
 
     <style name="Button" parent="Widget.MaterialComponents.Button">
-        <item name="android:height">@dimen/button_height</item>
+        <item name="android:layout_height">@dimen/button_height</item>
         <item name="android:elevation">@dimen/cardview_elevation</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:drawablePadding">@dimen/content_margin_small</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:background">@drawable/button_background</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
         <item name="android:textColor">@color/button_text_color</item>
     </style>
 
-    <style name="Button.Secondary" parent="Button">
-        <item name="android:height">@dimen/secondary_button_height</item>
+    <style name="Button.Secondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="backgroundTint">@color/white</item>
         <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="strokeColor">@color/colorPrimary</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:background">@drawable/secondary_button_background</item>
         <item name="android:textColor">@color/secondary_button_text_color</item>
     </style>
 
-    <style name="Button.Negative" parent="Button">
+    <style name="Button.Negative" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:drawablePadding">@dimen/content_padding_medium</item>
-        <item name="android:height">@dimen/secondary_button_height</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:background">@drawable/secondary_button_background_red</item>
+        <item name="icon">@drawable/ic_deny</item>
+        <item name="iconTint">@color/red</item>
+        <item name="strokeColor">@color/red</item>
         <item name="android:textColor">@color/deny_button_text_color</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="rippleColor">@color/negative_button_ripple_color</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 
     <style name="TextAppearance">
@@ -147,5 +154,21 @@
 
     <style name="Chip.NonEditable" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="android:checkable">false</item>
+    </style>
+
+    <style name="DatePickerStyle" parent="Button">
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="icon">@drawable/ic_requests_info</item>
+        <item name="iconTint">@color/colorPrimary</item>
+        <item name="rippleColor">@color/colorPrimary</item>
+
+        <item name="android:layoutDirection">rtl</item>
+        <item name="android:drawablePadding">@dimen/content_padding_medium</item>
+        <item name="android:paddingStart">@dimen/content_margin_extra_small</item>
+        <item name="android:paddingTop">@dimen/content_margin_medium</item>
+        <item name="android:paddingEnd">@dimen/content_margin_extra_small</item>
+        <item name="android:paddingBottom">@dimen/content_margin_medium</item>
     </style>
 </resources>

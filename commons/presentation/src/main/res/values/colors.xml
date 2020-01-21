@@ -29,4 +29,5 @@
 
     <color name="red">#C81800</color>
     <color name="progressbar_dimmed_bg">#CC333333</color>
+    <color name="negative_button_ripple_color">#E67263</color>
 </resources>

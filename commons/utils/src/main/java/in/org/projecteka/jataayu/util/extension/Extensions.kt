@@ -1,5 +1,6 @@
 package `in`.org.projecteka.jataayu.util.extension
 
+import `in`.org.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.*
 
 fun <T> Context.startActivity(clazz: Class<T>) {
     startActivity(Intent(this, clazz))
@@ -46,5 +48,9 @@ fun Context.showShortToast(text: CharSequence) =
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 
 fun Fragment.showShortToast(text: CharSequence) = context?.showShortToast(text)
+
+fun Date.toUtc() : String {
+    return DateTimeUtils.getUtcDate(this)
+}
 
 public inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)

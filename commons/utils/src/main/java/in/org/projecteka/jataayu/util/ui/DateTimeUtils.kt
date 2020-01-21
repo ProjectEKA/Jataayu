@@ -6,13 +6,16 @@ import java.util.*
 
 class DateTimeUtils {
     companion object {
+        private const val DATE_FORMAT_DD_MM_YY = "dd MMM, YYYY"
+        private const val DATE_TIME_FORMAT_DD_MMM_YYYY_HH_A = "hh a, $DATE_FORMAT_DD_MM_YY"
+        private const val TIME_FORMAT_HH_MM_A = "hh:mm a"
         fun getFormattedDate(utcDate: String): String {
             val date = getDate(utcDate)
-            val outputFormat = SimpleDateFormat("dd/MM/yy", Locale.getDefault())
+            val outputFormat = SimpleDateFormat(DATE_FORMAT_DD_MM_YY, Locale.getDefault())
             return outputFormat.format(date!!)
         }
 
-        private fun getDate(utcDate: String): Date? {
+        fun getDate(utcDate: String): Date? {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.getDefault())
             return inputFormat.parse(utcDate)
         }
@@ -23,8 +26,19 @@ class DateTimeUtils {
 
         fun getFormattedDateTime(utcDate: String): String {
             val date = getDate(utcDate)
-            val outputFormat = SimpleDateFormat("hha, dd/MM/yy", Locale.getDefault())
+            val outputFormat = SimpleDateFormat(DATE_TIME_FORMAT_DD_MMM_YYYY_HH_A, Locale.getDefault())
             return outputFormat.format(date!!)
+        }
+
+        fun getFormattedTime(utcDate: String): String {
+            val date = getDate(utcDate)
+            val outputFormat = SimpleDateFormat(TIME_FORMAT_HH_MM_A, Locale.getDefault())
+            return outputFormat.format(date!!)
+        }
+
+        fun getUtcDate(date: Date): String {
+            val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.getDefault())
+            return outputFormat.format(date)
         }
     }
 }

@@ -20,7 +20,7 @@ class ConsentTest {
 
     @Test
     fun shouldReturnPermissionEndDate() {
-        assertEquals(consent.getPermissionToDate(), "06/01/20")
+        assertEquals(consent.getPermissionEndDate(), "06/01/20")
     }
 
 }

@@ -5,8 +5,8 @@ import `in`.org.projecteka.jataayu.core.R
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.Context
+import androidx.databinding.BaseObservable
 import com.google.gson.annotations.SerializedName
-
 
 data class Consent(
     @SerializedName("id") val id: String,
@@ -18,7 +18,7 @@ data class Consent(
     @SerializedName("hiTypes") val hiTypes: List<HiTypes>,
     @SerializedName("permission") val permission: Permission,
     @SerializedName("status") val status: RequestStatus
-) : IDataBindingModel {
+) : BaseObservable(), IDataBindingModel {
     override fun layoutResId(): Int {
         return R.layout.consent_item
     }
@@ -31,7 +31,7 @@ data class Consent(
         return DateTimeUtils.getFormattedDate(permission.dateRange.from)
     }
 
-    fun getPermissionToDate(): String {
+    fun getPermissionEndDate(): String {
         return DateTimeUtils.getFormattedDate(permission.dateRange.to)
     }
 
@@ -41,5 +41,23 @@ data class Consent(
 
     fun getConsentExpiry(): String {
         return DateTimeUtils.getFormattedDateTime(permission.dataExpiryAt)
+    }
+
+    fun getConsentExpiryDate(): String {
+        return DateTimeUtils.getFormattedDate(permission.dataExpiryAt)
+    }
+
+    fun getConsentExpiryTime(): String {
+        return DateTimeUtils.getFormattedTime(permission.dataExpiryAt)
+    }
+
+    fun updateFromDate(utcDate: String) {
+        permission.dateRange.from = utcDate
+        notifyPropertyChanged(BR.consent)
+    }
+
+    fun updateToDate(utcDate: String) {
+        permission.dateRange.to = utcDate
+        notifyPropertyChanged(BR.consent)
     }
 }

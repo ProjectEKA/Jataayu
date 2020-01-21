@@ -1,90 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.activity.EditConsentDetailsFragment">
+
     <data>
-        <variable name="consent"
+
+        <variable
+            name="consent"
             type="in.org.projecteka.jataayu.core.model.Consent" />
+
+        <variable
+            name="pickerClickHandler"
+            type="in.org.projecteka.jataayu.consent.ui.handler.PickerClickHandler" />
     </data>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:background="@color/white"
-        android:padding="@dimen/content_margin_medium"
-    android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_requester_name"
-            style="@style/ConsentRequestHiuDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{consent.requester.name}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_edit" />
-
-        <TextView
-            android:id="@+id/tv_requester_organization"
-            style="@style/ConsentRequestHiuDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="@{consent.hiu.name}"
-            tools:text="Infinity Health care and diagnostics"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_requester_name" />
-        <TextView
-            android:id="@+id/tv_purpose_of_request_label"
-            style="@style/ConsentRequestItemHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/content_margin_small"
-            android:layout_marginTop="@dimen/content_margin_extra_small"
-            android:text="@string/purpose_of_request"
-            app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
-            app:layout_constraintTop_toBottomOf="@id/tv_requester_organization" />
-
-        <TextView
-            android:id="@+id/tv_purpose_of_request"
-            style="@style/ConsentRequestItemValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/content_margin_small"
-            tools:text="General Consulting"
-            android:text="General Consulting"
-            app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
-            app:layout_constraintTop_toBottomOf="@+id/tv_purpose_of_request_label" />
-
-        <TextView
-            android:id="@+id/tv_requests_information_duration_label"
-            style="@style/ConsentRequestItemHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/content_margin_small"
-            android:layout_marginTop="@dimen/content_margin_medium"
-            android:text="@string/requests_information"
-            app:layout_constraintLeft_toRightOf="@+id/ic_requests_info"
-            app:layout_constraintTop_toBottomOf="@id/tv_purpose_of_request" />
-
-        <TextView
-            android:id="@+id/tv_requests_info_type_label"
-            style="@style/ConsentRequestItemHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin_extra_extra_large"
-            android:text="@string/requests_informatio_type"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_requests_information_duration_label" />
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/cg_request_info_types"
+        <ScrollView
             android:layout_width="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/content_margin_medium"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_requests_info_type_label"
-            android:layout_height="wrap_content" >
-        </com.google.android.material.chip.ChipGroup>
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/content_margin_medium"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grey_background"
+                android:padding="@dimen/content_margin_medium">
+
+                <TextView
+                    android:id="@+id/tv_requester_name"
+                    style="@style/ConsentRequestHiuDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{consent.requester.name}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_requester_organization"
+                    style="@style/ConsentRequestHiuDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@{consent.hiu.name}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_requester_name"
+                    tools:text="Infinity Health care and diagnostics" />
+
+                <TextView
+                    android:id="@+id/lbl_purpose_of_request"
+                    style="@style/ConsentRequestItemHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_small"
+                    android:text="@string/purpose_of_request"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_requester_organization" />
+
+                <TextView
+                    android:id="@+id/tv_purpose_of_request"
+                    style="@style/ConsentRequestItemValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{consent.purpose.text}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_purpose_of_request"
+                    tools:text="General Consulting" />
+
+                <TextView
+                    android:id="@+id/lbl_requests_information"
+                    style="@style/ConsentRequestItemHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_medium"
+                    android:text="@string/requests_information"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_purpose_of_request" />
+
+                <LinearLayout
+                    android:id="@+id/daterange_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lbl_requests_information_from"
+                            style="@style/ConsentRequestItemHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/from" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/tv_requests_info_from"
+                            style="@style/DatePickerStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{pickerClickHandler::onDatePickerClick}"
+                            android:text="@{consent.getPermissionStartDate()}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_from"
+                            tools:text="1 Jan, 2019" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lbl_requests_information_to"
+                            style="@style/ConsentRequestItemHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/to"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/tv_requests_info_to"
+                            style="@style/DatePickerStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{pickerClickHandler::onDatePickerClick}"
+                            android:text="@{consent.getPermissionEndDate()}"
+                            tools:text="26 Jan, 2019" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/lbl_requests_info_type"
+                    style="@style/ConsentRequestItemHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:text="@string/requests_informatio_type"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/daterange_container" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cg_request_info_types"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_requests_info_type" />
+
+                <TextView
+                    android:id="@+id/tv_expiry_label"
+                    style="@style/ConsentRequestItemHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_small"
+                    android:text="@string/consent_expiry"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cg_request_info_types" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/tv_expiry_date"
+                    style="@style/DatePickerStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{pickerClickHandler::onDatePickerClick}"
+                    android:text="@{consent.getConsentExpiryDate()}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_expiry_label"
+                    tools:text="01 Jan, 2019" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/tv_expiry_time"
+                    style="@style/DatePickerStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/content_margin_large"
+                    android:drawableEnd="@drawable/ic_clock"
+                    android:onClick="@{pickerClickHandler::onTimePickerClick}"
+                    android:text="@{consent.getConsentExpiryTime()}"
+                    app:layout_constraintLeft_toRightOf="@id/tv_expiry_date"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_expiry_label"
+                    tools:text="11 59 PM" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+
+        <LinearLayout
+            android:id="@+id/button_bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="79dp"
+            android:background="@color/white"
+            android:elevation="10dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/content_margin_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_grant"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical"
+                android:text="@string/save" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
