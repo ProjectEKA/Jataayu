@@ -7,9 +7,14 @@
         <variable
             name="endpoint"
             type="String" />
+
         <variable
             name="selectedEnvironmentIndex"
             type="Integer" />
+
+        <variable
+            name="authToken"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -79,6 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/content_padding_large"
+                android:text="@{authToken}"
                 android:hint="@string/hint_authtoken"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rg_environment_options" />
