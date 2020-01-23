@@ -1,15 +1,14 @@
 <resources>
     <string name="app_name">consent</string>
-
-    d
     <string name="title_activity_consent">Consent</string>
-    d
     <string name="title_activity_consent_requests">Consent Requests</string>
     <string name="tab_requests">requests</string>
     <string name="tab_consents">consents</string>
     <string name="all_requests">All requests (%1$d)</string>
 
     <string name="new_request">New request</string>
+    <string name="edit_request">Edit request</string>
+    <string name="confirm_request">Confirm request</string>
     <string name="edit">Edit</string>
     <string name="requests_informatio_type">Requests information type</string>
     <string name="deny">deny</string>
@@ -17,14 +16,16 @@
     <string name="consent_expiry">Consent expiry</string>
     <string name="no_new_consent_requests">No new consent requests</string>
     <string name="loading_requests">We are loading your consent requests\n\nThis may take up a few seconds...</string>
+    <string name="loading_linked_accounts">We are loading your accounts\n\nThis may take up a few seconds...</string>
     <string name="status_all_requests">All requests (%d)</string>
     <string name="status_active_requests">Requested (%d)</string>
     <string name="status_expired_requests">Expired (%d)</string>
     <string name="to">to</string>
     <string name="from">From</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>
-    <string name="edit_request">Edit request</string>
+    <string name="confirm_consent_label">By granting consent <b>%s</b> can access yor information from the following accounts</string>
+    <string name="accounts_to_provide_information">Accounts to provide information</string>
+    <string name="all_linked_providers">All linked providers</string>
+    <string name="confirm">confirm</string>
 </resources>

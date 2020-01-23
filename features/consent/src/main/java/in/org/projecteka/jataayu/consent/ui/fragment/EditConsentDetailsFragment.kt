@@ -1,4 +1,4 @@
-package `in`.org.projecteka.jataayu.consent.ui.activity
+package `in`.org.projecteka.jataayu.consent.ui.fragment
 
 import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.FragmentConsentDetailsEditBinding

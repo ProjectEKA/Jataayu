@@ -47,7 +47,7 @@ class VerifyOtpFragment : BaseFragment(), OtpSubmissionClickHandler {
 
     override fun onVisible() {
         super.onVisible()
-        setTitle(R.string.link_accounts)
+        setTitle(R.string.verification)
     }
 
     private val observer = Observer<SuccessfulLinkingResponse> { _ ->

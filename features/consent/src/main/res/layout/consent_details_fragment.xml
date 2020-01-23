@@ -14,7 +14,7 @@
             type="Boolean" />
 
         <variable
-            name="editClickHandler"
+            name="consentDetailsClickHandler"
             type="in.org.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler" />
     </data>
 
@@ -27,9 +27,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/content_margin_medium"
+            android:background="@drawable/grey_background_with_border"
             android:fadingEdgeLength="@dimen/content_margin_large"
             android:requiresFadingEdge="vertical"
-            android:background="@drawable/grey_background_with_border"
             app:layout_constraintBottom_toTopOf="@+id/button_bottom_bar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -46,7 +46,7 @@
                     style="@style/Button.Secondary"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/button_height"
-                    android:onClick="@{editClickHandler::onEditClick}"
+                    android:onClick="@{consentDetailsClickHandler::onEditClick}"
                     android:stateListAnimator="@animator/button_state_list_anim"
                     android:text="@string/edit"
                     app:layout_constraintRight_toRightOf="parent"
@@ -198,10 +198,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/white"
+            android:clipToPadding="false"
             android:elevation="10dp"
             android:orientation="horizontal"
             android:padding="@dimen/content_margin_small"
-            android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -229,6 +229,7 @@
                 android:layout_marginLeft="6dp"
                 android:layout_weight=".7"
                 android:drawableLeft="@drawable/ic_grant"
+                android:onClick="@{consentDetailsClickHandler::onGrantConsentClick}"
                 android:text="@string/grant_request" />
         </LinearLayout>
 

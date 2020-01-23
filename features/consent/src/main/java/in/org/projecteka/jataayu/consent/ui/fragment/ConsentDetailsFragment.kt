@@ -1,9 +1,10 @@
-package `in`.org.projecteka.jataayu.consent.ui.activity
+package `in`.org.projecteka.jataayu.consent.ui.fragment
 
 
 
 import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.ConsentDetailsFragmentBinding
+import `in`.org.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.org.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.org.projecteka.jataayu.core.model.Consent
 import `in`.org.projecteka.jataayu.core.model.RequestStatus
@@ -22,6 +23,10 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetailsClickHandler {
+    override fun onGrantConsentClick(view: View) {
+        (activity as ConsentDetailsActivity).grantRequest()
+    }
+
     private lateinit var binding: ConsentDetailsFragmentBinding
 
     private lateinit var consent: Consent
@@ -53,7 +58,6 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         consent = eventBusInstance.getStickyEvent(Consent::class.java)
         eventBusInstance.removeStickyEvent(Consent::class.java)
 
-        binding.editClickHandler = this
         binding.consent = consent
         binding.requestExpired = consent.status == RequestStatus.REQUESTED
 
@@ -63,6 +67,8 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         for (hiType in consent.hiTypes) {
             binding.cgRequestInfoTypes.addView(newChip(hiType.description))
         }
+
+        binding.consentDetailsClickHandler = this
     }
 
     @Subscribe

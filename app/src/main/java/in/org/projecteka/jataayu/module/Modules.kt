@@ -4,6 +4,9 @@ import `in`.org.projecteka.featuresprovider.BuildConfig
 import `in`.org.projecteka.jataayu.consent.remote.ConsentApis
 import `in`.org.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.org.projecteka.jataayu.consent.repository.ConsentRepositoryImpl
+import `in`.org.projecteka.jataayu.consent.repository.LinkedAccountsRepository
+import `in`.org.projecteka.jataayu.consent.repository.LinkedAccountsRepositoryImpl
+import `in`.org.projecteka.jataayu.consent.viewmodel.ConfirmConsentViewModel
 import `in`.org.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.org.projecteka.jataayu.network.createNetworkClient
 import `in`.org.projecteka.jataayu.provider.remote.ProviderApis
@@ -16,11 +19,13 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel { ProviderSearchViewModel(providerRepository = get()) }
     viewModel { ConsentViewModel(repository = get()) }
+    viewModel { ConfirmConsentViewModel(repository = get()) }
 }
 
 val repositoryModule = module {
     factory { ProviderRepositoryImpl(providerApi = get()) as ProviderRepository }
     factory { ConsentRepositoryImpl(consentApi = get()) as ConsentRepository }
+    factory { LinkedAccountsRepositoryImpl(consentApi = get()) as LinkedAccountsRepository }
 }
 
 val networkModule = module {
