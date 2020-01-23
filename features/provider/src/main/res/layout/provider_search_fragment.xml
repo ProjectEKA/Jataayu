@@ -246,13 +246,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_search"
                 style="@style/Button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/content_margin_medium"
                 android:onClick="@{clickHandler::onSearchButtonClick}"
+                android:enabled="@{!inEditMode}"
+                android:clickable="@{!inEditMode}"
                 android:text="@string/link_provider"
                 tools:text="@string/link_provider" />
         </FrameLayout>

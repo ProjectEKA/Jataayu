@@ -9,6 +9,8 @@ import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog.Companion.UNDEFINED_DATE
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.TimePickerDialog
+import `in`.org.projecteka.jataayu.provider.ui.handler.ConsentRequestClickHandler
+import `in`.org.projecteka.jataayu.util.extension.setTitle
 import `in`.org.projecteka.jataayu.util.extension.toUtc
 import `in`.org.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
@@ -22,15 +24,46 @@ import org.greenrobot.eventbus.Subscribe
 import java.util.*
 
 
-class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeSelectionCallback {
+class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeSelectionCallback,
+    ConsentRequestClickHandler {
     private lateinit var binding: FragmentConsentDetailsEditBinding
+    private val eventBusInstance: EventBus = EventBus.getDefault()
+    lateinit var consent: Consent
+    private lateinit var modifiedConsent: Consent
 
-    override fun onTimeSelected(pair: Pair<Int, Int>) {
+    companion object {
+        fun newInstance() = EditConsentDetailsFragment()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentConsentDetailsEditBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        consent = eventBusInstance.getStickyEvent(Consent::class.java)
+        modifiedConsent = consent.clone()
+        binding.consent = modifiedConsent
+        binding.clickHandler = this
+
+        for (hiType in modifiedConsent.hiTypes) {
+            binding.cgRequestInfoTypes.addView(newChip(hiType.description))
+        }
+
+        binding.pickerClickHandler = this
+    }
+
+    override fun onTimeSelected(timePair: Pair<Int, Int>) {
         val calendar = Calendar.getInstance()
         calendar.time = DateTimeUtils.getDate(modifiedConsent.permission.dataExpiryAt)!!
-        calendar.set(Calendar.HOUR_OF_DAY, pair.first)
-        calendar.set(Calendar.MINUTE, pair.second)
+        calendar.set(Calendar.HOUR_OF_DAY, timePair.first)
+        calendar.set(Calendar.MINUTE, timePair.second)
         modifiedConsent.permission.dataExpiryAt = calendar.time.toUtc()
+        binding.consent = modifiedConsent
     }
 
     override fun onDateSelected(@IdRes datePickerId: Int, date: Date) {
@@ -57,13 +90,14 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
             }
             R.id.tv_requests_info_to -> {
                 val to = DateTimeUtils.getDate(modifiedConsent.permission.dateRange.to)?.time!!
-                DatePickerDialog(R.id.tv_requests_info_to, to, UNDEFINED_DATE, System.currentTimeMillis(), this).show(
+                val from = DateTimeUtils.getDate(modifiedConsent.permission.dateRange.from)?.time!!
+                DatePickerDialog(R.id.tv_requests_info_to, to, from, System.currentTimeMillis(), this).show(
                     fragmentManager!!,
                     modifiedConsent.permission.dateRange.to
                 )
             }
             R.id.tv_expiry_date -> {
-                DatePickerDialog(R.id.tv_expiry_date, DateTimeUtils.getDate(modifiedConsent.permission.dataExpiryAt)?.time!!, this).show(
+                DatePickerDialog(R.id.tv_expiry_date, DateTimeUtils.getDate(modifiedConsent.permission.dataExpiryAt)?.time!!, System.currentTimeMillis(), UNDEFINED_DATE, this).show(
                     fragmentManager!!,
                     modifiedConsent.permission.dataExpiryAt
                 )
@@ -71,38 +105,10 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         }
     }
 
-    private val eventBusInstance: EventBus = EventBus.getDefault()
-    lateinit var consent: Consent
-    lateinit var modifiedConsent: Consent
-
-    companion object {
-        fun newInstance() = EditConsentDetailsFragment()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentConsentDetailsEditBinding.inflate(inflater)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        consent = eventBusInstance.getStickyEvent(Consent::class.java)
-        modifiedConsent = consent
-        binding.consent = modifiedConsent
-
-        for (hiType in modifiedConsent.hiTypes) {
-            binding.cgRequestInfoTypes.addView(newChip(hiType.description))
-        }
-
-        binding.pickerClickHandler = this
-    }
-
     private fun newChip(description: String): Chip? {
         val chip = Chip(context)
         chip.text = description
+        chip.isChecked = true
         return chip
     }
 
@@ -119,5 +125,20 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
     override fun onStop() {
         super.onStop()
         eventBusInstance.unregister(this)
+    }
+
+    override fun onVisible() {
+        super.onVisible()
+        setTitle(R.string.edit_request)
+    }
+
+    override fun onBackPressedCallback() {
+        super.onBackPressedCallback()
+        binding.consent = consent
+    }
+
+    override fun onSaveClick(view: View) {
+        eventBusInstance.postSticky(modifiedConsent)
+        activity?.onBackPressed()
     }
 }

@@ -115,7 +115,7 @@ class ProviderSearchViewModelTest {
                 val callback = invocation.arguments[0] as Callback<PatientDiscoveryResponse>
                 callback.onResponse(patientsInfoCall, Response.success(patients))
             }
-        viewModel.getPatientAccounts(identifier)
+        viewModel.getPatientAccounts(identifier, hideSearchLoading())
         Mockito.verify(repository).getPatientAccounts(identifier)
         Mockito.verify(patientsInfoCall).enqueue(ArgumentMatchers.any())
         return patients

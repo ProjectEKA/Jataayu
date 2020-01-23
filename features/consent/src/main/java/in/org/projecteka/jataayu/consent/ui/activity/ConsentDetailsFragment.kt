@@ -11,6 +11,7 @@ import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
+import `in`.org.projecteka.jataayu.util.extension.setTitle
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetailsClickHandler {
     private lateinit var binding: ConsentDetailsFragmentBinding
 
-    private lateinit var consentCopy: Consent
+    private lateinit var consent: Consent
 
     private val eventBusInstance = EventBus.getDefault()
 
@@ -48,23 +49,20 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val consent = eventBusInstance.getStickyEvent(Consent::class.java)
+    private fun renderUi() {
+        consent = eventBusInstance.getStickyEvent(Consent::class.java)
         eventBusInstance.removeStickyEvent(Consent::class.java)
 
+        binding.editClickHandler = this
         binding.consent = consent
-        consentCopy = consent.copy(consent.id, consent.createdAt, consent.purpose, consent.hip, consent.hiu,
-            consent.requester, consent.hiTypes, consent.permission, consent.status)
         binding.requestExpired = consent.status == RequestStatus.REQUESTED
 
-        eventBusInstance.postSticky(consentCopy)
+        eventBusInstance.postSticky(consent)
 
+        binding.cgRequestInfoTypes.removeAllViews()
         for (hiType in consent.hiTypes) {
             binding.cgRequestInfoTypes.addView(newChip(hiType.description))
         }
-
-        binding.editClickHandler = this
     }
 
     @Subscribe
@@ -89,6 +87,7 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
 
     override fun onVisible() {
         super.onVisible()
-
+        setTitle(R.string.new_request)
+        renderUi()
     }
 }

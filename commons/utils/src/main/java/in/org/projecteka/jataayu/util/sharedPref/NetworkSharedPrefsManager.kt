@@ -25,6 +25,11 @@ class NetworkSharedPrefsManager {
             sharedPreferences.edit { putString(AUTH_TOKEN, authToken) }
         }
 
+        fun getAuthToken(context: Context): String? {
+            val sharedPreferences = context.getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
+            return sharedPreferences.getString(AUTH_TOKEN, "NUBuY2c=")
+        }
+
         fun getBaseUrl(context: Context): String? {
             return context.getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
                 .getString(NETWORK_HOST, PROD_URL)

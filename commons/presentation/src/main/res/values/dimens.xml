@@ -51,4 +51,6 @@
     <dimen name="design_bottom_navigation_item_max_width" tools:override="true">600dp</dimen>
     <dimen name="design_bottom_navigation_active_item_max_width" tools:override="true">600dp</dimen>
     <dimen name="recycler_view_fading_edge_length">20dp</dimen>
+    <dimen name="button_elevation_normal">2dp</dimen>
+    <dimen name="button_elevation_pressed">4dp</dimen>
 </resources>

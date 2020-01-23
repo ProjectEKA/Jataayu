@@ -6,7 +6,7 @@ import java.util.*
 
 class DateTimeUtils {
     companion object {
-        private const val DATE_FORMAT_DD_MM_YY = "dd MMM, YYYY"
+        private const val DATE_FORMAT_DD_MM_YY = "dd MMM, yyyy"
         private const val DATE_TIME_FORMAT_DD_MMM_YYYY_HH_A = "hh a, $DATE_FORMAT_DD_MM_YY"
         private const val TIME_FORMAT_HH_MM_A = "hh:mm a"
         fun getFormattedDate(utcDate: String): String {
@@ -16,7 +16,7 @@ class DateTimeUtils {
         }
 
         fun getDate(utcDate: String): Date? {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.getDefault())
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
             return inputFormat.parse(utcDate)
         }
 
@@ -37,7 +37,7 @@ class DateTimeUtils {
         }
 
         fun getUtcDate(date: Date): String {
-            val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
             return outputFormat.format(date)
         }
     }

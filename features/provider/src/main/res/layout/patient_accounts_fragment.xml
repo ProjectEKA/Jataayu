@@ -31,6 +31,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical"
+        android:clipToPadding="false"
         android:padding="@dimen/content_margin_medium">
 
 
@@ -109,17 +110,17 @@
             android:id="@+id/button_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:enabled="@{canLinkAccounts}"
                 android:clickable="@{canLinkAccounts}"
                 style="@style/Button"
                 android:onClick="@{clickHandler::onLinkAccountsClick}"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:text="@string/link_selected"
                 tools:text="@string/link_accounts" />
         </FrameLayout>

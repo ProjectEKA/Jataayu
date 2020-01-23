@@ -4,8 +4,10 @@ import `in`.org.projecteka.featuresprovider.R
 import `in`.org.projecteka.featuresprovider.databinding.ProviderSearchFragmentBinding
 import `in`.org.projecteka.jataayu.core.model.Hip
 import `in`.org.projecteka.jataayu.core.model.ProviderInfo
+import `in`.org.projecteka.jataayu.core.model.Request
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
+import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.callback.TextWatcherCallback
 import `in`.org.projecteka.jataayu.provider.domain.ProviderNameWatcher
@@ -16,6 +18,7 @@ import `in`.org.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandl
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.mask
 import `in`.org.projecteka.jataayu.util.extension.setTitle
+import `in`.org.projecteka.jataayu.util.extension.showShortToast
 import `in`.org.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
@@ -28,9 +31,10 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import retrofit2.Response
 
 class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCallback,
-    ProviderSearchScreenHandler {
+    ProviderSearchScreenHandler, ProgressDialogCallback {
     private lateinit var binding: ProviderSearchFragmentBinding
 
     companion object {
@@ -53,12 +57,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         }
 
     private fun showPatientAccountsList() {
-        hideSearchLoading()
         (activity as ProviderSearchActivity).showPatientsAccounts()
-    }
-
-    private fun hideSearchLoading() {
-        binding.progressBarVisibility = GONE
     }
 
     private fun observeProviders() {
@@ -162,7 +161,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     override fun onSearchButtonClick(view: View) {
-        viewModel.getPatientAccounts(Hip(selectedProvider.hip.id, selectedProvider.hip.name))
+        viewModel.getPatientAccounts(Request(Hip(selectedProvider.hip.id, selectedProvider.hip.name)), this)
         showSearchLoading()
         observePatients()
     }
@@ -171,6 +170,19 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         binding.progressBarVisibility = VISIBLE
     }
 
+    private fun hideSearchLoading() {
+        binding.progressBarVisibility = GONE
+    }
+
     private fun observePatients() =
         viewModel.patientDiscoveryResponse.observe(this, patientAccountsObserver)
+
+    override fun onSuccess(any: Any?) {
+        hideSearchLoading()
+    }
+
+    override fun onFailure(any: Any?) {
+        showShortToast((any as Response<*>).message())
+        hideSearchLoading()
+    }
 }

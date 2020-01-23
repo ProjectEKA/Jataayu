@@ -6,6 +6,7 @@ import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.Context
 import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import com.google.gson.annotations.SerializedName
 
 data class Consent(
@@ -16,9 +17,9 @@ data class Consent(
     @SerializedName("hiu") val hiu: HiuRequester,
     @SerializedName("requester") val requester: Requester,
     @SerializedName("hiTypes") val hiTypes: List<HiTypes>,
-    @SerializedName("permission") val permission: Permission,
+    @SerializedName("permission") @Bindable val permission: Permission,
     @SerializedName("status") val status: RequestStatus
-) : BaseObservable(), IDataBindingModel {
+) : BaseObservable(), IDataBindingModel, Cloneable {
     override fun layoutResId(): Int {
         return R.layout.consent_item
     }
@@ -36,7 +37,10 @@ data class Consent(
     }
 
     fun getRequestIssueRelativeTimeSpan(context: Context): String {
-        return String.format(context.getString(R.string.requested_timespan), DateTimeUtils.getRelativeTimeSpan(createdAt))
+        return String.format(
+            context.getString(R.string.requested_timespan),
+            DateTimeUtils.getRelativeTimeSpan(createdAt)
+        )
     }
 
     fun getConsentExpiry(): String {
@@ -53,11 +57,13 @@ data class Consent(
 
     fun updateFromDate(utcDate: String) {
         permission.dateRange.from = utcDate
-        notifyPropertyChanged(BR.consent)
     }
 
     fun updateToDate(utcDate: String) {
         permission.dateRange.to = utcDate
-        notifyPropertyChanged(BR.consent)
+    }
+
+    public override fun clone(): Consent {
+        return copy(permission = permission.clone())
     }
 }

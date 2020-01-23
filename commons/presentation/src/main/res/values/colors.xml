@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#006353</color>
     <color name="colorPrimaryDark">#00463A</color>
+    <color name="rippleColorPrimary">#098570</color>
     <color name="colorAccent">#006353</color>
     <color name="textColorPrimary">#fff</color>
     <color name="textColorSecondary">#666666</color>
@@ -24,10 +25,11 @@
     <color name="grey_background">#EDEDED</color>
     <color name="grey_light">#F6F6F6</color>
     <color name="rounded_grey_background" tools:override="true">#C4C4C4</color>
+    <color name="disabled_button_bg" tools:ignore="MissingDefaultResource">#C4C4C4</color>
     <color name="secondary_button_text_color" tools:override="true">@color/colorPrimary</color>
     <color name="deny_button_text_color" tools:override="true">@color/red</color>
 
     <color name="red">#C81800</color>
     <color name="progressbar_dimmed_bg">#CC333333</color>
-    <color name="negative_button_ripple_color">#E67263</color>
+    <color name="negative_button_ripple_color">@color/gray</color>
 </resources>

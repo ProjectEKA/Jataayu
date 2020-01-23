@@ -1,7 +1,8 @@
 package `in`.org.projecteka.jataayu.provider.viewmodel
 
-import `in`.org.projecteka.jataayu.core.model.Hip
 import `in`.org.projecteka.jataayu.core.model.ProviderInfo
+import `in`.org.projecteka.jataayu.core.model.Request
+import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.provider.model.LinkAccountsResponse
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
@@ -23,53 +24,65 @@ class ProviderSearchViewModel(val providerRepository: ProviderRepository) : View
     internal var selectedProviderName = String.EMPTY
 
     fun getProviders(query: String) {
-        if (providersList.isEmpty()){
+        if (providersList.isEmpty()) {
             providerRepository.getProviders(query).enqueue(object : Callback<List<ProviderInfo>?> {
                 override fun onFailure(call: Call<List<ProviderInfo>?>, t: Throwable) {
                     Timber.e(t, "Failed to get providers list")
                 }
+
                 override fun onResponse(call: Call<List<ProviderInfo>?>, response: Response<List<ProviderInfo>?>) {
-                    response.body()?.let {
-                        providers.value = it
-                        providersList = it.toList()
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            providers.value = it
+                            providersList = it.toList()
+                        }
                     }
-                 }
+                }
             })
-        } else{
+        } else {
             providers.postValue(providersList.filter { it.hip.name.contains(query, true) })
         }
     }
 
-    fun getPatientAccounts(hip: Hip) {
-        providerRepository.getPatientAccounts(hip)
-            .enqueue(object : Callback<PatientDiscoveryResponse> {
-                override fun onFailure(call: Call<PatientDiscoveryResponse>, t: Throwable) {
-                    Timber.e(t, "Failed to get patients accounts")
-                }
+    fun getPatientAccounts(request: Request, progressDialogCallback: ProgressDialogCallback) {
+        providerRepository.getPatientAccounts(request).enqueue(object : Callback<PatientDiscoveryResponse> {
+            override fun onFailure(call: Call<PatientDiscoveryResponse>, t: Throwable) {
+                Timber.e(t, "Failed to get patients accounts")
+                progressDialogCallback.onFailure(t)
+            }
 
-                override fun onResponse(call: Call<PatientDiscoveryResponse>, response: Response<PatientDiscoveryResponse>) {
+            override fun onResponse(
+                call: Call<PatientDiscoveryResponse>,
+                response: Response<PatientDiscoveryResponse>
+            ) {
+                if (response.isSuccessful) {
                     response.body()?.let { patientDiscoveryResponse.value = it }
+                    progressDialogCallback.onSuccess(response)
+                } else {
+                    progressDialogCallback.onFailure(response)
                 }
-
-            })
+            }
+        })
     }
 
     fun linkPatientAccounts(patientDiscoveryResponse: PatientDiscoveryResponse) {
         providerRepository.linkPatientAccounts(patientDiscoveryResponse)
-            .enqueue(object: Callback<LinkAccountsResponse>{
+            .enqueue(object : Callback<LinkAccountsResponse> {
                 override fun onFailure(call: Call<LinkAccountsResponse>, t: Throwable) {
                     Timber.e(t, "Failed to link patients accounts")
                 }
 
                 override fun onResponse(call: Call<LinkAccountsResponse>, response: Response<LinkAccountsResponse>) {
-                    response.body()?.let { linkAccountsResponse.value = it }
+                    if (response.isSuccessful) {
+                        response.body()?.let { linkAccountsResponse.value = it }
+                    }
                 }
             })
     }
 
-    fun canLinkAccounts() : Boolean{
+    fun canLinkAccounts(): Boolean {
         for (careContext in patientDiscoveryResponse.value?.patient?.careContexts!!) {
-            if(careContext.contextChecked) {
+            if (careContext.contextChecked) {
                 return true
             }
         }

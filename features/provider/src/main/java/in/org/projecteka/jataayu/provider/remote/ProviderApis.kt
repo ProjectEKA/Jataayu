@@ -1,9 +1,9 @@
 package `in`.org.projecteka.jataayu.provider.remote
 
 import `in`.org.projecteka.jataayu.core.model.ProviderInfo
+import `in`.org.projecteka.jataayu.core.model.Request
 import `in`.org.projecteka.jataayu.provider.model.LinkAccountsResponse
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
-import `in`.org.projecteka.jataayu.provider.repository.Hip
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -15,7 +15,7 @@ interface ProviderApis {
     fun getProviders(@Query("name") name: String): Call<List<ProviderInfo>>
 
     @POST("patients/discover")
-    fun getPatientAccounts(@Body hip: Hip): Call<PatientDiscoveryResponse>
+    fun getPatientAccounts(@Body request: Request): Call<PatientDiscoveryResponse>
 
     @POST("patients/link")
     fun linkPatientAccounts(@Body patientDiscoveryResponse: PatientDiscoveryResponse): Call<LinkAccountsResponse>
