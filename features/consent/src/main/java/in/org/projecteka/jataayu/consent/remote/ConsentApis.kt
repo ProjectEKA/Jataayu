@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ConsentApis {
-    @GET("requests")
+    @GET("consent-requests")
     fun getConsents(): Call<ConsentsListResponse>
 
     @POST("consent/accounts")
