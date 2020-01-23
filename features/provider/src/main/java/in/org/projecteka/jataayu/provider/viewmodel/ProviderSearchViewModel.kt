@@ -5,6 +5,8 @@ import `in`.org.projecteka.jataayu.core.model.Request
 import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.provider.model.LinkAccountsResponse
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
+import `in`.org.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
+import `in`.org.projecteka.jataayu.provider.model.Token
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.org.projecteka.jataayu.util.extension.EMPTY
 import `in`.org.projecteka.jataayu.util.extension.liveDataOf
@@ -20,6 +22,7 @@ class ProviderSearchViewModel(val providerRepository: ProviderRepository) : View
     var providersList = emptyList<ProviderInfo>()
     val patientDiscoveryResponse = liveDataOf<PatientDiscoveryResponse>()
     val linkAccountsResponse = liveDataOf<LinkAccountsResponse>()
+    val successfulLinkingResponse = liveDataOf<SuccessfulLinkingResponse>()
 
     internal var selectedProviderName = String.EMPTY
 
@@ -78,6 +81,20 @@ class ProviderSearchViewModel(val providerRepository: ProviderRepository) : View
                     }
                 }
             })
+    }
+
+    fun verifyOtp(referenceNumber: String, token: Token) {
+        providerRepository.verifyOtp(referenceNumber, token).enqueue(object: Callback<SuccessfulLinkingResponse> {
+            override fun onFailure(call: Call<SuccessfulLinkingResponse>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<SuccessfulLinkingResponse>, response: Response<SuccessfulLinkingResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { successfulLinkingResponse.value = it }
+                }
+            }
+        })
     }
 
     fun canLinkAccounts(): Boolean {

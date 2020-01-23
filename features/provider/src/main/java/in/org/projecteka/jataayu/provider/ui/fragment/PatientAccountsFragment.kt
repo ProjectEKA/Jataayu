@@ -9,10 +9,10 @@ import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.model.LinkAccountsResponse
+import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
 import `in`.org.projecteka.jataayu.provider.ui.handler.PatientAccountsScreenHandler
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.setTitle
-import `in`.org.projecteka.jataayu.util.extension.showLongToast
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -87,6 +87,6 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
     }
 
     private val linkAccountsObserver = Observer<LinkAccountsResponse> { _ ->
-        showLongToast("Link accounts succeeded! \uD83D\uDD7A \uD83D\uDC83")
+        (activity as ProviderSearchActivity).showVerifyOtpScreen()
     }
 }

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="selectedProviderName"
+            type="String" />
+
+        <variable
+            name="mobile"
+            type="String" />
+
+        <variable
+            name="clickHandler"
+            type="in.org.projecteka.jataayu.provider.ui.handler.OtpSubmissionClickHandler" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="@dimen/content_margin_medium">
+
+        <TextView
+            android:id="@+id/tv_selected_provider"
+            style="@style/TextAppearance.Heavy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/toolbar_size"
+            android:gravity="center"
+            android:text="@{selectedProviderName}"
+            android:textSize="@dimen/text_size_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Max Hospital, Kochi" />
+
+        <TextView
+            android:id="@+id/lbl_otp_info"
+            style="@style/TextAppearance.ListItemSubHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fab_margin_bottom"
+            android:layout_marginTop="@dimen/content_margin_extra_small"
+            android:layout_marginEnd="@dimen/fab_margin_bottom"
+            android:gravity="center"
+            android:text="@string/otp_label_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_selected_provider" />
+
+        <TextView
+            android:id="@+id/tv_mobile_number"
+            style="@style/TextAppearance.Heavy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin_extra_small"
+            android:gravity="center"
+            android:text="@{mobile}"
+            android:textSize="@dimen/text_size_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_otp_info"
+            tools:text="98XXXXXX10" />
+
+        <TextView
+            android:id="@+id/lbl_enter_otp"
+            style="@style/TextAppearance.ListItemSubHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/toolbar_size"
+            android:text="@string/enter_otp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number"
+            tools:text="Enter 6 digit OTP" />
+
+        <EditText
+            android:id="@+id/et_otp"
+            style="@style/TextAppearance.ListItemSubHeader"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:background="@drawable/rounded_corners_selector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_enter_otp" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:onClick="@{clickHandler::onSubmitOtp}"
+            android:text="@string/btn_continue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_otp"
+            app:layout_constraintVertical_bias="0.2">
+
+        </com.google.android.material.button.MaterialButton>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

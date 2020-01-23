@@ -4,6 +4,7 @@ import `in`.org.projecteka.featuresprovider.R
 import `in`.org.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.org.projecteka.jataayu.provider.ui.fragment.PatientAccountsFragment
 import `in`.org.projecteka.jataayu.provider.ui.fragment.ProviderSearchFragment
+import `in`.org.projecteka.jataayu.provider.ui.fragment.VerifyOtpFragment
 import `in`.org.projecteka.jataayu.util.extension.findView
 import android.os.Bundle
 
@@ -17,5 +18,9 @@ class ProviderSearchActivity : BaseActivity() {
 
     fun showPatientsAccounts() {
         addFragment(PatientAccountsFragment.newInstance())
+    }
+
+    fun showVerifyOtpScreen() {
+        addFragment(VerifyOtpFragment.newInstance())
     }
 }
