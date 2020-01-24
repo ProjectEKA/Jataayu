@@ -7,6 +7,7 @@ import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCKOON_URL
 import `in`.org.projecteka.jataayu.util.constant.NetworkConstants.Companion.PROD_URL
 import `in`.org.projecteka.jataayu.util.constant.NetworkConstants.Companion.TEST_URL
+import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.getAuthToken
 import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.getBaseUrl
 import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.getEndpointIndex
 import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.setAuthToken
@@ -65,6 +66,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
         networkPrefDialogBinding.apply {
             endpoint = getBaseUrl(this@BaseActivity)
+            authToken = getAuthToken(this@BaseActivity)
             rgEnvironmentOptions.check(rgEnvironmentOptions.getChildAt(getEndpointIndex(this@BaseActivity)).id)
             selectedEnvironmentIndex = getEndpointIndex(this@BaseActivity)
 

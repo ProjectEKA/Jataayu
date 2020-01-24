@@ -91,7 +91,8 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_search_provider_label"
             app:selected="@{!inEditMode}"
             app:toggledVisibility="@{!inEditMode}"
-            tools:text="Max Hospital, Kochi" />
+            tools:text="Max Hospital, Kochi"
+            tools:visibility="gone" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_autocomplete"
@@ -106,7 +107,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_search_provider_label"
             app:toggledVisibility="@{inEditMode}"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <EditText
                 android:id="@+id/sv_provider"
@@ -251,9 +252,9 @@
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_margin="@dimen/content_margin_medium"
-                android:onClick="@{clickHandler::onSearchButtonClick}"
-                android:enabled="@{!inEditMode}"
                 android:clickable="@{!inEditMode}"
+                android:enabled="@{!inEditMode}"
+                android:onClick="@{clickHandler::onSearchButtonClick}"
                 android:text="@string/link_provider"
                 tools:text="@string/link_provider" />
         </FrameLayout>

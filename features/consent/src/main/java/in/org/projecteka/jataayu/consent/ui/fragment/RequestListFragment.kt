@@ -30,6 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener {
+
     private lateinit var binding: ConsentRequestFragmentBinding
 
     companion object {
@@ -38,7 +39,8 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
     }
     private val viewModel: ConsentViewModel by sharedViewModel()
 
-    private val consentObserver = Observer<ConsentsListResponse?> { renderConsentRequests(it?.requests!!, binding.spRequestFilter.selectedItemPosition) }
+    private val consentObserver = Observer<ConsentsListResponse?> {
+        renderConsentRequests(it?.requests!!, binding.spRequestFilter.selectedItemPosition) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -101,8 +103,8 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            1 -> renderConsentRequests((viewModel.requests).filter { it.status.equals(RequestStatus.REQUESTED) }, position)
-            2 -> renderConsentRequests((viewModel.requests).filter { it.status.equals(RequestStatus.EXPIRED)}, position)
+            1 -> (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(viewModel.requests.filter { it.status.equals(RequestStatus.REQUESTED) })
+            2 -> (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(viewModel.requests.filter { it.status.equals(RequestStatus.EXPIRED) })
             else ->
                 renderConsentRequests(viewModel.requests, position)
         }
