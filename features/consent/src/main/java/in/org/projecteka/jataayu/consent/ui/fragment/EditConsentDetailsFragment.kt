@@ -4,6 +4,7 @@ import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.FragmentConsentDetailsEditBinding
 import `in`.org.projecteka.jataayu.consent.ui.handler.PickerClickHandler
 import `in`.org.projecteka.jataayu.core.model.Consent
+import `in`.org.projecteka.jataayu.core.model.HiType
 import `in`.org.projecteka.jataayu.presentation.callback.DateTimeSelectionCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog
@@ -11,6 +12,7 @@ import `in`.org.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog.Com
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.TimePickerDialog
 import `in`.org.projecteka.jataayu.provider.ui.handler.ConsentRequestClickHandler
 import `in`.org.projecteka.jataayu.util.extension.setTitle
+import `in`.org.projecteka.jataayu.util.extension.showLongToast
 import `in`.org.projecteka.jataayu.util.extension.toUtc
 import `in`.org.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
@@ -19,17 +21,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import timber.log.Timber
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlinx.android.synthetic.main.fragment_consent_details_edit.cg_request_info_types as chipGroup
 
 
 class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeSelectionCallback,
-    ConsentRequestClickHandler {
+    ConsentRequestClickHandler{
+
     private lateinit var binding: FragmentConsentDetailsEditBinding
     private val eventBusInstance: EventBus = EventBus.getDefault()
     lateinit var consent: Consent
     private lateinit var modifiedConsent: Consent
+    private var hiTypes = ArrayList<HiType>()
 
     companion object {
         fun newInstance() = EditConsentDetailsFragment()
@@ -46,13 +54,25 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         consent = eventBusInstance.getStickyEvent(Consent::class.java)
+        hiTypes = eventBusInstance.getStickyEvent(ArrayList<HiType>()::class.java)
+        Timber.d("Hitypes in Edit ${hiTypes.size}")
         modifiedConsent = consent.clone()
         binding.consent = modifiedConsent
         binding.clickHandler = this
 
-        for (hiType in modifiedConsent.hiTypes) {
-            binding.cgRequestInfoTypes.addView(newChip(hiType))
+
+        for (i in 0 until hiTypes.size) {
+            binding.cgRequestInfoTypes.addView(newChip(hiTypes.get(i).type, hiTypes.get(i).isChecked))
         }
+
+        Timber.d("Child count ${chipGroup.childCount}")
+
+        binding.cgRequestInfoTypes.setOnCheckedChangeListener(ChipGroup.OnCheckedChangeListener { chipGroup, i ->
+            val chip = chipGroup.findViewById<Chip>(i)
+            if (chip != null) {
+                showLongToast(chip.text.toString())
+            }
+        })
 
         binding.pickerClickHandler = this
     }
@@ -97,7 +117,8 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
                 )
             }
             R.id.tv_expiry_date -> {
-                DatePickerDialog(R.id.tv_expiry_date, DateTimeUtils.getDate(modifiedConsent.permission.dataExpiryAt)?.time!!, System.currentTimeMillis(), UNDEFINED_DATE, this).show(
+                DatePickerDialog(R.id.tv_expiry_date, DateTimeUtils.getDate(modifiedConsent.permission.dataExpiryAt)?.time!!,
+                    System.currentTimeMillis(), UNDEFINED_DATE, this).show(
                     fragmentManager!!,
                     modifiedConsent.permission.dataExpiryAt
                 )
@@ -105,15 +126,19 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         }
     }
 
-    private fun newChip(description: String): Chip? {
+    private fun newChip(description: String, isChecked: Boolean): Chip? {
         val chip = Chip(context)
         chip.text = description
-        chip.isChecked = true
+        chip.isChecked = isChecked
         return chip
     }
 
     @Subscribe
     public fun onConsentReceived(consent: Consent) {
+    }
+
+    @Subscribe
+    public fun onHiTypesReceived(hiTypes: ArrayList<HiType>) {
     }
 
     override fun onStart() {
@@ -138,7 +163,16 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
     }
 
     override fun onSaveClick(view: View) {
+        for (i in 0 until chipGroup.childCount){
+            val child = chipGroup.getChildAt(i)
+
+            if (child is Chip) {
+                hiTypes[i].isChecked = child.isChecked
+            }
+        }
+
         eventBusInstance.postSticky(modifiedConsent)
+        eventBusInstance.post(hiTypes)
         activity?.onBackPressed()
     }
 }

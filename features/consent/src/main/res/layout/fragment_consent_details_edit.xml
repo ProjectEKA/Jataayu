@@ -154,6 +154,7 @@
                     android:id="@+id/cg_request_info_types"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:singleSelection="false"
                     android:layout_marginTop="@dimen/content_margin_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

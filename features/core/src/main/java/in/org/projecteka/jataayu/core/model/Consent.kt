@@ -17,7 +17,7 @@ data class Consent(
     @SerializedName("hip") val hip: Hip?,
     @SerializedName("hiu") val hiu: HiuRequester,
     @SerializedName("requester") val requester: Requester,
-    @SerializedName("hiTypes") val hiTypes: List<String>,
+    @SerializedName("hiTypes") val hiTypes: ArrayList<String>,
     @SerializedName("permission") @Bindable val permission: Permission,
     @SerializedName("status") val status: RequestStatus
 ) : BaseObservable(), IDataBindingModel, Cloneable {

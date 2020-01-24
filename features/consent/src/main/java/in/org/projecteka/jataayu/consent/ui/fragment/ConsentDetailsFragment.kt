@@ -7,6 +7,7 @@ import `in`.org.projecteka.jataayu.consent.databinding.ConsentDetailsFragmentBin
 import `in`.org.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.org.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.org.projecteka.jataayu.core.model.Consent
+import `in`.org.projecteka.jataayu.core.model.HiType
 import `in`.org.projecteka.jataayu.core.model.RequestStatus
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
@@ -22,6 +23,8 @@ import com.google.android.material.chip.Chip
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import timber.log.Timber
+
 class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetailsClickHandler {
     override fun onGrantConsentClick(view: View) {
         (activity as ConsentDetailsActivity).grantRequest()
@@ -30,6 +33,8 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
     private lateinit var binding: ConsentDetailsFragmentBinding
 
     private lateinit var consent: Consent
+
+    private var hiTypeObjects = ArrayList<HiType>()
 
     private val eventBusInstance = EventBus.getDefault()
 
@@ -56,6 +61,9 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
 
     private fun renderUi() {
         consent = eventBusInstance.getStickyEvent(Consent::class.java)
+
+        Timber.d("hityes ${hiTypeObjects.size}")
+
         eventBusInstance.removeStickyEvent(Consent::class.java)
 
         binding.consent = consent
@@ -64,11 +72,24 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         eventBusInstance.postSticky(consent)
 
         binding.cgRequestInfoTypes.removeAllViews()
-        for (hiType in consent.hiTypes) {
-            binding.cgRequestInfoTypes.addView(newChip(hiType))
+
+        if(hiTypeObjects.isEmpty()) createHitypesFromConsent()
+
+        for (hiType in hiTypeObjects) {
+            if (hiType.isChecked){
+                binding.cgRequestInfoTypes.addView(newChip(hiType.type))
+            }
         }
 
+        eventBusInstance.postSticky(hiTypeObjects)
+
         binding.consentDetailsClickHandler = this
+    }
+
+    private fun createHitypesFromConsent() {
+        for (hiType in consent.hiTypes) {
+            hiTypeObjects.add(HiType(hiType, true))
+        }
     }
 
     @Subscribe
@@ -96,4 +117,11 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         setTitle(R.string.new_request)
         renderUi()
     }
+
+
+    @Subscribe
+    public fun onHiTypesReceived(hiTypes: ArrayList<HiType>) {
+
+    }
+
 }
