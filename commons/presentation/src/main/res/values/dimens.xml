@@ -32,6 +32,7 @@
     <dimen name="letter_spacing">-0.048</dimen>
 
     <dimen name="button_height">56dp</dimen>
+    <dimen name="edittext_height">40dp</dimen>
     <dimen name="button_corner_radius">2dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>

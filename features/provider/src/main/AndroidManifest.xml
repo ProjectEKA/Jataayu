@@ -4,7 +4,7 @@
 
     <application>
         <activity android:name="in.org.projecteka.jataayu.provider.ui.ProviderSearchActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateVisible|adjustResize"/>
     </application>
 
 </manifest>

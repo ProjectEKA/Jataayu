@@ -19,7 +19,7 @@
 
         <variable
             name="progressBarVisibility"
-            type="Integer" />
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,7 +81,7 @@
             android:descendantFocusability="blocksDescendants"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:visibility="@{progressBarVisibility}"
+            app:toggledVisibility="@{progressBarVisibility}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="gone">

@@ -65,7 +65,7 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
 
         binding.cgRequestInfoTypes.removeAllViews()
         for (hiType in consent.hiTypes) {
-            binding.cgRequestInfoTypes.addView(newChip(hiType.description))
+            binding.cgRequestInfoTypes.addView(newChip(hiType))
         }
 
         binding.consentDetailsClickHandler = this

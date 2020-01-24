@@ -11,6 +11,7 @@ import `in`.org.projecteka.jataayu.core.model.RequestStatus
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
+import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.util.extension.startActivity
 import android.os.Bundle
@@ -28,8 +29,8 @@ import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
-
-class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener {
+class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener,
+    ProgressDialogCallback {
 
     private lateinit var binding: ConsentRequestFragmentBinding
 
@@ -37,10 +38,12 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
         fun newInstance() = RequestListFragment()
 
     }
+
     private val viewModel: ConsentViewModel by sharedViewModel()
 
     private val consentObserver = Observer<ConsentsListResponse?> {
-        renderConsentRequests(it?.requests!!, binding.spRequestFilter.selectedItemPosition) }
+        renderConsentRequests(it?.requests!!, binding.spRequestFilter.selectedItemPosition)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,7 +56,8 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
 
     private fun initSpinner(selectedPosition: Int) {
         val arrayAdapter =
-            ArrayAdapter<String>(context!!, android.R.layout.simple_dropdown_item_1line, android.R.id.text1,
+            ArrayAdapter<String>(
+                context!!, android.R.layout.simple_dropdown_item_1line, android.R.id.text1,
                 viewModel.populateFilterItems(resources)
             )
         binding.spRequestFilter.adapter = arrayAdapter
@@ -65,19 +69,19 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
         binding.requestCount = getString(R.string.all_requests, 0)
         binding.listener = this
         binding.hideRequestsList = true
-        binding.progressBarVisibility = View.GONE
+        showProgressBar(false)
         initSpinner(0)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.consentsListResponse.observe(this, consentObserver)
-        viewModel.getConsents()
-        binding.progressBarVisibility = View.VISIBLE
+        viewModel.getConsents(this)
+        showProgressBar(true)
     }
 
-    private fun renderConsentRequests(requests : List<Consent>, selectedSpinnerPosition: Int) {
-        hideRequestLoading()
+    private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
+        showProgressBar(false)
         binding.hideRequestsList = !viewModel.isRequestAvailable()
         rvConsents.apply {
             layoutManager = LinearLayoutManager(context)
@@ -90,23 +94,43 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
         initSpinner(selectedSpinnerPosition)
     }
 
-    private fun hideRequestLoading() {
-        binding.progressBarVisibility = View.GONE
-    }
-
-    override fun onItemClick(iDataBindingModel: IDataBindingModel, itemViewBinding: ViewDataBinding) {
+    override fun onItemClick(
+        iDataBindingModel: IDataBindingModel,
+        itemViewBinding: ViewDataBinding
+    ) {
         startActivity(ConsentDetailsActivity::class.java)
         EventBus.getDefault().postSticky(iDataBindingModel as Consent)
     }
+
     override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            1 -> (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(viewModel.requests.filter { it.status.equals(RequestStatus.REQUESTED) })
-            2 -> (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(viewModel.requests.filter { it.status.equals(RequestStatus.EXPIRED) })
+            1 -> (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(viewModel.requests.filter {
+                it.status.equals(
+                    RequestStatus.REQUESTED
+                )
+            })
+            2 -> (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(viewModel.requests.filter {
+                it.status.equals(
+                    RequestStatus.EXPIRED
+                )
+            })
             else ->
                 renderConsentRequests(viewModel.requests, position)
         }
+    }
+
+    private fun showProgressBar(show: Boolean) {
+        binding.progressBarVisibility = show
+    }
+
+    override fun onSuccess(any: Any?) {
+        showProgressBar(false)
+    }
+
+    override fun onFailure(any: Any?) {
+        showProgressBar(false)
     }
 }

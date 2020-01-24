@@ -5,6 +5,7 @@ import `in`.org.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.org.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.org.projecteka.jataayu.core.model.Consent
 import `in`.org.projecteka.jataayu.core.model.RequestStatus
+import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.util.extension.EMPTY
 import `in`.org.projecteka.jataayu.util.extension.liveDataOf
 import android.content.res.Resources
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 
 class ConsentViewModel(val repository: ConsentRepository) : ViewModel() {
     val consentsListResponse = liveDataOf<ConsentsListResponse>()
@@ -20,17 +22,21 @@ class ConsentViewModel(val repository: ConsentRepository) : ViewModel() {
 
     var requests = emptyList<Consent>()
 
-    fun getConsents() {
+    fun getConsents(progressDialogCallback: ProgressDialogCallback) {
         repository.getConsents().enqueue(object : Callback<ConsentsListResponse> {
                 override fun onFailure(call: Call<ConsentsListResponse>, t: Throwable) {
-
+                    Timber.e(t)
+                    progressDialogCallback.onFailure(t)
                 }
 
                 override fun onResponse(call: Call<ConsentsListResponse>, response: Response<ConsentsListResponse>) {
-                    response.body()?.let {
-                        requests = response.body()?.requests!!
-                        consentsListResponse.value = response.body()
+                    if(response.isSuccessful) {
+                        response.body()?.let {
+                            requests = response.body()?.requests!!
+                            consentsListResponse.value = response.body()
+                        }
                     }
+                    progressDialogCallback.onSuccess(response)
                 }
             })
     }

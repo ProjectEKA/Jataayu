@@ -51,7 +51,7 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         binding.clickHandler = this
 
         for (hiType in modifiedConsent.hiTypes) {
-            binding.cgRequestInfoTypes.addView(newChip(hiType.description))
+            binding.cgRequestInfoTypes.addView(newChip(hiType))
         }
 
         binding.pickerClickHandler = this

@@ -14,10 +14,10 @@ data class Consent(
     @SerializedName("createdAt") val createdAt: String,
     @SerializedName("purpose") val purpose: Purpose,
     @SerializedName("patient") val patient: PatientId,
-    @SerializedName("hip") val hip: Hip,
+    @SerializedName("hip") val hip: Hip?,
     @SerializedName("hiu") val hiu: HiuRequester,
     @SerializedName("requester") val requester: Requester,
-    @SerializedName("hiTypes") val hiTypes: List<HiTypes>,
+    @SerializedName("hiTypes") val hiTypes: List<String>,
     @SerializedName("permission") @Bindable val permission: Permission,
     @SerializedName("status") val status: RequestStatus
 ) : BaseObservable(), IDataBindingModel, Cloneable {
