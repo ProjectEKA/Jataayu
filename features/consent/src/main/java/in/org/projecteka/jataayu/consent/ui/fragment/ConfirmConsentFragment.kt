@@ -152,11 +152,7 @@ class ConfirmConsentFragment : BaseFragment(), ItemClickCallback, ProviderSelect
 
     override fun toggleProvidersSelection(view: View) {
         val checked = (view as CheckBox).isChecked
-        for (listItem in listItems) {
-            if (listItem is CareContext) {
-                listItem.contextChecked = checked
-            }
-        }
+
         rvLinkedAccounts.adapter?.notifyDataSetChanged()
     }
 

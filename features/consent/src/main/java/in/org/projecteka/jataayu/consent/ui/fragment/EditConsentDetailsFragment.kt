@@ -103,10 +103,10 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         when (view.id) {
             R.id.tv_requests_info_from -> {
                 val from = DateTimeUtils.getDate(modifiedConsent.permission.dateRange.from)?.time!!
-                DatePickerDialog(R.id.tv_requests_info_from, from, UNDEFINED_DATE, System.currentTimeMillis(), this).show(
-                    fragmentManager!!,
-                    modifiedConsent.permission.dateRange.from
-                )
+                val datePickerDialog =
+                    DatePickerDialog(R.id.tv_requests_info_from, from, UNDEFINED_DATE, System.currentTimeMillis(), this)
+//                datePickerDialog.setStyle(STYLE_NORMAL, R.style.ThemeOverlay_MaterialComponents_Dialog)
+                datePickerDialog.show(fragmentManager!!, modifiedConsent.permission.dateRange.from)
             }
             R.id.tv_requests_info_to -> {
                 val to = DateTimeUtils.getDate(modifiedConsent.permission.dateRange.to)?.time!!

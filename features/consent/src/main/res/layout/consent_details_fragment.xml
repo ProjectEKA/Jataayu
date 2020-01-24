@@ -222,6 +222,7 @@
                 tools:textColor="@color/red" />
 
             <com.google.android.material.button.MaterialButton
+                style="@style/Button"
                 android:id="@+id/btn_grant"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"

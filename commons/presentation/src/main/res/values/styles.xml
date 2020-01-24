@@ -9,8 +9,6 @@
         <item name="android:textAppearance">@style/TextAppearance</item>
         <item name="toolbarStyle">@style/Toolbar</item>
         <item name="chipStyle">@style/Chip</item>
-        <item name="materialButtonStyle">@style/Button</item>
-        <item name="buttonStyle">@style/Button</item>
         <item name="android:tabWidgetStyle">@style/AppTabLayout</item>
         <item name="android:textViewStyle">@style/TextAppearance</item>
     </style>

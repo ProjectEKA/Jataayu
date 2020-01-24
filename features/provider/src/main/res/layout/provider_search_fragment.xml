@@ -114,6 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/search_edittext_height"
                 android:clickable="true"
+                android:background="@color/white"
                 android:drawableLeft="@drawable/ic_search"
                 android:drawablePadding="@dimen/content_padding_extra_large"
                 android:focusable="true"
