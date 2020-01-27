@@ -1,6 +1,6 @@
 package `in`.org.projecteka.jataayu.consent.ui.fragment
 
-import DividerItemDecorator
+import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
 import `in`.org.projecteka.jataayu.consent.model.ConsentsListResponse

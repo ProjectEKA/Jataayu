@@ -1,6 +1,6 @@
 package `in`.org.projecteka.jataayu.provider.ui.fragment
 
-import DividerItemDecorator
+import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.featuresprovider.R
 import `in`.org.projecteka.featuresprovider.databinding.PatientAccountsFragmentBinding
 import `in`.org.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding

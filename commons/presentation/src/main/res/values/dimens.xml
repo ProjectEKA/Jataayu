@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="toolbar_size">56dp</dimen>
+    <dimen name="collapsed_toolbar_size">34dp</dimen>
 
+    <dimen name="text_size_extra_large">24sp</dimen>
     <dimen name="text_size_large">20sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_small">14sp</dimen>

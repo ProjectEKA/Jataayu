@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="linkedAccount"
+            type="in.org.projecteka.jataayu.core.model.LinkedAccount" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/content_margin_small"
+        android:orientation="vertical"
+        android:padding="@dimen/content_margin_small"
+        android:background="@color/grey_light">
+
+        <TextView
+            android:id="@+id/tv_hip_name"
+            style="@style/ConsentRequestHiuDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@{linkedAccount.providerName}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Max Health Care" />
+
+        <TextView
+            android:id="@+id/tv_patient_reference_number"
+            style="@style/ConsentRequestHiuDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@{linkedAccount.patientReferenceId}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_hip_name"
+            tools:text="MCB7142" />
+
+        <TextView
+            android:id="@+id/tv_patient_display"
+            style="@style/ConsentRequestHiuDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textStyle="italic"
+            android:text="@{linkedAccount.patientName}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_patient_reference_number"
+            tools:text="R Iyer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

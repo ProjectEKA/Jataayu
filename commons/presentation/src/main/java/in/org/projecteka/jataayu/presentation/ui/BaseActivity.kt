@@ -38,7 +38,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.provider_search_activity)
+        setContentView(R.layout.base_activity)
 
         supportFragmentManager.apply {
             addOnBackStackChangedListener {

@@ -18,15 +18,14 @@ import kotlinx.android.synthetic.main.activity_launcher.*
 
 class LauncherActivity : BaseActivity() {
     private lateinit var binding: ActivityLauncherBinding
-    lateinit var active: Fragment
-    lateinit var accountsFragment: Fragment
-    lateinit var consentFragment: Fragment
+    private lateinit var active: Fragment
+    private lateinit var accountsFragment: Fragment
+    private lateinit var consentFragment: Fragment
 
     private val stateChangeListener = object : View.OnAttachStateChangeListener {
         override fun onViewDetachedFromWindow(v: View?) {
 
         }
-
         override fun onViewAttachedToWindow(v: View?) {
             bottom_navigation.selectedItemId = bottom_navigation.menu.getItem(0).itemId
         }

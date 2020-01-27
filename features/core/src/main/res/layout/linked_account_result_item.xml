@@ -6,42 +6,27 @@
     <data>
 
         <variable
-            name="careContext"
-            type="in.org.projecteka.jataayu.core.model.CareContext"/>
+            name="linkedCareContext"
+            type="in.org.projecteka.jataayu.core.model.LinkedCareContext"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
+        android:background="@color/grey_light"
         android:orientation="vertical"
-        android:padding="@dimen/content_margin_medium"
-        android:descendantFocusability="blocksDescendants"
-        android:paddingStart="0dp"
-        android:paddingEnd="0dp">
-
-        <CheckBox
-            android:id="@+id/cb_care_context"
-            android:layout_width="wrap_content"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:clickable="false"
-            android:checked="@={careContext.contextChecked}"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:padding="@dimen/content_margin_small"
+        android:descendantFocusability="blocksDescendants">
 
         <TextView
             android:id="@+id/tv_reference_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/content_margin_medium"
             android:maxLines="1"
             style="@style/TextAppearance.ListItemHeader"
-            android:text="@{careContext.referenceNumber}"
+            android:text="@{linkedCareContext.referenceNumber}"
             app:layout_constraintBottom_toTopOf="@+id/tv_patient_name"
-            app:layout_constraintStart_toEndOf="@+id/cb_care_context"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="7210XXXXXX765" />
 
@@ -50,11 +35,10 @@
             style="@style/TextAppearance.ListItemSubHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/content_margin_medium"
             android:textStyle="italic"
-            android:text="@{careContext.display}"
+            android:text="@{linkedCareContext.display}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cb_care_context"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_reference_number"
             tools:text="General Diagnosis" />
 

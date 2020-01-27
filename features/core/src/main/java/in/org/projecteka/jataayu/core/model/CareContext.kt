@@ -6,7 +6,7 @@ import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import androidx.databinding.BaseObservable
 import com.google.gson.annotations.SerializedName
 
-data class CareContext(@SerializedName("referenceNumber") val referenceNumber: String, @SerializedName("display") val display: String): BaseObservable(), IDataBindingModel {
+open class CareContext(@SerializedName("referenceNumber") open val referenceNumber: String, @SerializedName("display") open val display: String): BaseObservable(), IDataBindingModel {
 
     public var contextChecked : Boolean = false
 

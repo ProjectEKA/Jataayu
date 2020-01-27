@@ -1,21 +1,20 @@
 package `in`.org.projecteka.jataayu.consent.ui.fragment
 
 
-import DividerItemDecorator
 import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.FragmentConfirmConsentBinding
-import `in`.org.projecteka.jataayu.consent.model.LinkedAccountsResponse
-import `in`.org.projecteka.jataayu.consent.model.Links
 import `in`.org.projecteka.jataayu.consent.ui.handler.ConfirmConsentHandler
 import `in`.org.projecteka.jataayu.consent.ui.handler.ProviderSelectionClickHandler
 import `in`.org.projecteka.jataayu.consent.viewmodel.ConfirmConsentViewModel
 import `in`.org.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
-import `in`.org.projecteka.jataayu.core.model.CareContext
 import `in`.org.projecteka.jataayu.core.model.Consent
+import `in`.org.projecteka.jataayu.core.model.LinkedAccountsResponse
+import `in`.org.projecteka.jataayu.core.model.Links
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
+import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.util.extension.setTitle
 import `in`.org.projecteka.jataayu.util.extension.showLongToast
@@ -56,10 +55,10 @@ class ConfirmConsentFragment : BaseFragment(), ItemClickCallback, ProviderSelect
     private val viewModel: ConfirmConsentViewModel by sharedViewModel()
 
     private val linkedAccountsObserver = Observer<LinkedAccountsResponse> {
-        renderLinkedAccounts(it.links)
+        renderLinkedAccounts(it.linkedPatient.links)
     }
 
-    private fun renderLinkedAccounts(linkedAccounts: List<Links>) {
+    private fun renderLinkedAccounts(linkedAccounts: List<Links?>) {
         listItems = getItems(linkedAccounts)
 
         rvLinkedAccounts.apply {
@@ -77,11 +76,11 @@ class ConfirmConsentFragment : BaseFragment(), ItemClickCallback, ProviderSelect
 
     }
 
-    private fun getItems(linkedAccounts: List<Links>): List<IDataBindingModel> {
+    private fun getItems(links: List<Links?>): List<IDataBindingModel> {
         val items = arrayListOf<IDataBindingModel>()
-        for (linkedAccount in linkedAccounts) {
-            items.add(linkedAccount.hip)
-            for (careContext in linkedAccount.careContexts) {
+        for (link in links) {
+            items.add(link?.hip!!)
+            for (careContext in link.careContexts) {
                 items.add(careContext)
             }
         }

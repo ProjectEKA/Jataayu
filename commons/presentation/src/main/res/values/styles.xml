@@ -7,8 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textAppearance">@style/TextAppearance</item>
-        <item name="toolbarStyle">@style/Toolbar</item>
         <item name="chipStyle">@style/Chip</item>
+        <item name="toolbarStyle">@style/Toolbar</item>
+        <item name="android:toolbarStyle">@style/Toolbar</item>
         <item name="android:tabWidgetStyle">@style/AppTabLayout</item>
         <item name="android:textViewStyle">@style/TextAppearance</item>
     </style>
@@ -32,12 +33,19 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents" />
 
     <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:fontFamily">sans-serif-medium</item>
-
+        <item name="android:textColor">@color/white</item>
+        <item name="android:titleTextColor">@color/white</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/text_size_extra_large</item>
+        <item name="android:textColorHighlight">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
     <style name="Button" parent="Widget.MaterialComponents.Button">
@@ -118,9 +126,7 @@
 
     </style>
 
-    <style name="ConsentRequestHiuDetails">
-        <item name="android:letterSpacing">0.05</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
+    <style name="ConsentRequestHiuDetails" parent="TextAppearance.ListItemSubHeader">
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
@@ -132,10 +138,6 @@
 
     <style name="ConsentRequestItemHeader" parent="ConsentRequestItem">
         <item name="android:fontFamily">sans-serif-light</item>
-    </style>
-
-    <style name="ConsentRequestItemValue" parent="ConsentRequestItem">
-        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">

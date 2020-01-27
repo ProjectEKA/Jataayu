@@ -46,6 +46,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:menu="@menu/menu_bottom_nav"
                 app:onNavigationItemSelected="@{bottomNavListener}" />
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

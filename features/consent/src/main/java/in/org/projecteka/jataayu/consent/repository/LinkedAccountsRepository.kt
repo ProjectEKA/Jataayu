@@ -1,7 +1,8 @@
 package `in`.org.projecteka.jataayu.consent.repository
 
-import `in`.org.projecteka.jataayu.consent.model.LinkedAccountsResponse
+import `in`.org.projecteka.jataayu.consent.model.AssociatedAccountsResponse
 import `in`.org.projecteka.jataayu.consent.remote.ConsentApis
+import `in`.org.projecteka.jataayu.core.model.LinkedAccountsResponse
 import retrofit2.Call
 
 interface LinkedAccountsRepository {

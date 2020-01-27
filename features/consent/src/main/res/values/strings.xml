@@ -24,7 +24,7 @@
     <string name="from">From</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>
-    <string name="confirm_consent_label">By granting consent <b>%s</b> can access yor information from the following accounts</string>
+    <string name="confirm_consent_label">By granting consent <b>%s</b> can access your information from the following accounts</string>
     <string name="accounts_to_provide_information">Accounts to provide information</string>
     <string name="all_linked_providers">All linked providers</string>
     <string name="confirm">confirm</string>

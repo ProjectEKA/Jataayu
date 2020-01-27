@@ -103,7 +103,7 @@
 
                 <TextView
                     android:id="@+id/tv_purpose_of_request"
-                    style="@style/ConsentRequestItemValue"
+                    style="@style/ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_margin_small"
@@ -144,7 +144,7 @@
 
                 <TextView
                     android:id="@+id/tv_requests_info_from"
-                    style="@style/ConsentRequestItemValue"
+                    style="@style/ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_padding_medium"
@@ -165,7 +165,7 @@
 
                 <TextView
                     android:id="@+id/tv_requests_info_to"
-                    style="@style/ConsentRequestItemValue"
+                    style="@style/ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/content_padding_medium"

@@ -1,3 +1,5 @@
+package `in`.org.projecteka.jataayu.presentation.decorator
+
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import androidx.recyclerview.widget.RecyclerView

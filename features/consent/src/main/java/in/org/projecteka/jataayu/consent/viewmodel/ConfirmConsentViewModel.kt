@@ -1,8 +1,8 @@
 package `in`.org.projecteka.jataayu.consent.viewmodel
 
-import `in`.org.projecteka.jataayu.consent.model.LinkedAccountsResponse
-import `in`.org.projecteka.jataayu.consent.model.Links
 import `in`.org.projecteka.jataayu.consent.repository.LinkedAccountsRepository
+import `in`.org.projecteka.jataayu.core.model.LinkedAccountsResponse
+import `in`.org.projecteka.jataayu.core.model.Links
 import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
@@ -14,7 +14,7 @@ import timber.log.Timber
 class ConfirmConsentViewModel(val repository: LinkedAccountsRepository) : ViewModel() {
 
     val linkedAccountsResponse = liveDataOf<LinkedAccountsResponse>()
-    var links = emptyList<Links>()
+    var links = emptyList<Links?>()
 
     fun getLinkedAccounts(requestId: String, progressDialogCallback: ProgressDialogCallback) {
         repository.getLinkedAccounts(requestId).enqueue(object : Callback<LinkedAccountsResponse?> {
@@ -28,8 +28,10 @@ class ConfirmConsentViewModel(val repository: LinkedAccountsRepository) : ViewMo
                 response: Response<LinkedAccountsResponse?>
             ) {
                 if (response.isSuccessful) {
-                    links = response.body()?.links!!
-                    linkedAccountsResponse.value = response.body()
+                    response.body()?.linkedPatient?.links?.let {
+                        links = it
+                        linkedAccountsResponse.value = response.body()
+                    }
                 }
                 progressDialogCallback.onSuccess(response)
             }
