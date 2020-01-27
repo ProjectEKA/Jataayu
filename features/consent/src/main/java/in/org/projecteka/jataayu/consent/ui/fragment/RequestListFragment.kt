@@ -1,6 +1,5 @@
 package `in`.org.projecteka.jataayu.consent.ui.fragment
 
-import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
 import `in`.org.projecteka.jataayu.consent.model.ConsentsListResponse
@@ -12,6 +11,7 @@ import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapt
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
+import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.util.extension.startActivity
 import android.os.Bundle
@@ -103,6 +103,7 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
+
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

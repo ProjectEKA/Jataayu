@@ -17,6 +17,7 @@ class DateTimeUtils {
 
         fun getDate(utcDate: String): Date? {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+            inputFormat.timeZone = TimeZone.getTimeZone("GMT")
             return inputFormat.parse(utcDate)
         }
 

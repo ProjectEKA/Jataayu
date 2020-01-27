@@ -15,10 +15,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.verity_otp_fragment.*
+import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class VerifyOtpFragment : BaseFragment(), OtpSubmissionClickHandler {
     private lateinit var binding: VerityOtpFragmentBinding
+    private val eventBus = EventBus.getDefault()
 
     companion object {
         fun newInstance() = VerifyOtpFragment()
@@ -52,6 +54,7 @@ class VerifyOtpFragment : BaseFragment(), OtpSubmissionClickHandler {
 
     private val observer = Observer<SuccessfulLinkingResponse> { _ ->
         showLongToast("Account linked successfully")
+        eventBus.postSticky("Account linked")
         activity?.finish()
     }
 

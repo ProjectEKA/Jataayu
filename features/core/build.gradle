@@ -10,5 +10,7 @@ dependencies {
     api project(Modules.utils)
     api project(Modules.logger)
 
+    api Deps.GreenRobot.eventBus
+
     kaptAndroidTest Deps.AndroidX.dataBindingCompiler
 }

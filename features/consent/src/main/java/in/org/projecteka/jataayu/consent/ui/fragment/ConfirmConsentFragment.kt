@@ -7,6 +7,7 @@ import `in`.org.projecteka.jataayu.consent.ui.handler.ConfirmConsentHandler
 import `in`.org.projecteka.jataayu.consent.ui.handler.ProviderSelectionClickHandler
 import `in`.org.projecteka.jataayu.consent.viewmodel.ConfirmConsentViewModel
 import `in`.org.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
+import `in`.org.projecteka.jataayu.core.model.CareContext
 import `in`.org.projecteka.jataayu.core.model.Consent
 import `in`.org.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.org.projecteka.jataayu.core.model.Links
@@ -96,7 +97,6 @@ class ConfirmConsentFragment : BaseFragment(), ItemClickCallback, ProviderSelect
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentConfirmConsentBinding.inflate(inflater)
         return binding.root
     }
@@ -151,7 +151,11 @@ class ConfirmConsentFragment : BaseFragment(), ItemClickCallback, ProviderSelect
 
     override fun toggleProvidersSelection(view: View) {
         val checked = (view as CheckBox).isChecked
-
+        for (listItem in listItems) {
+            if (listItem is CareContext) {
+                listItem.contextChecked = checked
+            }
+        }
         rvLinkedAccounts.adapter?.notifyDataSetChanged()
     }
 
@@ -161,7 +165,8 @@ class ConfirmConsentFragment : BaseFragment(), ItemClickCallback, ProviderSelect
     }
 
     override fun confirmConsent(view: View) {
-        showLongToast("Confirm consent")
+        showLongToast("Consent granted")
+        activity?.finish()
     }
 
     override fun onSuccess(any: Any?) {

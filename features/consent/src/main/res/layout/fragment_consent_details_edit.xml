@@ -65,7 +65,7 @@
 
                 <TextView
                     android:id="@+id/lbl_purpose_of_request"
-                    style="@style/ConsentRequestItemHeader"
+                    style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_small"
@@ -85,7 +85,7 @@
 
                 <TextView
                     android:id="@+id/lbl_requests_information"
-                    style="@style/ConsentRequestItemHeader"
+                    style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_medium"
@@ -95,7 +95,7 @@
 
                 <TextView
                     android:id="@+id/lbl_requests_information_from"
-                    style="@style/ConsentRequestItemHeader"
+                    style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/from"
@@ -118,7 +118,7 @@
 
                 <TextView
                     android:id="@+id/lbl_requests_information_to"
-                    style="@style/ConsentRequestItemHeader"
+                    style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_medium"
@@ -142,7 +142,7 @@
 
                 <TextView
                     android:id="@+id/lbl_requests_info_type"
-                    style="@style/ConsentRequestItemHeader"
+                    style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_extra_large"
@@ -162,7 +162,7 @@
 
                 <TextView
                     android:id="@+id/tv_expiry_label"
-                    style="@style/ConsentRequestItemHeader"
+                    style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_small"

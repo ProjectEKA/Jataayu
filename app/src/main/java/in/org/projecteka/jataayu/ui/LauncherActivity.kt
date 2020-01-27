@@ -13,14 +13,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_launcher.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 
 class LauncherActivity : BaseActivity() {
     private lateinit var binding: ActivityLauncherBinding
-    private lateinit var active: Fragment
-    private lateinit var accountsFragment: Fragment
-    private lateinit var consentFragment: Fragment
+    lateinit var active: Fragment
+    lateinit var accountsFragment: Fragment
+    lateinit var consentFragment: Fragment
+    private val eventBusInstance = EventBus.getDefault()
 
     private val stateChangeListener = object : View.OnAttachStateChangeListener {
         override fun onViewDetachedFromWindow(v: View?) {
@@ -43,6 +47,8 @@ class LauncherActivity : BaseActivity() {
         bottom_navigation.addOnAttachStateChangeListener(stateChangeListener)
 
         fab.setOnClickListener {
+            if (!eventBusInstance.isRegistered(this))
+                eventBusInstance.register(this)
             startActivity(Intent(this, ProviderSearchActivity::class.java))
         }
     }
@@ -86,4 +92,21 @@ class LauncherActivity : BaseActivity() {
         active = consentFragment
     }
 
+    @Subscribe
+    public fun onActivityFinished(message: String) {
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (eventBusInstance.isRegistered(this)) {
+            var snackBar = Snackbar.make(
+                container,
+                "${eventBusInstance.getStickyEvent(String::class.java)}",
+                Snackbar.LENGTH_LONG
+            )
+            snackBar.show()
+            eventBusInstance.removeStickyEvent(String::class.java)
+            eventBusInstance.unregister(this)
+        }
+    }
 }

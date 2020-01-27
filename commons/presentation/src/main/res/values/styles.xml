@@ -131,12 +131,7 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="ConsentRequestItem">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
-    <style name="ConsentRequestItemHeader" parent="ConsentRequestItem">
+    <style name="TextAppearance.Light" parent="TextAppearance.ListItemSubHeader">
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
