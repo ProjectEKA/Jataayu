@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
     <string name="app_name">consent</string>
     <string name="title_activity_consent">Consent</string>
     <string name="title_activity_consent_requests">Consent Requests</string>
@@ -12,7 +12,7 @@
     <string name="edit">Edit</string>
     <string name="requests_informatio_type">Requests information type</string>
     <string name="deny">deny</string>
-    <string name="grant_request">Grant request</string>
+    <string name="grant_request">Grant consent</string>
     <string name="consent_expiry">Consent expiry</string>
     <string name="no_new_consent_requests">No new consent requests</string>
     <string name="loading_requests">We are loading your consent requests\n\nThis may take up a few seconds...</string>
@@ -24,8 +24,8 @@
     <string name="from">From</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>
-    <string name="confirm_consent_label">By granting consent <b>%s</b> can access your information from the following accounts</string>
     <string name="accounts_to_provide_information">Accounts to provide information</string>
     <string name="all_linked_providers">All linked providers</string>
     <string name="confirm">confirm</string>
+    <string name="grant_cosent_disclaimer">By granting this consent, you also agree to let %s view your linked accounts.</string>
 </resources>

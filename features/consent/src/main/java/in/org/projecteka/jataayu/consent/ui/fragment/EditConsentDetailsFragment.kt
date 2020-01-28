@@ -3,14 +3,20 @@ package `in`.org.projecteka.jataayu.consent.ui.fragment
 import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.FragmentConsentDetailsEditBinding
 import `in`.org.projecteka.jataayu.consent.ui.handler.PickerClickHandler
-import `in`.org.projecteka.jataayu.core.model.Consent
-import `in`.org.projecteka.jataayu.core.model.HiType
+import `in`.org.projecteka.jataayu.consent.viewmodel.ConfirmConsentViewModel
+import `in`.org.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
+import `in`.org.projecteka.jataayu.core.model.*
+import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.DateTimeSelectionCallback
+import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
+import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
+import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
+import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog.Companion.UNDEFINED_DATE
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.TimePickerDialog
-import `in`.org.projecteka.jataayu.provider.ui.handler.ConsentRequestClickHandler
+import `in`.org.projecteka.jataayu.provider.ui.handler.EditConsentClickHandler
 import `in`.org.projecteka.jataayu.util.extension.setTitle
 import `in`.org.projecteka.jataayu.util.extension.showLongToast
 import `in`.org.projecteka.jataayu.util.extension.toUtc
@@ -19,24 +25,37 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.annotation.IdRes
+import androidx.core.content.ContextCompat
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
+import kotlinx.android.synthetic.main.fragment_consent_details_edit.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import timber.log.Timber
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.fragment_consent_details_edit.cg_request_info_types as chipGroup
 
 
 class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeSelectionCallback,
-    ConsentRequestClickHandler{
+    EditConsentClickHandler, ItemClickCallback, ProgressDialogCallback {
 
     private lateinit var binding: FragmentConsentDetailsEditBinding
+    lateinit var listItems: List<IDataBindingModel>
+
     private val eventBusInstance: EventBus = EventBus.getDefault()
     lateinit var consent: Consent
     private lateinit var modifiedConsent: Consent
     private var hiTypes = ArrayList<HiType>()
+    private val viewModel: ConfirmConsentViewModel by sharedViewModel()
+
+    private val linkedAccountsObserver = Observer<LinkedAccountsResponse> {
+        renderLinkedAccounts(it.linkedPatient.links)
+    }
 
     companion object {
         fun newInstance() = EditConsentDetailsFragment()
@@ -54,26 +73,49 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         super.onViewCreated(view, savedInstanceState)
         consent = eventBusInstance.getStickyEvent(Consent::class.java)
         hiTypes = eventBusInstance.getStickyEvent(ArrayList<HiType>()::class.java)
-        Timber.d("HiTypes in Edit ${hiTypes.size}")
         modifiedConsent = consent.clone()
         binding.consent = modifiedConsent
         binding.clickHandler = this
+        binding.pickerClickHandler = this
 
+        renderUi()
+    }
 
+    private fun renderUi() {
         for (i in 0 until hiTypes.size) {
             binding.cgRequestInfoTypes.addView(newChip(hiTypes[i].type, hiTypes[i].isChecked))
         }
 
-        Timber.d("Child count ${chipGroup.childCount}")
-
-        binding.cgRequestInfoTypes.setOnCheckedChangeListener { chipGroup, i ->
-            val chip = chipGroup.findViewById<Chip>(i)
+        binding.cgRequestInfoTypes.setOnCheckedChangeListener { group, checkedId ->
+            val chip = chipGroup.findViewById<Chip>(checkedId)
             if (chip != null) {
                 showLongToast(chip.text.toString())
             }
         }
 
-        binding.pickerClickHandler = this
+        val consent = eventBusInstance.getStickyEvent(Consent::class.java)
+        viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
+        if (viewModel.linkedAccountsResponse.value == null) {
+            showProgressBar(true)
+            viewModel.getLinkedAccounts(consent.id, this)
+        }
+    }
+
+    override fun onItemClick(iDataBindingModel: IDataBindingModel, itemViewBinding: ViewDataBinding) {
+        val checkbox = (itemViewBinding as PatientAccountResultItemBinding).cbCareContext
+        checkbox.toggle()
+        if (!checkbox.isChecked) cb_link_all_providers.isChecked = false
+    }
+
+    private fun renderLinkedAccounts(linkedAccounts: List<Links?>) {
+        listItems = viewModel.getItems(linkedAccounts)
+
+        rvLinkedAccounts.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = GenericRecyclerViewAdapter(this@EditConsentDetailsFragment, listItems)
+            val dividerItemDecorator = DividerItemDecorator(ContextCompat.getDrawable(context!!, R.color.transparent)!!)
+            addItemDecoration(dividerItemDecorator)
+        }
     }
 
     override fun onTimeSelected(timePair: Pair<Int, Int>) {
@@ -95,7 +137,10 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
     }
 
     override fun onTimePickerClick(view: View) {
-        TimePickerDialog(modifiedConsent.getConsentExpiryTime(), this).show(fragmentManager!!, modifiedConsent.getConsentExpiryTime())
+        TimePickerDialog(modifiedConsent.getConsentExpiryTime(), this).show(
+            fragmentManager!!,
+            modifiedConsent.getConsentExpiryTime()
+        )
     }
 
     override fun onDatePickerClick(view: View) {
@@ -115,8 +160,10 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
                 )
             }
             R.id.tv_expiry_date -> {
-                DatePickerDialog(R.id.tv_expiry_date, DateTimeUtils.getDate(modifiedConsent.permission.dataExpiryAt)?.time!!,
-                    System.currentTimeMillis(), UNDEFINED_DATE, this).show(
+                DatePickerDialog(
+                    R.id.tv_expiry_date, DateTimeUtils.getDate(modifiedConsent.permission.dataExpiryAt)?.time!!,
+                    System.currentTimeMillis(), UNDEFINED_DATE, this
+                ).show(
                     fragmentManager!!,
                     modifiedConsent.permission.dataExpiryAt
                 )
@@ -160,17 +207,30 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         binding.consent = consent
     }
 
-    override fun onSaveClick(view: View) {
-        for (i in 0 until chipGroup.childCount){
-            val child = chipGroup.getChildAt(i)
+    override fun toggleProvidersSelection(view: View) {
+        val checked = (view as CheckBox).isChecked
+        listItems.forEach { if (it is CareContext) it.contextChecked = checked }
 
-            if (child is Chip) {
-                hiTypes[i].isChecked = child.isChecked
-            }
-        }
+        rvLinkedAccounts.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onSaveClick(view: View) {
+        hiTypes.forEach { it.isChecked = (chipGroup.getChildAt(hiTypes.indexOf(it)) as Chip).isChecked }
 
         eventBusInstance.postSticky(modifiedConsent)
         eventBusInstance.post(hiTypes)
         activity?.onBackPressed()
+    }
+
+    override fun onSuccess(any: Any?) {
+        showProgressBar(false)
+    }
+
+    override fun onFailure(any: Any?) {
+        showProgressBar(false)
+    }
+
+    private fun showProgressBar(shouldShow: Boolean) {
+        binding.progressBarVisibility = shouldShow
     }
 }

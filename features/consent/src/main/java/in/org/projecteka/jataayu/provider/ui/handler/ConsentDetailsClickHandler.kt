@@ -4,5 +4,5 @@ import android.view.View
 
 interface ConsentDetailsClickHandler {
     fun onEditClick(view: View)
-    fun onGrantConsentClick(view: View)
+    fun onGrantConsent(view: View)
 }

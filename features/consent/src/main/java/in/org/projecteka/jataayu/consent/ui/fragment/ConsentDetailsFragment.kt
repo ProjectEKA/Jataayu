@@ -5,6 +5,7 @@ import `in`.org.projecteka.jataayu.consent.databinding.ConsentDetailsFragmentBin
 import `in`.org.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.org.projecteka.jataayu.core.model.Consent
 import `in`.org.projecteka.jataayu.core.model.HiType
+import `in`.org.projecteka.jataayu.core.model.MessageEventType
 import `in`.org.projecteka.jataayu.core.model.RequestStatus
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
@@ -21,10 +22,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
 class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetailsClickHandler {
-    override fun onGrantConsentClick(view: View) {
-        (activity as ConsentDetailsActivity).grantRequest()
-    }
-
     private lateinit var binding: ConsentDetailsFragmentBinding
 
     private lateinit var consent: Consent
@@ -39,6 +36,11 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
     }
     override fun onEditClick(view: View) {
         (activity as ConsentDetailsActivity).editConsentDetails()
+    }
+
+    override fun onGrantConsent(view: View) {
+        eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
+        activity?.finish()
     }
 
     companion object{
@@ -77,7 +79,7 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
 
         eventBusInstance.postSticky(hiTypeObjects)
 
-        binding.consentDetailsClickHandler = this
+        binding.clickHandler = this
     }
 
     private fun createHiTypesFromConsent() {

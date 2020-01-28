@@ -2,7 +2,6 @@ package `in`.org.projecteka.jataayu.consent.ui.activity
 
 import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.ActivityConsentDetailsBinding
-import `in`.org.projecteka.jataayu.consent.ui.fragment.ConfirmConsentFragment
 import `in`.org.projecteka.jataayu.consent.ui.fragment.ConsentDetailsFragment
 import `in`.org.projecteka.jataayu.consent.ui.fragment.EditConsentDetailsFragment
 import `in`.org.projecteka.jataayu.presentation.ui.BaseActivity
@@ -20,9 +19,5 @@ class ConsentDetailsActivity : BaseActivity() {
 
     fun editConsentDetails(){
         addFragment(EditConsentDetailsFragment.newInstance())
-    }
-
-    fun grantRequest(){
-        addFragment(ConfirmConsentFragment.newInstance())
     }
 }
