@@ -1,11 +1,8 @@
 package `in`.org.projecteka.jataayu.consent.ui.fragment
 
-
-
 import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.ConsentDetailsFragmentBinding
 import `in`.org.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
-import `in`.org.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.org.projecteka.jataayu.core.model.Consent
 import `in`.org.projecteka.jataayu.core.model.HiType
 import `in`.org.projecteka.jataayu.core.model.RequestStatus
@@ -22,8 +19,6 @@ import androidx.databinding.ViewDataBinding
 import com.google.android.material.chip.Chip
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import timber.log.Timber
 
 class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetailsClickHandler {
     override fun onGrantConsentClick(view: View) {
@@ -46,9 +41,14 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         (activity as ConsentDetailsActivity).editConsentDetails()
     }
 
-    private val viewModel: ConsentViewModel by sharedViewModel()
     companion object{
         fun newInstance() = ConsentDetailsFragment()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (!eventBusInstance.isRegistered(this))
+            eventBusInstance.register(this)
     }
 
     override fun onCreateView(
@@ -60,12 +60,6 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
     }
 
     private fun renderUi() {
-        consent = eventBusInstance.getStickyEvent(Consent::class.java)
-
-        Timber.d("hityes ${hiTypeObjects.size}")
-
-        eventBusInstance.removeStickyEvent(Consent::class.java)
-
         binding.consent = consent
         binding.requestExpired = consent.status == RequestStatus.REQUESTED
 
@@ -73,7 +67,7 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
 
         binding.cgRequestInfoTypes.removeAllViews()
 
-        if(hiTypeObjects.isEmpty()) createHitypesFromConsent()
+        if(hiTypeObjects.isEmpty()) createHiTypesFromConsent()
 
         for (hiType in hiTypeObjects) {
             if (hiType.isChecked){
@@ -86,19 +80,15 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         binding.consentDetailsClickHandler = this
     }
 
-    private fun createHitypesFromConsent() {
+    private fun createHiTypesFromConsent() {
         for (hiType in consent.hiTypes) {
             hiTypeObjects.add(HiType(hiType, true))
         }
     }
 
-    @Subscribe
-    public fun onConsentReceived(consent: Consent) {}
-
-    override fun onStart() {
-        super.onStart()
-        if (!eventBusInstance.isRegistered(this))
-            eventBusInstance.register(this)
+    @Subscribe(sticky = true)
+    public fun onConsentReceived(consent: Consent) {
+        this.consent = consent
     }
 
     override fun onStop() {

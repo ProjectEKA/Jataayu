@@ -2,34 +2,42 @@ package `in`.org.projecteka.jataayu.ui
 
 import `in`.org.projecteka.jataayu.R
 import `in`.org.projecteka.jataayu.consent.ui.fragment.ConsentHostFragment
+import `in`.org.projecteka.jataayu.core.model.MessageEventType
 import `in`.org.projecteka.jataayu.databinding.ActivityLauncherBinding
 import `in`.org.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
 import `in`.org.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
 import kotlinx.android.synthetic.main.activity_launcher.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class LauncherActivity : BaseActivity() {
     private lateinit var binding: ActivityLauncherBinding
-    lateinit var active: Fragment
-    lateinit var accountsFragment: Fragment
-    lateinit var consentFragment: Fragment
+    private lateinit var active: Fragment
+    private lateinit var accountsFragment: Fragment
+    private lateinit var consentFragment: Fragment
     private val eventBusInstance = EventBus.getDefault()
 
     private val stateChangeListener = object : View.OnAttachStateChangeListener {
         override fun onViewDetachedFromWindow(v: View?) {
 
         }
+
         override fun onViewAttachedToWindow(v: View?) {
             bottom_navigation.selectedItemId = bottom_navigation.menu.getItem(0).itemId
         }
@@ -47,10 +55,14 @@ class LauncherActivity : BaseActivity() {
         bottom_navigation.addOnAttachStateChangeListener(stateChangeListener)
 
         fab.setOnClickListener {
-            if (!eventBusInstance.isRegistered(this))
-                eventBusInstance.register(this)
             startActivity(Intent(this, ProviderSearchActivity::class.java))
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!eventBusInstance.isRegistered(this))
+            eventBusInstance.register(this)
     }
 
     private fun initFragments() {
@@ -92,21 +104,27 @@ class LauncherActivity : BaseActivity() {
         active = consentFragment
     }
 
-    @Subscribe
-    public fun onActivityFinished(message: String) {
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public fun onEvent(messageEventType: MessageEventType) {
+        when (messageEventType) {
+            MessageEventType.CONSENT_GRANTED -> {
+                showSnackbar(getString(R.string.consent_granted))
+            }
+            MessageEventType.ACCOUNT_LINKED ->
+                showSnackbar(getString(R.string.account_linked_successfully))
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (eventBusInstance.isRegistered(this)) {
-            var snackBar = Snackbar.make(
-                container,
-                "${eventBusInstance.getStickyEvent(String::class.java)}",
-                Snackbar.LENGTH_LONG
-            )
-            snackBar.show()
-            eventBusInstance.removeStickyEvent(String::class.java)
-            eventBusInstance.unregister(this)
-        }
+    private fun showSnackbar(message: String) {
+        val spannableString = SpannableString(message)
+        spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val snackbar = Snackbar.make(fragment_container, spannableString, LENGTH_LONG)
+        snackbar.anchorView = bottom_navigation
+        snackbar.show()
+    }
+
+    override fun onDestroy() {
+        eventBusInstance.unregister(this)
+        super.onDestroy()
     }
 }

@@ -21,7 +21,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import timber.log.Timber
@@ -55,24 +54,24 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         super.onViewCreated(view, savedInstanceState)
         consent = eventBusInstance.getStickyEvent(Consent::class.java)
         hiTypes = eventBusInstance.getStickyEvent(ArrayList<HiType>()::class.java)
-        Timber.d("Hitypes in Edit ${hiTypes.size}")
+        Timber.d("HiTypes in Edit ${hiTypes.size}")
         modifiedConsent = consent.clone()
         binding.consent = modifiedConsent
         binding.clickHandler = this
 
 
         for (i in 0 until hiTypes.size) {
-            binding.cgRequestInfoTypes.addView(newChip(hiTypes.get(i).type, hiTypes.get(i).isChecked))
+            binding.cgRequestInfoTypes.addView(newChip(hiTypes[i].type, hiTypes[i].isChecked))
         }
 
         Timber.d("Child count ${chipGroup.childCount}")
 
-        binding.cgRequestInfoTypes.setOnCheckedChangeListener(ChipGroup.OnCheckedChangeListener { chipGroup, i ->
+        binding.cgRequestInfoTypes.setOnCheckedChangeListener { chipGroup, i ->
             val chip = chipGroup.findViewById<Chip>(i)
             if (chip != null) {
                 showLongToast(chip.text.toString())
             }
-        })
+        }
 
         binding.pickerClickHandler = this
     }
@@ -105,7 +104,6 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
                 val from = DateTimeUtils.getDate(modifiedConsent.permission.dateRange.from)?.time!!
                 val datePickerDialog =
                     DatePickerDialog(R.id.tv_requests_info_from, from, UNDEFINED_DATE, System.currentTimeMillis(), this)
-//                datePickerDialog.setStyle(STYLE_NORMAL, R.style.ThemeOverlay_MaterialComponents_Dialog)
                 datePickerDialog.show(fragmentManager!!, modifiedConsent.permission.dateRange.from)
             }
             R.id.tv_requests_info_to -> {

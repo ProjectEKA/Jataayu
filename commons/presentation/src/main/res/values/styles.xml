@@ -8,7 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textAppearance">@style/TextAppearance</item>
         <item name="chipStyle">@style/Chip</item>
+        <item name="floatingActionButtonStyle">@style/FAB</item>
         <item name="toolbarStyle">@style/Toolbar</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar.FullWidth</item>
         <item name="android:toolbarStyle">@style/Toolbar</item>
         <item name="android:tabWidgetStyle">@style/AppTabLayout</item>
         <item name="android:textViewStyle">@style/TextAppearance</item>
@@ -46,6 +48,14 @@
         <item name="android:textColorHighlight">@color/white</item>
         <item name="android:textColorHint">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
+    <style name="FAB" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="backgroundColor">@color/colorPrimary</item>
+        <item name="iconTint">@color/white</item>
+        <item name="icon">@color/white</item>
+        <item name="android:shadowColor">@color/colorPrimary</item>
     </style>
 
     <style name="Button" parent="Widget.MaterialComponents.Button">

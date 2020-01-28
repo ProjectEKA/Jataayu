@@ -7,10 +7,7 @@ import `in`.org.projecteka.jataayu.consent.ui.handler.ConfirmConsentHandler
 import `in`.org.projecteka.jataayu.consent.ui.handler.ProviderSelectionClickHandler
 import `in`.org.projecteka.jataayu.consent.viewmodel.ConfirmConsentViewModel
 import `in`.org.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
-import `in`.org.projecteka.jataayu.core.model.CareContext
-import `in`.org.projecteka.jataayu.core.model.Consent
-import `in`.org.projecteka.jataayu.core.model.LinkedAccountsResponse
-import `in`.org.projecteka.jataayu.core.model.Links
+import `in`.org.projecteka.jataayu.core.model.*
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
@@ -18,7 +15,6 @@ import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.util.extension.setTitle
-import `in`.org.projecteka.jataayu.util.extension.showLongToast
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
@@ -60,32 +56,14 @@ class ConfirmConsentFragment : BaseFragment(), ItemClickCallback, ProviderSelect
     }
 
     private fun renderLinkedAccounts(linkedAccounts: List<Links?>) {
-        listItems = getItems(linkedAccounts)
+        listItems = viewModel.getItems(linkedAccounts)
 
         rvLinkedAccounts.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = GenericRecyclerViewAdapter(this@ConfirmConsentFragment, listItems)
-            addItemDecoration(
-                DividerItemDecorator(
-                    ContextCompat.getDrawable(
-                        context!!,
-                        R.color.transparent
-                    )!!
-                )
-            )
+            val dividerItemDecorator = DividerItemDecorator(ContextCompat.getDrawable(context!!, R.color.transparent)!!)
+            addItemDecoration(dividerItemDecorator)
         }
-
-    }
-
-    private fun getItems(links: List<Links?>): List<IDataBindingModel> {
-        val items = arrayListOf<IDataBindingModel>()
-        for (link in links) {
-            items.add(link?.hip!!)
-            for (careContext in link.careContexts) {
-                items.add(careContext)
-            }
-        }
-        return items
     }
 
     companion object {
@@ -109,9 +87,9 @@ class ConfirmConsentFragment : BaseFragment(), ItemClickCallback, ProviderSelect
     private fun renderUi() {
         val consent = eventBusInstance.getStickyEvent(Consent::class.java)
         setRequesterName(consent.requester.name)
-        showProgressBar(true)
         viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
         if (viewModel.linkedAccountsResponse.value == null) {
+            showProgressBar(true)
             viewModel.getLinkedAccounts(consent.id, this)
         }
     }
@@ -165,7 +143,7 @@ class ConfirmConsentFragment : BaseFragment(), ItemClickCallback, ProviderSelect
     }
 
     override fun confirmConsent(view: View) {
-        showLongToast("Consent granted")
+        eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
         activity?.finish()
     }
 

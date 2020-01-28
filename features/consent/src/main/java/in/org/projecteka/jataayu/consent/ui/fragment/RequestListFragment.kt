@@ -33,13 +33,13 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
     ProgressDialogCallback {
 
     private lateinit var binding: ConsentRequestFragmentBinding
+    private val INDEX_REQUESTED_CONSENTS = 1
+    private val INDEX_EXPIRED_CONSENT_REQUESTS = 2
+    private val viewModel: ConsentViewModel by sharedViewModel()
 
     companion object {
         fun newInstance() = RequestListFragment()
-
     }
-
-    private val viewModel: ConsentViewModel by sharedViewModel()
 
     private val consentObserver = Observer<ConsentsListResponse?> {
         renderConsentRequests(it?.requests!!, binding.spRequestFilter.selectedItemPosition)
@@ -92,6 +92,7 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
             addItemDecoration(DividerItemDecorator(getDrawable(context!!, R.color.transparent)!!))
         }
         initSpinner(selectedSpinnerPosition)
+        sp_request_filter.setSelection(INDEX_REQUESTED_CONSENTS)
     }
 
     override fun onItemClick(
@@ -108,19 +109,14 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            1 -> (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(viewModel.requests.filter {
-                it.status.equals(
-                    RequestStatus.REQUESTED
-                )
-            })
-            2 -> (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(viewModel.requests.filter {
-                it.status.equals(
-                    RequestStatus.EXPIRED
-                )
-            })
-            else ->
-                renderConsentRequests(viewModel.requests, position)
+            INDEX_REQUESTED_CONSENTS -> filterRequests(viewModel.requests.filter { it.status == RequestStatus.REQUESTED })
+            INDEX_EXPIRED_CONSENT_REQUESTS -> filterRequests(viewModel.requests.filter { it.status == RequestStatus.EXPIRED })
+            else -> filterRequests(viewModel.requests)
         }
+    }
+
+    private fun filterRequests(requests: List<Consent>) {
+        (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(requests)
     }
 
     private fun showProgressBar(show: Boolean) {

@@ -2,13 +2,13 @@ package `in`.org.projecteka.jataayu.provider.ui.fragment
 
 import `in`.org.projecteka.featuresprovider.R
 import `in`.org.projecteka.featuresprovider.databinding.VerityOtpFragmentBinding
+import `in`.org.projecteka.jataayu.core.model.MessageEventType
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
 import `in`.org.projecteka.jataayu.provider.model.Token
 import `in`.org.projecteka.jataayu.provider.ui.handler.OtpSubmissionClickHandler
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.setTitle
-import `in`.org.projecteka.jataayu.util.extension.showLongToast
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -52,9 +52,8 @@ class VerifyOtpFragment : BaseFragment(), OtpSubmissionClickHandler {
         setTitle(R.string.verification)
     }
 
-    private val observer = Observer<SuccessfulLinkingResponse> { _ ->
-        showLongToast("Account linked successfully")
-        eventBus.postSticky("Account linked")
+    private val observer = Observer<SuccessfulLinkingResponse> {
+        eventBus.post(MessageEventType.ACCOUNT_LINKED)
         activity?.finish()
     }
 

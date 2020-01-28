@@ -3,6 +3,7 @@ package `in`.org.projecteka.jataayu.consent.viewmodel
 import `in`.org.projecteka.jataayu.consent.repository.LinkedAccountsRepository
 import `in`.org.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.org.projecteka.jataayu.core.model.Links
+import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,7 @@ class ConfirmConsentViewModel(val repository: LinkedAccountsRepository) : ViewMo
     var links = emptyList<Links?>()
 
     fun getLinkedAccounts(requestId: String, progressDialogCallback: ProgressDialogCallback) {
+
         repository.getLinkedAccounts(requestId).enqueue(object : Callback<LinkedAccountsResponse?> {
             override fun onFailure(call: Call<LinkedAccountsResponse?>, t: Throwable) {
                 Timber.d("Unable to fetch linked accounts")
@@ -36,5 +38,17 @@ class ConfirmConsentViewModel(val repository: LinkedAccountsRepository) : ViewMo
                 progressDialogCallback.onSuccess(response)
             }
         })
+    }
+
+    fun getItems(links: List<Links?>): List<IDataBindingModel> {
+        val items = arrayListOf<IDataBindingModel>()
+        for (link in links) {
+            items.add(link?.hip!!)
+            for (careContext in link.careContexts) {
+                careContext.contextChecked = true
+                items.add(careContext)
+            }
+        }
+        return items
     }
 }
