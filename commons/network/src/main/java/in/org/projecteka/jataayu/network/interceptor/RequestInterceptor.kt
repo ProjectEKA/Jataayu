@@ -1,4 +1,4 @@
-package `in`.org.projecteka.jataayu.network
+package `in`.org.projecteka.jataayu.network.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response

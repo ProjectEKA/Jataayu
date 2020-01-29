@@ -1,11 +1,14 @@
 package `in`.org.projecteka.jataayu.network
 
+import `in`.org.projecteka.jataayu.network.interceptor.HostSelectionInterceptor
+import `in`.org.projecteka.jataayu.network.interceptor.RequestInterceptor
 import `in`.org.projecteka.jataayu.util.constant.NetworkConstants.Companion.CONNECT_TIMEOUT
 import `in`.org.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCK_WEB_SERVER_TEST_URL
 import `in`.org.projecteka.jataayu.util.constant.NetworkConstants.Companion.READ_TIMEOUT
 import `in`.org.projecteka.jataayu.util.constant.NetworkConstants.Companion.WRITE_TIMEOUT
 import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager
 import android.app.Application
+import android.content.Context
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,23 +17,29 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 fun createNetworkClient(context: Application, debug: Boolean = false) =
-    retrofitClient(getBaseUrl(context), httpClient(debug, NetworkSharedPrefsManager.getAuthToken(context = context)))
+    retrofitClient(getBaseUrl(context), httpClient(debug, context, NetworkSharedPrefsManager.getAuthToken(context = context)))
 
 fun getBaseUrl(context: Application): String {
     return if (isTestingMode(context)) MOCK_WEB_SERVER_TEST_URL else NetworkSharedPrefsManager.getBaseUrl(context)!!
 }
 
-private fun httpClient(debug: Boolean, authToken: String?): OkHttpClient {
+private fun httpClient(debug: Boolean, context: Context, authToken: String?): OkHttpClient {
     val httpLoggingInterceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
     val clientBuilder = OkHttpClient.Builder()
         clientBuilder.connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
         .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
 
-    clientBuilder.addInterceptor(RequestInterceptor(authToken))
+    clientBuilder.addInterceptor(
+        RequestInterceptor(
+            authToken
+        )
+    )
     if (debug) {
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         clientBuilder.addInterceptor(httpLoggingInterceptor)
+
+        clientBuilder.addInterceptor(HostSelectionInterceptor(context))
     }
     return clientBuilder.build()
 }
