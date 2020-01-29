@@ -5,7 +5,7 @@ import `in`.org.projecteka.jataayu.consent.ui.fragment.ConsentHostFragment
 import `in`.org.projecteka.jataayu.core.model.MessageEventType
 import `in`.org.projecteka.jataayu.databinding.ActivityLauncherBinding
 import `in`.org.projecteka.jataayu.presentation.ui.BaseActivity
-import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
+import `in`.org.projecteka.jataayu.provider.ui.ProviderActivity
 import `in`.org.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
 import android.content.Intent
 import android.graphics.Color
@@ -55,7 +55,7 @@ class LauncherActivity : BaseActivity() {
         bottom_navigation.addOnAttachStateChangeListener(stateChangeListener)
 
         fab.setOnClickListener {
-            startActivity(Intent(this, ProviderSearchActivity::class.java))
+            startActivity(Intent(this, ProviderActivity::class.java))
         }
     }
 

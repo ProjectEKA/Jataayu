@@ -9,7 +9,7 @@ import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.model.LinkAccountsResponse
-import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
+import `in`.org.projecteka.jataayu.provider.ui.ProviderActivity
 import `in`.org.projecteka.jataayu.provider.ui.handler.PatientAccountsScreenHandler
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.setTitle
@@ -87,6 +87,6 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
     }
 
     private val linkAccountsObserver = Observer<LinkAccountsResponse> { _ ->
-        (activity as ProviderSearchActivity).showVerifyOtpScreen()
+        (activity as ProviderActivity).showVerifyOtpScreen()
     }
 }

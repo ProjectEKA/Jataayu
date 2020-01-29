@@ -8,7 +8,7 @@ import `in`.org.projecteka.jataayu.provider.ui.fragment.VerifyOtpFragment
 import `in`.org.projecteka.jataayu.util.extension.findView
 import android.os.Bundle
 
-class ProviderSearchActivity : BaseActivity() {
+class ProviderActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

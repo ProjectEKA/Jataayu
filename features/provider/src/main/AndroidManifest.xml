@@ -3,8 +3,8 @@
     package="in.org.projecteka.featuresprovider">
 
     <application>
-        <activity android:name="in.org.projecteka.jataayu.provider.ui.ProviderSearchActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+        <activity android:name="in.org.projecteka.jataayu.provider.ui.ProviderActivity"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

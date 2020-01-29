@@ -5,4 +5,5 @@
     <string name="env_custom">Custom</string>
     <string name="hint_endpoint">http://10.132.3.152:8080</string>
     <string name="hint_authtoken">Auth Token</string>
+    <string name="ip_port">IP:port</string>
 </resources>

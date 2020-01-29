@@ -12,7 +12,7 @@ import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.callback.TextWatcherCallback
 import `in`.org.projecteka.jataayu.provider.domain.ProviderNameWatcher
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
-import `in`.org.projecteka.jataayu.provider.ui.ProviderSearchActivity
+import `in`.org.projecteka.jataayu.provider.ui.ProviderActivity
 import `in`.org.projecteka.jataayu.provider.ui.adapter.ProviderSearchAdapter
 import `in`.org.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandler
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
@@ -57,7 +57,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         }
 
     private fun showPatientAccountsList() {
-        (activity as ProviderSearchActivity).showPatientsAccounts()
+        (activity as ProviderActivity).showPatientsAccounts()
     }
 
     private fun observeProviders() {

@@ -102,9 +102,11 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
     }
 
     override fun onItemClick(iDataBindingModel: IDataBindingModel, itemViewBinding: ViewDataBinding) {
-        val checkbox = (itemViewBinding as PatientAccountResultItemBinding).cbCareContext
-        checkbox.toggle()
-        if (!checkbox.isChecked) cb_link_all_providers.isChecked = false
+        if (itemViewBinding is PatientAccountResultItemBinding) { //Check if it header or item
+            val checkbox = itemViewBinding.cbCareContext
+            checkbox.toggle()
+            if (!checkbox.isChecked) cb_link_all_providers.isChecked = false
+        }
     }
 
     private fun renderLinkedAccounts(linkedAccounts: List<Links?>) {

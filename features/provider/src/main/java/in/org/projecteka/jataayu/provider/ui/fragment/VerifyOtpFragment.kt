@@ -9,6 +9,7 @@ import `in`.org.projecteka.jataayu.provider.model.Token
 import `in`.org.projecteka.jataayu.provider.ui.handler.OtpSubmissionClickHandler
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.setTitle
+import `in`.org.projecteka.jataayu.util.ui.UiUtils
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -58,6 +59,7 @@ class VerifyOtpFragment : BaseFragment(), OtpSubmissionClickHandler {
     }
 
     override fun onSubmitOtp(view: View) {
+        UiUtils.hideKeyboard(activity!!)
         viewModel.successfulLinkingResponse.observe(this, observer)
         viewModel.verifyOtp(viewModel.linkAccountsResponse.value?.link?.referenceNumber!!, Token(et_otp.text.toString()))
     }
