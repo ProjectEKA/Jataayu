@@ -4,6 +4,8 @@ import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.org.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.org.projecteka.jataayu.consent.viewmodel.ConsentViewModel
+import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
+import `in`.org.projecteka.jataayu.util.TestUtils
 import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
@@ -20,7 +22,6 @@ import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
-import `in`.org.projecteka.jataayu.util.TestUtils
 import retrofit2.Callback
 import retrofit2.Response
 
@@ -32,6 +33,9 @@ class ConsentViewModelTest {
 
     @Mock
     private lateinit var repository: ConsentRepository
+
+    @Mock
+    private lateinit var progressDialogCallback: ProgressDialogCallback
 
     @Mock
     private lateinit var resources: Resources
@@ -59,7 +63,7 @@ class ConsentViewModelTest {
                 callback.onResponse(call, Response.success(consentsListResponse))
             }
 
-        consentViewModel.getConsents()
+        consentViewModel.getConsents(progressDialogCallback)
     }
 
     @Test
@@ -74,9 +78,9 @@ class ConsentViewModelTest {
 
     private fun dummyList(): ArrayList<String> {
         val list = ArrayList<String>(3)
-        list.add("All requests (2)")
-        list.add("Requested (1)")
-        list.add("Expired (1)")
+        list.add("All requests (14)")
+        list.add("Requested (12)")
+        list.add("Expired (2)")
         return list
     }
 

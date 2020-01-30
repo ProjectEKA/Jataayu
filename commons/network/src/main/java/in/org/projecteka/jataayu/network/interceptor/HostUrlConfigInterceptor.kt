@@ -1,5 +1,6 @@
 package `in`.org.projecteka.jataayu.network.interceptor
 
+import `in`.org.projecteka.jataayu.network.BuildConfig
 import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager
 import android.content.Context
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull

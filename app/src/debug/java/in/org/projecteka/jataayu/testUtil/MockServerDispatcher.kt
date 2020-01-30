@@ -12,17 +12,22 @@ class MockServerDispatcher {
     /**
      * Return ok response from mock server
      */
-    inner class RequestDispatcher(private val context : Context) : Dispatcher() {
-        override fun dispatch(request : RecordedRequest) : MockResponse {
+    inner class RequestDispatcher(private val context: Context) : Dispatcher() {
+        override fun dispatch(request: RecordedRequest): MockResponse {
 
             val successResponse = MockResponse().setResponseCode(200)
             return when {
                 request.path!!.startsWith("/providers?name=H") -> successResponse.setBody(
-                    AssetReaderUtil.asset(context, "health_insurance_providers.json"))
+                    AssetReaderUtil.asset(context, "health_insurance_providers.json")
+                )
 
                 request.path!!.startsWith("/requests") -> successResponse.setBody(
-                    AssetReaderUtil.asset(context, "consent_list_response.json"))
-                    .setBodyDelay(300, TimeUnit.MILLISECONDS)
+                    AssetReaderUtil.asset(context, "consent_list_response.json")
+                ).setBodyDelay(300, TimeUnit.MILLISECONDS)
+
+                request.path!!.startsWith("/consent-requests") -> successResponse.setBody(
+                    AssetReaderUtil.asset(context, "consent-requests.json")
+                ).setBodyDelay(300, TimeUnit.MILLISECONDS)
 
                 else -> successResponse.setBody(emptyProvidersResponse)
             }
@@ -34,7 +39,7 @@ class MockServerDispatcher {
      */
     internal inner class ErrorDispatcher : Dispatcher() {
 
-        override fun dispatch(request : RecordedRequest) : MockResponse {
+        override fun dispatch(request: RecordedRequest): MockResponse {
 
             return MockResponse().setResponseCode(400)
 

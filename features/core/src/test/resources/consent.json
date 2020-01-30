@@ -1,52 +1,38 @@
 {
-  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "createdAt": "2020-01-02T05:55:33.317Z",
+  "status": "REQUESTED",
+  "createdAt": "2020-01-23T06:26:41.503+0000",
   "purpose": {
-    "text": "General Consulting",
-    "code": "string",
-    "refUri": "string"
+    "text": "Encounter",
+    "code": "ENCOUNTER",
+    "refUri": null
   },
   "patient": {
-    "referenceNumber": "ABCXXX01",
-    "careContexts": [
-      {
-        "referenceNumber": "string"
-      }
-    ]
+    "id": "5@ncg"
   },
-  "hip": {
-    "id": "string",
-    "name": "string"
-  },
+  "hip": null,
   "hiu": {
-    "id": "string",
+    "id": "10000005",
     "name": "Max Health Care"
   },
   "requester": {
-    "name": "Dr. Shruthi Nair",
-    "identifier": {
-      "value": "string",
-      "type": "string",
-      "system": "string"
-    }
+    "name": "1",
+    "identifier": null
   },
   "hiTypes": [
-    {
-      "type": "Condition",
-      "description": "Medication Request"
-    }
+    "Condition"
   ],
   "permission": {
     "accessMode": "VIEW",
     "dateRange": {
-      "from": "2019-01-06T05:55:33.318Z",
-      "to": "2020-01-06T05:55:33.318Z"
+      "from": "2020-01-16T08:47:48.603+0000",
+      "to": "2020-02-16T08:47:48.603+0000"
     },
-    "dataExpiryAt": "2020-01-06T05:55:33.318Z",
+    "dataExpiryAt": "2020-02-16T08:47:48.603+0000",
     "frequency": {
       "unit": "HOUR",
-      "value": 0
+      "value": 1,
+      "repeats": 0
     }
   },
-  "status": "REQUESTED"
+  "id": "0dd21a1d-35b7-47f3-9d20-91fcd41fc00d"
 }

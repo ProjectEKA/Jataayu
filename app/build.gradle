@@ -5,6 +5,13 @@ apply from: rootProject.file("android-commons.gradle")
 apply from: rootProject.file("jacoco.gradle")
 
 android {
+    defaultConfig {
+        minSdkVersion Config.minSdkVersion
+        targetSdkVersion Config.compileSdkVersion
+
+        testInstrumentationRunner "in.org.projecteka.jataayu.testUtil.JataayuJUnitRunner"
+    }
+
     buildTypes {
         debug {
             resValue 'string', 'app_name', 'Jataayu Debug'

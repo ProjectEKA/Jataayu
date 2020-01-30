@@ -1,5 +1,9 @@
 package `in`.org.projecteka.jataayu.provider.viewmodel
+
+import `in`.org.projecteka.jataayu.core.model.Hip
 import `in`.org.projecteka.jataayu.core.model.ProviderInfo
+import `in`.org.projecteka.jataayu.core.model.Request
+import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.org.projecteka.jataayu.util.TestUtils
@@ -34,6 +38,9 @@ class ProviderSearchViewModelTest {
 
     @Mock
     private lateinit var providerInfoCall: Call<List<ProviderInfo>>
+
+    @Mock
+    private lateinit var progressDialogCallback: ProgressDialogCallback
 
     @Mock
     private lateinit var patientsInfoCall: Call<PatientDiscoveryResponse>
@@ -79,7 +86,7 @@ class ProviderSearchViewModelTest {
         verifyNoInteractions(repository)
     }
 
-    private fun getData(fileName : String) = Gson().fromJson<List<ProviderInfo>>(TestUtils.readFile(fileName))
+    private fun getData(fileName: String) = Gson().fromJson<List<ProviderInfo>>(TestUtils.readFile(fileName))
 
     @Test
     fun shouldFetchPatients() {
@@ -104,19 +111,19 @@ class ProviderSearchViewModelTest {
     }
 
     private fun setUpPatients(): PatientDiscoveryResponse {
-        val identifier = "9876543210"
+        val request = Request(Hip("1", " Tata"))
         val patients = Gson().fromJson<PatientDiscoveryResponse>(
             TestUtils.readFile("patient_info_from_providers.json"),
             PatientDiscoveryResponse::class.java
         )!!
-        Mockito.`when`(repository.getPatientAccounts(identifier)).thenReturn(patientsInfoCall)
+        Mockito.`when`(repository.getPatientAccounts(request)).thenReturn(patientsInfoCall)
         Mockito.`when`(patientsInfoCall.enqueue(ArgumentMatchers.any()))
             .then { invocation ->
                 val callback = invocation.arguments[0] as Callback<PatientDiscoveryResponse>
                 callback.onResponse(patientsInfoCall, Response.success(patients))
             }
-        viewModel.getPatientAccounts(identifier, hideSearchLoading())
-        Mockito.verify(repository).getPatientAccounts(identifier)
+        viewModel.getPatientAccounts(request, progressDialogCallback)
+        Mockito.verify(repository).getPatientAccounts(request)
         Mockito.verify(patientsInfoCall).enqueue(ArgumentMatchers.any())
         return patients
     }

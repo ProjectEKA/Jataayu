@@ -10,20 +10,20 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withSpinnerText
 import androidx.test.filters.LargeTest
 import androidx.test.runner.AndroidJUnit4
+import br.com.concretesolutions.kappuccino.actions.ClickActions.click
 import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.displayed
 import br.com.concretesolutions.kappuccino.custom.recyclerView.RecyclerViewInteractions.recyclerView
 import okhttp3.mockwebserver.MockWebServer
-import org.hamcrest.Matchers.allOf
+import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import br.com.concretesolutions.kappuccino.actions.ClickActions.click
-import org.hamcrest.CoreMatchers.*
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -33,17 +33,15 @@ public class RequestListFragmentTest {
         IntentsTestRule(TestsOnlyActivity::class.java, true, true)
 
     private lateinit var webServer: MockWebServer
-    private lateinit var requestListFragment: RequestListFragment
 
     @Before
     @Throws(Exception::class)
     fun setup() {
         webServer = MockWebServer()
         webServer.start(8080)
-
         webServer.dispatcher = MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
 
-        requestListFragment = RequestListFragment()
+        val requestListFragment = RequestListFragment()
         activityRule.activity.addFragment(requestListFragment)
     }
 
@@ -74,22 +72,31 @@ public class RequestListFragmentTest {
 
     @Test
     fun shouldRenderConsentRequestItem() {
-        Thread.sleep(1000)
-        verifyAllRequestsRendered()
+        Thread.sleep(2000)
+        verifyAllRequestsRendered(12)
     }
 
     @Test
     fun shouldRenderAllRequests() {
         Thread.sleep(1000)
         click { id(sp_request_filter) }
-        onData(allOf(`is`(instanceOf(String::class.java)), `is`("All requests (2)"))).perform(click())
-        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("All requests (2)"))))
-        verifyAllRequestsRendered()
+        onData(allOf(`is`(instanceOf(String::class.java)), `is`("All requests (14)"))).perform(click())
+        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("All requests (14)"))))
+        verifyAllRequestsRendered(14)
     }
 
-    private fun verifyAllRequestsRendered() {
+    @Test
+    fun shouldRenderExpiredRequests() {
+        Thread.sleep(1000)
+        click { id(sp_request_filter) }
+        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Expired (2)"))).perform(click())
+        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Expired (2)"))))
+        verifyExpiredRequestsRendered()
+    }
+
+    private fun verifyAllRequestsRendered(expectedCount: Int) {
         recyclerView(R.id.rvConsents) {
-            sizeIs(2)
+            sizeIs(expectedCount)
             atPosition(0) {
                 displayed {
                     allOf {
@@ -106,15 +113,54 @@ public class RequestListFragmentTest {
                     }
                     allOf {
                         id(tv_purpose_of_request)
-                        text("General Consulting")
+                        text("Encounter")
                     }
                     allOf {
                         id(tv_requests_info_from)
-                        text("06/01/19")
+                        text("16 Jan, 2020")
                     }
                     allOf {
                         id(tv_requests_info_to)
-                        text("06/01/20")
+                        text("16 Feb, 2020")
+                    }
+                    allOf {
+                        id(seperator)
+                        background(R.color.black)
+                    }
+                    image(R.drawable.ic_arrow_right)
+                }
+            }
+        }
+    }
+
+    private fun verifyExpiredRequestsRendered() {
+        recyclerView(R.id.rvConsents) {
+            sizeIs(2)
+            atPosition(1) {
+                displayed {
+                    allOf {
+                        id(tv_requested_date)
+                        text("Requested Jan 8, 2020")
+                    }
+                    allOf {
+                        id(tv_requester_name)
+                        text("Dr. Lakshmi")
+                    }
+                    allOf {
+                        id(tv_requester_organization)
+                        text("Tata Memorial Hospital")
+                    }
+                    allOf {
+                        id(tv_purpose_of_request)
+                        text("General Diagnosis")
+                    }
+                    allOf {
+                        id(tv_requests_info_from)
+                        text("12 Jan, 2020")
+                    }
+                    allOf {
+                        id(tv_requests_info_to)
+                        text("12 Feb, 2020")
                     }
                     allOf {
                         id(seperator)

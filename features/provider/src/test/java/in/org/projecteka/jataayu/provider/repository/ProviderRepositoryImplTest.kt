@@ -1,5 +1,7 @@
 package `in`.org.projecteka.jataayu.provider.repository
 
+import `in`.org.projecteka.jataayu.core.model.Hip
+import `in`.org.projecteka.jataayu.core.model.Request
 import `in`.org.projecteka.jataayu.provider.remote.ProviderApis
 import org.junit.Before
 import org.junit.Test
@@ -26,8 +28,8 @@ class ProviderRepositoryImplTest {
 
     @Test
     fun shouldCallGetPatientsApi() {
-        val identifier = "9876543210"
-        ProviderRepositoryImpl(providerSearchApi).getPatientAccounts(identifier)
-        verify(providerSearchApi).getPatientAccounts(identifier)
+        val request = Request(Hip("1", " Tata"))
+        ProviderRepositoryImpl(providerSearchApi).getPatientAccounts(request)
+        verify(providerSearchApi).getPatientAccounts(request)
     }
 }

@@ -30,18 +30,26 @@ private fun httpClient(debug: Boolean, context: Context, authToken: String?): Ok
         .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
 
-    clientBuilder.addInterceptor(
-        RequestInterceptor(
-            authToken
-        )
-    )
-    if (debug) {
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        clientBuilder.addInterceptor(httpLoggingInterceptor)
+    clientBuilder.addInterceptor(RequestInterceptor(authToken))
 
-        clientBuilder.addInterceptor(HostSelectionInterceptor(context))
+    if (debug && !isTestingMode(context)) {
+        addRequestResponseLogger(httpLoggingInterceptor, clientBuilder)
+        addBaseUrlChanger(clientBuilder, context)
     }
+
     return clientBuilder.build()
+}
+
+private fun addBaseUrlChanger(clientBuilder: OkHttpClient.Builder, context: Context) {
+    clientBuilder.addInterceptor(HostSelectionInterceptor(context))
+}
+
+private fun addRequestResponseLogger(
+    httpLoggingInterceptor: HttpLoggingInterceptor,
+    clientBuilder: OkHttpClient.Builder
+) {
+    httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+    clientBuilder.addInterceptor(httpLoggingInterceptor)
 }
 
 private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient): Retrofit {
@@ -53,4 +61,4 @@ private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient): Retrofit 
         .build()
 }
 
-private fun isTestingMode(context: Application) = context.javaClass.simpleName != "JataayuApp"
+private fun isTestingMode(context: Context) = context.javaClass.simpleName != "JataayuApp"
