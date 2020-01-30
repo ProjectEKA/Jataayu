@@ -1,0 +1,52 @@
+language: android
+sudo: required
+jdk: oraclejdk8
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - "$HOME/.gradle/caches/"
+    - "$HOME/.gradle/wrapper/"
+env:
+  global:
+    - ANDROID_API=23
+    - ANDROID_BUILD_TOOLS=25.0.3
+    - EMULATOR_API=25
+    - ANDROID_ABI="google_apis;arm64-v8a"
+    - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
+    - ANDROID_TARGET=android-25
+    - secure: bQY36WA2+s/pQB6OGNZdC/CHeeKrD3fBkKKvMCCqUD+TPnZJ2WbMC7f1cIO98nG2HyVCsyPLf7hnOLvCK496Uo9IKX3k9yybMFckk3F85LUVJ3VxExV7YG3WaWbv2+sinXeevxufAFy/psjiCh/nfgOFtF0ocTadtcbnQ+v1n1WAiYabVEMgNm+22APYYsuOgFrIiJndU1655KXLDgbL1ExAHABox2gK8I6c8TwdV9h4dQcR8UXECx8qmIKJHjEsYXv5EJw4N3DgAalvG36vSRlAx/4x4Q6SusBS3+FluPmxu6Q6QPP+UKE+hsuUe/e3UWc4FlQbTABXWYi7rJV3GFlVrmv/DtRxV48DlKSOgnshk5Czw3tCm/lDxO2qQcZkF+ZBOgAK5MuGSMkh9x0CFBMTY9wJnlSW/hCshX+7WDYbH/LUrf7K5vIDqjciGEP1qjVfcmZWsqmHoszwSG7s/3kOHrp6Yb2/9z7SHPqw/NIWHqElwUi6ICw8vfORy9hkJ7bU182GQAfpG1psuvtyM72eyAM+VQy/+KzYs/m3rX8fRncIo/6MobKi9ITSKtm4sGcVzSgdEEP4h/vFtNpgQoQjNiZ2WQqbLBya9ud7dhoeYk/Xipg0Iag/84mdQ79xPe3AWn/dZQQbWel3sjXQ4/b7B7XzMAVQ/PufjLnAD8w=
+    - secure: KCQ7p1zgXL+OwrLjmfAKP8y+MnKTtDmCedA7Z3rD+Y15lsFtSrS7r7iJC+GP4A+iGraRQ6VdoNBCEEkY+QyME/zyeYJxLBK4M8U+SaUHJ8f1c6fqPAlOqFb7gyeFFNDBaeONHRleaWKjsUU1w0RDaQCjwZfUn2DDp86A0sEf/nKAT3POUDz1bO07oWI6sVxA+noyOJ7H3amlPJzspON7L9B6N/6Q6lwhW2mBfbG/CeAlnoxNMgP27geC1Oro6+hskEprtOY3bRM62wn1YZSkRCGN9WR9gQjgEBRqceYSeY5AdHf+lEQivUJ3gmKwftLV+Qwt5DS4k4u2VhMXEdiP3MLmYNLFVSesk7ukZqOPg4jp+wMsDLKXP9lbPF2FupSHutfcac2fq5WlOHqerGZFfEIlQoFtNBjjeGslwhHXSxdo8sEibRR1ex0Hmtc28SXQlS8TYEpzftJj0FztOtPIAhcTpCibsx2bAyv/PPKaDv3y8C1idg/3gKH7bBXJEnsiMfpeMyolSVlb/IysbXyREhNlr96KhngnqcGSqY36gl0p8DvkdE3AzdqvZkW93xrd2tPtieKLHCxzcv7w68NpG3g7U6r0MCYcuc6GGHqnTGe3xFD7RgRz3ufdUGLuk0paWl2yB9GpksE+1lSF0jDFXWG5UU1os73Nii+EYgzGQlY=
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-$ANDROID_BUILD_TOOLS
+    - android-$ANDROID_API
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-$ANDROID_API
+    - sys-img-armeabi-v7a-android-23
+  licenses:
+    - android-sdk-preview-license-.+
+    - android-sdk-license-.+
+    - google-gdk-license-.+
+before_install:
+  - pip install --user codecov
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+  - echo -e "\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_HOME/licenses/android-sdk-license"
+  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+  - chmod +x gradlew
+before_script:
+  - echo no | android create avd --force -n test -t android-23 --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
+  - adb shell input keyevent 82 &
+script:
+  - ./gradlew testDebugUnitTest connectedDebugAndroidTest moduleJacocoTestReport -PdisablePreDex --stacktrace
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
