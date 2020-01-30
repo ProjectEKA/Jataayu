@@ -59,3 +59,15 @@ dependencies {
 
     kaptAndroidTest Deps.AndroidX.dataBindingCompiler
 }
+
+task runGitHookSetup {
+    exec {
+        commandLine 'sh', './../setup.sh'
+    }
+}
+
+task allTests(dependsOn: ['connectedDebugAndroidTest', 'testDebugUnitTest'])
+
+afterEvaluate {
+    tasks['assemble'].dependsOn runGitHookSetup
+}
