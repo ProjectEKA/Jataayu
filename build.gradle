@@ -88,6 +88,10 @@ subprojects {
                     }
                 }
 
+                lintOptions {
+                    warning 'InvalidPackage'
+                }
+
                 testOptions {
                     unitTests.returnDefaultValues = true
                     animationsDisabled = true

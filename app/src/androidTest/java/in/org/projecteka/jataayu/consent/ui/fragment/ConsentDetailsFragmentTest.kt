@@ -69,7 +69,7 @@ class ConsentDetailsFragmentTest{
 
         displayed {
             id(R.id.tv_requester_organization)
-            text("Max Health Care")
+            text("AIMS")
         }
 
         displayed {

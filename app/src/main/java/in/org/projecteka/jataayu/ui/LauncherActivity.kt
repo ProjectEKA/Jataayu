@@ -25,7 +25,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
 import kotlinx.android.synthetic.main.activity_launcher.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -153,13 +152,8 @@ class LauncherActivity : BaseActivity() {
 
     private fun showSnackbar(message: String) {
         val spannableString = SpannableString(message)
-        spannableString.setSpan(
-            ForegroundColorSpan(Color.WHITE),
-            0,
-            message.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        val snackbar = Snackbar.make(fragment_container, spannableString, LENGTH_LONG)
+        spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val snackbar = Snackbar.make(fragment_container, spannableString, 2)
         snackbar.anchorView = bottom_navigation
         snackbar.show()
     }

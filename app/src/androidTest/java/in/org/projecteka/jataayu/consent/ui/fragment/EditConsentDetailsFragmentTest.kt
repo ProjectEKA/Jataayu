@@ -36,8 +36,6 @@ class EditConsentDetailsFragmentTest {
 
     private lateinit var consent: Consent
 
-    private lateinit var eventBus: EventBus
-
     private lateinit var webServer: MockWebServer
 
     @Before
@@ -74,43 +72,44 @@ class EditConsentDetailsFragmentTest {
 
     @Test
     fun shouldRenderConsentDetails() {
+        Thread.sleep(7000)
         displayed {
             id(tv_requester_name)
             text("Dr. Lakshmi")
         }
 
         displayed {
-            id(`in`.org.projecteka.jataayu.R.id.tv_requester_organization)
-            text("Max Health Care")
+            id(tv_requester_organization)
+            text("AIMS")
         }
 
         displayed {
-            id(`in`.org.projecteka.jataayu.R.id.tv_purpose_of_request)
+            id(tv_purpose_of_request)
             text("REMOTE_CONSULTING")
         }
 
         displayed {
-            id(`in`.org.projecteka.jataayu.R.id.tv_requests_info_from)
+            id(tv_requests_info_from)
             text("01 Jan, 2020")
         }
 
         displayed {
-            id(`in`.org.projecteka.jataayu.R.id.tv_requests_info_to)
+            id(tv_requests_info_to)
             text("08 Jan, 2020")
         }
 
         displayed {
-            id(`in`.org.projecteka.jataayu.R.id.tv_expiry_date)
+            id(tv_expiry_date)
             text("30 Jan, 2020")
         }
 
         displayed {
-            id(`in`.org.projecteka.jataayu.R.id.tv_expiry_time)
+            id(tv_expiry_time)
             text("05:25 PM")
         }
 
         displayed {
-            id(`in`.org.projecteka.jataayu.R.id.cg_request_info_types)
+            id(cg_request_info_types)
             text("Condition")
             text("DiagnosticReport")
             text("Observation")
@@ -122,7 +121,7 @@ class EditConsentDetailsFragmentTest {
 
     @Test
     fun shouldRenderLinkedAccounts() {
-        onView(withId(`in`.org.projecteka.jataayu.R.id.cb_link_all_providers)).check(
+        onView(withId(cb_link_all_providers)).check(
             matches(
                 isChecked()
             )
@@ -130,14 +129,14 @@ class EditConsentDetailsFragmentTest {
 
         Thread.sleep(1000)
 
-        onView(withId(`in`.org.projecteka.jataayu.R.id.rvLinkedAccounts)).perform(nestedScrollTo())
+        onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
 
-        recyclerView(`in`.org.projecteka.jataayu.R.id.rvLinkedAccounts) {
+        recyclerView(rvLinkedAccounts) {
             sizeIs(5)
 
             atPosition(0) {
                 displayed {
-                    id(`in`.org.projecteka.jataayu.R.id.tv_provider_name)
+                    id(tv_provider_name)
                     text("Max Health Care")
                 }
             }

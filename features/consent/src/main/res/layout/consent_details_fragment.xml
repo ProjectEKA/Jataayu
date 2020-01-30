@@ -80,10 +80,9 @@
                     style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/content_margin_small"
                     android:layout_marginTop="@dimen/content_margin_extra_small"
                     android:text="@string/purpose_of_request"
-                    app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_requester_organization" />
 
                 <TextView
@@ -91,9 +90,8 @@
                     style="@style/ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/content_margin_small"
                     android:text="@{consent.purpose.text}"
-                    app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_purpose_of_request"
                     tools:text="General Consulting" />
 
@@ -102,10 +100,9 @@
                     style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/content_margin_small"
                     android:layout_marginTop="@dimen/content_margin_medium"
                     android:text="@string/requests_information"
-                    app:layout_constraintLeft_toRightOf="@+id/ic_requests_info"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_purpose_of_request" />
 
 
@@ -114,9 +111,8 @@
                     style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/content_margin_small"
                     android:text="@string/from"
-                    app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration" />
 
                 <TextView

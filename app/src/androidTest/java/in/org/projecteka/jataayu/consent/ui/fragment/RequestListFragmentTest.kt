@@ -73,13 +73,13 @@ public class RequestListFragmentTest {
 
     @Test
     fun shouldRenderConsentRequestItem() {
-        Thread.sleep(2000)
+        Thread.sleep(8000)
         verifyAllRequestsRendered(12)
     }
 
     @Test
     fun shouldRenderAllRequests() {
-        Thread.sleep(1000)
+        Thread.sleep(8000)
         click { id(sp_request_filter) }
         onData(allOf(`is`(instanceOf(String::class.java)), `is`("All requests (14)"))).perform(click())
         onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("All requests (14)"))))
@@ -88,7 +88,7 @@ public class RequestListFragmentTest {
 
     @Test
     fun shouldRenderExpiredRequests() {
-        Thread.sleep(1000)
+        Thread.sleep(8000)
         click { id(sp_request_filter) }
         onData(allOf(`is`(instanceOf(String::class.java)), `is`("Expired (2)"))).perform(click())
         onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Expired (2)"))))

@@ -16,7 +16,7 @@ class DateTimeUtils {
         }
 
         fun getDate(utcDate: String): Date? {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.UK)
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
             inputFormat.timeZone = TimeZone.getTimeZone("GMT")
             return inputFormat.parse(utcDate)
         }
@@ -27,18 +27,18 @@ class DateTimeUtils {
 
         fun getFormattedDateTime(utcDate: String): String {
             val date = getDate(utcDate)
-            val outputFormat = SimpleDateFormat(DATE_TIME_FORMAT_DD_MMM_YYYY_HH_A, Locale.UK)
+            val outputFormat = SimpleDateFormat(DATE_TIME_FORMAT_DD_MMM_YYYY_HH_A, Locale.getDefault())
             return outputFormat.format(date!!)
         }
 
         fun getFormattedTime(utcDate: String): String {
             val date = getDate(utcDate)
-            val outputFormat = SimpleDateFormat(TIME_FORMAT_HH_MM_A, Locale.UK)
+            val outputFormat = SimpleDateFormat(TIME_FORMAT_HH_MM_A, Locale.getDefault())
             return outputFormat.format(date!!)
         }
 
         fun getUtcDate(date: Date): String {
-            val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.UK)
+            val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
             outputFormat.timeZone = TimeZone.getTimeZone("GMT")
             return outputFormat.format(date)
         }
