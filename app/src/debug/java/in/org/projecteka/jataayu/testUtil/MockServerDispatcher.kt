@@ -29,6 +29,10 @@ class MockServerDispatcher {
                     AssetReaderUtil.asset(context, "consent-requests.json")
                 ).setBodyDelay(300, TimeUnit.MILLISECONDS)
 
+                request.path!!.startsWith("/patients/links") -> successResponse.setBody(
+                    AssetReaderUtil.asset(context, "linked_accounts.json"))
+                    .setBodyDelay(300, TimeUnit.MILLISECONDS)
+
                 else -> successResponse.setBody(emptyProvidersResponse)
             }
         }

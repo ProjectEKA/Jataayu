@@ -19,6 +19,7 @@ import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.displ
 import br.com.concretesolutions.kappuccino.custom.recyclerView.RecyclerViewInteractions.recyclerView
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.*
+import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

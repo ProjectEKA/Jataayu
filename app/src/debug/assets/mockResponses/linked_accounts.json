@@ -1,0 +1,41 @@
+{
+  "patient": {
+    "id": "5@ncg",
+    "firstName": "Ron",
+    "lastName": "Doe",
+    "links": [
+      {
+        "hip": {
+          "id": "10000005",
+          "name": "Max Health Care"
+        },
+        "referenceNumber": "5",
+        "careContexts": [
+          {
+            "referenceNumber": "131",
+            "display": "National Cancer program"
+          },
+          {
+            "referenceNumber": "131",
+            "display": "National Cancer program"
+          }
+        ],
+        "display": "Ron Doe"
+      },
+      {
+        "hip": {
+          "id": "10000004",
+          "name": "Infinity Health care & Diagnostics"
+        },
+        "referenceNumber": "5",
+        "careContexts": [
+          {
+            "referenceNumber": "131",
+            "display": "National Cancer program"
+          }
+        ],
+        "display": "Ron Doe"
+      }
+    ]
+  }
+}

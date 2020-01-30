@@ -128,7 +128,7 @@
                     android:text="@{consent.getPermissionStartDate()}"
                     app:layout_constraintLeft_toRightOf="@+id/lbl_requests_information_from"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration"
-                    tools:text="01/01/17" />
+                    tools:text="01 Jan, 2017" />
 
                 <TextView
                     android:id="@+id/lbl_requests_information_to"
@@ -150,7 +150,7 @@
                     android:text="@{consent.permissionEndDate}"
                     app:layout_constraintLeft_toRightOf="@+id/lbl_requests_information_to"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration"
-                    tools:text="05/12/19" />
+                    tools:text="05 Dec, 2019" />
 
                 <TextView
                     android:id="@+id/lbl_requests_info_type"

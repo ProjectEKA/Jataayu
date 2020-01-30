@@ -1,9 +1,9 @@
 {
   "status": "REQUESTED",
-  "createdAt": "2020-01-23T06:26:41.503+0000",
+  "createdAt": "2020-01-27T07:08:48.843+0000",
   "purpose": {
-    "text": "Encounter",
-    "code": "ENCOUNTER",
+    "text": "REMOTE_CONSULTING",
+    "code": "RemoteConsulting",
     "refUri": null
   },
   "patient": {
@@ -15,7 +15,7 @@
     "name": "Max Health Care"
   },
   "requester": {
-    "name": "1",
+    "name": "Dr. Lakshmi",
     "identifier": null
   },
   "hiTypes": [
@@ -26,15 +26,15 @@
   "permission": {
     "accessMode": "VIEW",
     "dateRange": {
-      "from": "2020-01-16T08:47:48.603+0000",
-      "to": "2020-02-16T08:47:48.603+0000"
+      "from": "2020-01-01T07:08:00.000+0000",
+      "to": "2020-01-08T07:08:00.000+0000"
     },
-    "dataExpiryAt": "2020-02-16T08:47:48.603+0000",
+    "dataExpiryAt": "2020-01-30T11:55:00.000+0000",
     "frequency": {
       "unit": "HOUR",
       "value": 1,
       "repeats": 0
     }
   },
-  "id": "0dd21a1d-35b7-47f3-9d20-91fcd41fc00d"
+  "id": "5c71c78e-a77e-4dd5-9f0f-6c3095118327"
 }

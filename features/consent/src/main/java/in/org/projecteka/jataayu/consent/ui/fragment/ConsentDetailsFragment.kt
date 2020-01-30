@@ -32,8 +32,10 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
 
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
-        itemViewBinding: ViewDataBinding) {
+        itemViewBinding: ViewDataBinding
+    ) {
     }
+
     override fun onEditClick(view: View) {
         (activity as ConsentDetailsActivity).editConsentDetails()
     }
@@ -43,7 +45,7 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         activity?.finish()
     }
 
-    companion object{
+    companion object {
         fun newInstance() = ConsentDetailsFragment()
     }
 
@@ -69,10 +71,10 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
 
         binding.cgRequestInfoTypes.removeAllViews()
 
-        if(hiTypeObjects.isEmpty()) createHiTypesFromConsent()
+        if (hiTypeObjects.isEmpty()) createHiTypesFromConsent()
 
         for (hiType in hiTypeObjects) {
-            if (hiType.isChecked){
+            if (hiType.isChecked) {
                 binding.cgRequestInfoTypes.addView(newChip(hiType.type))
             }
         }
@@ -86,11 +88,6 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         for (hiType in consent.hiTypes) {
             hiTypeObjects.add(HiType(hiType, true))
         }
-    }
-
-    @Subscribe(sticky = true)
-    public fun onConsentReceived(consent: Consent) {
-        this.consent = consent
     }
 
     override fun onStop() {
@@ -110,6 +107,11 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         renderUi()
     }
 
+
+    @Subscribe(sticky = true)
+    public fun onConsentReceived(consent: Consent) {
+        this.consent = consent
+    }
 
     @Subscribe
     public fun onHiTypesReceived(hiTypes: ArrayList<HiType>) {
