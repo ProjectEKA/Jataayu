@@ -14,8 +14,12 @@
             type="String" />
 
         <variable
+            name="message"
+            type="String" />
+
+        <variable
             name="clickHandler"
-            type="in.org.projecteka.jataayu.provider.ui.handler.OtpSubmissionClickHandler" />
+            type="in.org.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,7 +54,7 @@
             android:layout_marginTop="@dimen/content_margin_extra_small"
             android:layout_marginEnd="@dimen/fab_margin_bottom"
             android:gravity="center"
-            android:text="@string/otp_label_text"
+            android:text="@{message}"
             android:textAppearance="?android:attr/textAppearanceMedium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +87,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number"
             tools:text="Enter 6 digit OTP" />
 
-        <in.org.projecteka.jataayu.provider.ui.view.OtpEditText
+        <in.org.projecteka.jataayu.presentation.ui.view.OtpEditText
             android:id="@+id/et_otp"
             style="@style/TextAppearance.ListItemSubHeader"
             android:layout_width="300dp"

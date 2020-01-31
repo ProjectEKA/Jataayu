@@ -1,7 +1,9 @@
 package `in`.org.projecteka.jataayu.presentation.adapter
 
+import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
+import android.widget.EditText
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,6 +35,10 @@ object BindingAdapters {
         spinner.onItemSelectedListener = onItemSelectedListener
     }
 
-
+    @BindingAdapter("app:onValueChanged")
+    @JvmStatic
+    fun onValueChanged(editText: EditText, textWatcher: TextWatcher) {
+        editText.addTextChangedListener(textWatcher)
+    }
 
 }

@@ -1,6 +1,6 @@
-package `in`.org.projecteka.jataayu.provider.ui.view
+package `in`.org.projecteka.jataayu.presentation.ui.view
 
-import `in`.org.projecteka.featuresprovider.R
+import `in`.org.projecteka.jataayu.presentation.R
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint

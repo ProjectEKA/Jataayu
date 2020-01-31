@@ -13,6 +13,10 @@ import `in`.org.projecteka.jataayu.provider.remote.ProviderApis
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepositoryImpl
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
+import `in`.org.projecteka.jataayu.registration.repository.AuthorizationRepository
+import `in`.org.projecteka.jataayu.registration.repository.AuthorizationRepositoryImpl
+import `in`.org.projecteka.jataayu.registration.viewmodel.RegistrationViewModel
+import `in`.org.projecteka.jataayu.registration.remote.AuthorizationApis
 import `in`.org.projecteka.jataayu.user.account.remote.UserAccountApis
 import `in`.org.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.org.projecteka.jataayu.user.account.repository.UserAccountsRepositoryImpl
@@ -21,21 +25,24 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { ProviderSearchViewModel(providerRepository = get()) }
-    viewModel { ConsentViewModel(repository = get()) }
-    viewModel { ConfirmConsentViewModel(repository = get()) }
-    viewModel { UserAccountsViewModel(repository = get()) }
+    viewModel { ProviderSearchViewModel(get()) }
+    viewModel { ConsentViewModel(get()) }
+    viewModel { ConfirmConsentViewModel(get()) }
+    viewModel { UserAccountsViewModel(get()) }
+    viewModel { RegistrationViewModel(get()) }
 }
 
 val repositoryModule = module {
-    factory { ProviderRepositoryImpl(providerApi = get()) as ProviderRepository }
-    factory { ConsentRepositoryImpl(consentApi = get()) as ConsentRepository }
-    factory { LinkedAccountsRepositoryImpl(consentApi = get()) as LinkedAccountsRepository }
-    factory { UserAccountsRepositoryImpl(userAccountApis = get()) as UserAccountsRepository }
+    factory { ProviderRepositoryImpl(get()) as ProviderRepository }
+    factory { ConsentRepositoryImpl(get()) as ConsentRepository }
+    factory { LinkedAccountsRepositoryImpl(get()) as LinkedAccountsRepository }
+    factory { UserAccountsRepositoryImpl(get()) as UserAccountsRepository }
+    factory { AuthorizationRepositoryImpl(get()) as AuthorizationRepository }
 }
 
 val networkModule = module {
     single { createNetworkClient(get(), BuildConfig.DEBUG).create(ProviderApis::class.java) }
     single { createNetworkClient(get(), BuildConfig.DEBUG).create(ConsentApis::class.java) }
     single { createNetworkClient(get(), BuildConfig.DEBUG).create(UserAccountApis::class.java) }
+    single { createNetworkClient(get(), BuildConfig.DEBUG).create(AuthorizationApis::class.java) }
 }

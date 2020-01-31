@@ -1,4 +1,4 @@
-package `in`.org.projecteka.jataayu.presentation.handler
+package `in`.org.projecteka.jataayu.core.model.handler
 
 import android.view.View
 

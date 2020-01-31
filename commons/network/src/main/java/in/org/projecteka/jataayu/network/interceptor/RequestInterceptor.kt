@@ -13,6 +13,6 @@ class RequestInterceptor(private val authToken: String?) : Interceptor {
             .method(original.method, original.body)
             .build()
 
-        return chain.proceed(modifiedRequest);
+        return chain.proceed(modifiedRequest)
     }
 }

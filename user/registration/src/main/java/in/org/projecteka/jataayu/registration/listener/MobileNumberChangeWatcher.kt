@@ -3,7 +3,7 @@ package `in`.org.projecteka.jataayu.registration.listener
 import android.text.Editable
 import android.text.TextWatcher
 
-class MobileNumberChangeWatcher(private val mobileNumberChangeHandler: MobileNumberChangeHandler) : TextWatcher {
+class MobileNumberChangeWatcher(private val mobileNumberChangeListener: MobileNumberChangeHandler) : TextWatcher {
     override fun afterTextChanged(s: Editable?) {
     }
 
@@ -11,6 +11,6 @@ class MobileNumberChangeWatcher(private val mobileNumberChangeHandler: MobileNum
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        mobileNumberChangeHandler.setButtonEnabled(s?.length == 10)
+        mobileNumberChangeListener.setButtonEnabled(s?.length == 10)
     }
 }
