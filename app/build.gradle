@@ -53,6 +53,7 @@ dependencies {
     api project(Modules.utils)
     api project(Modules.presentation)
     api project(Modules.account)
+    api project(Modules.registration)
 
     androidTestImplementation Deps.Testing.Helpers.kappuccino
 

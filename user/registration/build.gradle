@@ -1,0 +1,17 @@
+import dependancies.Modules
+
+apply from: rootProject.file("android-library-commons.gradle")
+
+android {
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+            minifyEnabled false
+            debuggable true
+        }
+    }
+}
+
+dependencies {
+    api project(Modules.core)
+}

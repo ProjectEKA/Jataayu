@@ -51,6 +51,7 @@ object Modules {
     const val consent = ":features:consent"
     const val core = ":features:core"
     const val account = ":user:account"
+    const val registration = ":user:registration"
 }
 
 object Deps {
