@@ -133,7 +133,11 @@
     <style name="TextAppearance.ListItemSubHeader" parent="TextAppearance">
         <item name="android:letterSpacing">0.05</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
 
+    <style name="TextAppearance.ErrorMessage" parent="TextAppearance">
+        <item name="android:textSize">@dimen/text_size_extra_small</item>
+        <item name="android:textColor">@color/error_message_color</item>
     </style>
 
     <style name="ConsentRequestHiuDetails" parent="TextAppearance.ListItemSubHeader">

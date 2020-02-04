@@ -33,13 +33,13 @@ fun View.getString(id: Int): String = context.getString(id)
 
 val String.Companion.EMPTY: String get() = ""
 
-public fun String.mask(): String? {
-    if (this.length > 4) {
-        return this.substring(0, 2) + this.substring(2, length - 2).replace(
+fun String.mask(): String? {
+    return if (this.length > 4) {
+        this.substring(0, 2) + this.substring(2, length - 2).replace(
             Regex("[0-9]"),
             "X"
         ) + this.substring(length - 2)
-    } else return this
+    } else this
 }
 
 fun Context.showLongToast(text: CharSequence) = Toast.makeText(this, text, Toast.LENGTH_LONG).show()
@@ -53,4 +53,4 @@ fun Date.toUtc() : String {
     return DateTimeUtils.getUtcDate(this)
 }
 
-public inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)
+inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)

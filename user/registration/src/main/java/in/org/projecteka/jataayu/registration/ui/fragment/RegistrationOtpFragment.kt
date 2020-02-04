@@ -2,14 +2,19 @@ package `in`.org.projecteka.jataayu.registration.ui.fragment
 
 
 import `in`.org.projecteka.jataayu.core.databinding.VerityOtpFragmentBinding
+import `in`.org.projecteka.jataayu.core.handler.OtpChangeHandler
+import `in`.org.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.org.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler
+import `in`.org.projecteka.jataayu.core.utils.toErrorResponse
 import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.registration.R
+import `in`.org.projecteka.jataayu.registration.listener.MobileNumberChangeHandler
 import `in`.org.projecteka.jataayu.registration.model.RequestVerificationResponse
 import `in`.org.projecteka.jataayu.registration.model.VerifyIdentifierResponse
 import `in`.org.projecteka.jataayu.registration.ui.activity.RegistrationActivity
 import `in`.org.projecteka.jataayu.registration.viewmodel.RegistrationViewModel
+import `in`.org.projecteka.jataayu.util.extension.EMPTY
 import `in`.org.projecteka.jataayu.util.extension.setTitle
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,21 +24,33 @@ import androidx.lifecycle.Observer
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import retrofit2.Response
 
-class RegistrationOTPFragment : BaseFragment(), OtpSubmissionClickHandler, ProgressDialogCallback {
-    override fun onSuccess(any: Any?) {
-
-    }
-
-    override fun onFailure(any: Any?) {
-    }
+class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, ProgressDialogCallback, MobileNumberChangeHandler,
+    OtpChangeHandler {
 
     private lateinit var binding: VerityOtpFragmentBinding
 
-    companion object{
-
-        fun newInstance() = RegistrationOTPFragment()
+    override fun setButtonEnabled(boolean: Boolean) {
+        binding.isOtpEntered = boolean
     }
+
+    override fun onSuccess(any: Any?) {
+    }
+
+    override fun onFailure(any: Any?) {
+        if((any is Response<*>)) {
+            val errorResponse = any.errorBody()?.toErrorResponse()
+            if(errorResponse?.error?.code == ERROR_CODE_INVALID_OTP)
+                binding.errorMessage = context?.getString(R.string.invalid_otp)
+        }
+    }
+
+    companion object{
+        const val ERROR_CODE_INVALID_OTP = 1001
+        fun newInstance() = RegistrationOtpFragment()
+    }
+
     private val eventBus: EventBus by lazy { EventBus.getDefault() }
     private val viewModel: RegistrationViewModel by sharedViewModel()
     private lateinit var requestVerificationResponse: RequestVerificationResponse
@@ -43,6 +60,7 @@ class RegistrationOTPFragment : BaseFragment(), OtpSubmissionClickHandler, Progr
     }
 
     override fun onSubmitOtp(view: View) {
+        binding.errorMessage = String.EMPTY
         viewModel.verifyIdentifier(requestVerificationResponse, this)
     }
 
@@ -88,7 +106,14 @@ class RegistrationOTPFragment : BaseFragment(), OtpSubmissionClickHandler, Progr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.clickHandler = this
+        initBinding()
         viewModel.verifyIdentifierResponse.observe(this, observer)
+    }
+
+    private fun initBinding() {
+        binding.clickHandler = this
+        binding.isOtpEntered = false
+        binding.errorMessage = String.EMPTY
+        binding.otpChangeWatcher = OtpChangeWatcher(this)
     }
 }

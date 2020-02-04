@@ -51,15 +51,15 @@ class RegistrationViewModel(val repository: AuthorizationRepository) : ViewModel
                 call: Call<VerifyIdentifierResponse>,
                 response: Response<VerifyIdentifierResponse>
             ) {
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     response.let {
                         verifyIdentifierResponse.value = response.body()
                     }
+                    progressDialogCallback.onSuccess(response)
+                } else {
+                    progressDialogCallback.onFailure(response)
                 }
-                progressDialogCallback.onSuccess(response)
             }
-
         })
-
     }
 }

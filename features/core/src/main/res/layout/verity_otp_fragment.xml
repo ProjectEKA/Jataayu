@@ -20,6 +20,18 @@
         <variable
             name="clickHandler"
             type="in.org.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler" />
+
+        <variable
+            name="isOtpEntered"
+            type="Boolean" />
+
+        <variable
+            name="otpChangeWatcher"
+            type="in.org.projecteka.jataayu.core.handler.OtpChangeWatcher" />
+
+        <variable
+            name="errorMessage"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,29 +103,42 @@
             android:id="@+id/et_otp"
             style="@style/TextAppearance.ListItemSubHeader"
             android:layout_width="300dp"
-            app:layout_goneMarginTop="@dimen/content_margin_large"
-            android:maxLines="1"
-            android:paddingBottom="@dimen/content_margin_large"
-            android:letterSpacing="2"
-            android:minEms="6"
+            android:layout_height="@dimen/edittext_height"
+            android:layout_marginTop="@dimen/content_margin_extra_small"
+            android:background="@drawable/rounded_corners_selector"
             android:cursorVisible="true"
             android:digits="1234567890"
             android:inputType="number"
+            android:letterSpacing="2"
             android:maxLength="6"
-            android:textIsSelectable="false"
-            android:singleLine="true"
-            android:layout_marginTop="@dimen/content_margin_extra_small"
-            android:layout_height="@dimen/edittext_height"
+            android:maxLines="1"
+            android:minEms="6"
             android:paddingStart="@dimen/content_padding_medium"
             android:paddingEnd="@dimen/content_padding_medium"
-            android:background="@drawable/rounded_corners_selector"
+            android:paddingBottom="@dimen/content_margin_large"
+            android:singleLine="true"
+            android:textIsSelectable="false"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_enter_otp" />
+            app:layout_constraintTop_toBottomOf="@+id/lbl_enter_otp"
+            app:layout_goneMarginTop="@dimen/content_margin_large"
+            app:onValueChanged="@{otpChangeWatcher}" />
+
+        <TextView
+            android:text="@{errorMessage}"
+            tools:text="Invalid OTP entered. Please try again."
+            style="@style/TextAppearance.ErrorMessage"
+            app:layout_constraintLeft_toLeftOf="@+id/et_otp"
+            app:layout_constraintTop_toBottomOf="@+id/et_otp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <com.google.android.material.button.MaterialButton
             style="@style/Button.Secondary"
             android:layout_height="@dimen/button_height"
+            android:id="@+id/btn_continue"
+            android:enabled="@{isOtpEntered}"
             android:layout_width="wrap_content"
             android:onClick="@{clickHandler::onSubmitOtp}"
             android:text="@string/btn_continue"

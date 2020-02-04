@@ -6,4 +6,5 @@
     <string name="request_expired">Request expired</string>
     <string name="btn_continue">Continue</string>
     <string name="enter_otp">Enter 6 digit OTP</string>
+    <string name="invalid_otp">Invalid OTP entered. Please try again.</string>
 </resources>
