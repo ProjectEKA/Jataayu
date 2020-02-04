@@ -39,6 +39,7 @@ object LibVersions {
     const val jacocoPalantir = "0.4.0"
     const val eventBus = "3.1.1"
     const val kappuccino = "1.2.1"
+    const val preferences = "1.1.0"
 }
 
 object Modules {
@@ -76,6 +77,7 @@ object Deps {
         const val espressoIntents = "androidx.test.espresso:espresso-intents:${LibVersions.espresso}"
         const val espressoContrib = "androidx.test.espresso:espresso-contrib:${LibVersions.espresso}"
         const val dataBindingCompiler = "androidx.databinding:databinding-compiler:${LibVersions.androidStudio}"
+        const val preferences = "androidx.preference:preference-ktx:${LibVersions.preferences}"
     }
 
     object Retrofit {

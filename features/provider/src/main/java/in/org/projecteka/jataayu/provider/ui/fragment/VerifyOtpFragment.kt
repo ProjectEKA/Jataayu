@@ -12,6 +12,7 @@ import `in`.org.projecteka.jataayu.provider.model.Token
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.setTitle
 import `in`.org.projecteka.jataayu.util.ui.UiUtils
+import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -63,6 +64,7 @@ class VerifyOtpFragment : BaseFragment(),
 
     private val observer = Observer<SuccessfulLinkingResponse> {
         eventBus.post(MessageEventType.ACCOUNT_LINKED)
+        activity?.setResult(RESULT_OK)
         activity?.finish()
     }
 

@@ -6,7 +6,13 @@ import `in`.org.projecteka.jataayu.core.model.MessageEventType
 import `in`.org.projecteka.jataayu.databinding.ActivityLauncherBinding
 import `in`.org.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.org.projecteka.jataayu.provider.ui.ProviderActivity
+import `in`.org.projecteka.jataayu.registration.ui.activity.RegistrationActivity
+import `in`.org.projecteka.jataayu.ui.LauncherActivity.REQUEST_CODES.*
 import `in`.org.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
+import `in`.org.projecteka.jataayu.util.extension.startActivity
+import `in`.org.projecteka.jataayu.util.extension.startActivityForResult
+import `in`.org.projecteka.jataayu.util.sharedPref.SharedPrefsManager
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -43,20 +49,19 @@ class LauncherActivity : BaseActivity() {
         }
     }
 
+    enum class REQUEST_CODES {
+        REGISTER, CREATE_ACCOUNT, ADD_PROVIDER
+    }
+
+    companion object {
+        const val REGISTERED = "registered"
+        const val ACCOUNT_CREATED = "account_created"
+        const val PROVIDER_ADDED = "provider_added"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.activity_launcher
-        )
-        initFragments()
-        initBindings()
-
-        bottom_navigation.addOnAttachStateChangeListener(stateChangeListener)
-
-        fab.setOnClickListener {
-            startActivity(Intent(this, ProviderActivity::class.java))
-        }
+        redirectIfNeeded()
     }
 
     override fun onStart() {
@@ -70,8 +75,42 @@ class LauncherActivity : BaseActivity() {
         consentFragment = ConsentHostFragment.newInstance()
         active = accountsFragment
 
-        getFragmentTransaction(ConsentHostFragment::class.java.name, consentFragment).hide(consentFragment).commit()
+        getFragmentTransaction(ConsentHostFragment::class.java.name, consentFragment).hide(
+            consentFragment
+        ).commit()
         getFragmentTransaction(UserAccountsFragment::class.java.name, accountsFragment).commit()
+    }
+
+    private fun redirectIfNeeded() {
+        when {
+            SharedPrefsManager.getBoolean(PROVIDER_ADDED, false, this) -> {
+                binding = DataBindingUtil.setContentView(
+                    this,
+                    R.layout.activity_launcher
+                )
+                initFragments()
+                initBindings()
+                initUi()
+            }
+            SharedPrefsManager.getBoolean(ACCOUNT_CREATED, false, this) -> {
+                startActivityForResult(ProviderActivity::class.java, ADD_PROVIDER.ordinal)
+            }
+            SharedPrefsManager.getBoolean(REGISTERED, false, this) -> {
+                startActivityForResult(ProviderActivity::class.java, ADD_PROVIDER.ordinal)
+                //startActivityForResult(AccountCreationActivity::class.java, REQUEST_CODES.CREATE_ACCOUNT.ordinal)
+            }
+            else -> {
+                startActivityForResult(RegistrationActivity::class.java, REGISTER.ordinal)
+            }
+        }
+    }
+
+    private fun initUi() {
+        bottom_navigation.addOnAttachStateChangeListener(stateChangeListener)
+
+        fab.setOnClickListener {
+            startActivity(ProviderActivity::class.java)
+        }
     }
 
     private fun getFragmentTransaction(tag: String, fragment: Fragment): FragmentTransaction {
@@ -107,17 +146,19 @@ class LauncherActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public fun onEvent(messageEventType: MessageEventType) {
         when (messageEventType) {
-            MessageEventType.CONSENT_GRANTED -> {
-                showSnackbar(getString(R.string.consent_granted))
-            }
-            MessageEventType.ACCOUNT_LINKED ->
-                showSnackbar(getString(R.string.account_linked_successfully))
+            MessageEventType.CONSENT_GRANTED -> showSnackbar(getString(R.string.consent_granted))
+            MessageEventType.ACCOUNT_LINKED -> showSnackbar(getString(R.string.account_linked_successfully))
         }
     }
 
     private fun showSnackbar(message: String) {
         val spannableString = SpannableString(message)
-        spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(
+            ForegroundColorSpan(Color.WHITE),
+            0,
+            message.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         val snackbar = Snackbar.make(fragment_container, spannableString, LENGTH_LONG)
         snackbar.anchorView = bottom_navigation
         snackbar.show()
@@ -126,5 +167,23 @@ class LauncherActivity : BaseActivity() {
     override fun onDestroy() {
         eventBusInstance.unregister(this)
         super.onDestroy()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            REGISTER.ordinal -> startFlowIfRequired(resultCode, REGISTERED)
+            CREATE_ACCOUNT.ordinal -> startFlowIfRequired(resultCode, ACCOUNT_CREATED)
+            ADD_PROVIDER.ordinal -> startFlowIfRequired(resultCode, PROVIDER_ADDED)
+        }
+    }
+
+    private fun startFlowIfRequired(resultCode: Int, key: String) {
+        if (resultCode != Activity.RESULT_OK) {
+            finish()
+        } else {
+            SharedPrefsManager.putBoolean(key, true, this)
+            redirectIfNeeded()
+        }
     }
 }

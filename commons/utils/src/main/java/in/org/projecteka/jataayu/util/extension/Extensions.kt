@@ -20,6 +20,14 @@ fun <T> Fragment.startActivity(clazz: Class<T>) {
     context?.startActivity(Intent(context, clazz))
 }
 
+fun <T> Context.startActivityForResult(clazz: Class<T>, requestCode : Int) {
+    (this as Activity).startActivityForResult(Intent(this, clazz), requestCode)
+}
+
+fun <T> Fragment.startActivityForResult(clazz: Class<T>, requestCode : Int) {
+    activity!!.startActivityForResult(Intent(activity, clazz), requestCode)
+}
+
 fun Fragment.setTitle(@StringRes resourceId: Int) {
     activity?.setTitle(resourceId)
 }

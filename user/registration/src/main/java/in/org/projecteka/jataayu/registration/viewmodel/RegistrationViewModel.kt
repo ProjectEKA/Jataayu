@@ -14,7 +14,6 @@ import timber.log.Timber
 
 class RegistrationViewModel(val repository: AuthorizationRepository) : ViewModel() {
     var requestVerificationResponse = liveDataOf<RequestVerificationResponse>()
-    var verifyIdentifierResponse = liveDataOf<VerifyIdentifierResponse>()
 
     fun requestVerification(
         identifierType: String, identifier: String,
@@ -52,9 +51,6 @@ class RegistrationViewModel(val repository: AuthorizationRepository) : ViewModel
                 response: Response<VerifyIdentifierResponse>
             ) {
                 if (response.isSuccessful) {
-                    response.let {
-                        verifyIdentifierResponse.value = response.body()
-                    }
                     progressDialogCallback.onSuccess(response)
                 } else {
                     progressDialogCallback.onFailure(response)
