@@ -3,9 +3,13 @@ package `in`.org.projecteka.jataayu.consent.ui.fragment
 import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.FragmentConsentDetailsEditBinding
 import `in`.org.projecteka.jataayu.consent.ui.handler.PickerClickHandler
-import `in`.org.projecteka.jataayu.consent.viewmodel.ConfirmConsentViewModel
+import `in`.org.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.org.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
-import `in`.org.projecteka.jataayu.core.model.*
+import `in`.org.projecteka.jataayu.core.model.CareContext
+import `in`.org.projecteka.jataayu.core.model.Consent
+import `in`.org.projecteka.jataayu.core.model.HiType
+import `in`.org.projecteka.jataayu.core.model.Links
+import `in`.org.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.DateTimeSelectionCallback
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
@@ -29,7 +33,6 @@ import android.widget.CheckBox
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_consent_details_edit.*
@@ -51,11 +54,7 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
     lateinit var consent: Consent
     private lateinit var modifiedConsent: Consent
     private var hiTypes = ArrayList<HiType>()
-    private val viewModel: ConfirmConsentViewModel by sharedViewModel()
-
-    private val linkedAccountsObserver = Observer<LinkedAccountsResponse> {
-        renderLinkedAccounts(it.linkedPatient.links)
-    }
+    private val viewModel: ConsentViewModel by sharedViewModel()
 
     companion object {
         fun newInstance() = EditConsentDetailsFragment()
@@ -72,13 +71,11 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         consent = eventBusInstance.getStickyEvent(Consent::class.java)
-        hiTypes = eventBusInstance.getStickyEvent(ArrayList<HiType>()::class.java)
+
         modifiedConsent = consent.clone()
         binding.consent = modifiedConsent
         binding.clickHandler = this
         binding.pickerClickHandler = this
-
-        renderUi()
     }
 
     private fun renderUi() {
@@ -91,13 +88,6 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
             if (chip != null) {
                 showLongToast(chip.text.toString())
             }
-        }
-
-        val consent = eventBusInstance.getStickyEvent(Consent::class.java)
-        viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
-        if (viewModel.linkedAccountsResponse.value == null) {
-            showProgressBar(true, getString(R.string.loading_linked_accounts))
-            viewModel.getLinkedAccounts(consent.id, this)
         }
     }
 
@@ -184,8 +174,11 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
     public fun onConsentReceived(consent: Consent) {
     }
 
-    @Subscribe
-    public fun onHiTypesReceived(hiTypes: ArrayList<HiType>) {
+    @Subscribe(sticky = true)
+    public fun onHitypesAndLinkesReceived(hiTypeAndLinks: HiTypeAndLinks) {
+        hiTypes = hiTypeAndLinks.hiTypes
+        renderLinkedAccounts(hiTypeAndLinks.linkedAccounts)
+        renderUi()
     }
 
     override fun onStart() {

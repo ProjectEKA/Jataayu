@@ -3,6 +3,7 @@ package `in`.org.projecteka.jataayu.consent.ui.fragment
 import `in`.org.projecteka.jataayu.R
 import `in`.org.projecteka.jataayu.core.model.Consent
 import `in`.org.projecteka.jataayu.testUtil.AssetReaderUtil
+import `in`.org.projecteka.jataayu.testUtil.MockServerDispatcher
 import `in`.org.projecteka.jataayu.ui.activity.TestsOnlyActivity
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.filters.LargeTest
@@ -10,6 +11,7 @@ import androidx.test.runner.AndroidJUnit4
 import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.displayed
 import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.notDisplayed
 import com.google.gson.Gson
+import okhttp3.mockwebserver.MockWebServer
 import org.greenrobot.eventbus.EventBus
 import org.junit.Before
 import org.junit.Rule
@@ -30,9 +32,19 @@ class ConsentDetailsFragmentTest{
 
     private lateinit var eventBus: EventBus
 
+    private lateinit var webServer: MockWebServer
+
     @Before
     @Throws(Exception::class)
     fun setup() {
+
+        webServer = MockWebServer()
+        webServer.start(8080)
+
+        webServer.dispatcher =
+            MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
+        Thread.sleep(4000)
+
         readConsentAndLaunchFragment("consent_requested.json")
         activityRule.activity.addFragment(ConsentDetailsFragment())
     }
@@ -120,6 +132,11 @@ class ConsentDetailsFragmentTest{
             id(R.id.btn_deny)
             text("deny")
         }
+    }
+
+    @Before
+    fun tearDown(){
+        webServer.shutdown()
     }
 
 

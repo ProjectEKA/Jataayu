@@ -144,7 +144,10 @@ class LauncherActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public fun onEvent(messageEventType: MessageEventType) {
         when (messageEventType) {
-            MessageEventType.CONSENT_GRANTED -> showSnackbar(getString(R.string.consent_granted))
+            MessageEventType.CONSENT_GRANTED -> {
+                showSnackbar(getString(R.string.consent_granted))
+                eventBusInstance.post(MessageEventType.SELECT_CONSENTS_TAB)
+            }
             MessageEventType.ACCOUNT_LINKED -> showSnackbar(getString(R.string.account_linked_successfully))
         }
     }

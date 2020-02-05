@@ -4,9 +4,11 @@ import NestedScrollAction
 import `in`.org.projecteka.jataayu.R.id.*
 import `in`.org.projecteka.jataayu.core.model.Consent
 import `in`.org.projecteka.jataayu.core.model.HiType
+import `in`.org.projecteka.jataayu.core.model.Links
+import `in`.org.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
 import `in`.org.projecteka.jataayu.testUtil.AssetReaderUtil
-import `in`.org.projecteka.jataayu.testUtil.MockServerDispatcher
 import `in`.org.projecteka.jataayu.ui.activity.TestsOnlyActivity
+import `in`.org.projecteka.jataayu.util.extension.fromJson
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -17,9 +19,7 @@ import androidx.test.runner.AndroidJUnit4
 import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.displayed
 import br.com.concretesolutions.kappuccino.custom.recyclerView.RecyclerViewInteractions.recyclerView
 import com.google.gson.Gson
-import okhttp3.mockwebserver.MockWebServer
 import org.greenrobot.eventbus.EventBus
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -36,25 +36,17 @@ class EditConsentDetailsFragmentTest {
 
     private lateinit var consent: Consent
 
-    private lateinit var webServer: MockWebServer
+    private lateinit var linkedAccounts: List<Links>
 
     @Before
     @Throws(Exception::class)
     fun setup() {
 
-        webServer = MockWebServer()
-        webServer.start(8080)
+        consent = Gson().fromJson(AssetReaderUtil.asset(
+            activityRule.activity.applicationContext,
+            "consent_requested.json"
+        ))
 
-        webServer.dispatcher =
-            MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
-        Thread.sleep(4000)
-
-        consent = Gson().fromJson<Consent>(
-            AssetReaderUtil.asset(
-                activityRule.activity.applicationContext,
-                "consent_requested.json"
-            ), Consent::class.java
-        )!!
 
         EventBus.getDefault().postSticky(consent)
 
@@ -64,7 +56,12 @@ class EditConsentDetailsFragmentTest {
             hiTypes.add(HiType(hiType, true))
         }
 
-        EventBus.getDefault().postSticky(hiTypes)
+        linkedAccounts = Gson().fromJson(AssetReaderUtil.asset(
+            activityRule.activity.applicationContext,
+            "links.json"
+        ))
+
+        EventBus.getDefault().postSticky(HiTypeAndLinks(hiTypes, linkedAccounts))
 
         val editConsentDetailsFragment = EditConsentDetailsFragment()
         activityRule.activity.addFragment(editConsentDetailsFragment)
@@ -138,7 +135,7 @@ class EditConsentDetailsFragmentTest {
         onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
 
         recyclerView(rvLinkedAccounts) {
-            sizeIs(5)
+            sizeIs(3)
 
             atPosition(0) {
                 displayed {
@@ -172,11 +169,4 @@ class EditConsentDetailsFragmentTest {
     private fun nestedScrollTo(): ViewAction? {
         return NestedScrollAction()
     }
-
-    @After
-    fun tearDown() {
-        webServer.shutdown()
-    }
-
-
 }

@@ -1,0 +1,20 @@
+[
+      {
+        "hip": {
+          "id": "10000005",
+          "name": "Max Health Care"
+        },
+        "referenceNumber": "5",
+        "careContexts": [
+          {
+            "referenceNumber": "131",
+            "display": "National Cancer program"
+          },
+          {
+            "referenceNumber": "131",
+            "display": "National Cancer program"
+          }
+        ],
+        "display": "Ron Doe"
+      }
+    ]

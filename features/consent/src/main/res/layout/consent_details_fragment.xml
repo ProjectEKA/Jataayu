@@ -224,6 +224,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_weight=".3"
                 android:text="@string/deny"
+                android:onClick="@{clickHandler::onDenyConsent}"
                 android:textColor="@color/red"
                 tools:textColor="@color/red" />
 
