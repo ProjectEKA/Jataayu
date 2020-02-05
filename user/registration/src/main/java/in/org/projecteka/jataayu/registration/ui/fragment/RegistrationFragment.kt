@@ -64,12 +64,8 @@ class RegistrationFragment : BaseFragment(), ContinueClickHandler, MobileNumberC
         showProgressBar(false)
     }
 
-    private fun showProgressBar(shouldShow: Boolean) {
-        binding.progressBarVisibility = shouldShow
-    }
-
     override fun onContinueClick(view: View) {
-        showProgressBar(true)
+        showProgressBar(true, getString(R.string.sending_otp))
         viewModel.requestVerification("mobile", binding.etMobileNumber.text.toString(), this)
         viewModel.requestVerificationResponse.observe(this, registrationObserver)
     }

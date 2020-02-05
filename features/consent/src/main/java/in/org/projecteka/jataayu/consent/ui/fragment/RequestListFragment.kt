@@ -77,7 +77,7 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
         super.onViewCreated(view, savedInstanceState)
         viewModel.consentsListResponse.observe(this, consentObserver)
         viewModel.getConsents(this)
-        showProgressBar(true)
+        showProgressBar(true, getString(R.string.loading_requests))
     }
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
@@ -117,10 +117,6 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
 
     private fun filterRequests(requests: List<Consent>) {
         (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(requests)
-    }
-
-    private fun showProgressBar(show: Boolean) {
-        binding.progressBarVisibility = show
     }
 
     override fun onSuccess(any: Any?) {

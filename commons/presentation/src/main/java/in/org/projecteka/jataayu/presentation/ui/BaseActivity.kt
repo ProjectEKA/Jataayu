@@ -2,6 +2,7 @@ package `in`.org.projecteka.jataayu.presentation.ui
 
 import `in`.org.projecteka.jataayu.presentation.BuildConfig
 import `in`.org.projecteka.jataayu.presentation.R
+import `in`.org.projecteka.jataayu.presentation.databinding.BaseActivityBinding
 import `in`.org.projecteka.jataayu.presentation.databinding.NetworkPrefDialogBinding
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCKOON_URL
@@ -20,10 +21,25 @@ import android.view.MenuItem
 import android.widget.RadioButton
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 
 abstract class BaseActivity : AppCompatActivity() {
+    private lateinit var binding: BaseActivityBinding
     private lateinit var networkPrefDialogBinding: NetworkPrefDialogBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.base_activity)
+        supportFragmentManager.apply {
+            addOnBackStackChangedListener {
+                if (fragments.isNotEmpty()) fragments.last {
+                    (it as BaseFragment).onVisible()
+                    return@last true
+                }
+            }
+        }
+    }
 
     private val okListener = DialogInterface.OnClickListener { _, _ ->
         networkPrefDialogBinding.apply {
@@ -32,20 +48,6 @@ abstract class BaseActivity : AppCompatActivity() {
             }
             etAuthToken.text?.toString()?.let {
                 setAuthToken(context = this@BaseActivity, authToken = etAuthToken.text.toString())
-            }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.base_activity)
-
-        supportFragmentManager.apply {
-            addOnBackStackChangedListener {
-                if (fragments.isNotEmpty()) fragments.last {
-                    (it as BaseFragment).onVisible()
-                    return@last true
-                }
             }
         }
     }
@@ -113,7 +115,30 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        if (supportFragmentManager.backStackEntryCount == 0) finish()
+        if (!isProgressBarShowing()) {
+            super.onBackPressed()
+            if (supportFragmentManager.backStackEntryCount == 0) finish()
+        }
+    }
+
+    open fun setProgressBarVisibilityValue(shouldShow: Boolean) {
+        binding.progressBarVisibility = shouldShow
+    }
+
+    open fun setProgressBarMessage(message: String) {
+        binding.progressBarMessage = message
+    }
+
+    open fun showProgressBar(shouldShow: Boolean) {
+        showProgressBar(shouldShow, "")
+    }
+
+    open fun showProgressBar(shouldShow: Boolean, message: String) {
+        setProgressBarVisibilityValue(shouldShow)
+        setProgressBarMessage(message)
+    }
+
+    private fun isProgressBarShowing(): Boolean {
+        return binding.progressBarVisibility == true
     }
 }

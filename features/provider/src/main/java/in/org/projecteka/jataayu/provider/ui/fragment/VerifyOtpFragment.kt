@@ -6,6 +6,7 @@ import `in`.org.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.org.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.org.projecteka.jataayu.core.model.MessageEventType
 import `in`.org.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler
+import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
 import `in`.org.projecteka.jataayu.provider.model.Token
@@ -22,7 +23,7 @@ import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class VerifyOtpFragment : BaseFragment(),
-    OtpSubmissionClickHandler, OtpChangeHandler {
+    OtpSubmissionClickHandler, OtpChangeHandler, ProgressDialogCallback {
     override fun setButtonEnabled(isOtpEntered: Boolean) {
         binding.isOtpEntered = isOtpEntered
     }
@@ -70,7 +71,18 @@ class VerifyOtpFragment : BaseFragment(),
 
     override fun onSubmitOtp(view: View) {
         UiUtils.hideKeyboard(activity!!)
+        showProgressBar(true)
         viewModel.successfulLinkingResponse.observe(this, observer)
-        viewModel.verifyOtp(viewModel.linkAccountsResponse.value?.link?.referenceNumber!!, Token(binding.etOtp.text.toString()))
+        val referenceNumber = viewModel.linkAccountsResponse.value?.link?.referenceNumber!!
+        val token = Token(binding.etOtp.text.toString())
+        viewModel.verifyOtp(referenceNumber, token, this)
+    }
+
+    override fun onSuccess(any: Any?) {
+        showProgressBar(false)
+    }
+
+    override fun onFailure(any: Any?) {
+        showProgressBar(false)
     }
 }

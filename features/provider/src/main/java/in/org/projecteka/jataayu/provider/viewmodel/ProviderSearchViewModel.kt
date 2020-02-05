@@ -68,31 +68,35 @@ class ProviderSearchViewModel(val providerRepository: ProviderRepository) : View
         })
     }
 
-    fun linkPatientAccounts(patientDiscoveryResponse: PatientDiscoveryResponse) {
+    fun linkPatientAccounts(patientDiscoveryResponse: PatientDiscoveryResponse, progressDialogCallback: ProgressDialogCallback) {
         providerRepository.linkPatientAccounts(patientDiscoveryResponse)
             .enqueue(object : Callback<LinkAccountsResponse> {
                 override fun onFailure(call: Call<LinkAccountsResponse>, t: Throwable) {
                     Timber.e(t, "Failed to link patients accounts")
+                    progressDialogCallback.onFailure(t)
                 }
 
                 override fun onResponse(call: Call<LinkAccountsResponse>, response: Response<LinkAccountsResponse>) {
                     if (response.isSuccessful) {
                         response.body()?.let { linkAccountsResponse.value = it }
                     }
+                    progressDialogCallback.onSuccess(response)
                 }
             })
     }
 
-    fun verifyOtp(referenceNumber: String, token: Token) {
+    fun verifyOtp(referenceNumber: String, token: Token, progressDialogCallback: ProgressDialogCallback) {
         providerRepository.verifyOtp(referenceNumber, token).enqueue(object: Callback<SuccessfulLinkingResponse> {
             override fun onFailure(call: Call<SuccessfulLinkingResponse>, t: Throwable) {
-
+                Timber.e(t)
+                progressDialogCallback.onFailure(t)
             }
 
             override fun onResponse(call: Call<SuccessfulLinkingResponse>, response: Response<SuccessfulLinkingResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.let { successfulLinkingResponse.value = it }
                 }
+                progressDialogCallback.onSuccess(response)
             }
         })
     }

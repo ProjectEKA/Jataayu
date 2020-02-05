@@ -96,7 +96,7 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         val consent = eventBusInstance.getStickyEvent(Consent::class.java)
         viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
         if (viewModel.linkedAccountsResponse.value == null) {
-            showProgressBar(true)
+            showProgressBar(true, getString(R.string.loading_linked_accounts))
             viewModel.getLinkedAccounts(consent.id, this)
         }
     }
@@ -230,9 +230,5 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
 
     override fun onFailure(any: Any?) {
         showProgressBar(false)
-    }
-
-    private fun showProgressBar(shouldShow: Boolean) {
-        binding.progressBarVisibility = shouldShow
     }
 }

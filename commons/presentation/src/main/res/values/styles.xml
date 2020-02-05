@@ -50,11 +50,10 @@
         <item name="android:textColorPrimary">@color/white</item>
     </style>
 
-    <style name="FAB" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+    <style name="FAB" parent="@style/Widget.Design.FloatingActionButton">
         <item name="backgroundTint">@color/colorPrimary</item>
         <item name="backgroundColor">@color/colorPrimary</item>
         <item name="iconTint">@color/white</item>
-        <item name="icon">@color/white</item>
         <item name="android:shadowColor">@color/colorPrimary</item>
     </style>
 

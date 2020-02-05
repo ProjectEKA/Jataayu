@@ -1,8 +1,21 @@
 package `in`.org.projecteka.jataayu.presentation.ui.fragment
 
+import `in`.org.projecteka.jataayu.presentation.ui.BaseActivity
 import androidx.fragment.app.Fragment
 
 open class BaseFragment : Fragment() {
     open fun onVisible() {}
     open fun onBackPressedCallback() {}
+
+    protected fun showProgressBar(shouldShow: Boolean) {
+        showProgressBar(shouldShow, "")
+    }
+
+    protected fun showProgressBar(shouldShow: Boolean, progressBarMessage: String) {
+        activity?.let{
+            if (it is BaseActivity) {
+                it.showProgressBar(shouldShow, progressBarMessage)
+            }
+        }
+    }
 }

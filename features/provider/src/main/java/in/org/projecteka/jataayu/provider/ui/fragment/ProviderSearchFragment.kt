@@ -81,7 +81,6 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         binding.clickHandler = this
         binding.mobile = viewModel.mobile.mask()
         binding.textWatcher = ProviderNameWatcher(this, 1)
-        binding.progressBarVisibility = GONE
     }
 
     private fun renderSearchUi() {
@@ -162,27 +161,19 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
 
     override fun onSearchButtonClick(view: View) {
         viewModel.getPatientAccounts(Request(Hip(selectedProvider.hip.id, selectedProvider.hip.name)), this)
-        showSearchLoading()
+        showProgressBar(true, getString(R.string.looking_up_info))
         observePatients()
-    }
-
-    private fun showSearchLoading() {
-        binding.progressBarVisibility = VISIBLE
-    }
-
-    private fun hideSearchLoading() {
-        binding.progressBarVisibility = GONE
     }
 
     private fun observePatients() =
         viewModel.patientDiscoveryResponse.observe(this, patientAccountsObserver)
 
     override fun onSuccess(any: Any?) {
-        hideSearchLoading()
+        showProgressBar(false)
     }
 
     override fun onFailure(any: Any?) {
         showShortToast((any as Response<*>).message())
-        hideSearchLoading()
+        showProgressBar(false)
     }
 }

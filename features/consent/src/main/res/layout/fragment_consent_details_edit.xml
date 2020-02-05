@@ -17,10 +17,6 @@
         <variable
             name="clickHandler"
             type="in.org.projecteka.jataayu.provider.ui.handler.EditConsentClickHandler" />
-
-        <variable
-            name="progressBarVisibility"
-            type="Boolean" />
     </data>
 
 
@@ -250,40 +246,6 @@
                         app:layout_constraintStart_toStartOf="@id/start_guideline"
                         app:layout_constraintTop_toBottomOf="@+id/divider"
                         tools:listitem="@layout/patient_account_result_item" />
-
-                    <RelativeLayout
-                        android:id="@+id/progressbar_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/progressbar_dimmed_bg"
-                        android:clickable="true"
-                        android:descendantFocusability="blocksDescendants"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:toggledVisibility="@{progressBarVisibility}"
-                        tools:visibility="gone">
-
-                        <ProgressBar
-                            android:id="@+id/progress_bar"
-                            style="?android:attr/progressBarStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true" />
-
-                        <TextView
-                            android:id="@+id/progressbar_text"
-                            style="@style/TextAppearance.AppCompat.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/progress_bar"
-                            android:layout_centerInParent="true"
-                            android:gravity="center"
-                            android:text="@string/loading_linked_accounts"
-                            android:textColor="@color/white" />
-
-                    </RelativeLayout>
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/start_guideline"

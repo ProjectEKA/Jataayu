@@ -4,7 +4,6 @@ package `in`.org.projecteka.jataayu.registration.ui.fragment
 import `in`.org.projecteka.jataayu.core.databinding.VerityOtpFragmentBinding
 import `in`.org.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.org.projecteka.jataayu.core.handler.OtpChangeWatcher
-import `in`.org.projecteka.jataayu.core.model.MessageEventType
 import `in`.org.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler
 import `in`.org.projecteka.jataayu.core.utils.toErrorResponse
 import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
@@ -12,7 +11,6 @@ import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.registration.R
 import `in`.org.projecteka.jataayu.registration.listener.MobileNumberChangeHandler
 import `in`.org.projecteka.jataayu.registration.model.RequestVerificationResponse
-import `in`.org.projecteka.jataayu.registration.ui.activity.RegistrationActivity
 import `in`.org.projecteka.jataayu.registration.viewmodel.RegistrationViewModel
 import `in`.org.projecteka.jataayu.util.extension.EMPTY
 import `in`.org.projecteka.jataayu.util.extension.setTitle
@@ -36,11 +34,13 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Progr
     }
 
     override fun onSuccess(any: Any?) {
+        showProgressBar(false)
         activity?.setResult(Activity.RESULT_OK)
         activity?.finish()
     }
 
     override fun onFailure(any: Any?) {
+        showProgressBar(false)
         if((any is Response<*>)) {
             val errorResponse = any.errorBody()?.toErrorResponse()
             if(errorResponse?.error?.code == ERROR_CODE_INVALID_OTP)
@@ -59,6 +59,7 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Progr
 
     override fun onSubmitOtp(view: View) {
         binding.errorMessage = String.EMPTY
+        showProgressBar(true)
         viewModel.verifyIdentifier(requestVerificationResponse, this)
     }
 

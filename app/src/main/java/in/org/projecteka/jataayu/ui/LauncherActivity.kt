@@ -34,8 +34,8 @@ import org.greenrobot.eventbus.ThreadMode
 class LauncherActivity : BaseActivity() {
     private lateinit var binding: ActivityLauncherBinding
     private lateinit var active: Fragment
-    private lateinit var accountsFragment: Fragment
-    private lateinit var consentFragment: Fragment
+    private lateinit var accountsFragment: UserAccountsFragment
+    private lateinit var consentFragment: ConsentHostFragment
     private val eventBusInstance = EventBus.getDefault()
 
     private val stateChangeListener = object : View.OnAttachStateChangeListener {
@@ -74,9 +74,7 @@ class LauncherActivity : BaseActivity() {
         consentFragment = ConsentHostFragment.newInstance()
         active = accountsFragment
 
-        getFragmentTransaction(ConsentHostFragment::class.java.name, consentFragment).hide(
-            consentFragment
-        ).commit()
+        getFragmentTransaction(ConsentHostFragment::class.java.name, consentFragment).hide(consentFragment).commit()
         getFragmentTransaction(UserAccountsFragment::class.java.name, accountsFragment).commit()
     }
 
@@ -87,6 +85,7 @@ class LauncherActivity : BaseActivity() {
                     this,
                     R.layout.activity_launcher
                 )
+
                 initFragments()
                 initBindings()
                 initUi()
@@ -153,7 +152,7 @@ class LauncherActivity : BaseActivity() {
     private fun showSnackbar(message: String) {
         val spannableString = SpannableString(message)
         spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        val snackbar = Snackbar.make(fragment_container, spannableString, 2)
+        val snackbar = Snackbar.make(fragment_container, spannableString, 2000)
         snackbar.anchorView = bottom_navigation
         snackbar.show()
     }
@@ -179,5 +178,18 @@ class LauncherActivity : BaseActivity() {
             SharedPrefsManager.putBoolean(key, true, this)
             redirectIfNeeded()
         }
+    }
+
+    override fun showProgressBar(shouldShow: Boolean, message: String) {
+        binding.progressBarVisibility
+        binding.progressBarMessage = message
+    }
+
+    override fun setProgressBarVisibilityValue(shouldShow: Boolean) {
+        binding.progressBarVisibility = shouldShow
+    }
+
+    override fun setProgressBarMessage(message: String) {
+        binding.progressBarMessage = message
     }
 }
