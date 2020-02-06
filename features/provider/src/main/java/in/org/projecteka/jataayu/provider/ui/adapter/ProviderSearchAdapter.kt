@@ -21,7 +21,7 @@ class ProviderSearchAdapter(itemClickCallback : ItemClickCallback, list : List<P
 
     override fun onBindViewHolder(holder : RecyclerViewHolder, position : Int) {
         super.onBindViewHolder(holder, position)
-        val viewModel = listOfBindingModel!![position]
+        val viewModel = listOfBindingModels!![position]
         holder.bind(viewModel)
         val searchResultView = holder.itemView.findView<TextView>(R.id.provider_name)
         val providerInfo = suggestions[position]

@@ -2,21 +2,14 @@ package `in`.org.projecteka.jataayu.util.extension
 
 import `in`.org.projecteka.jataayu.util.R
 import `in`.org.projecteka.jataayu.util.ui.activity.TestsOnlyActivity
-import `in`.org.projecteka.jataayu.util.ui.fragment.TestsOnlyFragment
 import android.view.View
 import androidx.annotation.IntegerRes
-import androidx.appcompat.app.AppCompatActivity
-import androidx.test.filters.LargeTest
-import androidx.test.runner.AndroidJUnit4
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.*
-import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)

@@ -7,6 +7,14 @@
     <data>
 
         <variable
+            name="saveEnabled"
+            type="Boolean" />
+
+        <variable
+            name="allProvidersChecked"
+            type="Boolean" />
+
+        <variable
             name="consent"
             type="in.org.projecteka.jataayu.core.model.Consent" />
 
@@ -217,11 +225,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/content_margin_large"
-                        android:checked="true"
                         android:fontFamily="sans-serif-medium"
                         android:onClick="@{clickHandler::toggleProvidersSelection}"
                         android:paddingStart="@dimen/content_margin_medium"
                         android:paddingEnd="@dimen/content_margin_medium"
+                        android:checked="@{allProvidersChecked, default=true}"
                         android:text="@string/all_linked_providers"
                         android:textSize="@dimen/text_size_large"
                         app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -278,8 +286,9 @@
             app:layout_constraintVertical_bias="1">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_grant"
+                android:id="@+id/btn_save"
                 style="@style/Button"
+                android:enabled="@{saveEnabled, default=true}"
                 android:onClick="@{clickHandler::onSaveClick}"
                 android:layout_width="match_parent"
                 android:layout_gravity="center_vertical"

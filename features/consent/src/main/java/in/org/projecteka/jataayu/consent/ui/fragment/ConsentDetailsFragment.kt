@@ -47,8 +47,9 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         }
     }
 
-    private val linkedAccountsObserver = Observer<LinkedAccountsResponse> {
-        linkedAccounts = it.linkedPatient.links
+    private val linkedAccountsObserver = Observer<LinkedAccountsResponse> { linkedAccountsResponse ->
+        linkedAccounts = linkedAccountsResponse.linkedPatient.links
+        linkedAccounts.forEach { link -> link?.careContexts?.forEach { it.contextChecked = true } }
     }
 
     override fun onItemClick(

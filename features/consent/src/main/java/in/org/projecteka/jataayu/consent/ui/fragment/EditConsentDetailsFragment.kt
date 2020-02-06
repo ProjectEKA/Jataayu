@@ -49,12 +49,14 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
 
     private lateinit var binding: FragmentConsentDetailsEditBinding
     lateinit var listItems: List<IDataBindingModel>
+    lateinit var linkedAccounts: List<Links?>
 
     private val eventBusInstance: EventBus = EventBus.getDefault()
     lateinit var consent: Consent
     private lateinit var modifiedConsent: Consent
     private var hiTypes = ArrayList<HiType>()
     private val viewModel: ConsentViewModel by sharedViewModel()
+    private lateinit var genericRecyclerViewAdapter: GenericRecyclerViewAdapter
 
     companion object {
         fun newInstance() = EditConsentDetailsFragment()
@@ -95,16 +97,37 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         if (itemViewBinding is PatientAccountResultItemBinding) { //Check if it header or item
             val checkbox = itemViewBinding.cbCareContext
             checkbox.toggle()
-            if (!checkbox.isChecked) cb_link_all_providers.isChecked = false
+            (iDataBindingModel as CareContext).contextChecked = checkbox.isChecked
+
+            checkProviderSelection()
         }
+    }
+
+    private fun checkProviderSelection() {
+        Thread {
+            kotlin.run {
+                var selectionCount = 0
+                var selectableItemsCount = 0
+                genericRecyclerViewAdapter.listOfBindingModels?.forEach {
+                    if (it is CareContext) {
+                        selectableItemsCount++
+                        if (it.contextChecked) selectionCount++
+                    }
+                }
+
+                binding.allProvidersChecked = selectableItemsCount == selectionCount
+                binding.saveEnabled = selectionCount > 0
+            }
+        }.start()
     }
 
     private fun renderLinkedAccounts(linkedAccounts: List<Links?>) {
         listItems = viewModel.getItems(linkedAccounts)
-
+        this.linkedAccounts = linkedAccounts
+        genericRecyclerViewAdapter = GenericRecyclerViewAdapter(this@EditConsentDetailsFragment, listItems)
         rvLinkedAccounts.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = GenericRecyclerViewAdapter(this@EditConsentDetailsFragment, listItems)
+            adapter = genericRecyclerViewAdapter
             val dividerItemDecorator = DividerItemDecorator(ContextCompat.getDrawable(context!!, R.color.transparent)!!)
             addItemDecoration(dividerItemDecorator)
         }
@@ -179,6 +202,7 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         hiTypes = hiTypeAndLinks.hiTypes
         renderLinkedAccounts(hiTypeAndLinks.linkedAccounts)
         renderUi()
+        checkProviderSelection()
     }
 
     override fun onStart() {
@@ -207,13 +231,14 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         listItems.forEach { if (it is CareContext) it.contextChecked = checked }
 
         rvLinkedAccounts.adapter?.notifyDataSetChanged()
+        checkProviderSelection()
     }
 
     override fun onSaveClick(view: View) {
         hiTypes.forEach { it.isChecked = (chipGroup.getChildAt(hiTypes.indexOf(it)) as Chip).isChecked }
 
         eventBusInstance.postSticky(modifiedConsent)
-        eventBusInstance.post(hiTypes)
+        eventBusInstance.post(linkedAccounts)
         activity?.onBackPressed()
     }
 

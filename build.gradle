@@ -1,4 +1,5 @@
-import dependancies.*
+import dependancies.Config
+import dependancies.Deps
 
 buildscript {
     ext.kotlin_version = '1.3.61'

@@ -1,4 +1,4 @@
-import dependancies.*
+import dependancies.Deps
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'

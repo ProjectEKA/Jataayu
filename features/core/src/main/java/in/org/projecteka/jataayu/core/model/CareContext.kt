@@ -9,12 +9,7 @@ import com.google.gson.annotations.SerializedName
 open class CareContext(@SerializedName("referenceNumber") open val referenceNumber: String,
                        @SerializedName("display") open val display: String): BaseObservable(), IDataBindingModel {
 
-    public var contextChecked : Boolean = true
-
-    public fun setChecked(checked: Boolean) {
-        this.contextChecked = checked
-        notifyPropertyChanged(BR.careContext)
-    }
+    var contextChecked = true
 
     override fun layoutResId(): Int = R.layout.patient_account_result_item
 

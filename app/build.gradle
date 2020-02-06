@@ -1,4 +1,6 @@
-import dependancies.*
+import dependancies.Config
+import dependancies.Deps
+import dependancies.Modules
 
 apply plugin: 'com.android.application'
 apply from: rootProject.file("android-commons.gradle")

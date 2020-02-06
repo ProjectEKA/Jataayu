@@ -135,12 +135,9 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
 
     fun getItems(links: List<Links?>): List<IDataBindingModel> {
         val items = arrayListOf<IDataBindingModel>()
-        for (link in links) {
+        links.forEach {link ->
             items.add(link?.hip!!)
-            for (careContext in link.careContexts) {
-                careContext.contextChecked = true
-                items.add(careContext)
-            }
+            items.addAll(link.careContexts)
         }
         return items
     }
@@ -157,9 +154,13 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
 
         links.forEach {link ->
             val careReferences = ArrayList<CareReference>()
-            link!!.careContexts.forEach { careReferences.add(newCareReference(link, it)) }
+            link!!.careContexts.forEach {careContext ->
+                if (careContext.contextChecked) careReferences.add(newCareReference(link, careContext))
+            }
 
-            consentArtifactList.add(ConsentArtifact(hiTypes, link.hip, careReferences, permission))
+            if (careReferences.isNotEmpty()) {
+                consentArtifactList.add(ConsentArtifact(hiTypes, link.hip, careReferences, permission))
+            }
         }
         return consentArtifactList
     }

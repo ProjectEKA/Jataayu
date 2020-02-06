@@ -61,6 +61,7 @@ class EditConsentDetailsFragmentTest {
             "links.json"
         ))
 
+        linkedAccounts.forEach { link -> link.careContexts.forEach { it.contextChecked = true } }
         EventBus.getDefault().postSticky(HiTypeAndLinks(hiTypes, linkedAccounts))
 
         val editConsentDetailsFragment = EditConsentDetailsFragment()
@@ -124,13 +125,13 @@ class EditConsentDetailsFragmentTest {
 
     @Test
     fun shouldRenderLinkedAccounts() {
+        Thread.sleep(1000)
+
         onView(withId(cb_link_all_providers)).check(
             matches(
                 isChecked()
             )
         )
-
-        Thread.sleep(1000)
 
         onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
 

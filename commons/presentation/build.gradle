@@ -1,4 +1,5 @@
-import dependancies.*
+import dependancies.Deps
+import dependancies.Modules
 
 apply from: rootProject.file("android-library-commons.gradle")
 
