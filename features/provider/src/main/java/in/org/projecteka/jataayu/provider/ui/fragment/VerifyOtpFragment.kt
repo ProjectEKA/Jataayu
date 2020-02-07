@@ -6,7 +6,7 @@ import `in`.org.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.org.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.org.projecteka.jataayu.core.model.MessageEventType
 import `in`.org.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler
-import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
+import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
 import `in`.org.projecteka.jataayu.provider.model.Token
@@ -19,11 +19,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class VerifyOtpFragment : BaseFragment(),
-    OtpSubmissionClickHandler, OtpChangeHandler, ProgressDialogCallback {
+    OtpSubmissionClickHandler, OtpChangeHandler, ResponseCallback {
     override fun setButtonEnabled(isOtpEntered: Boolean) {
         binding.isOtpEntered = isOtpEntered
     }
@@ -78,11 +79,15 @@ class VerifyOtpFragment : BaseFragment(),
         viewModel.verifyOtp(referenceNumber, token, this)
     }
 
-    override fun onSuccess(any: Any?) {
+    override fun <T> onSuccess(body: T?) {
         showProgressBar(false)
     }
 
-    override fun onFailure(any: Any?) {
+    override fun onFailure(errorBody: ResponseBody) {
+        showProgressBar(false)
+    }
+
+    override fun onFailure(t: Throwable) {
         showProgressBar(false)
     }
 }

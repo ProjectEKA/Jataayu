@@ -6,7 +6,7 @@ import `in`.org.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.org.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.org.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler
 import `in`.org.projecteka.jataayu.core.utils.toErrorResponse
-import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
+import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.registration.R
 import `in`.org.projecteka.jataayu.registration.listener.MobileNumberChangeHandler
@@ -19,33 +19,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import retrofit2.Response
 
-class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, ProgressDialogCallback, MobileNumberChangeHandler,
+class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, ResponseCallback, MobileNumberChangeHandler,
     OtpChangeHandler {
 
     private lateinit var binding: VerityOtpFragmentBinding
 
     override fun setButtonEnabled(boolean: Boolean) {
         binding.isOtpEntered = boolean
-    }
-
-    override fun onSuccess(any: Any?) {
-        showProgressBar(false)
-        activity?.setResult(Activity.RESULT_OK)
-        activity?.finish()
-    }
-
-    override fun onFailure(any: Any?) {
-        showProgressBar(false)
-        if((any is Response<*>)) {
-            val errorResponse = any.errorBody()?.toErrorResponse()
-            if(errorResponse?.error?.code == ERROR_CODE_INVALID_OTP)
-                binding.errorMessage = context?.getString(R.string.invalid_otp)
-        }
     }
 
     companion object{
@@ -113,5 +99,24 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Progr
         binding.isOtpEntered = false
         binding.errorMessage = String.EMPTY
         binding.otpChangeWatcher = OtpChangeWatcher(this)
+    }
+
+    override fun <T> onSuccess(body: T?) {
+        showProgressBar(false)
+        activity?.setResult(Activity.RESULT_OK)
+        activity?.finish()
+    }
+
+    override fun onFailure(errorBody: ResponseBody) {
+        showProgressBar(false)
+        if((errorBody is Response<*>)) {
+            val errorResponse = errorBody.errorBody()?.toErrorResponse()
+            if(errorResponse?.error?.code == ERROR_CODE_INVALID_OTP)
+                binding.errorMessage = context?.getString(R.string.invalid_otp)
+        }
+    }
+
+    override fun onFailure(t: Throwable) {
+        showProgressBar(false)
     }
 }

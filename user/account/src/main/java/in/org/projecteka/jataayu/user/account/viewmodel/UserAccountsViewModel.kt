@@ -3,35 +3,18 @@ package `in`.org.projecteka.jataayu.user.account.viewmodel
 import `in`.org.projecteka.jataayu.core.model.LinkedAccount
 import `in`.org.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.org.projecteka.jataayu.core.model.LinkedCareContext
+import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.org.projecteka.jataayu.network.utils.observeOn
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
-import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.org.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import timber.log.Timber
 
 class UserAccountsViewModel(private val repository: UserAccountsRepository) : ViewModel() {
     var linkedAccountsResponse = liveDataOf<LinkedAccountsResponse>()
 
-    fun getUserAccounts(progressDialogCallback: ProgressDialogCallback) {
-        repository.getUserAccounts().enqueue(object : Callback<LinkedAccountsResponse> {
-            override fun onFailure(call: Call<LinkedAccountsResponse>, t: Throwable) {
-                Timber.e(t)
-                progressDialogCallback.onFailure(t)
-            }
-
-            override fun onResponse(call: Call<LinkedAccountsResponse>, response: Response<LinkedAccountsResponse>) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        linkedAccountsResponse.value = it
-                    }
-                }
-                progressDialogCallback.onSuccess(response)
-            }
-        })
+    fun getUserAccounts(responseCallback: ResponseCallback) {
+        repository.getUserAccounts().observeOn(linkedAccountsResponse, responseCallback)
     }
 
     fun getDisplayAccounts(): List<IDataBindingModel> {

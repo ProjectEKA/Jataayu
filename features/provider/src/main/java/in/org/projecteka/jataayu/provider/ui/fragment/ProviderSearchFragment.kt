@@ -5,9 +5,9 @@ import `in`.org.projecteka.featuresprovider.databinding.ProviderSearchFragmentBi
 import `in`.org.projecteka.jataayu.core.model.Hip
 import `in`.org.projecteka.jataayu.core.model.ProviderInfo
 import `in`.org.projecteka.jataayu.core.model.Request
+import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
-import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.callback.TextWatcherCallback
 import `in`.org.projecteka.jataayu.provider.domain.ProviderNameWatcher
@@ -30,11 +30,12 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import retrofit2.Response
 
 class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCallback,
-    ProviderSearchScreenHandler, ProgressDialogCallback {
+    ProviderSearchScreenHandler, ResponseCallback {
     private lateinit var binding: ProviderSearchFragmentBinding
 
     companion object {
@@ -168,12 +169,16 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     private fun observePatients() =
         viewModel.patientDiscoveryResponse.observe(this, patientAccountsObserver)
 
-    override fun onSuccess(any: Any?) {
+    override fun <T> onSuccess(body: T?) {
         showProgressBar(false)
     }
 
-    override fun onFailure(any: Any?) {
-        showShortToast((any as Response<*>).message())
+    override fun onFailure(errorBody: ResponseBody) {
+        showShortToast((errorBody as Response<*>).message())
+        showProgressBar(false)
+    }
+
+    override fun onFailure(t: Throwable) {
         showProgressBar(false)
     }
 }

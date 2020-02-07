@@ -10,11 +10,11 @@ import `in`.org.projecteka.jataayu.core.model.Consent
 import `in`.org.projecteka.jataayu.core.model.HiType
 import `in`.org.projecteka.jataayu.core.model.Links
 import `in`.org.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
+import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.DateTimeSelectionCallback
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
-import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog
@@ -36,6 +36,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_consent_details_edit.*
+import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -45,7 +46,7 @@ import kotlinx.android.synthetic.main.fragment_consent_details_edit.cg_request_i
 
 
 class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeSelectionCallback,
-    EditConsentClickHandler, ItemClickCallback, ProgressDialogCallback {
+    EditConsentClickHandler, ItemClickCallback, ResponseCallback {
 
     private lateinit var binding: FragmentConsentDetailsEditBinding
     lateinit var listItems: List<IDataBindingModel>
@@ -242,11 +243,15 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         activity?.onBackPressed()
     }
 
-    override fun onSuccess(any: Any?) {
+    override fun <T> onSuccess(body: T?) {
         showProgressBar(false)
     }
 
-    override fun onFailure(any: Any?) {
+    override fun onFailure(errorBody: ResponseBody) {
+        showProgressBar(false)
+    }
+
+    override fun onFailure(t: Throwable) {
         showProgressBar(false)
     }
 }

@@ -1,10 +1,9 @@
-package `in`.org.projecteka.jataayu.core.viewmodel
+package `in`.org.projecteka.jataayu.consent.viewmodel
 
 import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.org.projecteka.jataayu.consent.repository.ConsentRepository
-import `in`.org.projecteka.jataayu.consent.viewmodel.ConsentViewModel
-import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
+import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.org.projecteka.jataayu.util.TestUtils
 import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -35,7 +34,7 @@ class ConsentViewModelTest {
     private lateinit var repository: ConsentRepository
 
     @Mock
-    private lateinit var progressDialogCallback: ProgressDialogCallback
+    private lateinit var responseCallback: ResponseCallback
 
     @Mock
     private lateinit var resources: Resources
@@ -63,11 +62,13 @@ class ConsentViewModelTest {
                 callback.onResponse(call, Response.success(consentsListResponse))
             }
 
-        consentViewModel.getConsents(progressDialogCallback)
+        consentViewModel.getConsents(responseCallback)
     }
 
     @Test
     fun shouldPopulateFilterItems() {
+        consentViewModel.requests = Response.success(consentsListResponse).body()?.requests!!
+
         `when`(resources.getString(R.string.status_all_requests)).thenReturn("All requests (%d)")
         `when`(resources.getString(R.string.status_active_requests)).thenReturn("Requested (%d)")
         `when`(resources.getString(R.string.status_expired_requests)).thenReturn("Expired (%d)")

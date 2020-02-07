@@ -3,7 +3,7 @@ package `in`.org.projecteka.jataayu.provider.viewmodel
 import `in`.org.projecteka.jataayu.core.model.Hip
 import `in`.org.projecteka.jataayu.core.model.ProviderInfo
 import `in`.org.projecteka.jataayu.core.model.Request
-import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
+import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.org.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.org.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.org.projecteka.jataayu.util.TestUtils
@@ -40,7 +40,7 @@ class ProviderSearchViewModelTest {
     private lateinit var providerInfoCall: Call<List<ProviderInfo>>
 
     @Mock
-    private lateinit var progressDialogCallback: ProgressDialogCallback
+    private lateinit var responseCallback: ResponseCallback
 
     @Mock
     private lateinit var patientsInfoCall: Call<PatientDiscoveryResponse>
@@ -122,7 +122,7 @@ class ProviderSearchViewModelTest {
                 val callback = invocation.arguments[0] as Callback<PatientDiscoveryResponse>
                 callback.onResponse(patientsInfoCall, Response.success(patients))
             }
-        viewModel.getPatientAccounts(request, progressDialogCallback)
+        viewModel.getPatientAccounts(request, responseCallback)
         Mockito.verify(repository).getPatientAccounts(request)
         Mockito.verify(patientsInfoCall).enqueue(ArgumentMatchers.any())
         return patients

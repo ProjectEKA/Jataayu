@@ -3,10 +3,10 @@ package `in`.org.projecteka.jataayu.provider.ui.fragment
 import `in`.org.projecteka.featuresprovider.R
 import `in`.org.projecteka.featuresprovider.databinding.PatientAccountsFragmentBinding
 import `in`.org.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
+import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
-import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.model.LinkAccountsResponse
@@ -22,10 +22,11 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccountsScreenHandler,
-    ProgressDialogCallback {
+    ResponseCallback {
     private lateinit var binding: PatientAccountsFragmentBinding
 
     companion object {
@@ -93,11 +94,15 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
         (activity as ProviderActivity).showVerifyOtpScreen()
     }
 
-    override fun onSuccess(any: Any?) {
+    override fun <T> onSuccess(body: T?) {
         showProgressBar(false)
     }
 
-    override fun onFailure(any: Any?) {
+    override fun onFailure(errorBody: ResponseBody) {
+        showProgressBar(false)
+    }
+
+    override fun onFailure(t: Throwable) {
         showProgressBar(false)
     }
 }

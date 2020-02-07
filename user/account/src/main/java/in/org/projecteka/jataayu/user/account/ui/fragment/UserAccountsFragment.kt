@@ -1,10 +1,10 @@
 package `in`.org.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.org.projecteka.jataayu.core.model.LinkedAccountsResponse
+import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
-import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.org.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
@@ -15,9 +15,10 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UserAccountsFragment : BaseFragment(), ItemClickCallback, ProgressDialogCallback {
+class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback {
     private lateinit var binding: FragmentUserAccountBinding
     private val viewModel : UserAccountsViewModel by viewModel()
     private lateinit var listItems: List<IDataBindingModel>
@@ -63,11 +64,15 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ProgressDialogCa
         showProgressBar(false)
     }
 
-    override fun onSuccess(any: Any?) {
+    override fun <T> onSuccess(body: T?) {
         showProgressBar(false)
     }
 
-    override fun onFailure(any: Any?) {
+    override fun onFailure(errorBody: ResponseBody) {
+        showProgressBar(false)
+    }
+
+    override fun onFailure(t: Throwable) {
         showProgressBar(false)
     }
 }

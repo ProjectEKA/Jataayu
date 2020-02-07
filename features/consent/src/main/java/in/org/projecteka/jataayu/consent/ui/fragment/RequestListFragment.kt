@@ -7,10 +7,10 @@ import `in`.org.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.org.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.org.projecteka.jataayu.core.model.Consent
 import `in`.org.projecteka.jataayu.core.model.RequestStatus
+import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
-import `in`.org.projecteka.jataayu.presentation.callback.ProgressDialogCallback
 import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.util.extension.startActivity
@@ -25,12 +25,13 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.consent_request_fragment.*
+import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener,
-    ProgressDialogCallback {
+    ResponseCallback {
 
     private lateinit var binding: ConsentRequestFragmentBinding
     private val INDEX_REQUESTED_CONSENTS = 1
@@ -119,11 +120,16 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
         (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(requests)
     }
 
-    override fun onSuccess(any: Any?) {
+    override fun <T> onSuccess(body: T?) {
+        showProgressBar(false)
+        (body as? ConsentsListResponse)?.requests?.let { viewModel.requests = it }
+    }
+
+    override fun onFailure(errorBody: ResponseBody) {
         showProgressBar(false)
     }
 
-    override fun onFailure(any: Any?) {
+    override fun onFailure(t: Throwable) {
         showProgressBar(false)
     }
 }
