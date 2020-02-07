@@ -25,6 +25,7 @@
     <dimen name="content_margin_large">18dp</dimen>
     <dimen name="content_margin_extra_large">20dp</dimen>
     <dimen name="content_margin_extra_extra_large">24dp</dimen>
+    <dimen name="content_margin_extra_extra_small">8dp</dimen>
 
     <dimen name="toolbar_elevation">8dp</dimen>
 
@@ -56,4 +57,6 @@
     <dimen name="recycler_view_fading_edge_length">20dp</dimen>
     <dimen name="button_elevation_normal">2dp</dimen>
     <dimen name="button_elevation_pressed">4dp</dimen>
+    <dimen name="prefix_margin">40dp</dimen>
+
 </resources>

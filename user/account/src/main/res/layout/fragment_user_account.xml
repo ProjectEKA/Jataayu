@@ -70,7 +70,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         android:layout_marginEnd="@dimen/content_margin_large"
                         android:background="@drawable/ic_user"
                         android:foreground="?android:attr/selectableItemBackground" />

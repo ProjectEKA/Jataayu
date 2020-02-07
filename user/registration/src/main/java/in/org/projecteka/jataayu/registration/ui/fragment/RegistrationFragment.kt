@@ -10,6 +10,7 @@ import `in`.org.projecteka.jataayu.registration.listener.MobileNumberChangeWatch
 import `in`.org.projecteka.jataayu.registration.model.RequestVerificationResponse
 import `in`.org.projecteka.jataayu.registration.ui.activity.RegistrationActivity
 import `in`.org.projecteka.jataayu.registration.viewmodel.RegistrationViewModel
+import `in`.org.projecteka.jataayu.registration.viewmodel.RegistrationViewModel.Companion.MOBILE_IDENTIFIER_TYPE
 import `in`.org.projecteka.jataayu.util.extension.setTitle
 import `in`.org.projecteka.jataayu.util.extension.showLongToast
 import android.os.Bundle
@@ -49,6 +50,7 @@ class RegistrationFragment : BaseFragment(), ContinueClickHandler, MobileNumberC
         binding.clickHandler = this
         binding.mobileNumberWatcher = MobileNumberChangeWatcher(this)
         binding.isValidMobileNumber = false
+        binding.countryCode = viewModel.getCountryCode()
     }
 
     override fun onVisible() {
@@ -66,7 +68,7 @@ class RegistrationFragment : BaseFragment(), ContinueClickHandler, MobileNumberC
 
     override fun onContinueClick(view: View) {
         showProgressBar(true, getString(R.string.sending_otp))
-        viewModel.requestVerification("mobile", binding.etMobileNumber.text.toString(), this)
+        viewModel.requestVerification(MOBILE_IDENTIFIER_TYPE, viewModel.getMobileNumber(binding.etMobileNumber.text.toString()), this)
         viewModel.requestVerificationResponse.observe(this, registrationObserver)
     }
 

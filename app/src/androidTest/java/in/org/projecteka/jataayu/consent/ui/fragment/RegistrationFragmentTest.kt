@@ -1,6 +1,7 @@
 package `in`.org.projecteka.jataayu.consent.ui.fragment
 
 import `in`.org.projecteka.jataayu.R
+import `in`.org.projecteka.jataayu.R.id.*
 import `in`.org.projecteka.jataayu.registration.ui.fragment.RegistrationFragment
 import `in`.org.projecteka.jataayu.ui.activity.TestsOnlyActivity
 import androidx.test.espresso.Espresso.onView
@@ -33,31 +34,39 @@ class RegistrationFragmentTest{
     fun shouldRenderUI(){
         displayed{
             allOf {
-                id(R.id.et_mobile_number)
+                id(et_mobile_number)
                 text("")
             }
 
             allOf {
-                id(R.id.btn_continue)
+                id(btn_continue)
                 text("CONTINUE")
             }
         }
     }
 
     @Test
+    fun shouldDisplayCountryCode(){
+        displayed {
+            id(tv_country_code)
+            text("+91 - ")
+        }
+    }
+
+    @Test
     fun shouldDisableButtonForEmptyMobileNumber(){
-        onView(withId(R.id.btn_continue)).check(matches(not(isEnabled())))
+        onView(withId(btn_continue)).check(matches(not(isEnabled())))
     }
 
     @Test
     fun shouldDisableButtonForInvalidMobileNumberEntered(){
-        typeText("12345"){ id(R.id.et_mobile_number) }
-        onView(withId(R.id.btn_continue)).check(matches(not(isEnabled())))
+        typeText("12345"){ id(et_mobile_number) }
+        onView(withId(btn_continue)).check(matches(not(isEnabled())))
     }
 
     @Test
     fun shouldEnableButtonForValidMobileNumber(){
         typeText("1234567890"){ id(R.id.et_mobile_number) }
-        onView(withId(R.id.btn_continue)).check(matches(isEnabled()))
+        onView(withId(btn_continue)).check(matches(isEnabled()))
     }
 }

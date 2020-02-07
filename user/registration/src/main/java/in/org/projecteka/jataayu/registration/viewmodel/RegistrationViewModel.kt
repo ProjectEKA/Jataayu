@@ -13,6 +13,13 @@ import retrofit2.Response
 import timber.log.Timber
 
 class RegistrationViewModel(val repository: AuthorizationRepository) : ViewModel() {
+
+    companion object{
+        const val INDIA_COUNTRY_CODE = "+91"
+        const val COUNTRY_CODE_SEPARATOR = " - "
+        const val MOBILE_IDENTIFIER_TYPE = "mobile"
+    }
+
     var requestVerificationResponse = liveDataOf<RequestVerificationResponse>()
 
     fun requestVerification(
@@ -57,5 +64,13 @@ class RegistrationViewModel(val repository: AuthorizationRepository) : ViewModel
                 }
             }
         })
+    }
+
+    fun getMobileNumber(mobileNumber: String): String {
+        return getCountryCode() + mobileNumber
+    }
+
+    fun getCountryCode(): String? {
+        return INDIA_COUNTRY_CODE + COUNTRY_CODE_SEPARATOR
     }
 }

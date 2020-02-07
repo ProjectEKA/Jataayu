@@ -14,6 +14,10 @@
             type="Boolean" />
 
         <variable
+            name="countryCode"
+            type="String" />
+
+        <variable
             name="clickHandler"
             type="in.org.projecteka.jataayu.registration.listener.ContinueClickHandler" />
     </data>
@@ -45,15 +49,29 @@
             app:cardElevation="@dimen/content_padding_medium"
             app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number_title">
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="@dimen/content_margin_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                android:layout_width="wrap_content"
+                tools:text="+xx - "
+                android:text="@{countryCode}"
+                    android:id="@+id/tv_country_code"
+                android:textColor="@color/black"
+                android:drawableStart="@drawable/ic_mobile"
+                android:drawablePadding="@dimen/content_margin_medium"
+                android:textSize="@dimen/text_size_small"
+                android:layout_height="wrap_content"/>
+
             <EditText
                 android:id="@+id/et_mobile_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/content_margin_medium"
                 android:background="@color/white"
                 android:cursorVisible="true"
-                android:drawableLeft="@drawable/ic_mobile"
-                android:drawablePadding="@dimen/content_padding_extra_large"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:inputType="number"
@@ -61,6 +79,9 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_small"
                 app:onValueChanged="@{mobileNumberWatcher}" />
+
+            </LinearLayout>
+
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.button.MaterialButton

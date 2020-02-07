@@ -1,6 +1,7 @@
 package `in`.org.projecteka.jataayu.consent.ui.fragment
 
 import NestedScrollAction
+import `in`.org.projecteka.jataayu.R
 import `in`.org.projecteka.jataayu.R.id.*
 import `in`.org.projecteka.jataayu.core.model.Consent
 import `in`.org.projecteka.jataayu.core.model.HiType
@@ -9,9 +10,12 @@ import `in`.org.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
 import `in`.org.projecteka.jataayu.testUtil.AssetReaderUtil
 import `in`.org.projecteka.jataayu.ui.activity.TestsOnlyActivity
 import `in`.org.projecteka.jataayu.util.extension.fromJson
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
@@ -20,6 +24,7 @@ import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.displ
 import br.com.concretesolutions.kappuccino.custom.recyclerView.RecyclerViewInteractions.recyclerView
 import com.google.gson.Gson
 import org.greenrobot.eventbus.EventBus
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -41,31 +46,41 @@ class EditConsentDetailsFragmentTest {
     @Before
     @Throws(Exception::class)
     fun setup() {
-
-        consent = Gson().fromJson(AssetReaderUtil.asset(
-            activityRule.activity.applicationContext,
-            "consent_requested.json"
-        ))
-
+        consent = Gson().fromJson(
+            AssetReaderUtil.asset(
+                activityRule.activity.applicationContext,
+                "consent_requested.json"
+            )
+        )
 
         EventBus.getDefault().postSticky(consent)
 
-        var hiTypes = ArrayList<HiType>()
+        sendLinkedAccountsAndHiTypesEvent(true)
+
+        val editConsentDetailsFragment = EditConsentDetailsFragment()
+        activityRule.activity.addFragment(editConsentDetailsFragment)
+    }
+
+    private fun sendLinkedAccountsAndHiTypesEvent(selectAllAccounts: Boolean) {
+        val hiTypes = ArrayList<HiType>()
 
         for (hiType in consent.hiTypes) {
             hiTypes.add(HiType(hiType, true))
         }
 
-        linkedAccounts = Gson().fromJson(AssetReaderUtil.asset(
-            activityRule.activity.applicationContext,
-            "links.json"
-        ))
+        linkedAccounts = Gson().fromJson(
+            AssetReaderUtil.asset(
+                activityRule.activity.applicationContext,
+                "links.json"
+            )
+        )
 
-        linkedAccounts.forEach { link -> link.careContexts.forEach { it.contextChecked = true } }
+        linkedAccounts.forEach { link ->
+            link.careContexts.forEach {
+                it.contextChecked = selectAllAccounts
+            }
+        }
         EventBus.getDefault().postSticky(HiTypeAndLinks(hiTypes, linkedAccounts))
-
-        val editConsentDetailsFragment = EditConsentDetailsFragment()
-        activityRule.activity.addFragment(editConsentDetailsFragment)
     }
 
     @Test
@@ -121,6 +136,97 @@ class EditConsentDetailsFragmentTest {
         onView(withText("Condition")).check(matches(isChecked()))
         onView(withText("DiagnosticReport")).check(matches(isChecked()))
         onView(withText("Observation")).check(matches(isChecked()))
+
+        displayed {
+            id(R.id.btn_save)
+            text("Save")
+        }
+        onView(withId(R.id.rvLinkedAccounts)).perform(nestedScrollTo())
+
+        displayed {
+            id(cb_link_all_providers)
+            text("All linked providers")
+        }
+
+        onView(withId(cb_link_all_providers)).check(matches(isChecked()))
+
+        recyclerView(R.id.rvLinkedAccounts) {
+            sizeIs(3)
+            atPosition(0) {
+                displayed {
+                    id(tv_provider_name)
+                    text("Max Health Care")
+                }
+            }
+
+            atPosition(1) {
+                displayed {
+                    allOf {
+                        id(tv_reference_number)
+                        text("131")
+                    }
+
+                    allOf {
+                        id(tv_patient_name)
+                        text("National Cancer program")
+                    }
+
+                    allOf {
+                        id(cb_care_context)
+                        custom(isChecked())
+                    }
+                }
+            }
+
+            atPosition(2) {
+                displayed {
+                    allOf {
+                        id(tv_reference_number)
+                        text("132")
+                    }
+
+                    allOf {
+                        id(tv_patient_name)
+                        text("National Cancer program")
+                    }
+
+                    allOf {
+                        id(cb_care_context)
+                        custom(isChecked())
+                    }
+                }
+
+            }
+        }
+    }
+
+    @Test
+    fun shouldEnableSaveButtonIfAllTheAccountsSelected() {
+        onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
+        onView(withId(btn_save)).check(matches(isEnabled()))
+    }
+
+    @Test
+    fun shouldDisableSaveButtonIfNoAccountsSelected() {
+        onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
+        onView(withId(cb_link_all_providers)).perform(click())
+        onView(withId(btn_save)).check(matches(not(isEnabled())))
+    }
+
+    @Test
+    fun shouldUncheckAllProvidersCheckboxIfAtLeastOneAccountDeselected(){
+        onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
+        onView(withId(rvLinkedAccounts)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+        onView(withId(cb_link_all_providers)).check(matches(not(isChecked())))
+    }
+
+    @Test
+    fun shouldCheckAllProvidersCheckboxIfAllAccountsSelected(){
+        sendLinkedAccountsAndHiTypesEvent(false)
+        onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
+        onView(withId(rvLinkedAccounts)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+        onView(withId(rvLinkedAccounts)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, click()))
+        onView(withId(cb_link_all_providers)).check(matches(isChecked()))
     }
 
     @Test
@@ -161,7 +267,6 @@ class EditConsentDetailsFragmentTest {
 
                     }
                 }
-
             }
         }
 
