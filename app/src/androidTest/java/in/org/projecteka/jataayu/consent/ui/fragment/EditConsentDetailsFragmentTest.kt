@@ -111,21 +111,21 @@ class EditConsentDetailsFragmentTest {
             text("08 Jan, 2020")
         }
 
-        onView(withId(tv_expiry_date)).perform(nestedScrollTo())
+        onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
 
         displayed {
             id(tv_expiry_date)
             text("30 Jan, 2020")
         }
 
-        onView(withId(tv_expiry_time)).perform(nestedScrollTo())
+        onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
 
         displayed {
             id(tv_expiry_time)
             text("05:25 PM")
         }
 
-        onView(withId(cg_request_info_types)).perform(nestedScrollTo())
+        onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
 
         displayed {
             id(cg_request_info_types)
@@ -141,7 +141,7 @@ class EditConsentDetailsFragmentTest {
             id(R.id.btn_save)
             text("Save")
         }
-        onView(withId(R.id.rvLinkedAccounts)).perform(nestedScrollTo())
+        onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
 
         displayed {
             id(cb_link_all_providers)
@@ -158,6 +158,7 @@ class EditConsentDetailsFragmentTest {
                     text("Max Health Care")
                 }
             }
+
 
             atPosition(1) {
                 displayed {
@@ -178,11 +179,13 @@ class EditConsentDetailsFragmentTest {
                 }
             }
 
+//            onView(withId(rvLinkedAccounts)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, scrollTo()))
+
             atPosition(2) {
                 displayed {
                     allOf {
                         id(tv_reference_number)
-                        text("132")
+                        text("131")
                     }
 
                     allOf {
