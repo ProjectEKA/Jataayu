@@ -99,7 +99,7 @@ class ProviderSearchViewModelTest {
     fun shouldReturnTrueIfAtLeastOneCareContextIsSelected() {
         setUpPatients()
         viewModel.patientDiscoveryResponse.value?.patient?.careContexts!![1].contextChecked = true
-        Assert.assertTrue(viewModel.canLinkAccounts())
+        Assert.assertTrue(viewModel.canLinkAccounts(viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!))
     }
 
     @Test
@@ -107,7 +107,7 @@ class ProviderSearchViewModelTest {
         setUpPatients()
         viewModel.patientDiscoveryResponse.value?.patient?.careContexts!![0].contextChecked = false
         viewModel.patientDiscoveryResponse.value?.patient?.careContexts!![1].contextChecked = false
-        Assert.assertFalse(viewModel.canLinkAccounts())
+        Assert.assertFalse(viewModel.canLinkAccounts(viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!))
     }
 
     private fun setUpPatients(): PatientDiscoveryResponse {

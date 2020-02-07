@@ -1,5 +1,6 @@
 package `in`.org.projecteka.jataayu.provider.viewmodel
 
+import `in`.org.projecteka.jataayu.core.model.CareContext
 import `in`.org.projecteka.jataayu.core.model.ProviderInfo
 import `in`.org.projecteka.jataayu.core.model.Request
 import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
@@ -41,8 +42,8 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
         providerRepository.verifyOtp(referenceNumber, token).observeOn(successfulLinkingResponse, responseCallback)
     }
 
-    fun canLinkAccounts(): Boolean {
-        for (careContext in patientDiscoveryResponse.value?.patient?.careContexts!!) {
+    fun canLinkAccounts(careContexts: List<CareContext>): Boolean {
+        for (careContext in careContexts) {
             if (careContext.contextChecked) return true
         }
         return false
@@ -50,6 +51,10 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
 
     fun clearList() {
         providersList = emptyList()
+    }
+
+    fun makeAccountsSelected() {
+        patientDiscoveryResponse.value?.patient?.careContexts!!.forEach { careContext -> careContext.contextChecked = true }
     }
 }
 

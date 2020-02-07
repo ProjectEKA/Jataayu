@@ -117,9 +117,9 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.button.MaterialButton
-                android:enabled="@{canLinkAccounts}"
-                android:clickable="@{canLinkAccounts}"
+                android:enabled="@{canLinkAccounts, default=true}"
                 style="@style/Button"
+                android:focusable="@{canLinkAccounts}"
                 android:onClick="@{clickHandler::onLinkAccountsClick}"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"

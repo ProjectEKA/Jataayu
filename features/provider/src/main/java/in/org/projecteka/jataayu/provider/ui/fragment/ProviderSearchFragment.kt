@@ -18,7 +18,6 @@ import `in`.org.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandl
 import `in`.org.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.org.projecteka.jataayu.util.extension.mask
 import `in`.org.projecteka.jataayu.util.extension.setTitle
-import `in`.org.projecteka.jataayu.util.extension.showShortToast
 import `in`.org.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
@@ -32,7 +31,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import retrofit2.Response
 
 class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCallback,
     ProviderSearchScreenHandler, ResponseCallback {
@@ -174,7 +172,6 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     override fun onFailure(errorBody: ResponseBody) {
-        showShortToast((errorBody as Response<*>).message())
         showProgressBar(false)
     }
 

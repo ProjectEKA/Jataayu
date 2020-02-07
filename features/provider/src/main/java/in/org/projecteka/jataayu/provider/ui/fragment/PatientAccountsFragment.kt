@@ -3,6 +3,7 @@ package `in`.org.projecteka.jataayu.provider.ui.fragment
 import `in`.org.projecteka.featuresprovider.R
 import `in`.org.projecteka.featuresprovider.databinding.PatientAccountsFragmentBinding
 import `in`.org.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
+import `in`.org.projecteka.jataayu.core.model.CareContext
 import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
@@ -36,6 +37,8 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
 
     private val viewModel : ProviderSearchViewModel by sharedViewModel()
 
+    private lateinit var genericRecyclerViewAdapter: GenericRecyclerViewAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,24 +58,30 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
         val patient = viewModel.patientDiscoveryResponse.value?.patient
         binding.name = patient?.display
         binding.accountReferenceNumber = patient?.referenceNumber
-        binding.canLinkAccounts = viewModel.canLinkAccounts()
+        binding.canLinkAccounts = viewModel.canLinkAccounts(patient?.careContexts!!)
         binding.clickHandler = this
     }
 
     private fun renderPatientAccounts() {
+
+        viewModel.makeAccountsSelected()
+
+        genericRecyclerViewAdapter = GenericRecyclerViewAdapter(
+            this@PatientAccountsFragment,
+            viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!)
+
         binding.rvSearchResults.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = GenericRecyclerViewAdapter(
-                this@PatientAccountsFragment,
-                viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!
-            )
+            adapter = genericRecyclerViewAdapter
             addItemDecoration(DividerItemDecorator(getDrawable(context!!, R.color.transparent)!!))
         }
     }
 
     override fun onItemClick(iDataBindingModel: IDataBindingModel, itemViewBinding: ViewDataBinding) {
-        (itemViewBinding as PatientAccountResultItemBinding).cbCareContext.toggle()
-        binding.canLinkAccounts = viewModel.canLinkAccounts()
+        val checkbox = (itemViewBinding as PatientAccountResultItemBinding).cbCareContext
+        checkbox.toggle()
+        (iDataBindingModel as CareContext).contextChecked = checkbox.isChecked
+        binding.canLinkAccounts = viewModel.canLinkAccounts(genericRecyclerViewAdapter.listOfBindingModels as List<CareContext>)
     }
 
     override fun onVisible() {
