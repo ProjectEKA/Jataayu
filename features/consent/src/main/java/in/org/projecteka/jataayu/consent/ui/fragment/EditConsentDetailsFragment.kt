@@ -35,6 +35,11 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_consent_details_edit.*
 import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
@@ -105,21 +110,13 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
     }
 
     private fun checkProviderSelection() {
-        Thread {
-            kotlin.run {
-                var selectionCount = 0
-                var selectableItemsCount = 0
-                genericRecyclerViewAdapter.listOfBindingModels?.forEach {
-                    if (it is CareContext) {
-                        selectableItemsCount++
-                        if (it.contextChecked) selectionCount++
-                    }
-                }
-
-                binding.allProvidersChecked = selectableItemsCount == selectionCount
-                binding.saveEnabled = selectionCount > 0
-            }
-        }.start()
+        Single.fromCallable { viewModel.checkSelectionInBackground(genericRecyclerViewAdapter.listOfBindingModels) }
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { pair ->
+                binding.allProvidersChecked = pair.first
+                binding.saveEnabled = pair.second
+            }.addTo(CompositeDisposable())
     }
 
     private fun renderLinkedAccounts(linkedAccounts: List<Links?>) {

@@ -90,5 +90,19 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         link: Links,
         it: CareContext
     ) = CareReference(link.referenceNumber!!, it.referenceNumber)
+
+    fun checkSelectionInBackground(listOfBindingModels: List<IDataBindingModel>?) : Pair<Boolean, Boolean> {
+        var selectionCount = 0
+        var selectableItemsCount = 0
+
+        listOfBindingModels?.forEach {
+            if (it is CareContext) {
+                selectableItemsCount++
+                if (it.contextChecked) selectionCount++
+            }
+        }
+
+        return Pair(selectableItemsCount == selectionCount, selectionCount > 0)
+    }
 }
 

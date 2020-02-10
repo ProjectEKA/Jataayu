@@ -18,6 +18,8 @@ dependencies {
     api Deps.AndroidX.espressoCore
     api Deps.AndroidX.espressoIntents
     api Deps.AndroidX.espressoContrib
+    api Deps.Rx.Kotlin
+    api Deps.Rx.Android
     api Deps.MockWebServer.main
     api Deps.Testing.Helpers.apacheCommonsIo
 

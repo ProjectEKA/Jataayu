@@ -40,6 +40,8 @@ object LibVersions {
     const val eventBus = "3.1.1"
     const val kappuccino = "1.2.1"
     const val preferences = "1.1.0"
+    const val rxKotlin = "2.4.0"
+    const val rxAndroid = "2.1.1"
 }
 
 object Modules {
@@ -114,6 +116,11 @@ object Deps {
 
     object GreenRobot {
         const val eventBus = "org.greenrobot:eventbus:${LibVersions.eventBus}"
+    }
+
+    object Rx {
+        const val Kotlin = "io.reactivex.rxjava2:rxkotlin:${LibVersions.rxKotlin}"
+        const val Android = "io.reactivex.rxjava2:rxandroid:${LibVersions.rxAndroid}"
     }
 
     object Tools {
