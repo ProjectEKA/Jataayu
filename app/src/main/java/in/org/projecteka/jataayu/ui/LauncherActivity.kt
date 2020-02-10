@@ -183,8 +183,12 @@ class LauncherActivity : BaseActivity() {
         }
     }
 
+    override fun showProgressBar(shouldShow: Boolean) {
+        showProgressBar(shouldShow, "")
+    }
+
     override fun showProgressBar(shouldShow: Boolean, message: String) {
-        binding.progressBarVisibility
+        binding.progressBarVisibility = shouldShow
         binding.progressBarMessage = message
     }
 

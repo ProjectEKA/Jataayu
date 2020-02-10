@@ -30,7 +30,7 @@
     <color name="deny_button_text_color" tools:override="true">@color/red</color>
 
     <color name="red">#C81800</color>
-    <color name="progressbar_dimmed_bg">#CC333333</color>
+    <color name="progressbar_dimmed_bg">#CC000000</color>
     <color name="negative_button_ripple_color">@color/gray</color>
 
     <color name="error_message_color">#D90000</color>
