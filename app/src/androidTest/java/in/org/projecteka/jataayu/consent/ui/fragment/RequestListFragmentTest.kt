@@ -14,17 +14,16 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSpinnerText
 import androidx.test.filters.LargeTest
 import androidx.test.runner.AndroidJUnit4
-import br.com.concretesolutions.kappuccino.actions.ClickActions.click
 import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.displayed
 import br.com.concretesolutions.kappuccino.custom.recyclerView.RecyclerViewInteractions.recyclerView
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.*
-import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import br.com.concretesolutions.kappuccino.actions.ClickActions.click as KClick
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -71,31 +70,39 @@ public class RequestListFragmentTest {
         }
     }
 
+        @Test
+        fun shouldRenderConsentRequestItem() {
+            Thread.sleep(8000)
+            verifyRequestsRendered(12)
+        }
+
     @Test
-    fun shouldRenderConsentRequestItem() {
+    fun shouldRenderRequestedConsents() {
         Thread.sleep(8000)
-        verifyAllRequestsRendered(12)
+        KClick { id(sp_request_filter) }
+        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Requested (12)"))).perform(click())
+        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Requested (12)"))))
+        verifyRequestsRendered(12)
     }
 
     @Test
     fun shouldRenderAllRequests() {
         Thread.sleep(8000)
-        click { id(sp_request_filter) }
+        KClick { id(sp_request_filter) }
         onData(allOf(`is`(instanceOf(String::class.java)), `is`("All requests (14)"))).perform(click())
         onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("All requests (14)"))))
-        verifyAllRequestsRendered(14)
+        verifyRequestsRendered(14)
     }
-
     @Test
     fun shouldRenderExpiredRequests() {
-        Thread.sleep(8000)
-        click { id(sp_request_filter) }
+        Thread.sleep(10000)
+        KClick { id(sp_request_filter) }
         onData(allOf(`is`(instanceOf(String::class.java)), `is`("Expired (2)"))).perform(click())
         onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Expired (2)"))))
         verifyExpiredRequestsRendered()
     }
 
-    private fun verifyAllRequestsRendered(expectedCount: Int) {
+    private fun verifyRequestsRendered(expectedCount: Int) {
         recyclerView(R.id.rvConsents) {
             sizeIs(expectedCount)
             atPosition(0) {

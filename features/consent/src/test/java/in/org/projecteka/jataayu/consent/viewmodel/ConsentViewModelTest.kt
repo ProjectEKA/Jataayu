@@ -80,8 +80,8 @@ class ConsentViewModelTest {
     private fun dummyList(): ArrayList<String> {
         val list = ArrayList<String>(3)
         list.add("All requests (14)")
-        list.add("Requested (12)")
-        list.add("Expired (2)")
+        list.add("Requested (14)")
+        list.add("Expired (0)")
         return list
     }
 

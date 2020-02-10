@@ -115,7 +115,7 @@ class EditConsentDetailsFragmentTest {
 
         displayed {
             id(tv_expiry_date)
-            text("30 Jan, 2020")
+            text("30 Jan, 3020")
         }
 
         onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
