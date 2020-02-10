@@ -48,5 +48,13 @@ class DateTimeUtils {
             outputFormat.timeZone = TimeZone.getTimeZone("UTC")
             return outputFormat.format(date)
         }
+
+        fun isDateExpired(date: String): Boolean {
+            val calendarExpiry = Calendar.getInstance()
+            val calendarToday = Calendar.getInstance()
+            calendarExpiry.timeZone = TimeZone.getTimeZone("UTC")
+            calendarExpiry.time = getDate(date)
+            return (calendarExpiry.time).before(calendarToday.time)
+        }
     }
 }

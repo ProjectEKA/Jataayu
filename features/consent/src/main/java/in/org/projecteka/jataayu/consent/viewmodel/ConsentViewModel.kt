@@ -13,6 +13,7 @@ import `in`.org.projecteka.jataayu.network.utils.observeOn
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.util.extension.EMPTY
 import `in`.org.projecteka.jataayu.util.extension.liveDataOf
+import `in`.org.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 
@@ -73,8 +74,14 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
 
     private fun getFormattedItem(filterItem: String, requestStatus: RequestStatus): String {
         var count = 0
-        requests.forEach { if (requestStatus == it.status) count++ }
-        return String.format(filterItem, count)
+        requests.forEach {
+            val dataExpired = DateTimeUtils.isDateExpired(it.permission.dataExpiryAt)
+            when (requestStatus) {
+                RequestStatus.REQUESTED -> { if (!dataExpired) count++ }
+                RequestStatus.EXPIRED -> { if (dataExpired) count++ }
+            }
+        }
+            return String.format(filterItem, count)
     }
 
     fun getItems(links: List<Links?>): List<IDataBindingModel> {

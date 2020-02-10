@@ -6,7 +6,6 @@ import `in`.org.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.org.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.org.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.org.projecteka.jataayu.core.model.Consent
-import `in`.org.projecteka.jataayu.core.model.RequestStatus
 import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
@@ -14,6 +13,7 @@ import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.util.extension.startActivity
+import `in`.org.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -110,8 +110,12 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            INDEX_REQUESTED_CONSENTS -> filterRequests(viewModel.requests.filter { it.status == RequestStatus.REQUESTED })
-            INDEX_EXPIRED_CONSENT_REQUESTS -> filterRequests(viewModel.requests.filter { it.status == RequestStatus.EXPIRED })
+            INDEX_REQUESTED_CONSENTS -> filterRequests(viewModel.requests.filter {
+                !DateTimeUtils.isDateExpired(it.permission.dataExpiryAt)
+            })
+            INDEX_EXPIRED_CONSENT_REQUESTS -> filterRequests(viewModel.requests.filter {
+                DateTimeUtils.isDateExpired(it.permission.dataExpiryAt)
+            })
             else -> filterRequests(viewModel.requests)
         }
     }

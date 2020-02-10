@@ -49,8 +49,8 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBindings()
         renderPatientAccounts()
+        initBindings()
     }
 
     private fun initBindings() {
@@ -58,8 +58,8 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
         val patient = viewModel.patientDiscoveryResponse.value?.patient
         binding.name = patient?.display
         binding.accountReferenceNumber = patient?.referenceNumber
-        binding.canLinkAccounts = viewModel.canLinkAccounts(patient?.careContexts!!)
         binding.clickHandler = this
+        binding.canLinkAccounts = viewModel.canLinkAccounts(patient?.careContexts!!)
     }
 
     private fun renderPatientAccounts() {

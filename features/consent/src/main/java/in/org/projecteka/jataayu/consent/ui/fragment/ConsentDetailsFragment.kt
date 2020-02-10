@@ -13,6 +13,7 @@ import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.org.projecteka.jataayu.util.extension.setTitle
+import `in`.org.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -106,7 +107,8 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
 
     private fun renderUi() {
         binding.consent = consent
-        binding.requestExpired = consent.status == RequestStatus.REQUESTED
+
+        binding.requestExpired = DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt)
 
         eventBusInstance.postSticky(consent)
 
