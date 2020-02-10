@@ -4,53 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="linkedAccount"
             type="in.org.projecteka.jataayu.core.model.LinkedAccount" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/parent_layout"
+    <in.org.projecteka.jataayu.presentation.ui.view.ExpandableLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/content_margin_small"
-        android:orientation="vertical"
-        android:padding="@dimen/content_margin_small"
-        android:background="@color/grey_light">
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_hip_name"
-            style="@style/ConsentRequestHiuDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@{linkedAccount.providerName}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Max Health Care" />
-
-        <TextView
-            android:id="@+id/tv_patient_reference_number"
-            style="@style/ConsentRequestHiuDetails"
-            android:textSize="@dimen/text_size_large"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@{linkedAccount.patientReferenceId}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_hip_name"
-            tools:text="MCB7142" />
-
-        <TextView
-            android:id="@+id/tv_patient_display"
-            style="@style/TextAppearance.ListItemSubHeader"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textStyle="italic"
-            android:text="@{linkedAccount.patientName}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_patient_reference_number"
-            tools:text="R Iyer" />
+            android:layout_marginTop="@dimen/content_margin_small"
+            android:background="@drawable/expandable_item_selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="@dimen/content_margin_small"
+            android:tag="@string/header">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_hip_name"
+                style="@style/ConsentRequestHiuDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@{linkedAccount.providerName}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Max Health Care" />
+
+            <TextView
+                android:id="@+id/tv_patient_reference_number"
+                style="@style/ConsentRequestHiuDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@{linkedAccount.patientReferenceId}"
+                android:textSize="@dimen/text_size_large"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_hip_name"
+                tools:text="MCB7142" />
+
+            <in.org.projecteka.jataayu.presentation.ui.view.StateImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/expandable_arrow"
+                app:expanded="false"
+                app:layout_constraintBottom_toTopOf="@id/tv_patient_display"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.99"
+                app:layout_constraintStart_toEndOf="@id/tv_patient_reference_number"
+                app:layout_constraintTop_toBottomOf="@id/tv_hip_name" />
+
+            <TextView
+                android:id="@+id/tv_patient_display"
+                style="@style/TextAppearance.ListItemSubHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{linkedAccount.patientName}"
+                android:textStyle="italic"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_patient_reference_number"
+                tools:text="R Iyer" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/childItemsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:tag="@string/body"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_patient_display"
+            tools:itemCount="3"
+            tools:listitem="@layout/linked_account_result_item" />
+    </in.org.projecteka.jataayu.presentation.ui.view.ExpandableLinearLayout>
+
 </layout>

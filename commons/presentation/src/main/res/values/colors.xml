@@ -24,6 +24,7 @@
     <color name="light_grey_background">#FAFAFA</color>
     <color name="grey_background">#EDEDED</color>
     <color name="grey_light">#F6F6F6</color>
+    <color name="grey_light_landing">#F0F0F0</color>
     <color name="rounded_grey_background" tools:override="true">#C4C4C4</color>
     <color name="disabled_button_bg" tools:ignore="MissingDefaultResource">#C4C4C4</color>
     <color name="secondary_button_text_color" tools:override="true">@color/colorPrimary</color>

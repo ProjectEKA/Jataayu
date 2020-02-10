@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">presentation</string>
+    <string name="header">header</string>
+    <string name="body">body</string>
 </resources>

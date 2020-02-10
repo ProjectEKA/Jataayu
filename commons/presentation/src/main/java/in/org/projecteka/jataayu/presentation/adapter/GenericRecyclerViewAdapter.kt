@@ -56,10 +56,10 @@ open class GenericRecyclerViewAdapter : RecyclerView.Adapter<GenericRecyclerView
         private val binding: ViewDataBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(iModel: IDataBindingModel) {
-            binding.setVariable(iModel.dataBindingVariable(), iModel)
+        open fun bind(iDataBindingModel: IDataBindingModel) {
+            binding.setVariable(iDataBindingModel.dataBindingVariable(), iDataBindingModel)
             binding.executePendingBindings()
-            setItemClickListener(iModel)
+            setItemClickListener(iDataBindingModel)
         }
 
         open fun setItemClickListener(iDataBindingModel: IDataBindingModel) {

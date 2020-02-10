@@ -2,8 +2,9 @@ package `in`.org.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.org.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.org.projecteka.jataayu.network.utils.ResponseCallback
-import `in`.org.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
+import `in`.org.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapter
 import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
+import `in`.org.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.org.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
@@ -55,7 +56,9 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
         listItems = viewModel.getDisplayAccounts()
         binding.rvUserAccounts.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = GenericRecyclerViewAdapter(this@UserAccountsFragment, listItems)
+            adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment,
+                listItems as List<IGroupDataBindingModel>
+            )
         }
 
     }
