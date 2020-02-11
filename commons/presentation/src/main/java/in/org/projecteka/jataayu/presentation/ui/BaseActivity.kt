@@ -15,7 +15,6 @@ import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Com
 import `in`.org.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.setNetworkPref
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.widget.RadioButton
@@ -23,6 +22,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.base_activity.*
 
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var binding: BaseActivityBinding
@@ -31,6 +31,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.base_activity)
+        setSupportActionBar(toolbar)
         supportFragmentManager.apply {
             addOnBackStackChangedListener {
                 if (fragments.isNotEmpty()) fragments.last {
@@ -105,8 +106,6 @@ abstract class BaseActivity : AppCompatActivity() {
     open fun addFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().add(R.id.container, fragment).addToBackStack(fragment.javaClass.name)
             .commit()
-
-        Log.d("TAG", "Backstack ${supportFragmentManager.backStackEntryCount}")
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

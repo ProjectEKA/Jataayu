@@ -2,6 +2,7 @@ package `in`.org.projecteka.jataayu.consent.ui.fragment
 
 import `in`.org.projecteka.jataayu.consent.R
 import `in`.org.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
+import `in`.org.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.org.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.org.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.org.projecteka.jataayu.consent.viewmodel.ConsentViewModel
@@ -12,8 +13,8 @@ import `in`.org.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.org.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.org.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.org.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.org.projecteka.jataayu.util.extension.startActivity
 import `in`.org.projecteka.jataayu.util.ui.DateTimeUtils
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,10 +37,18 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
     private lateinit var binding: ConsentRequestFragmentBinding
     private val INDEX_REQUESTED_CONSENTS = 1
     private val INDEX_EXPIRED_CONSENT_REQUESTS = 2
+    private var flow: ConsentFlow? = ConsentFlow.REQUESTED_CONSENTS
     private val viewModel: ConsentViewModel by sharedViewModel()
 
     companion object {
-        fun newInstance() = RequestListFragment()
+        const val CONSENT_FLOW = "consent_flow"
+        fun newInstance(type: Int): RequestListFragment {
+            val fragment = RequestListFragment()
+            val bundle = Bundle()
+            bundle.putInt(CONSENT_FLOW, type)
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
     private val consentObserver = Observer<ConsentsListResponse?> {
@@ -51,6 +60,10 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
         savedInstanceState: Bundle?
     ): View {
         binding = ConsentRequestFragmentBinding.inflate(inflater)
+        this.arguments?.let {
+            val consentFlowValue = it.getInt(CONSENT_FLOW, ConsentFlow.REQUESTED_CONSENTS.ordinal)
+            flow = ConsentFlow.values()[consentFlowValue]
+        }
         initBindings()
         return binding.root
     }
@@ -68,6 +81,12 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
 
     private fun initBindings() {
         binding.requestCount = getString(R.string.all_requests, 0)
+        if (flow == ConsentFlow.GRANTED_CONSENTS){
+            binding.noNewConsentsMessage = getString(R.string.no_granted_consents)
+        } else{
+            binding.noNewConsentsMessage = getString(R.string.no_new_consent_requests)
+        }
+
         binding.listener = this
         binding.hideRequestsList = true
         showProgressBar(false)
@@ -100,7 +119,9 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
         iDataBindingModel: IDataBindingModel,
         itemViewBinding: ViewDataBinding
     ) {
-        startActivity(ConsentDetailsActivity::class.java)
+        val intent = Intent(context, ConsentDetailsActivity::class.java)
+        intent.putExtra(CONSENT_FLOW, flow?.ordinal)
+        startActivity(intent)
         EventBus.getDefault().postSticky(iDataBindingModel as Consent)
     }
 

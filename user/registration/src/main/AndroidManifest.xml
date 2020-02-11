@@ -5,8 +5,7 @@
     <application>
         <activity
             android:label="Registration"
-            android:name=".ui.activity.RegistrationActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".ui.activity.RegistrationActivity">
         </activity>
     </application>
 
