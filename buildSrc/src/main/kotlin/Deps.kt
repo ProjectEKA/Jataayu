@@ -4,7 +4,7 @@ package dependancies
 import org.gradle.api.JavaVersion
 
 object Config {
-    const val applicationId = "in.org.projecteka.jataayu"
+    const val applicationId = "in.projecteka.jataayu"
     const val compileSdkVersion = 29
     const val minSdkVersion = 23
     const val buildToolsVersion = "29.0.2"

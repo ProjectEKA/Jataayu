@@ -7,7 +7,7 @@
 
         <variable
             name="mobileNumberWatcher"
-            type="in.org.projecteka.jataayu.registration.listener.MobileNumberChangeWatcher" />
+            type="in.projecteka.jataayu.registration.listener.MobileNumberChangeWatcher" />
 
         <variable
             name="isValidMobileNumber"
@@ -19,7 +19,7 @@
 
         <variable
             name="clickHandler"
-            type="in.org.projecteka.jataayu.registration.listener.ContinueClickHandler" />
+            type="in.projecteka.jataayu.registration.listener.ContinueClickHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

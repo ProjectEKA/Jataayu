@@ -23,7 +23,7 @@
         
         <variable
             name="clickHandler"
-            type="in.org.projecteka.jataayu.provider.ui.handler.PatientAccountsScreenHandler" />
+            type="in.projecteka.jataayu.provider.ui.handler.PatientAccountsScreenHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

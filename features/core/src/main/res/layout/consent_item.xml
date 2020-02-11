@@ -8,7 +8,7 @@
 
         <variable
             name="consent"
-            type="in.org.projecteka.jataayu.core.model.Consent" />
+            type="in.projecteka.jataayu.core.model.Consent" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

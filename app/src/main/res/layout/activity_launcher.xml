@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                tools:context="in.org.projecteka.jataayu.ui.LauncherActivity">
+                tools:context="in.projecteka.jataayu.ui.LauncherActivity">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab"

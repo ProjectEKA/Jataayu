@@ -7,7 +7,7 @@
 
     <application tools:ignore="AllowBackup">
         <activity
-            android:name="in.org.projecteka.jataayu.ui.activity.TestsOnlyActivity"
+            android:name="in.projecteka.jataayu.ui.activity.TestsOnlyActivity"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

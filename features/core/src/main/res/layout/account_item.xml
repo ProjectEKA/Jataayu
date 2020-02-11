@@ -7,10 +7,10 @@
 
         <variable
             name="linkedAccount"
-            type="in.org.projecteka.jataayu.core.model.LinkedAccount" />
+            type="in.projecteka.jataayu.core.model.LinkedAccount" />
     </data>
 
-    <in.org.projecteka.jataayu.presentation.ui.view.ExpandableLinearLayout
+    <in.projecteka.jataayu.presentation.ui.view.ExpandableLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
@@ -49,7 +49,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_hip_name"
                 tools:text="MCB7142" />
 
-            <in.org.projecteka.jataayu.presentation.ui.view.StateImageView
+            <in.projecteka.jataayu.presentation.ui.view.StateImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/expandable_arrow"
@@ -85,6 +85,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_patient_display"
             tools:itemCount="3"
             tools:listitem="@layout/linked_account_result_item" />
-    </in.org.projecteka.jataayu.presentation.ui.view.ExpandableLinearLayout>
+    </in.projecteka.jataayu.presentation.ui.view.ExpandableLinearLayout>
 
 </layout>

@@ -6,7 +6,7 @@
     <data >
         <variable
             name="linkedPatient"
-            type="in.org.projecteka.jataayu.core.model.LinkedPatient" />
+            type="in.projecteka.jataayu.core.model.LinkedPatient" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main_content"

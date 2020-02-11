@@ -42,7 +42,7 @@ subprojects {
                     minSdkVersion Config.minSdkVersion
                     targetSdkVersion Config.compileSdkVersion
 
-                    testInstrumentationRunner "in.org.projecteka.jataayu.testUtil.JataayuJUnitRunner"
+                    testInstrumentationRunner "in.projecteka.jataayu.testUtil.JataayuJUnitRunner"
                 }
 
                 compileOptions {

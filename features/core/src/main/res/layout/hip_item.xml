@@ -7,7 +7,7 @@
 
         <variable
             name="hip"
-            type="in.org.projecteka.jataayu.core.model.Hip" />
+            type="in.projecteka.jataayu.core.model.Hip" />
     </data>
 
 

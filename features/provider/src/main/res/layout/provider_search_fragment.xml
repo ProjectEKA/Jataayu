@@ -7,7 +7,7 @@
 
         <variable
             name="providerInfo"
-            type="in.org.projecteka.jataayu.core.model.ProviderInfo" />
+            type="in.projecteka.jataayu.core.model.ProviderInfo" />
 
         <variable
             name="clearButtonVisibility"
@@ -27,11 +27,11 @@
 
         <variable
             name="clickHandler"
-            type="in.org.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandler" />
+            type="in.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandler" />
 
         <variable
             name="textWatcher"
-            type="in.org.projecteka.jataayu.provider.domain.ProviderNameWatcher" />
+            type="in.projecteka.jataayu.provider.domain.ProviderNameWatcher" />
 
     </data>
 
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context="in.org.projecteka.jataayu.provider.ui.ProviderActivity">
+        tools:context="in.projecteka.jataayu.provider.ui.ProviderActivity">
 
         <TextView
             android:id="@+id/tv_search_provider_label"

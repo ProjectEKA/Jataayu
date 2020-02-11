@@ -19,7 +19,7 @@
 
         <variable
             name="clickHandler"
-            type="in.org.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler" />
+            type="in.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler" />
 
         <variable
             name="isOtpEntered"
@@ -27,7 +27,7 @@
 
         <variable
             name="otpChangeWatcher"
-            type="in.org.projecteka.jataayu.core.handler.OtpChangeWatcher" />
+            type="in.projecteka.jataayu.core.handler.OtpChangeWatcher" />
 
         <variable
             name="errorMessage"
@@ -99,7 +99,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number"
             tools:text="Enter 6 digit OTP" />
 
-        <in.org.projecteka.jataayu.presentation.ui.view.OtpEditText
+        <in.projecteka.jataayu.presentation.ui.view.OtpEditText
             android:id="@+id/et_otp"
             style="@style/TextAppearance.ListItemSubHeader"
             android:layout_width="300dp"

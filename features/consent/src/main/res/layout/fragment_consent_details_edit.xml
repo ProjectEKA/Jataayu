@@ -16,15 +16,15 @@
 
         <variable
             name="consent"
-            type="in.org.projecteka.jataayu.core.model.Consent" />
+            type="in.projecteka.jataayu.core.model.Consent" />
 
         <variable
             name="pickerClickHandler"
-            type="in.org.projecteka.jataayu.consent.ui.handler.PickerClickHandler" />
+            type="in.projecteka.jataayu.consent.ui.handler.PickerClickHandler" />
 
         <variable
             name="clickHandler"
-            type="in.org.projecteka.jataayu.provider.ui.handler.EditConsentClickHandler" />
+            type="in.projecteka.jataayu.provider.ui.handler.EditConsentClickHandler" />
     </data>
 
 

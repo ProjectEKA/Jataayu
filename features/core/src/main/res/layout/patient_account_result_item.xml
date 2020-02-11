@@ -7,7 +7,7 @@
 
         <variable
             name="careContext"
-            type="in.org.projecteka.jataayu.core.model.CareContext"/>
+            type="in.projecteka.jataayu.core.model.CareContext"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
