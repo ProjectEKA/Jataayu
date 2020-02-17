@@ -10,7 +10,7 @@
     <string name="edit_request">Edit request</string>
     <string name="confirm_request">Confirm request</string>
     <string name="edit">Edit</string>
-    <string name="requests_informatio_type">Requests information type</string>
+    <string name="requests_information_type">Requests information type</string>
     <string name="deny">deny</string>
     <string name="grant_request">Grant consent</string>
     <string name="consent_expiry">Consent expiry</string>
@@ -18,9 +18,15 @@
     <string name="no_granted_consents">No granted consents</string>
     <string name="loading_requests">We are loading your consent requests\n\nThis may take up a few seconds...</string>
     <string name="loading_linked_accounts">We are loading your accounts\n\nThis may take up a few seconds...</string>
-    <string name="status_all_requests">All requests (%d)</string>
-    <string name="status_active_requests">Requested (%d)</string>
-    <string name="status_expired_requests">Expired (%d)</string>
+
+    <string name="status_active_requested_consents">Active requested consents (%d)</string>
+    <string name="status_expired_requested_consents">Expired requested consents (%d)</string>
+    <string name="status_all_requested_consents">All requested consents (%d)</string>
+
+    <string name="status_active_granted_consents">Active granted consents (%d)</string>
+    <string name="status_expired_granted_consents">Expired granted consents (%d)</string>
+    <string name="status_all_granted_consents">All Granted Consents (%d)</string>
+
     <string name="to">to</string>
     <string name="from">From</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -28,5 +34,5 @@
     <string name="accounts_to_provide_information">Accounts to provide information</string>
     <string name="all_linked_providers">All linked providers</string>
     <string name="confirm">confirm</string>
-    <string name="grant_cosent_disclaimer">By granting this consent, you also agree to let %s view your linked accounts.</string>
+    <string name="grant_consent_disclaimer">By granting this consent, you also agree to let %s view your linked accounts.</string>
 </resources>

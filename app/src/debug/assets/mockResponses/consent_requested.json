@@ -1,6 +1,7 @@
 {
   "status": "REQUESTED",
   "createdAt": "2020-01-27T07:08:48.843+0000",
+  "lastUpdated": "2020-01-27T07:08:48.843+0000",
   "purpose": {
     "text": "REMOTE_CONSULTING",
     "code": "RemoteConsulting",

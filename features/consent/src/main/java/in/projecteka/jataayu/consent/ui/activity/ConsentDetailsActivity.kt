@@ -4,8 +4,9 @@ import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.fragment.ConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.EditConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.GrantedConsentDetailsFragment
-import `in`.projecteka.jataayu.consent.ui.fragment.RequestListFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentsListFragment
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import android.os.Bundle
 
 class ConsentDetailsActivity : BaseActivity() {
@@ -14,16 +15,16 @@ class ConsentDetailsActivity : BaseActivity() {
         addFragment(getNextFragment())
     }
 
-    private fun getNextFragment(): ConsentDetailsFragment {
-        return if (getFlowType() == ConsentFlow.REQUESTED_CONSENTS.ordinal)
+    private fun getNextFragment(): BaseFragment {
+            return if (getFlowType() == ConsentFlow.REQUESTED_CONSENTS.ordinal)
             ConsentDetailsFragment.newInstance()
         else GrantedConsentDetailsFragment.newInstance()
     }
 
     private fun getFlowType(): Int {
-        if (intent.hasExtra(RequestListFragment.CONSENT_FLOW)) {
+        if (intent.hasExtra(RequestedConsentsListFragment.CONSENT_FLOW)) {
             intent.extras?.getInt(
-                RequestListFragment.CONSENT_FLOW,
+                RequestedConsentsListFragment.CONSENT_FLOW,
                 ConsentFlow.REQUESTED_CONSENTS.ordinal
             )?.let { return it }
         }

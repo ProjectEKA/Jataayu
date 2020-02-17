@@ -1,14 +1,15 @@
 {
-  "size": 14,
+  "size": 1,
   "limit": 20,
   "offset": 0,
   "requests": [
     {
       "status": "REQUESTED",
-      "createdAt": "2020-01-05T06:26:41.503+0000",
+      "createdAt": "2020-01-27T07:08:48.843+0000",
+      "lastUpdated": "2020-01-27T07:08:48.843+0000",
       "purpose": {
-        "text": "Encounter",
-        "code": "ENCOUNTER",
+        "text": "REMOTE_CONSULTING",
+        "code": "RemoteConsulting",
         "refUri": null
       },
       "patient": {
@@ -20,489 +21,35 @@
         "name": "Max Health Care"
       },
       "requester": {
-        "name": "Dr. Shruthi Nair",
+        "name": "Dr. Shruthi",
         "identifier": null
       },
       "hiTypes": [
-        "Condition"
+        "Condition",
+        "DiagnosticReport",
+        "Observation"
       ],
       "permission": {
         "accessMode": "VIEW",
         "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
+          "from": "2020-01-01T07:08:00.000+0000",
+          "to": "2020-01-08T07:08:00.000+0000"
         },
-        "dataExpiryAt": "3020-02-16T08:47:48.603+0000",
+        "dataExpiryAt": "2020-03-12T07:08:00.000+0000",
         "frequency": {
           "unit": "HOUR",
           "value": 1,
           "repeats": 0
         }
       },
-      "id": "0dd21a1d-35b7-47f3-9d20-91fcd41fc00d"
-    },
-    {
-      "status": "EXPIRED",
-      "createdAt": "2020-01-23T07:39:35.669+0000",
-      "purpose": {
-        "text": "Encounter",
-        "code": "ENCOUNTER",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "2020-01-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "d79f71ba-a3ec-48e2-a782-762587f12aa0"
-    },
-    {
+      "id": "5c71c78e-a77e-4dd5-9f0f-6c3095118327"
+    },{
       "status": "REQUESTED",
-      "createdAt": "2020-01-23T07:44:18.472+0000",
-      "purpose": {
-        "text": "Encounter",
-        "code": "ENCOUNTER",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "3020-02-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "f6a94e81-fa7b-492f-8cf0-73cd3f27178b"
-    },
-    {
-      "status": "REQUESTED",
-      "createdAt": "2020-01-23T07:53:26.136+0000",
-      "purpose": {
-        "text": "ENCOUNTER",
-        "code": "Encounter",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "3020-02-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "99e5786e-4fbe-4758-a088-212daebd2fcb"
-    },
-    {
-      "status": "REQUESTED",
-      "createdAt": "2020-01-23T07:58:28.316+0000",
-      "purpose": {
-        "text": "ENCOUNTER",
-        "code": "Encounter",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "3020-02-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "4d583308-0ea0-45d2-8d44-91877f5e5d10"
-    },
-    {
-      "status": "REQUESTED",
-      "createdAt": "2020-01-23T08:45:14.817+0000",
-      "purpose": {
-        "text": "Encounter",
-        "code": "ENCOUNTER",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "3020-02-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "f1570733-e452-4d35-888c-60af73c214db"
-    },
-    {
-      "status": "REQUESTED",
-      "createdAt": "2020-01-23T08:45:18.373+0000",
-      "purpose": {
-        "text": "ENCOUNTER",
-        "code": "Encounter",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "3020-02-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "5a4574a7-1518-451a-b71a-93c7e6727cd4"
-    },
-    {
-      "status": "REQUESTED",
-      "createdAt": "2020-01-23T09:07:16.284+0000",
-      "purpose": {
-        "text": "ENCOUNTER",
-        "code": "Encounter",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "3020-02-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "576c0ee5-37ff-4f9c-8531-826b9174b839"
-    },
-    {
-      "status": "REQUESTED",
-      "createdAt": "2020-01-23T09:18:13.183+0000",
-      "purpose": {
-        "text": "ENCOUNTER",
-        "code": "Encounter",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "3020-02-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "83d8fe99-542a-4889-8df3-0014d22d98d8"
-    },
-    {
-      "status": "REQUESTED",
-      "createdAt": "2020-01-23T09:20:21.329+0000",
-      "purpose": {
-        "text": "ENCOUNTER",
-        "code": "Encounter",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "3020-02-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "d21f75f9-420d-480e-aa7e-b0a8b3878006"
-    },
-    {
-      "status": "REQUESTED",
-      "createdAt": "2020-01-23T09:21:01.738+0000",
-      "purpose": {
-        "text": "ENCOUNTER",
-        "code": "Encounter",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "3020-02-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "187b1ec7-2b71-4f34-b665-60653b382b7b"
-    },
-    {
-      "status": "REQUESTED",
-      "createdAt": "2020-01-24T07:39:52.548+0000",
-      "purpose": {
-        "text": "ENCOUNTER",
-        "code": "Encounter",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-01-16T08:47:48.603+0000",
-          "to": "2020-02-16T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "3020-02-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "3b8e1d4a-92a4-4290-ac7e-1695749feec4"
-    },
-    {
-      "status": "REQUESTED",
-      "createdAt": "2020-01-24T07:41:17.477+0000",
-      "purpose": {
-        "text": "ENCOUNTER",
-        "code": "Encounter",
-        "refUri": null
-      },
-      "patient": {
-        "id": "5@ncg"
-      },
-      "hip": null,
-      "hiu": {
-        "id": "10000005",
-        "name": "Max Health Care"
-      },
-      "requester": {
-        "name": "1",
-        "identifier": null
-      },
-      "hiTypes": [
-        "Condition"
-      ],
-      "permission": {
-        "accessMode": "VIEW",
-        "dateRange": {
-          "from": "2020-02-24T08:47:48.603+0000",
-          "to": "2020-04-24T08:47:48.603+0000"
-        },
-        "dataExpiryAt": "3020-01-16T08:47:48.603+0000",
-        "frequency": {
-          "unit": "HOUR",
-          "value": 1,
-          "repeats": 0
-        }
-      },
-      "id": "8f857c21-14f4-400d-91db-bb5ec3d50768"
-    },
-    {
-      "status": "EXPIRED",
-      "createdAt": "2020-01-08T07:48:27.496+0000",
+      "createdAt": "2020-01-27T07:08:48.843+0000",
+      "lastUpdated": "2020-01-27T07:08:48.843+0000",
       "purpose": {
         "text": "General Diagnosis",
-        "code": "GENERAL DIAGNOSIS",
+        "code": "General_diagnosis",
         "refUri": null
       },
       "patient": {
@@ -518,22 +65,106 @@
         "identifier": null
       },
       "hiTypes": [
-        "Condition"
+        "Condition",
+        "DiagnosticReport",
+        "Observation"
       ],
       "permission": {
         "accessMode": "VIEW",
         "dateRange": {
-          "from": "2020-01-12T08:47:48.603+0000",
-          "to": "2020-02-12T08:47:48.603+0000"
+          "from": "2020-01-12T07:08:00.000+0000",
+          "to": "2020-02-12T07:08:00.000+0000"
         },
-        "dataExpiryAt": "2020-01-16T08:47:48.603+0000",
+        "dataExpiryAt": "2020-01-12T07:08:00.000+0000",
         "frequency": {
           "unit": "HOUR",
           "value": 1,
           "repeats": 0
         }
       },
-      "id": "cafe5cfa-82e0-4208-8f85-cd0c80b9d9bf"
+      "id": "5c71c78e-a77e-4dd5-9f0f-6c3095118327"
+    },
+    {
+      "status": "GRANTED",
+      "createdAt": "2020-01-26T07:08:48.843+0000",
+      "lastUpdated": "2020-01-27T07:08:48.843+0000",
+      "purpose": {
+        "text": "REMOTE_CONSULTING",
+        "code": "RemoteConsulting",
+        "refUri": null
+      },
+      "patient": {
+        "id": "5@ncg"
+      },
+      "hip": null,
+      "hiu": {
+        "id": "10000005",
+        "name": "Max Health Care"
+      },
+      "requester": {
+        "name": "Dr. Lakshmi",
+        "identifier": null
+      },
+      "hiTypes": [
+        "Condition",
+        "DiagnosticReport",
+        "Observation"
+      ],
+      "permission": {
+        "accessMode": "VIEW",
+        "dateRange": {
+          "from": "2020-01-01T07:08:00.000+0000",
+          "to": "2020-01-08T07:08:00.000+0000"
+        },
+        "dataExpiryAt": "2020-03-12T07:08:00.000+0000",
+        "frequency": {
+          "unit": "HOUR",
+          "value": 1,
+          "repeats": 0
+        }
+      },
+      "id": "5c71c78e-a77e-4dd5-9f0f-6c3095118327"
+    },
+    {
+      "status": "GRANTED",
+      "createdAt": "2020-01-26T07:08:48.843+0000",
+      "lastUpdated": "2020-01-27T07:08:48.843+0000",
+      "purpose": {
+        "text": "REMOTE_CONSULTING",
+        "code": "RemoteConsulting",
+        "refUri": null
+      },
+      "patient": {
+        "id": "5@ncg"
+      },
+      "hip": null,
+      "hiu": {
+        "id": "10000005",
+        "name": "Max Health Care"
+      },
+      "requester": {
+        "name": "Dr. Lakshmi",
+        "identifier": null
+      },
+      "hiTypes": [
+        "Condition",
+        "DiagnosticReport",
+        "Observation"
+      ],
+      "permission": {
+        "accessMode": "VIEW",
+        "dateRange": {
+          "from": "2020-01-01T07:08:00.000+0000",
+          "to": "2020-01-08T07:08:00.000+0000"
+        },
+        "dataExpiryAt": "2020-01-12T07:08:00.000+0000",
+        "frequency": {
+          "unit": "HOUR",
+          "value": 1,
+          "repeats": 0
+        }
+      },
+      "id": "5c71c78e-a77e-4dd5-9f0f-6c3095118327"
     }
   ]
 }

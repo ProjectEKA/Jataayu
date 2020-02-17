@@ -136,7 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_extra_large"
-                    android:text="@string/requests_informatio_type"
+                    android:text="@string/requests_information_type"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/lbl_requests_information_from" />
 
@@ -175,7 +175,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_large"
-                    android:text="@{@string/grant_cosent_disclaimer(consent.requester.name)}"
+                    android:text="@{@string/grant_consent_disclaimer(consent.requester.name)}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_expiry" />
             </androidx.constraintlayout.widget.ConstraintLayout>

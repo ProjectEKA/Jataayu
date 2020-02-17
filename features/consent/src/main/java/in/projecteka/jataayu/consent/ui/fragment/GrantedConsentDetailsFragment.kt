@@ -56,7 +56,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback, Respons
     }
 
     companion object {
-        fun newInstance() = ConsentDetailsFragment()
+        fun newInstance() = GrantedConsentDetailsFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

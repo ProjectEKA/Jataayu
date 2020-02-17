@@ -116,7 +116,7 @@
                     android:id="@+id/ic_requests_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_requests_info"
+                    android:src="@drawable/ic_calendar"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration" />
 

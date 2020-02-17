@@ -1,7 +1,6 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.R
-import `in`.projecteka.jataayu.R.id.tv_requested_date
 import `in`.projecteka.jataayu.consent.R.id.*
 import `in`.projecteka.jataayu.testUtil.MockServerDispatcher
 import `in`.projecteka.jataayu.ui.activity.TestsOnlyActivity
@@ -27,7 +26,7 @@ import br.com.concretesolutions.kappuccino.actions.ClickActions.click as KClick
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-public class RequestListFragmentTest {
+public class RequestedConsentListFragmentTest {
     @get:Rule
     var activityRule: IntentsTestRule<TestsOnlyActivity> =
         IntentsTestRule(TestsOnlyActivity::class.java, true, true)
@@ -41,7 +40,7 @@ public class RequestListFragmentTest {
         webServer.start(8080)
         webServer.dispatcher = MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
 
-        val requestListFragment = RequestListFragment()
+        val requestListFragment = RequestedConsentsListFragment()
         activityRule.activity.addFragment(requestListFragment)
     }
 
@@ -73,33 +72,33 @@ public class RequestListFragmentTest {
         @Test
         fun shouldRenderConsentRequestItem() {
             Thread.sleep(8000)
-            verifyRequestsRendered(12)
+            verifyRequestsRendered(1)
         }
 
     @Test
     fun shouldRenderRequestedConsents() {
         Thread.sleep(8000)
         KClick { id(sp_request_filter) }
-        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Requested (12)"))).perform(click())
-        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Requested (12)"))))
-        verifyRequestsRendered(12)
+        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Active requested consents (1)"))).perform(click())
+        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Active requested consents (1)"))))
+        verifyRequestsRendered(1)
     }
 
     @Test
     fun shouldRenderAllRequests() {
         Thread.sleep(8000)
         KClick { id(sp_request_filter) }
-        onData(allOf(`is`(instanceOf(String::class.java)), `is`("All requests (14)"))).perform(click())
-        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("All requests (14)"))))
-        verifyRequestsRendered(14)
+        onData(allOf(`is`(instanceOf(String::class.java)), `is`("All requested consents (2)"))).perform(click())
+        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("All requested consents (2)"))))
+        verifyRequestsRendered(2)
     }
     @Test
     fun shouldRenderExpiredRequests() {
         Thread.sleep(10000)
         KClick { id(sp_request_filter) }
-        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Expired (2)"))).perform(click())
-        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Expired (2)"))))
-        verifyExpiredRequestsRendered()
+        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Expired requested consents (1)"))).perform(click())
+        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Expired requested consents (1)"))))
+        verifyExpiredRequestsRendered(1)
     }
 
     private fun verifyRequestsRendered(expectedCount: Int) {
@@ -109,11 +108,11 @@ public class RequestListFragmentTest {
                 displayed {
                     allOf {
                         id(tv_requested_date)
-                        text("Requested Jan 5, 2020")
+                        text("Requested Jan 27, 2020")
                     }
                     allOf {
                         id(tv_requester_name)
-                        text("Dr. Shruthi Nair")
+                        text("Dr. Shruthi")
                     }
                     allOf {
                         id(tv_requester_organization)
@@ -121,15 +120,15 @@ public class RequestListFragmentTest {
                     }
                     allOf {
                         id(tv_purpose_of_request)
-                        text("Encounter")
+                        text("REMOTE_CONSULTING")
                     }
                     allOf {
                         id(tv_requests_info_from)
-                        text("16 Jan, 2020")
+                        text("01 Jan, 2020")
                     }
                     allOf {
                         id(tv_requests_info_to)
-                        text("16 Feb, 2020")
+                        text("08 Jan, 2020")
                     }
                     allOf {
                         id(seperator)
@@ -141,14 +140,14 @@ public class RequestListFragmentTest {
         }
     }
 
-    private fun verifyExpiredRequestsRendered() {
+    private fun verifyExpiredRequestsRendered(count: Int) {
         recyclerView(R.id.rvConsents) {
-            sizeIs(2)
-            atPosition(1) {
+            sizeIs(count)
+            atPosition(0) {
                 displayed {
                     allOf {
                         id(tv_requested_date)
-                        text("Requested Jan 8, 2020")
+                        text("Requested Jan 27, 2020")
                     }
                     allOf {
                         id(tv_requester_name)

@@ -13,7 +13,7 @@ import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.util.ui.DateTimeUtils
+import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,29 +30,29 @@ import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
+private const val INDEX_ACTIVE = 0
+private const val INDEX_EXPIRED = 1
+private const val INDEX_ALL = 2
 
-class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener,
+open class RequestedConsentsListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener,
     ResponseCallback {
 
     private lateinit var binding: ConsentRequestFragmentBinding
-    private val INDEX_REQUESTED_CONSENTS = 1
-    private val INDEX_EXPIRED_CONSENT_REQUESTS = 2
-    private var flow: ConsentFlow? = ConsentFlow.REQUESTED_CONSENTS
+    private lateinit var flow: ConsentFlow
     private val viewModel: ConsentViewModel by sharedViewModel()
-
     companion object {
         const val CONSENT_FLOW = "consent_flow"
-        fun newInstance(type: Int): RequestListFragment {
-            val fragment = RequestListFragment()
-            val bundle = Bundle()
-            bundle.putInt(CONSENT_FLOW, type)
-            fragment.arguments = bundle
-            return fragment
-        }
+        fun newInstance() = RequestedConsentsListFragment()
     }
 
     private val consentObserver = Observer<ConsentsListResponse?> {
-        renderConsentRequests(it?.requests!!, binding.spRequestFilter.selectedItemPosition)
+        viewModel.filterConsents()
+    }
+    private val requestedConsentObserver = Observer<List<Consent>> {
+        renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition)
+    }
+    private val grantedConsentObserver = Observer<List<Consent>> {
+        renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition)
     }
 
     override fun onCreateView(
@@ -60,20 +60,19 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
         savedInstanceState: Bundle?
     ): View {
         binding = ConsentRequestFragmentBinding.inflate(inflater)
-        this.arguments?.let {
-            val consentFlowValue = it.getInt(CONSENT_FLOW, ConsentFlow.REQUESTED_CONSENTS.ordinal)
-            flow = ConsentFlow.values()[consentFlowValue]
-        }
+        flow = getConsentFlow()
         initBindings()
         return binding.root
     }
 
+    open fun getConsentFlow(): ConsentFlow {
+        return ConsentFlow.REQUESTED_CONSENTS
+    }
+
     private fun initSpinner(selectedPosition: Int) {
-        val arrayAdapter =
-            ArrayAdapter<String>(
-                context!!, android.R.layout.simple_dropdown_item_1line, android.R.id.text1,
-                viewModel.populateFilterItems(resources)
-            )
+        val arrayAdapter = ArrayAdapter<String>(context!!,
+            android.R.layout.simple_dropdown_item_1line, android.R.id.text1,
+            viewModel.populateFilterItems(resources, getConsentFlow()))
         binding.spRequestFilter.adapter = arrayAdapter
         arrayAdapter.notifyDataSetChanged()
         binding.spRequestFilter.setSelection(selectedPosition)
@@ -81,11 +80,7 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
 
     private fun initBindings() {
         binding.requestCount = getString(R.string.all_requests, 0)
-        if (flow == ConsentFlow.GRANTED_CONSENTS){
-            binding.noNewConsentsMessage = getString(R.string.no_granted_consents)
-        } else{
-            binding.noNewConsentsMessage = getString(R.string.no_new_consent_requests)
-        }
+        binding.noNewConsentsMessage = getNoNewConsentsMessage()
 
         binding.listener = this
         binding.hideRequestsList = true
@@ -93,12 +88,19 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
         initSpinner(0)
     }
 
+    open fun getNoNewConsentsMessage(): String{
+        return getString(R.string.no_new_consent_requests)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.consentsListResponse.observe(this, consentObserver)
+        viewModel.requestedConsentsList.observe(this, requestedConsentObserver)
+        viewModel.grantedConsentsList.observe(this, grantedConsentObserver)
         viewModel.getConsents(this)
         showProgressBar(true, getString(R.string.loading_requests))
     }
+
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
         showProgressBar(false)
@@ -106,13 +108,13 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
         rvConsents.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = GenericRecyclerViewAdapter(
-                this@RequestListFragment,
+                this@RequestedConsentsListFragment,
                 requests
             )
             addItemDecoration(DividerItemDecorator(getDrawable(context!!, R.color.transparent)!!))
         }
         initSpinner(selectedSpinnerPosition)
-        sp_request_filter.setSelection(INDEX_REQUESTED_CONSENTS)
+        sp_request_filter.setSelection(INDEX_ACTIVE)
     }
 
     override fun onItemClick(
@@ -131,15 +133,13 @@ class RequestListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnIte
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            INDEX_REQUESTED_CONSENTS -> filterRequests(viewModel.requests.filter {
-                !DateTimeUtils.isDateExpired(it.permission.dataExpiryAt)
-            })
-            INDEX_EXPIRED_CONSENT_REQUESTS -> filterRequests(viewModel.requests.filter {
-                DateTimeUtils.isDateExpired(it.permission.dataExpiryAt)
-            })
-            else -> filterRequests(viewModel.requests)
+            INDEX_ACTIVE -> filterRequests(getConsentList().filter { !isDateExpired(it.permission.dataExpiryAt) })
+            INDEX_EXPIRED -> filterRequests(getConsentList().filter { isDateExpired(it.permission.dataExpiryAt) })
+            INDEX_ALL -> filterRequests(getConsentList())
         }
     }
+
+    open fun getConsentList() = viewModel.requestedConsentsList.value!!
 
     private fun filterRequests(requests: List<Consent>) {
         (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(requests)

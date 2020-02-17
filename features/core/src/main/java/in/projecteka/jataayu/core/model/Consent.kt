@@ -19,7 +19,8 @@ data class Consent(
     @SerializedName("requester") val requester: Requester,
     @SerializedName("hiTypes") val hiTypes: ArrayList<String>,
     @SerializedName("permission") @Bindable val permission: Permission,
-    @SerializedName("status") val status: RequestStatus
+    @SerializedName("status") val status: RequestStatus,
+    @SerializedName("lastUpdated") val lastUpdated: String
 ) : BaseObservable(), IDataBindingModel, Cloneable {
     override fun layoutResId(): Int {
         return R.layout.consent_item
@@ -38,10 +39,17 @@ data class Consent(
     }
 
     fun getRequestIssueRelativeTimeSpan(context: Context): String {
-        return String.format(
-            context.getString(R.string.requested_timespan),
-            DateTimeUtils.getRelativeTimeSpan(createdAt)
-        )
+        var relativeTimeSpan: String
+        if (status == RequestStatus.GRANTED){
+            relativeTimeSpan = String.format(
+                context.getString(R.string.granted_timespan),
+                DateTimeUtils.getRelativeTimeSpan(lastUpdated))
+        } else{
+            relativeTimeSpan = String.format(
+                context.getString(R.string.requested_timespan),
+                DateTimeUtils.getRelativeTimeSpan(createdAt))
+        }
+        return relativeTimeSpan
     }
 
     fun getConsentExpiry(): String {
