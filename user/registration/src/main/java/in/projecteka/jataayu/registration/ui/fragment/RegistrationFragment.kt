@@ -2,13 +2,13 @@ package `in`.projecteka.jataayu.registration.ui.fragment
 
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.registration.R
-import `in`.projecteka.jataayu.registration.databinding.FragmentRegistrationBinding
 import `in`.projecteka.jataayu.registration.listener.ContinueClickHandler
 import `in`.projecteka.jataayu.registration.listener.MobileNumberChangeHandler
 import `in`.projecteka.jataayu.registration.listener.MobileNumberChangeWatcher
 import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
+import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.RegistrationActivity
+import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentRegistrationBinding
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationViewModel.Companion.MOBILE_IDENTIFIER_TYPE
 import `in`.projecteka.jataayu.util.extension.setTitle

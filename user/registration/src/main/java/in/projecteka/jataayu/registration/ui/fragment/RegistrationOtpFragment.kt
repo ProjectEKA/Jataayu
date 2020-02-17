@@ -8,9 +8,9 @@ import `in`.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.core.utils.toErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.registration.R
 import `in`.projecteka.jataayu.registration.listener.MobileNumberChangeHandler
 import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
+import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationViewModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.extension.setTitle
@@ -41,12 +41,12 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
 
     private val eventBus: EventBus by lazy { EventBus.getDefault() }
     private val viewModel: RegistrationViewModel by sharedViewModel()
-    private lateinit var requestVerificationResponse: RequestVerificationResponse
+    private lateinit var sessionId: String
 
     override fun onSubmitOtp(view: View) {
-        binding.errorMessage = String.EMPTY
+            binding.errorMessage = String.EMPTY
         showProgressBar(true)
-        viewModel.verifyIdentifier(requestVerificationResponse, this)
+        viewModel.verifyIdentifier(sessionId, binding.etOtp.text.toString(), this)
     }
 
     override fun onStart() {
@@ -72,10 +72,10 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
     }
 
     @Subscribe(sticky = true)
-    fun onRequestVerificationResponseReceived(event: RequestVerificationResponse){
-        event.let {
-            requestVerificationResponse = it
-            eventBus.removeStickyEvent(event)
+    fun onSessionIdReceived(requestVerificationResponse: RequestVerificationResponse){
+        requestVerificationResponse.let {
+            this.sessionId = requestVerificationResponse.sessionId
+            eventBus.removeStickyEvent(requestVerificationResponse)
         }
     }
 

@@ -1,5 +1,23 @@
 <resources>
     <string name="app_name">account</string>
     <string name="no_linked_accounts">No linked Accounts</string>
-    <string name="my_linked_accounts">My linked accounts (%d)</string>
+    <string name="my_linked_accounts">My linked accounts (%d)</string>    <string name="title_activity_account_creation">AccountCreationActivity</string>
+    <string name="create_account_title">Creating your account would take less than a minute</string>
+    <string name="ncg">\@ncg</string>
+    <string name="show">Show</string>
+    <string name="hide">Hide</string>
+    <string name="patient_details">Patient details</string>
+    <string name="create_username">Create Username</string>
+    <string name="create_password">Create Password</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">female</string>
+    <string name="others">others</string>
+    <string name="date_of_birth_optional">Date of birth (optional)</string>
+    <string name="username_validation_hint">Should contain a-z, A-Z, 0-9, . and -, Length should be 3 and 150 characters. Username is case sensitive</string>
+    <string name="password_validation_hint">Minimum length equal to 8, one uppercase, one lowercase, one special character -- One number</string>
+    <string name="register">register</string>
+
 </resources>

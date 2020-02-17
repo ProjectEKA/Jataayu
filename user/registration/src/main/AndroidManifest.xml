@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="in.projecteka.jataayu.registration">
+    package="in.projecteka.jataayu.registration.ui.activity">
 
     <application>
         <activity
             android:label="Registration"
-            android:name=".ui.activity.RegistrationActivity">
+            android:name=".RegistrationActivity">
         </activity>
     </application>
 

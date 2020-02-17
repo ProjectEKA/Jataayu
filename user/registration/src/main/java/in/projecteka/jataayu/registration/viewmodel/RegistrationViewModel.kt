@@ -4,6 +4,7 @@ import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.observeOn
 import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
 import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
+import `in`.projecteka.jataayu.registration.model.VerifyIdentifierRequest
 import `in`.projecteka.jataayu.registration.model.VerifyIdentifierResponse
 import `in`.projecteka.jataayu.registration.repository.AuthorizationRepository
 import `in`.projecteka.jataayu.util.extension.liveDataOf
@@ -25,8 +26,8 @@ class RegistrationViewModel(val repository: AuthorizationRepository) : ViewModel
         repository.requestVerification(RequestVerificationRequest(identifierType, identifier)).observeOn(requestVerificationResponse, responseCallback)
     }
 
-    fun verifyIdentifier(requestVerificationResponse: RequestVerificationResponse, responseCallback: ResponseCallback) {
-        repository.verifyIdentifier(requestVerificationResponse).observeOn(verifyIdentifierResponse, responseCallback)
+    fun verifyIdentifier(sessionId: String, otp: String, responseCallback: ResponseCallback) {
+        repository.verifyIdentifier(VerifyIdentifierRequest(sessionId, otp)).observeOn(verifyIdentifierResponse, responseCallback)
     }
 
     fun getMobileNumber(mobileNumber: String): String {
