@@ -177,7 +177,7 @@
         <item name="backgroundTint">@color/white</item>
         <item name="android:textColor">@color/black</item>
         <item name="cornerRadius">@dimen/button_corner_radius</item>
-        <item name="icon">@drawable/ic_requests_info</item>
+        <item name="icon">@drawable/ic_calendar</item>
         <item name="iconTint">@color/colorPrimary</item>
         <item name="rippleColor">@color/colorPrimary</item>
         <item name="android:drawablePadding">@dimen/content_padding_medium</item>

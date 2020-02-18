@@ -1,7 +1,6 @@
 package `in`.projecteka.jataayu.ui
 
 import `in`.projecteka.jataayu.R
-import `in`.projecteka.jataayu.account.AccountCreationActivity
 import `in`.projecteka.jataayu.consent.ui.fragment.ConsentHostFragment
 import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.databinding.ActivityLauncherBinding
@@ -96,7 +95,7 @@ class LauncherActivity : BaseActivity() {
             }
             SharedPrefsManager.getBoolean(REGISTERED, false, this) -> {
                 startActivityForResult(ProviderActivity::class.java, ADD_PROVIDER.ordinal)
-                startActivityForResult(AccountCreationActivity::class.java, REQUEST_CODES.CREATE_ACCOUNT.ordinal)
+//                startActivityForResult(AccountCreationActivity::class.java, REQUEST_CODES.CREATE_ACCOUNT.ordinal)
             }
             else -> {
                 startActivityForResult(RegistrationActivity::class.java, REGISTER.ordinal)
