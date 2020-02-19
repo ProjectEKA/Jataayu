@@ -16,6 +16,9 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -53,7 +56,11 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
     }
 
     private fun getUserAccounts() {
-        listItems = viewModel.getDisplayAccounts()
+        Observable.just(viewModel)
+            .map {  it.getDisplayAccounts() }
+            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe { listItems = it }.dispose()
+
         binding.rvUserAccounts.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment,

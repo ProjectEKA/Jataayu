@@ -2,5 +2,4 @@
 <resources>
     <dimen name="continue_button_side_margin">53dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="chip_corner_radius">1dp</dimen>
 </resources>

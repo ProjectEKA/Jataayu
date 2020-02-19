@@ -10,10 +10,12 @@ import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.registration.listener.MobileNumberChangeHandler
 import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
+import `in`.projecteka.jataayu.registration.model.VerifyIdentifierResponse
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationViewModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager
 import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -102,6 +104,7 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
     }
 
     override fun <T> onSuccess(body: T?) {
+        NetworkSharedPrefsManager.setAuthToken(activity!!, (body as VerifyIdentifierResponse).temporaryToken)
         showProgressBar(false)
         activity?.setResult(Activity.RESULT_OK)
         activity?.finish()

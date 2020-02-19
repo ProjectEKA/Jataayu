@@ -9,7 +9,7 @@ import `in`.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
-import `in`.projecteka.jataayu.provider.model.Token
+import `in`.projecteka.jataayu.provider.model.Otp
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.ui.UiUtils
@@ -75,8 +75,8 @@ class VerifyOtpFragment : BaseFragment(),
         showProgressBar(true)
         viewModel.successfulLinkingResponse.observe(this, observer)
         val referenceNumber = viewModel.linkAccountsResponse.value?.link?.referenceNumber!!
-        val token = Token(binding.etOtp.text.toString())
-        viewModel.verifyOtp(referenceNumber, token, this)
+        val otp = Otp(binding.etOtp.text.toString())
+        viewModel.verifyOtp(referenceNumber, otp, this)
     }
 
     override fun <T> onSuccess(body: T?) {

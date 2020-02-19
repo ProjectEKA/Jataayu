@@ -6,9 +6,9 @@ import `in`.projecteka.jataayu.core.model.Request
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.observeOn
 import `in`.projecteka.jataayu.provider.model.LinkAccountsResponse
+import `in`.projecteka.jataayu.provider.model.Otp
 import `in`.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
-import `in`.projecteka.jataayu.provider.model.Token
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.extension.liveDataOf
@@ -38,8 +38,8 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
             .observeOn(linkAccountsResponse, responseCallback)
     }
 
-    fun verifyOtp(referenceNumber: String, token: Token, responseCallback: ResponseCallback) {
-        providerRepository.verifyOtp(referenceNumber, token).observeOn(successfulLinkingResponse, responseCallback)
+    fun verifyOtp(referenceNumber: String, otp: Otp, responseCallback: ResponseCallback) {
+        providerRepository.verifyOtp(referenceNumber, otp).observeOn(successfulLinkingResponse, responseCallback)
     }
 
     fun canLinkAccounts(careContexts: List<CareContext>): Boolean {

@@ -62,3 +62,7 @@ fun Date.toUtc() : String {
 }
 
 inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)
+
+fun View.show(shouldShow: Boolean) {
+    this.visibility = if (shouldShow) View.VISIBLE else View.GONE
+}
