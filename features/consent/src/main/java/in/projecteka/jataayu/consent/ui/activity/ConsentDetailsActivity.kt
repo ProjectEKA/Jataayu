@@ -2,9 +2,9 @@ package `in`.projecteka.jataayu.consent.ui.activity
 
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.fragment.ConsentDetailsFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.ConsentsListFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.EditConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.GrantedConsentDetailsFragment
-import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentsListFragment
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import android.os.Bundle
@@ -22,9 +22,9 @@ class ConsentDetailsActivity : BaseActivity() {
     }
 
     private fun getFlowType(): Int {
-        if (intent.hasExtra(RequestedConsentsListFragment.CONSENT_FLOW)) {
+        if (intent.hasExtra(ConsentsListFragment.CONSENT_FLOW)) {
             intent.extras?.getInt(
-                RequestedConsentsListFragment.CONSENT_FLOW,
+                ConsentsListFragment.CONSENT_FLOW,
                 ConsentFlow.REQUESTED_CONSENTS.ordinal
             )?.let { return it }
         }

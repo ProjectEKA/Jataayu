@@ -4,7 +4,6 @@
     <string name="title_activity_consent_requests">Consent Requests</string>
     <string name="tab_requests">requests</string>
     <string name="tab_consents">consents</string>
-    <string name="all_requests">All requests (%1$d)</string>
 
     <string name="new_request">New request</string>
     <string name="edit_request">Edit request</string>

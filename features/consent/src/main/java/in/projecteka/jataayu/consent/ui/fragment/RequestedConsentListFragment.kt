@@ -9,31 +9,32 @@ import android.view.View
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class GrantedConsentListFragment : ConsentsListFragment() {
+class RequestedConsentListFragment : ConsentsListFragment() {
 
     companion object {
-        fun newInstance() = GrantedConsentListFragment()
+        fun newInstance() = RequestedConsentListFragment()
     }
-    private val grantedConsentObserver = Observer<List<Consent>> {
+
+    private val requestedConsentObserver = Observer<List<Consent>> {
         renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition)
     }
 
     private val viewModel: ConsentViewModel by sharedViewModel()
 
     override fun getNoNewConsentsMessage(): String {
-        return getString(R.string.no_granted_consents)
+        return getString(R.string.no_new_consent_requests)
     }
 
     override fun getConsentList(): List<Consent> {
-        return viewModel.grantedConsentsList.value!!
+        return viewModel.requestedConsentsList.value!!
     }
 
     override fun getConsentFlow(): ConsentFlow {
-        return ConsentFlow.GRANTED_CONSENTS
+        return ConsentFlow.REQUESTED_CONSENTS
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.grantedConsentsList.observe(this, grantedConsentObserver)
+        viewModel.requestedConsentsList.observe(this, requestedConsentObserver)
     }
 }

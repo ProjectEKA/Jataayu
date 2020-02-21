@@ -7,9 +7,6 @@
         <variable
             name="noNewConsentsMessage"
             type="String" />
-        <variable
-            name="requestCount"
-            type="String" />
 
         <variable
             name="hideRequestsList"

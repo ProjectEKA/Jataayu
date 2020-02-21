@@ -40,7 +40,7 @@ public class RequestedConsentListFragmentTest {
         webServer.start(8080)
         webServer.dispatcher = MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
 
-        val requestListFragment = RequestedConsentsListFragment()
+        val requestListFragment = RequestedConsentListFragment()
         activityRule.activity.addFragment(requestListFragment)
     }
 

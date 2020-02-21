@@ -37,25 +37,21 @@ private const val INDEX_ACTIVE = 0
 private const val INDEX_EXPIRED = 1
 private const val INDEX_ALL = 2
 
-open class RequestedConsentsListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener,
+abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener,
     ResponseCallback {
+    abstract fun getConsentList(): List<Consent>
+    abstract fun getNoNewConsentsMessage(): String
+    abstract fun getConsentFlow(): ConsentFlow
 
-    private lateinit var binding: ConsentRequestFragmentBinding
+    protected lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var flow: ConsentFlow
     private val viewModel: ConsentViewModel by sharedViewModel()
     companion object {
         const val CONSENT_FLOW = "consent_flow"
-        fun newInstance() = RequestedConsentsListFragment()
     }
 
     private val consentObserver = Observer<ConsentsListResponse?> {
         viewModel.filterConsents()
-    }
-    private val requestedConsentObserver = Observer<List<Consent>> {
-        renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition)
-    }
-    private val grantedConsentObserver = Observer<List<Consent>> {
-        renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition)
     }
 
     override fun onCreateView(
@@ -68,9 +64,6 @@ open class RequestedConsentsListFragment : BaseFragment(), ItemClickCallback, Ad
         return binding.root
     }
 
-    open fun getConsentFlow(): ConsentFlow {
-        return ConsentFlow.REQUESTED_CONSENTS
-    }
 
     private fun initSpinner(selectedPosition: Int) {
         val arrayAdapter = ArrayAdapter<String>(context!!,
@@ -82,36 +75,28 @@ open class RequestedConsentsListFragment : BaseFragment(), ItemClickCallback, Ad
     }
 
     private fun initBindings() {
-        binding.requestCount = getString(R.string.all_requests, 0)
         binding.noNewConsentsMessage = getNoNewConsentsMessage()
-
         binding.listener = this
         binding.hideRequestsList = true
         showProgressBar(false)
         initSpinner(0)
     }
 
-    open fun getNoNewConsentsMessage(): String{
-        return getString(R.string.no_new_consent_requests)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.consentsListResponse.observe(this, consentObserver)
-        viewModel.requestedConsentsList.observe(this, requestedConsentObserver)
-        viewModel.grantedConsentsList.observe(this, grantedConsentObserver)
         viewModel.getConsents(this)
         showProgressBar(true, getString(R.string.loading_requests))
     }
 
 
-    private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
+    protected fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
         showProgressBar(false)
         binding.hideRequestsList = !viewModel.isRequestAvailable()
         rvConsents.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = GenericRecyclerViewAdapter(
-                this@RequestedConsentsListFragment,
+                this@ConsentsListFragment,
                 requests
             )
             addItemDecoration(DividerItemDecorator(getDrawable(context!!, R.color.transparent)!!))
@@ -145,7 +130,6 @@ open class RequestedConsentsListFragment : BaseFragment(), ItemClickCallback, Ad
         }
     }
 
-    open fun getConsentList() = viewModel.requestedConsentsList.value!!
 
     private fun filterRequests(requests: List<Consent>) {
         (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(requests)
