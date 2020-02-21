@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.core.model.Consent
+import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
@@ -28,6 +29,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.consent_request_fragment.*
 import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 private const val INDEX_ACTIVE = 0
@@ -125,6 +128,9 @@ open class RequestedConsentsListFragment : BaseFragment(), ItemClickCallback, Ad
         intent.putExtra(CONSENT_FLOW, flow?.ordinal)
         startActivity(intent)
         EventBus.getDefault().postSticky(iDataBindingModel as Consent)
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -156,5 +162,11 @@ open class RequestedConsentsListFragment : BaseFragment(), ItemClickCallback, Ad
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    fun onConsentGranted(messageEventType: MessageEventType) {
+        viewModel.getConsents(this)
+        EventBus.getDefault().unregister(this)
     }
 }

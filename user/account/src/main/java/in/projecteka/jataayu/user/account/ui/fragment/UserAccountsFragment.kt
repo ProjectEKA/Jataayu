@@ -18,14 +18,16 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback {
     private lateinit var binding: FragmentUserAccountBinding
-    private val viewModel : UserAccountsViewModel by viewModel()
-    private lateinit var listItems: List<IDataBindingModel>
+    private val viewModel: UserAccountsViewModel by viewModel()
+    private var listItems: List<IDataBindingModel> = emptyList()
+    private var compositeDisposable = CompositeDisposable()
 
     private val observer = Observer<LinkedAccountsResponse> {
         binding.linkedPatient = it.linkedPatient
@@ -56,21 +58,27 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
     }
 
     private fun getUserAccounts() {
-        Observable.just(viewModel)
-            .map {  it.getDisplayAccounts() }
-            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe { listItems = it }.dispose()
-
-        binding.rvUserAccounts.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment,
-                listItems as List<IGroupDataBindingModel>
-            )
-        }
-
+        compositeDisposable.add(Observable.just(viewModel)
+            .map { it.getDisplayAccounts() }
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { items ->
+                listItems = items
+                binding.rvUserAccounts.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    @Suppress("UNCHECKED_CAST")
+                    (listItems as? List<IGroupDataBindingModel>)?.let {
+                        adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment, it )
+                    }
+                }
+            })
     }
 
-    override fun onItemClick(iDataBindingModel: IDataBindingModel, itemViewBinding: ViewDataBinding) {
+
+        override fun onItemClick(
+        iDataBindingModel: IDataBindingModel,
+        itemViewBinding: ViewDataBinding
+    ) {
         showProgressBar(false)
     }
 

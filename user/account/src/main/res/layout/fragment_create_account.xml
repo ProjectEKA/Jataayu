@@ -398,7 +398,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_search"
+                android:id="@+id/btn_register"
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:onClick="@{clickHandler::createAccount}"

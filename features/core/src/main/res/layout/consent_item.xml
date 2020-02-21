@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="consent"
             type="in.projecteka.jataayu.core.model.Consent" />
@@ -26,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:gravity="right"
-            android:text="@{consent.getRequestIssueRelativeTimeSpan(context)}"
+            app:text="@{consent.relativeTimeSpan}"
+            app:baseString="@{consent.baseString}"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_extra_small"
             app:layout_constraintRight_toRightOf="parent"
@@ -117,6 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_calendar"
+                    android:visibility="@{consent.detailsVisibility}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration" />
 
@@ -128,6 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_small"
                     android:text="@string/requests_information"
+                    android:visibility="@{consent.detailsVisibility}"
                     app:layout_constraintLeft_toRightOf="@+id/ic_requests_info"
                     app:layout_constraintTop_toBottomOf="@id/ic_purpose_of_request" />
 
@@ -137,6 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="From"
+                    android:visibility="@{consent.detailsVisibility}"
                     app:layout_constraintStart_toStartOf="@+id/lbl_requests_information_duration"
                     app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration" />
@@ -147,6 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/content_padding_medium"
+                    android:visibility="@{consent.detailsVisibility}"
                     android:text="@{consent.getPermissionStartDate()}"
                     app:layout_constraintLeft_toRightOf="@+id/lbl_requests_information_from"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration"
@@ -159,6 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/content_padding_medium"
                     android:text="to"
+                    android:visibility="@{consent.detailsVisibility}"
                     app:layout_constraintLeft_toRightOf="@+id/tv_requests_info_from"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration" />
 
@@ -168,6 +173,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/content_padding_medium"
+                    android:visibility="@{consent.detailsVisibility}"
                     android:text="@{consent.getPermissionEndDate()}"
                     app:layout_constraintLeft_toRightOf="@+id/lbl_requests_information_to"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration"

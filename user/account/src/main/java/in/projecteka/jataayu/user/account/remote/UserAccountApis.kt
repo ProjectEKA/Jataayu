@@ -6,11 +6,12 @@ import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface UserAccountApis {
     @GET("patients/links")
     fun getUserAccounts(): Call<LinkedAccountsResponse>
 
-    @GET("create_account")
+    @POST("create_account")
     fun createAccount(@Body createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse>
 }

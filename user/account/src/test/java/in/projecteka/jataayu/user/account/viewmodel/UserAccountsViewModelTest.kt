@@ -1,0 +1,114 @@
+package `in`.projecteka.jataayu.user.account.viewmodel
+
+import `in`.projecteka.jataayu.core.model.*
+import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.util.TestUtils
+import `in`.projecteka.jataayu.util.extension.fromJson
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.gson.Gson
+import junit.framework.Assert
+import junit.framework.Assert.assertEquals
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+
+@RunWith(MockitoJUnitRunner::class)
+class UserAccountsViewModelTest {
+
+    @Mock
+    private lateinit var repository: UserAccountsRepository
+
+    @get:Rule
+    val taskExecutorRule = InstantTaskExecutorRule()
+
+    @Mock
+    private lateinit var createAccountAccountCall: Call<CreateAccountResponse>
+
+    @Mock
+    private lateinit var getLinkedAccountsCall: Call<LinkedAccountsResponse>
+
+    @Mock
+    private lateinit var responseCallback: ResponseCallback
+
+    private lateinit var viewModel: UserAccountsViewModel
+
+    @Before
+    fun setUp() {
+        MockitoAnnotations.initMocks(this)
+        viewModel = UserAccountsViewModel(repository)
+    }
+
+    @After
+    fun tearDown() {
+        Mockito.verifyNoMoreInteractions(repository, createAccountAccountCall)
+        Mockito.validateMockitoUsage()
+    }
+
+    @Test
+    fun shouldCreateAccount() {
+        val accountDetails = Gson().fromJson<CreateAccountRequest>(TestUtils.readFile("create_account_request.json"))
+        val createAccountResponse = Gson().fromJson<CreateAccountResponse>(TestUtils.readFile("create_account_response.json"))
+
+        Mockito.`when`(repository.createAccount(accountDetails)).thenReturn(createAccountAccountCall)
+        Mockito.`when`(createAccountAccountCall.enqueue(ArgumentMatchers.any()))
+            .then { invocation ->
+                val callback = invocation.arguments[0] as Callback<CreateAccountResponse>
+                callback.onResponse(createAccountAccountCall, Response.success(createAccountResponse))
+            }
+        viewModel.createAccount(responseCallback, accountDetails)
+        Mockito.verify(repository).createAccount(accountDetails)
+        Mockito.verify(createAccountAccountCall).enqueue(ArgumentMatchers.any())
+        Assert.assertEquals(createAccountResponse, viewModel.createAccountResponse.value)
+    }
+
+    @Test
+    fun shouldDisplayAccounts(){
+        val linkedAccountsResponse = getLinkedAccountsData()
+
+        Mockito.`when`(repository.getUserAccounts()).thenReturn(getLinkedAccountsCall)
+        Mockito.`when`(getLinkedAccountsCall.enqueue(ArgumentMatchers.any()))
+            .then { invocation ->
+                val callback = invocation.arguments[0] as Callback<LinkedAccountsResponse>
+                callback.onResponse(getLinkedAccountsCall, Response.success(linkedAccountsResponse))
+            }
+        viewModel.getUserAccounts(responseCallback)
+        Mockito.verify(repository).getUserAccounts()
+        Mockito.verify(getLinkedAccountsCall).enqueue(ArgumentMatchers.any())
+        Assert.assertEquals(linkedAccountsResponse, viewModel.linkedAccountsResponse.value)
+    }
+
+    @Test
+    fun shouldGetAccountsToDisplay() {
+        viewModel.linkedAccountsResponse.value = getLinkedAccountsData()
+        val list = listOf<LinkedAccount>(
+            LinkedAccount(providerName="Max Health Care", patientReferenceId="5", patientName="Ron Doe",
+            childrenViewModels= listOf<LinkedCareContext>(
+                LinkedCareContext(referenceNumber="131", display="National Cancer program"),
+                LinkedCareContext(referenceNumber="131", display="National Cancer program")),
+                childrenResourceId=2131427419, isExpanded=false),
+
+            LinkedAccount(providerName="Infinity Health care & Diagnostics", patientReferenceId="5", patientName="Ron Doe",
+                childrenViewModels= listOf<LinkedCareContext>(
+                    LinkedCareContext(referenceNumber="131", display="National Cancer program"),
+                        LinkedCareContext(referenceNumber="131", display="National Cancer program"),
+                        LinkedCareContext(referenceNumber="131", display="National Cancer program")),
+                childrenResourceId=2131427419, isExpanded=false))
+        assertEquals(list, viewModel.getDisplayAccounts())
+    }
+
+    private fun getLinkedAccountsData(): LinkedAccountsResponse? {
+        return Gson().fromJson<LinkedAccountsResponse>(TestUtils.readFile("linked_accounts.json"))
+    }
+}
