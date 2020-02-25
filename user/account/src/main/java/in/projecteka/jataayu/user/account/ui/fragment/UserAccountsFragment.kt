@@ -9,6 +9,7 @@ import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
+import `in`.projecteka.jataayu.util.extension.get
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +18,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -60,8 +59,7 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
     private fun getUserAccounts() {
         compositeDisposable.add(Observable.just(viewModel)
             .map { it.getDisplayAccounts() }
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
+            .get()
             .subscribe { items ->
                 listItems = items
                 binding.rvUserAccounts.apply {
@@ -92,6 +90,11 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+    }
+
+    override fun onDestroy() {
+        compositeDisposable.dispose()
+        super.onDestroy()
     }
 }
 

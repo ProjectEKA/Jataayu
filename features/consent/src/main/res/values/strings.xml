@@ -26,12 +26,15 @@
     <string name="status_expired_granted_consents">Expired granted consents (%d)</string>
     <string name="status_all_granted_consents">All Granted Consents (%d)</string>
 
-    <string name="to">to</string>
-    <string name="from">From</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>
     <string name="accounts_to_provide_information">Accounts to provide information</string>
     <string name="all_linked_providers">All linked providers</string>
     <string name="confirm">confirm</string>
     <string name="grant_consent_disclaimer">By granting this consent, you also agree to let %s view your linked accounts.</string>
+    <string name="consent_removed">Consent removed</string>
+    <string name="undo">Undo</string>
+    <string name="title_revoke_consent">Revoke consent?</string>
+    <string name="btn_revoke_consent">Revoke</string>
+    <string name="msg_revoke_consent">On revoking this consent, your health data will not be accessible to the requester.</string>
 </resources>

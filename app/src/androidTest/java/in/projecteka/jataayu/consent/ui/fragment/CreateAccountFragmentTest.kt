@@ -105,7 +105,7 @@ class CreateAccountFragmentTest{
 
             allOf {
                 id(R.id.btn_register)
-                text("register")
+                text("Register")
             }
 
         }

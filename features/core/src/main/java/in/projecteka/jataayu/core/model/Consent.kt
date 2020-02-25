@@ -4,7 +4,6 @@ import `in`.projecteka.jataayu.core.BR
 import `in`.projecteka.jataayu.core.R
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
-import android.view.View
 import androidx.annotation.StringRes
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
@@ -12,7 +11,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Consent(
     @SerializedName("id") val id: String,
-    @SerializedName("createdAt") val createdAt: String,
+    @SerializedName("createdAt") val createdAt: String?,
     @SerializedName("purpose") val purpose: Purpose,
     @SerializedName("patient") val patient: PatientId,
     @SerializedName("hip") val hip: Hip?,
@@ -23,7 +22,7 @@ data class Consent(
     @SerializedName("status") var status: RequestStatus,
     @SerializedName("lastUpdated") val lastUpdated: String
 ) : BaseObservable(), IDataBindingModel, Cloneable {
-    var detailsVisibility = View.VISIBLE
+    var showDetails = true
     lateinit var relativeTimeSpan : String
     @StringRes var baseString = R.string.requested_timespan
 
@@ -71,11 +70,11 @@ data class Consent(
     private fun modifyData() {
         if (status == RequestStatus.GRANTED) {
             relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(lastUpdated)
-            detailsVisibility = View.GONE
+            showDetails = false
             baseString = R.string.granted_timespan
         } else {
-            relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(createdAt)
-            detailsVisibility = View.VISIBLE
+            createdAt?.let { relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(createdAt) }
+            showDetails = true
             baseString = R.string.requested_timespan
         }
     }

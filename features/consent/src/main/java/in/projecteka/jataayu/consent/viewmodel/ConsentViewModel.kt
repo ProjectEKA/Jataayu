@@ -25,8 +25,16 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
     val consentsListResponse = liveDataOf<ConsentsListResponse>()
     var requestedConsentsList = MutableLiveData<List<Consent>>()
     var grantedConsentsList = MutableLiveData<List<Consent>>()
-    private val grantedConsentStatusList = listOf(R.string.status_active_granted_consents,R.string.status_expired_granted_consents, R.string.status_all_granted_consents)
-    private val requestedConsentStatusList = listOf(R.string.status_active_requested_consents, R.string.status_expired_requested_consents, R.string.status_all_requested_consents)
+    private val grantedConsentStatusList = listOf(
+        R.string.status_active_granted_consents,
+        R.string.status_expired_granted_consents,
+        R.string.status_all_granted_consents
+    )
+    private val requestedConsentStatusList = listOf(
+        R.string.status_active_requested_consents,
+        R.string.status_expired_requested_consents,
+        R.string.status_all_requested_consents
+    )
 
     internal var selectedProviderName = String.EMPTY
 
@@ -93,7 +101,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
     }
 
     fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> {
-        var items = mutableListOf<String>()
+        val items = mutableListOf<String>()
         if (flow == ConsentFlow.GRANTED_CONSENTS) {
             grantedConsentStatusList.forEach { items.add(getFormattedItem(resources, it, GRANTED)) }
         } else {
@@ -106,16 +114,10 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         resources: Resources,
         filterItem: Int,
         requestStatus: RequestStatus
-    ):
-            String {
+    ): String {
         var count = 0
 
-
-        val list = if(requestStatus == GRANTED){
-            grantedConsentsList.value
-        } else{
-            requestedConsentsList.value
-        }
+        val list = if (requestStatus == GRANTED) grantedConsentsList.value else requestedConsentsList.value
 
         list.let {
             it?.forEach { consent ->
@@ -171,6 +173,10 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         grantedConsentsList.value = consentsListResponse.value?.requests!!.filter {
             it.status == GRANTED
         }
+    }
+
+    fun revokeConsent(consent: Consent) {
+        repository.revokeConsent(consent)
     }
 }
 

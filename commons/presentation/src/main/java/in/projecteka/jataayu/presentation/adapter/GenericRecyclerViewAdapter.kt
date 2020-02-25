@@ -10,42 +10,51 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
 open class GenericRecyclerViewAdapter : RecyclerView.Adapter<GenericRecyclerViewAdapter.RecyclerViewHolder> {
-    var listOfBindingModels: List<IDataBindingModel>? = null
+    var listOfBindingModels = arrayListOf<IDataBindingModel>()
     var itemClickCallback: ItemClickCallback? = null
 
     constructor() {
-        this.listOfBindingModels = ArrayList()
+        listOfBindingModels = ArrayList()
     }
 
     constructor(itemClickCallback: ItemClickCallback) {
         this.itemClickCallback = itemClickCallback
-        this.listOfBindingModels = ArrayList()
+        listOfBindingModels = ArrayList()
     }
 
-    constructor(itemClickCallback: ItemClickCallback, listIModel: List<IDataBindingModel>) {
+    constructor(itemClickCallback: ItemClickCallback, listIModels: List<IDataBindingModel>) {
         this.itemClickCallback = itemClickCallback
-        this.listOfBindingModels = listIModel
+        listOfBindingModels.clear()
+        listOfBindingModels.addAll(listIModels)
     }
 
     open fun updateData(bindingModels: List<IDataBindingModel>?) {
-        listOfBindingModels = bindingModels
-        notifyDataSetChanged()
+        bindingModels?.let {
+            listOfBindingModels.clear()
+            listOfBindingModels.addAll(bindingModels)
+            notifyDataSetChanged()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): RecyclerViewHolder {
-        val iDataBindingModel: IDataBindingModel = listOfBindingModels!![position]
+        val iDataBindingModel: IDataBindingModel = listOfBindingModels[position]
         val binding: ViewDataBinding =
-            inflate<ViewDataBinding>(LayoutInflater.from(parent.context), iDataBindingModel.layoutResId(), parent, false)
+            inflate<ViewDataBinding>(
+                LayoutInflater.from(parent.context),
+                iDataBindingModel.layoutResId(),
+                parent,
+                false
+            )
         return RecyclerViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        val viewModel = listOfBindingModels!![position]
+        val viewModel = listOfBindingModels[position]
         holder.bind(viewModel)
     }
 
     override fun getItemCount(): Int {
-        return if (listOfBindingModels == null) 0 else listOfBindingModels!!.size
+        return listOfBindingModels.size
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -67,5 +76,16 @@ open class GenericRecyclerViewAdapter : RecyclerView.Adapter<GenericRecyclerView
                 itemClickCallback?.onItemClick(iDataBindingModel, binding)
             }
         }
+    }
+
+    fun addItem(iDataBindingModel: IDataBindingModel): Int {
+        listOfBindingModels.add(iDataBindingModel)
+        return listOfBindingModels.size
+    }
+
+    fun removeItem(iDataBindingModel: IDataBindingModel): Int {
+        val index = listOfBindingModels.indexOf(iDataBindingModel)
+        listOfBindingModels.remove(iDataBindingModel)
+        return index
     }
 }

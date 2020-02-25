@@ -10,6 +10,9 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 fun <T> Context.startActivity(clazz: Class<T>) {
@@ -65,4 +68,14 @@ inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, obje
 
 fun View.show(shouldShow: Boolean) {
     this.visibility = if (shouldShow) View.VISIBLE else View.GONE
+}
+
+fun <T> Observable<T>.get(): Observable<T> {
+    return this.subscribeOn(Schedulers.newThread())
+        .observeOn(AndroidSchedulers.mainThread())
+}
+
+fun <T> Observable<T>.getIo(): Observable<T> {
+    return this.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
 }
