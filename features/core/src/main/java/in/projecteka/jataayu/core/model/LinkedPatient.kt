@@ -6,7 +6,7 @@ data class LinkedPatient(
     @SerializedName("id") val id: String,
     @SerializedName("firstName") val firstName: String,
     @SerializedName("lastName") val lastName: String,
-    @SerializedName("links") val links: List<Links?>
+    @SerializedName("links") val links: List<Links>
 ) {
     fun getFullName(): String {
         return "$firstName $lastName"

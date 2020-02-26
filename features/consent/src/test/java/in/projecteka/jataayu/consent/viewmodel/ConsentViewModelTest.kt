@@ -5,14 +5,13 @@ import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
 import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,9 +36,6 @@ class ConsentViewModelTest {
     private lateinit var repository: ConsentRepository
 
     @Mock
-    private lateinit var responseCallback: ResponseCallback
-
-    @Mock
     private lateinit var resources: Resources
 
     @Mock
@@ -56,8 +52,9 @@ class ConsentViewModelTest {
 
         consentViewModel = ConsentViewModel(repository)
 
-        consentsListResponse =
-            Gson().fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)
+        consentsListResponse = Gson()
+            .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)
+
         `when`(repository.getConsents()).thenReturn(call)
         `when`(call.enqueue(any()))
             .then { invocation ->
@@ -65,14 +62,12 @@ class ConsentViewModelTest {
                 callback.onResponse(call, Response.success(consentsListResponse))
             }
 
-        consentViewModel.getConsents(responseCallback)
-        consentViewModel.filterConsents()
+        consentViewModel.getConsents()
+        consentViewModel.filterConsents(consentsListResponse.requests)
     }
 
     @Test
     fun shouldPopulateFilterItemsForRequestedConsents() {
-        consentViewModel.requests = Response.success(consentsListResponse).body()?.requests!!
-
         `when`(resources.getString(R.string.status_active_requested_consents)).thenReturn("Active requested consents (%d)")
         `when`(resources.getString(R.string.status_expired_requested_consents)).thenReturn("Expired requested consents (%d)")
         `when`(resources.getString(R.string.status_all_requested_consents)).thenReturn("All requested consents (%d)")
@@ -81,9 +76,8 @@ class ConsentViewModelTest {
         assertEquals(dummyRequestedFilterList(), populatedFilterItems)
     }
 
-   @Test
+    @Test
     fun shouldPopulateFilterItemsForGrantedConsents() {
-        consentViewModel.requests = Response.success(consentsListResponse).body()?.requests!!
 
         `when`(resources.getString(R.string.status_active_granted_consents)).thenReturn("Active granted consents (%d)")
         `when`(resources.getString(R.string.status_expired_granted_consents)).thenReturn("Expired granted consents (%d)")
@@ -109,21 +103,17 @@ class ConsentViewModelTest {
         return list
     }
 
-    @Test
-    fun shouldReturnFalseIfRequestsNotAvailable() {
-        assertTrue(consentViewModel.isRequestAvailable())
-    }
 
     @Test
-    fun shouldFetchConsents(){
+    fun shouldFetchConsents() {
         verify(repository).getConsents()
         verify(call).enqueue(any())
-        assertEquals(consentsListResponse, consentViewModel.consentsListResponse.value)
+        assertEquals(Success(consentsListResponse),consentViewModel.consentListResponse.value )
     }
 
     @Test
-    fun shouldFilterConsents(){
-        consentViewModel.filterConsents()
+    fun shouldFilterConsents() {
+        consentViewModel.filterConsents(consentsListResponse.requests)
         assertEquals(dummyRequestedConsentsList(), consentViewModel.requestedConsentsList.value)
         assertEquals(dummyGrantedConsentsList(), consentViewModel.grantedConsentsList.value)
     }

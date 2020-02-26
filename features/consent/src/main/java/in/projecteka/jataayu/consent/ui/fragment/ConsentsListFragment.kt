@@ -3,12 +3,13 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
-import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.MessageEventType
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.network.utils.Failure
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
@@ -27,7 +28,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.consent_request_fragment.*
-import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -37,8 +37,8 @@ private const val INDEX_ACTIVE = 0
 private const val INDEX_EXPIRED = 1
 private const val INDEX_ALL = 2
 
-abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback, AdapterView.OnItemSelectedListener,
-    ResponseCallback {
+abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback,
+    AdapterView.OnItemSelectedListener {
     abstract fun getConsentList(): List<Consent>
     abstract fun getNoNewConsentsMessage(): String
     abstract fun getConsentFlow(): ConsentFlow
@@ -46,13 +46,11 @@ abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback, Adapter
     protected lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var flow: ConsentFlow
     private val viewModel: ConsentViewModel by sharedViewModel()
+
     companion object {
         const val CONSENT_FLOW = "consent_flow"
     }
 
-    private val consentObserver = Observer<ConsentsListResponse?> {
-        viewModel.filterConsents()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,10 +63,27 @@ abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback, Adapter
     }
 
 
+    private fun initObservers() {
+        viewModel.consentListResponse.observe(this, Observer {
+            when (it) {
+                is Loading -> showProgressBar(it.isLoading, getString(R.string.loading_requests))
+                is Success -> {
+                    binding.hideRequestsList = !it.data?.requests.isNullOrEmpty()
+                    viewModel.filterConsents(it.data?.requests)
+                }
+                is Failure -> {
+                    //do nothing for now.
+                }
+            }
+        })
+    }
+
     private fun initSpinner(selectedPosition: Int) {
-        val arrayAdapter = ArrayAdapter<String>(context!!,
+        val arrayAdapter = ArrayAdapter<String>(
+            context!!,
             android.R.layout.simple_dropdown_item_1line, android.R.id.text1,
-            viewModel.populateFilterItems(resources, getConsentFlow()))
+            viewModel.populateFilterItems(resources, getConsentFlow())
+        )
         binding.spRequestFilter.adapter = arrayAdapter
         arrayAdapter.notifyDataSetChanged()
         binding.spRequestFilter.setSelection(selectedPosition)
@@ -84,16 +99,13 @@ abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback, Adapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.consentsListResponse.observe(this, consentObserver)
-        viewModel.getConsents(this)
-        showProgressBar(true, getString(R.string.loading_requests))
+        viewModel.getConsents()
+        initObservers()
     }
 
 
     protected fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
-        showProgressBar(false)
-        binding.hideRequestsList = !viewModel.isRequestAvailable()
-        rvConsents.apply {
+        with(rvConsents) {
             layoutManager = LinearLayoutManager(context)
             adapter = GenericRecyclerViewAdapter(
                 this@ConsentsListFragment,
@@ -135,22 +147,9 @@ abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback, Adapter
         (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(requests)
     }
 
-    override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
-        (body as? ConsentsListResponse)?.requests?.let { viewModel.requests = it }
-    }
-
-    override fun onFailure(errorBody: ResponseBody) {
-        showProgressBar(false)
-    }
-
-    override fun onFailure(t: Throwable) {
-        showProgressBar(false)
-    }
-
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onConsentGranted(messageEventType: MessageEventType) {
-        viewModel.getConsents(this)
+        viewModel.getConsents()
         EventBus.getDefault().unregister(this)
     }
 }

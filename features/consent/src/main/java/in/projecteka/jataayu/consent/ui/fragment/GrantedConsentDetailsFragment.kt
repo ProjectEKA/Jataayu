@@ -5,7 +5,9 @@ import `in`.projecteka.jataayu.consent.databinding.GrantedConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PayloadResource
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
@@ -22,38 +24,50 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback, ResponseCallback {
+class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
 
     private lateinit var binding: GrantedConsentDetailsFragmentBinding
-
 
     private lateinit var consent: Consent
 
     private var hiTypeObjects = ArrayList<HiType>()
 
-    private lateinit var linkedAccounts : List<Links?>
+    private lateinit var linkedAccounts: List<Links?>
 
     private val eventBusInstance = EventBus.getDefault()
 
     private val viewModel: ConsentViewModel by sharedViewModel()
 
-    private val consentArtifactResponseObserver = Observer<ConsentArtifactResponse> {
-        if (it.consents.isNotEmpty()) {
-            eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
-            activity?.finish()
+    private val consentArtifactResponseObserver = Observer<PayloadResource<ConsentArtifactResponse>> {
+        when (it) {
+            is Loading -> {
+                showProgressBar(it.isLoading)
+            }
+            is Success -> {
+                if (it.data?.consents?.isNotEmpty() == true) {
+                    eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
+                    activity?.finish()
+                }
+            }
         }
     }
 
-    private val linkedAccountsObserver = Observer<LinkedAccountsResponse> { linkedAccountsResponse ->
-        linkedAccounts = linkedAccountsResponse.linkedPatient.links
-        linkedAccounts.forEach { link -> link?.careContexts?.forEach { it.contextChecked = true } }
+    private val linkedAccountsObserver = Observer<PayloadResource<LinkedAccountsResponse>> {
+        when (it) {
+            is Loading -> showProgressBar(it.isLoading)
+            is Success -> {
+                it.data?.linkedPatient?.links?.let { links ->
+                    linkedAccounts = links
+                    linkedAccounts.forEach { link -> link?.careContexts?.forEach { it.contextChecked = true } }
+                }
+            }
+        }
     }
 
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
         itemViewBinding: ViewDataBinding
-    ) {
-    }
+    ) {}
 
     companion object {
         fun newInstance() = GrantedConsentDetailsFragment()
@@ -64,11 +78,16 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback, Respons
         if (!eventBusInstance.isRegistered(this))
             eventBusInstance.register(this)
 
-        viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
+        initObservers()
+
         if (viewModel.linkedAccountsResponse.value == null) {
-            showProgressBar(true)
-            viewModel.getLinkedAccounts(this)
+            viewModel.getLinkedAccounts()
         }
+
+    }
+
+    private fun initObservers() {
+        viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
 
         viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
     }
@@ -82,19 +101,16 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback, Respons
     }
 
     private fun renderUi() {
-        binding.consent = consent
+        with(binding) {
+            consent = this@GrantedConsentDetailsFragment.consent
+            cgRequestInfoTypes.removeAllViews()
+        }
 
         eventBusInstance.postSticky(consent)
 
-        binding.cgRequestInfoTypes.removeAllViews()
-
         if (hiTypeObjects.isEmpty()) createHiTypesFromConsent()
 
-        for (hiType in hiTypeObjects) {
-            if (hiType.isChecked) {
-                binding.cgRequestInfoTypes.addView(newChip(hiType.type))
-            }
-        }
+        hiTypeObjects.forEach { if (it.isChecked) binding.cgRequestInfoTypes.addView(newChip(it.type)) }
 
     }
 
@@ -124,18 +140,6 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback, Respons
     @Subscribe(sticky = true)
     public fun onConsentReceived(consent: Consent) {
         this.consent = consent
-    }
-
-    override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
-    }
-
-    override fun onFailure(errorBody: ResponseBody) {
-        showProgressBar(false)
-    }
-
-    override fun onFailure(t: Throwable) {
-        showProgressBar(false)
     }
 
 }

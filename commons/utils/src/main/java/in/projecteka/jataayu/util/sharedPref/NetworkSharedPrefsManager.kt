@@ -25,14 +25,14 @@ class NetworkSharedPrefsManager {
             sharedPreferences.edit { putString(AUTH_TOKEN, authToken) }
         }
 
-        fun getAuthToken(context: Context): String? {
+        fun getAuthToken(context: Context): String {
             val sharedPreferences = context.getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-            return sharedPreferences.getString(AUTH_TOKEN, "U2hyZXlhQG5jZw==")
+            return sharedPreferences.getString(AUTH_TOKEN, "U2hyZXlhQG5jZw==") ?: "U2hyZXlhQG5jZw=="
         }
 
-        fun getBaseUrl(context: Context): String? {
+        fun getBaseUrl(context: Context): String {
             return context.getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-                .getString(NETWORK_HOST, PROD_URL)
+                .getString(NETWORK_HOST, PROD_URL) ?: PROD_URL
         }
 
         fun getEndpointIndex(context: Context): Int {
