@@ -1,9 +1,11 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
+import `in`.projecteka.jataayu.consent.callback.DeleteConsentCallback
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
+import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.MessageEventType
@@ -27,6 +29,7 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.consent_request_fragment.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -37,14 +40,16 @@ private const val INDEX_ACTIVE = 0
 private const val INDEX_EXPIRED = 1
 private const val INDEX_ALL = 2
 
-abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback,
-    AdapterView.OnItemSelectedListener {
+abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
+    DeleteConsentCallback {
     abstract fun getConsentList(): List<Consent>
     abstract fun getNoNewConsentsMessage(): String
     abstract fun getConsentFlow(): ConsentFlow
 
     protected lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var flow: ConsentFlow
+    private lateinit var consentsListAdapter: ConsentsListAdapter
+
     private val viewModel: ConsentViewModel by sharedViewModel()
 
     companion object {
@@ -68,12 +73,21 @@ abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback,
             when (it) {
                 is Loading -> showProgressBar(it.isLoading, getString(R.string.loading_requests))
                 is Success -> {
-                    binding.hideRequestsList = !it.data?.requests.isNullOrEmpty()
+                    binding.hideRequestsList = it.data?.requests.isNullOrEmpty()
                     viewModel.filterConsents(it.data?.requests)
                 }
                 is Failure -> {
                     //do nothing for now.
                 }
+            }
+        })
+        viewModel.onClickConsentEvent.observe(this, Observer {
+            val intent = Intent(context, ConsentDetailsActivity::class.java)
+            intent.putExtra(CONSENT_FLOW, flow.ordinal)
+            startActivity(intent)
+            EventBus.getDefault().postSticky(it)
+            if (!EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().register(this)
             }
         })
     }
@@ -82,7 +96,7 @@ abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback,
         val arrayAdapter = ArrayAdapter<String>(
             context!!,
             android.R.layout.simple_dropdown_item_1line, android.R.id.text1,
-            viewModel.populateFilterItems(resources, getConsentFlow())
+            viewModel.populateFilterItems(getConsentFlow()).map { resources.getString(it.first).format(it.second) }
         )
         binding.spRequestFilter.adapter = arrayAdapter
         arrayAdapter.notifyDataSetChanged()
@@ -103,32 +117,21 @@ abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback,
         initObservers()
     }
 
-
     protected fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
-        with(rvConsents) {
+        consentsListAdapter = ConsentsListAdapter(
+            viewModel,
+            requests, this@ConsentsListFragment
+        )
+        rvConsents.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = GenericRecyclerViewAdapter(
-                this@ConsentsListFragment,
-                requests
-            )
+            adapter = consentsListAdapter
             addItemDecoration(DividerItemDecorator(getDrawable(context!!, R.color.transparent)!!))
         }
         initSpinner(selectedSpinnerPosition)
         sp_request_filter.setSelection(INDEX_ACTIVE)
     }
 
-    override fun onItemClick(
-        iDataBindingModel: IDataBindingModel,
-        itemViewBinding: ViewDataBinding
-    ) {
-        val intent = Intent(context, ConsentDetailsActivity::class.java)
-        intent.putExtra(CONSENT_FLOW, flow?.ordinal)
-        startActivity(intent)
-        EventBus.getDefault().postSticky(iDataBindingModel as Consent)
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
-    }
+
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -144,12 +147,32 @@ abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback,
 
 
     private fun filterRequests(requests: List<Consent>) {
-        (rvConsents.adapter as GenericRecyclerViewAdapter).updateData(requests)
+        (rvConsents.adapter as ConsentsListAdapter).updateData(requests)
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onConsentGranted(messageEventType: MessageEventType) {
         viewModel.getConsents()
         EventBus.getDefault().unregister(this)
+    }
+
+    override fun confirmRevoke(iDataBindingModel: IDataBindingModel) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(R.string.title_revoke_consent)
+            .setPositiveButton(R.string.btn_revoke_consent) { _, _ ->
+                revokeConsent(iDataBindingModel)
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .setMessage(R.string.msg_revoke_consent)
+            .show()
+    }
+
+    private fun revokeConsent(iDataBindingModel: IDataBindingModel) {
+        consentsListAdapter.notifyItemRemoved(consentsListAdapter.removeItem(iDataBindingModel))
+        val consents = ArrayList(viewModel.grantedConsentsList.value!!)
+        consents.remove(iDataBindingModel)
+        viewModel.grantedConsentsList.value = consents
+        initSpinner(sp_request_filter.selectedItemPosition)
+        viewModel.revokeConsent(iDataBindingModel as Consent)
     }
 }

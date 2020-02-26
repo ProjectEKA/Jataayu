@@ -1,8 +1,10 @@
 package `in`.projecteka.jataayu.presentation.adapter
 
+import android.R
 import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter

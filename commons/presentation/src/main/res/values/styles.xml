@@ -14,6 +14,7 @@
         <item name="android:toolbarStyle">@style/Toolbar</item>
         <item name="android:tabWidgetStyle">@style/AppTabLayout</item>
         <item name="android:textViewStyle">@style/TextAppearance</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
     </style>
 
     <style name="AppTabLayout" parent="Widget.Design.TabLayout">

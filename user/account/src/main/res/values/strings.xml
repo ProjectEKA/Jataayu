@@ -19,7 +19,6 @@
     <string name="date_of_birth_optional">Date of birth</string>
     <string name="username_validation_hint">Should contain a-z, A-Z, 0-9, . and -\nLength should be 3 and 150 characters. Username is case sensitive</string>
     <string name="password_validation_hint">Minimum length equal to 8, one uppercase, one lowercase, one special character -- One number</string>
-    <string name="register">register</string>
     <string name="alphabets_and_space_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890</string>
     <string name="account_details">Account details</string>
     <string name="should_not_be_empty">Should not be empty</string>

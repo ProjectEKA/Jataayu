@@ -8,4 +8,7 @@
     <string name="btn_continue">Continue</string>
     <string name="enter_otp">Enter 6 digit OTP</string>
     <string name="invalid_otp">Invalid OTP entered. Please try again.</string>
+    <string name="to">to</string>
+    <string name="from">From</string>
+    <string name="register">Register</string>
 </resources>

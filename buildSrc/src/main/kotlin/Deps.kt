@@ -26,7 +26,7 @@ object LibVersions {
     const val constraintLayout = "1.1.3"
     const val retrofit = "2.6.2"
     const val gradle = "0.21.0"
-    const val androidStudio = "3.5.3"
+    const val androidStudio = "3.6.0"
     const val dicemelonJacoco = "0.1.4"
     const val loggingInterceptor = "4.0.0"
     const val mockito = "3.2.0"

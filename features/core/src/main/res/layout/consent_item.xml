@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="14dp"
+        android:descendantFocusability="afterDescendants"
         android:orientation="vertical"
         android:paddingLeft="@dimen/content_margin_small"
         android:paddingRight="@dimen/content_margin_small">
@@ -36,6 +37,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:descendantFocusability="afterDescendants"
             app:cardBackgroundColor="@color/light_grey"
             app:cardUseCompatPadding="true"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -48,7 +50,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
+                android:descendantFocusability="afterDescendants"
                 android:padding="@dimen/content_margin_small">
+
+                <ImageButton
+                    android:id="@+id/ib_delete_consent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_padding_large"
+                    app:toggledVisibility="@{!consent.showDetails}"
+                    android:background="@drawable/ic_delete"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_requester_name"
@@ -106,9 +119,9 @@
                     style="@style/ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="@+id/lbl_purpose_of_request"
                     android:text="@{consent.purpose.text}"
                     app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
+                    app:layout_constraintStart_toStartOf="@+id/lbl_purpose_of_request"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_purpose_of_request"
                     tools:text="General Consulting" />
 
@@ -117,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_calendar"
-                    android:visibility="@{consent.detailsVisibility}"
+                    app:toggledVisibility="@{consent.showDetails}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration" />
 
@@ -125,12 +138,12 @@
                     android:id="@+id/lbl_requests_information_duration"
                     style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
-                    app:layout_constraintStart_toStartOf="@+id/lbl_purpose_of_request"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_small"
                     android:text="@string/requests_information"
-                    android:visibility="@{consent.detailsVisibility}"
+                    app:toggledVisibility="@{consent.showDetails}"
                     app:layout_constraintLeft_toRightOf="@+id/ic_requests_info"
+                    app:layout_constraintStart_toStartOf="@+id/lbl_purpose_of_request"
                     app:layout_constraintTop_toBottomOf="@id/ic_purpose_of_request" />
 
                 <TextView
@@ -138,10 +151,10 @@
                     style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="From"
-                    android:visibility="@{consent.detailsVisibility}"
-                    app:layout_constraintStart_toStartOf="@+id/lbl_requests_information_duration"
+                    android:text="@string/from"
+                    app:toggledVisibility="@{consent.showDetails}"
                     app:layout_constraintLeft_toRightOf="@+id/ic_purpose_of_request"
+                    app:layout_constraintStart_toStartOf="@+id/lbl_requests_information_duration"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration" />
 
                 <TextView
@@ -150,7 +163,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/content_padding_medium"
-                    android:visibility="@{consent.detailsVisibility}"
+                    app:toggledVisibility="@{consent.showDetails}"
                     android:text="@{consent.getPermissionStartDate()}"
                     app:layout_constraintLeft_toRightOf="@+id/lbl_requests_information_from"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration"
@@ -163,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/content_padding_medium"
                     android:text="to"
-                    android:visibility="@{consent.detailsVisibility}"
+                    app:toggledVisibility="@{consent.showDetails}"
                     app:layout_constraintLeft_toRightOf="@+id/tv_requests_info_from"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration" />
 
@@ -173,7 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/content_padding_medium"
-                    android:visibility="@{consent.detailsVisibility}"
+                    app:toggledVisibility="@{consent.showDetails}"
                     android:text="@{consent.getPermissionEndDate()}"
                     app:layout_constraintLeft_toRightOf="@+id/lbl_requests_information_to"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_requests_information_duration"
@@ -184,6 +197,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_arrow_right"
                     app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginEnd="@dimen/content_padding_medium"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_purpose_of_request"
                     app:layout_constraintTop_toTopOf="@id/tv_purpose_of_request" />
 

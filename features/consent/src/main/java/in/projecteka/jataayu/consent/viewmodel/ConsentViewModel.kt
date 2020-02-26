@@ -14,13 +14,15 @@ import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
+import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.util.extension.EMPTY
+import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
-import android.content.res.Resources
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() {
+class ConsentViewModel(private val repository: ConsentRepository) : ViewModel(), ItemClickCallback {
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
@@ -29,6 +31,8 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
     val requestedConsentsList = MutableLiveData<List<Consent>>()
     val grantedConsentsList = MutableLiveData<List<Consent>>()
 
+
+    val onClickConsentEvent = SingleLiveEvent<Consent>()
 
     private val grantedConsentStatusList = listOf(
         R.string.status_active_granted_consents,
@@ -47,16 +51,16 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         consentListResponse.fetch(repository.getConsents())
 
 
-    fun getLinkedAccounts() {
+    fun getLinkedAccounts() =
         linkedAccountsResponse.fetch(repository.getLinkedAccounts())
-    }
+
 
     fun grantConsent(
         requestId: String,
         consentArtifacts: List<ConsentArtifact>
-    ) {
+    ) =
         consentArtifactResponse.fetch(repository.grantConsent(requestId, ConsentArtifactRequest((consentArtifacts))))
-    }
+
 
     fun getConsentArtifact(
         links: List<Links>,
@@ -88,18 +92,17 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         return consentArtifactList
     }
 
-    fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> =
+    fun populateFilterItems(flow: ConsentFlow?): List<Pair<Int, Int>> =
         if (flow == ConsentFlow.GRANTED_CONSENTS) {
-            grantedConsentStatusList.map { getFormattedItem(resources, it, GRANTED) }
+            grantedConsentStatusList.map { getFormattedItem(it, GRANTED) }
         } else {
             requestedConsentStatusList.map {
-                getFormattedItem(resources, it, REQUESTED)
+                getFormattedItem(it, REQUESTED)
             }
         }
 
 
-    private fun getFormattedItem(resources: Resources, filterItem: Int, requestStatus: RequestStatus): String {
-
+    private fun getFormattedItem(filterItem: Int, requestStatus: RequestStatus): Pair<Int, Int> {
         val list = if (requestStatus == GRANTED) {
             grantedConsentsList.value
         } else {
@@ -122,8 +125,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
                 }
             }
         }
-
-        return resources.getString(filterItem).format(count)
+        return Pair(filterItem, count ?: 0)
     }
 
     fun getItems(links: List<Links?>): List<IDataBindingModel> {
@@ -155,6 +157,18 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         grantedConsentsList.value = consentList?.filter {
             it.status == GRANTED
         }
+    }
+
+    fun revokeConsent(consent: Consent) {
+        repository.revokeConsent(consent)
+    }
+
+    override fun onItemClick(
+        iDataBindingModel: IDataBindingModel,
+        itemViewBinding: ViewDataBinding
+    ) {
+        if (iDataBindingModel is Consent)
+            onClickConsentEvent.value = iDataBindingModel
     }
 }
 

@@ -9,7 +9,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class GrantedConsentListFragment : ConsentsListFragment() {
+class GrantedConsentListFragment : ConsentsListFragment(){
 
     companion object {
         fun newInstance() = GrantedConsentListFragment()
