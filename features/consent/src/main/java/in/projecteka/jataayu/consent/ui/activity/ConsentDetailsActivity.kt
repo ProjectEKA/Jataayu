@@ -8,7 +8,9 @@ import `in`.projecteka.jataayu.consent.ui.fragment.ConsentsListFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.EditConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.GrantedConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
+import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import android.content.Intent
@@ -49,15 +51,21 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
             finish()
         }
         consentId?.let { id ->
-            viewModel.consentsListResponse.observe(this, Observer<ConsentsListResponse> { consentsListResponse ->
-                consentsListResponse.requests.find { it.id == consentId }?.let {
-                    EventBus.getDefault().postSticky(it)
-                    replaceFragment(ConsentDetailsFragment.newInstance())
+            viewModel.consentListResponse.observe(this, Observer<PayloadResource<ConsentsListResponse>> { payload ->
+                when (payload) {
+                    is Success -> {
+                        payload.data?.requests?.find { it.id == consentId }?.let {
+                            EventBus.getDefault().postSticky(it)
+                            replaceFragment(ConsentDetailsFragment.newInstance())
+                        }
+                    }
                 }
+
             })
-            viewModel.getConsents(this)
+            viewModel.getConsents()
         }
     }
+
 
     private fun getDetailsFragment(): BaseFragment {
         return if (getFlowType() == ConsentFlow.REQUESTED_CONSENTS.ordinal)

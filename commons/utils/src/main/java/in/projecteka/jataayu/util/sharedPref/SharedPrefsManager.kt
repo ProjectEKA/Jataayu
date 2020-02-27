@@ -55,7 +55,7 @@ object SharedPrefsManager {
 
     fun getStringSet(key: String, context: Context): HashSet<String> {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val set = sharedPreferences.getStringSet(key, HashSet())
+        val set = sharedPreferences.getStringSet(key, HashSet<String>())
         return HashSet(set)
     }
 
