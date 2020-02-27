@@ -96,8 +96,7 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
         val arrayAdapter = ArrayAdapter<String>(
             context!!,
             android.R.layout.simple_dropdown_item_1line, android.R.id.text1,
-            viewModel.populateFilterItems(getConsentFlow()).map { resources.getString(it.first).format(it.second) }
-        )
+            viewModel.populateFilterItems(resources,getConsentFlow()))
         binding.spRequestFilter.adapter = arrayAdapter
         arrayAdapter.notifyDataSetChanged()
         binding.spRequestFilter.setSelection(selectedPosition)

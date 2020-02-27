@@ -18,6 +18,7 @@ import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
+import android.content.res.Resources
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -92,17 +93,21 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel(),
         return consentArtifactList
     }
 
-    fun populateFilterItems(flow: ConsentFlow?): List<Pair<Int, Int>> =
+    fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> =
         if (flow == ConsentFlow.GRANTED_CONSENTS) {
-            grantedConsentStatusList.map { getFormattedItem(it, GRANTED) }
+            grantedConsentStatusList.map { getFormattedItem(resources,it, GRANTED) }
         } else {
             requestedConsentStatusList.map {
-                getFormattedItem(it, REQUESTED)
+                getFormattedItem(resources,it, REQUESTED)
             }
         }
 
 
-    private fun getFormattedItem(filterItem: Int, requestStatus: RequestStatus): Pair<Int, Int> {
+    private fun getFormattedItem(
+        resources: Resources,
+        filterItem: Int,
+        requestStatus: RequestStatus
+    ): String {
         val list = if (requestStatus == GRANTED) {
             grantedConsentsList.value
         } else {
@@ -125,7 +130,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel(),
                 }
             }
         }
-        return Pair(filterItem, count ?: 0)
+        return resources.getString(filterItem).format(count)
     }
 
     fun getItems(links: List<Links?>): List<IDataBindingModel> {

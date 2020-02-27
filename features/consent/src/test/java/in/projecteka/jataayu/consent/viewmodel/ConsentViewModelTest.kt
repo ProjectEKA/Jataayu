@@ -71,7 +71,7 @@ class ConsentViewModelTest {
         `when`(resources.getString(R.string.status_active_requested_consents)).thenReturn("Active requested consents (%d)")
         `when`(resources.getString(R.string.status_expired_requested_consents)).thenReturn("Expired requested consents (%d)")
         `when`(resources.getString(R.string.status_all_requested_consents)).thenReturn("All requested consents (%d)")
-        val populatedFilterItems = consentViewModel.populateFilterItems(ConsentFlow.REQUESTED_CONSENTS)
+        val populatedFilterItems = consentViewModel.populateFilterItems(resources, ConsentFlow.REQUESTED_CONSENTS)
 
         assertEquals(dummyRequestedFilterList(), populatedFilterItems)
     }
@@ -82,7 +82,7 @@ class ConsentViewModelTest {
         `when`(resources.getString(R.string.status_active_granted_consents)).thenReturn("Active granted consents (%d)")
         `when`(resources.getString(R.string.status_expired_granted_consents)).thenReturn("Expired granted consents (%d)")
         `when`(resources.getString(R.string.status_all_granted_consents)).thenReturn("All Granted Consents (%d)")
-        val populatedFilterItems = consentViewModel.populateFilterItems(ConsentFlow.GRANTED_CONSENTS)
+        val populatedFilterItems = consentViewModel.populateFilterItems(resources, ConsentFlow.GRANTED_CONSENTS)
 
         assertEquals(dummyGrantedFilterList(), populatedFilterItems)
     }
@@ -108,7 +108,7 @@ class ConsentViewModelTest {
     fun shouldFetchConsents() {
         verify(repository).getConsents()
         verify(call).enqueue(any())
-        assertEquals(Success(consentsListResponse),consentViewModel.consentListResponse.value )
+        assertEquals(Success(consentsListResponse), consentViewModel.consentListResponse.value)
     }
 
     @Test
