@@ -5,7 +5,7 @@
     <string name="tab_requests">requests</string>
     <string name="tab_consents">consents</string>
 
-    <string name="new_request">New request</string>
+    <string name="new_request">New Request</string>
     <string name="edit_request">Edit request</string>
     <string name="confirm_request">Confirm request</string>
     <string name="edit">Edit</string>
@@ -34,4 +34,8 @@
     <string name="all_linked_providers">All linked providers</string>
     <string name="confirm">confirm</string>
     <string name="grant_consent_disclaimer">By granting this consent, you also agree to let %s view your linked accounts.</string>
+    <string name="consent_details">Consent Details</string>
+    <string name="all_providers">All Providers</string>
+    <string name="you_have_given_access_to">You have given access to</string>
+    <string name="all_linked_providers_with_count">All linked providers (%d)</string>
 </resources>

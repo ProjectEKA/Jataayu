@@ -54,8 +54,8 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
     EditConsentClickHandler, ItemClickCallback, ResponseCallback {
 
     private lateinit var binding: FragmentConsentDetailsEditBinding
-    lateinit var listItems: List<IDataBindingModel>
-    lateinit var linkedAccounts: List<Links?>
+    private lateinit var listItems: List<IDataBindingModel>
+    private lateinit var linkedAccounts: List<Links?>
 
     private val eventBusInstance: EventBus = EventBus.getDefault()
     lateinit var consent: Consent

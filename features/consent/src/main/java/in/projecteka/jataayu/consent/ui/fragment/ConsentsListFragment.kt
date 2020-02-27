@@ -112,7 +112,12 @@ abstract class ConsentsListFragment : BaseFragment(), ItemClickCallback, Adapter
         val intent = Intent(context, ConsentDetailsActivity::class.java)
         intent.putExtra(CONSENT_FLOW, flow?.ordinal)
         startActivity(intent)
-        EventBus.getDefault().postSticky(iDataBindingModel as Consent)
+        if (getConsentFlow() == ConsentFlow.GRANTED_CONSENTS){
+            EventBus.getDefault().postSticky((iDataBindingModel as Consent).id)
+        } else{
+            EventBus.getDefault().postSticky(iDataBindingModel as Consent)
+        }
+
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }

@@ -1,17 +1,14 @@
 package `in`.projecteka.jataayu.ui
 
 import `in`.projecteka.jataayu.R
-import `in`.projecteka.jataayu.account.AccountCreationActivity
 import `in`.projecteka.jataayu.consent.ui.fragment.ConsentHostFragment
 import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.databinding.ActivityLauncherBinding
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.provider.ui.ProviderActivity
-import `in`.projecteka.jataayu.registration.ui.activity.RegistrationActivity
 import `in`.projecteka.jataayu.ui.LauncherActivity.REQUEST_CODES.*
 import `in`.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
 import `in`.projecteka.jataayu.util.extension.startActivity
-import `in`.projecteka.jataayu.util.extension.startActivityForResult
 import `in`.projecteka.jataayu.util.sharedPref.SharedPrefsManager
 import android.app.Activity
 import android.content.Intent
@@ -80,7 +77,15 @@ class LauncherActivity : BaseActivity() {
     }
 
     private fun redirectIfNeeded() {
-        when {
+            binding = DataBindingUtil.setContentView(
+                this,
+                R.layout.activity_launcher
+            )
+
+            initFragments()
+            initBindings()
+            initUi()
+        /*when {
             SharedPrefsManager.getBoolean(PROVIDER_ADDED, false, this) -> {
                 binding = DataBindingUtil.setContentView(
                     this,
@@ -100,7 +105,7 @@ class LauncherActivity : BaseActivity() {
             else -> {
                 startActivityForResult(RegistrationActivity::class.java, REGISTER.ordinal)
             }
-        }
+        }*/
     }
 
     private fun initUi() {

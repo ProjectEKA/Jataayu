@@ -1,107 +1,62 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
-import `in`.projecteka.jataayu.consent.databinding.GrantedConsentDetailsFragmentBinding
-import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
-import `in`.projecteka.jataayu.core.model.*
-import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
+import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
+import `in`.projecteka.jataayu.core.model.Links
+import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
-import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
-import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import com.google.android.material.chip.Chip
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.consent_details_fragment.*
 import okhttp3.ResponseBody
-import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback, ResponseCallback {
+class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ResponseCallback {
 
-    private lateinit var binding: GrantedConsentDetailsFragmentBinding
+    private lateinit var consentId: String
+    private lateinit var genericRecyclerViewAdapter: GenericRecyclerViewAdapter
+    private lateinit var linkedAccounts: List<Links?>
+    private lateinit var linkedAccountsAndCount : Pair<List<IDataBindingModel>, Int>
 
-
-    private lateinit var consent: Consent
-
-    private var hiTypeObjects = ArrayList<HiType>()
-
-    private lateinit var linkedAccounts : List<Links?>
-
-    private val eventBusInstance = EventBus.getDefault()
-
-    private val viewModel: ConsentViewModel by sharedViewModel()
-
-    private val consentArtifactResponseObserver = Observer<ConsentArtifactResponse> {
-        if (it.consents.isNotEmpty()) {
-            eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
-            activity?.finish()
+    private val grantedConsentDetailsObserver =
+        Observer<List<GrantedConsentDetailsResponse>> { grantedConsents ->
+            this.consent = grantedConsents[0].consentDetail
+            renderUi()
+            populateLinkedAccounts(grantedConsents)
         }
-    }
 
     private val linkedAccountsObserver = Observer<LinkedAccountsResponse> { linkedAccountsResponse ->
-        linkedAccounts = linkedAccountsResponse.linkedPatient.links
-        linkedAccounts.forEach { link -> link?.careContexts?.forEach { it.contextChecked = true } }
-    }
+            linkedAccounts = linkedAccountsResponse.linkedPatient.links
+            viewModel.grantedConsentDetailsResponse.observe(this, grantedConsentDetailsObserver)
 
-    override fun onItemClick(
-        iDataBindingModel: IDataBindingModel,
-        itemViewBinding: ViewDataBinding
-    ) {
+            if (viewModel.grantedConsentDetailsResponse.value == null) {
+                showProgressBar(true)
+                viewModel.getGrantedConsentDetails(consentId, this)
+            }
+        }
+
+    private fun populateLinkedAccounts(grantedConsents: List<GrantedConsentDetailsResponse>) {
+        linkedAccountsAndCount= viewModel.getItems(grantedConsents, linkedAccounts)
+        genericRecyclerViewAdapter =
+            GenericRecyclerViewAdapter(this@GrantedConsentDetailsFragment, linkedAccountsAndCount.first)
+        rvLinkedAccounts.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = genericRecyclerViewAdapter
+            val dividerItemDecorator =
+                DividerItemDecorator(ContextCompat.getDrawable(context!!, R.color.transparent)!!)
+            addItemDecoration(dividerItemDecorator)
+        }
+
+        binding.tvProviders.text = String.format(context!!.getString(R.string.all_linked_providers_with_count), linkedAccountsAndCount.second)
     }
 
     companion object {
         fun newInstance() = GrantedConsentDetailsFragment()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (!eventBusInstance.isRegistered(this))
-            eventBusInstance.register(this)
-
-        viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
-        if (viewModel.linkedAccountsResponse.value == null) {
-            showProgressBar(true)
-            viewModel.getLinkedAccounts(this)
-        }
-
-        viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = GrantedConsentDetailsFragmentBinding.inflate(inflater)
-        return binding.root
-    }
-
-    private fun renderUi() {
-        binding.consent = consent
-
-        eventBusInstance.postSticky(consent)
-
-        binding.cgRequestInfoTypes.removeAllViews()
-
-        if (hiTypeObjects.isEmpty()) createHiTypesFromConsent()
-
-        for (hiType in hiTypeObjects) {
-            if (hiType.isChecked) {
-                binding.cgRequestInfoTypes.addView(newChip(hiType.type))
-            }
-        }
-
-    }
-
-    private fun createHiTypesFromConsent() {
-        for (hiType in consent.hiTypes) {
-            hiTypeObjects.add(HiType(hiType, true))
-        }
     }
 
     override fun onStop() {
@@ -109,21 +64,26 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback, Respons
         eventBusInstance.unregister(this)
     }
 
-    private fun newChip(description: String): Chip? {
-        val chip = Chip(context, null, R.style.Chip_NonEditable)
-        chip.text = description
-        return chip
+    override fun isExpiredOrGranted(): Boolean {
+        return true
     }
 
-    override fun onVisible() {
-        super.onVisible()
-        setTitle(R.string.new_request)
-        renderUi()
+    override fun isGrantedConsent(): Boolean {
+        return true
     }
 
-    @Subscribe(sticky = true)
-    public fun onConsentReceived(consent: Consent) {
-        this.consent = consent
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (!eventBusInstance.isRegistered(this))
+            eventBusInstance.register(this)
+
+        viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
+
+        if (viewModel.linkedAccountsResponse.value == null) {
+            showProgressBar(true)
+            viewModel.getLinkedAccounts(this)
+        }
     }
 
     override fun <T> onSuccess(body: T?) {
@@ -138,4 +98,8 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback, Respons
         showProgressBar(false)
     }
 
+    @Subscribe(sticky = true)
+    public fun onConsentIdReceived(consentId: String) {
+        this.consentId = consentId
+    }
 }

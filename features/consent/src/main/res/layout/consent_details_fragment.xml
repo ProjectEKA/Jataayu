@@ -10,12 +10,20 @@
             type="in.projecteka.jataayu.core.model.Consent" />
 
         <variable
-            name="requestExpired"
-            type="Boolean" />
+            name="grantedConsentArtifact"
+            type="in.projecteka.jataayu.core.model.grantedconsent.GrantedConsentArtifactDetails" />
 
         <variable
             name="clickHandler"
             type="in.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler" />
+
+        <variable
+            name="requestExpiredOrGranted"
+            type="Boolean" />
+
+        <variable
+            name="isGrantedConsent"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +59,7 @@
                     android:text="@string/edit"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:toggledVisibility="@{!requestExpired}" />
+                    app:toggledVisibility="@{!requestExpiredOrGranted}" />
 
                 <TextView
                     android:id="@+id/tv_requester_name"
@@ -188,6 +196,17 @@
                     tools:text="5 PM, 05/12/19" />
 
                 <TextView
+                    app:toggledVisibility="@{isGrantedConsent}"
+                    android:id="@+id/tv_providers_label"
+                    style="@style/TextAppearance.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_small"
+                    android:text="@string/you_have_given_access_to"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_expiry" />
+
+                <TextView
                     android:id="@+id/disclaimer"
                     style="@style/ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
@@ -195,7 +214,40 @@
                     android:layout_marginTop="@dimen/content_margin_extra_large"
                     android:text="@{@string/grant_consent_disclaimer(consent.requester.name)}"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_expiry" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_expiry"
+                    app:toggledVisibility="@{!isGrantedConsent}" />
+
+                <TextView
+                    android:id="@+id/tv_providers"
+                    style="@style/ConsentRequestHiuDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_large"
+                    android:text="@string/all_linked_providers"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_providers_label"
+                    app:toggledVisibility="@{isGrantedConsent}" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginTop="@dimen/content_margin_medium"
+                    android:background="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_providers" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvLinkedAccounts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider"
+                    app:toggledVisibility="@{isGrantedConsent}"
+                    tools:listitem="@layout/patient_account_result_item" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
@@ -212,7 +264,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintVertical_bias="1"
-            app:toggledVisibility="@{!requestExpired}">
+            app:toggledVisibility="@{!requestExpiredOrGranted}">
 
 
             <com.google.android.material.button.MaterialButton
@@ -223,14 +275,14 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/content_padding_large"
                 android:layout_weight=".3"
-                android:text="@string/deny"
                 android:onClick="@{clickHandler::onDenyConsent}"
+                android:text="@string/deny"
                 android:textColor="@color/red"
                 tools:textColor="@color/red" />
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Button"
                 android:id="@+id/btn_grant"
+                style="@style/Button"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height"
                 android:layout_gravity="center_vertical"

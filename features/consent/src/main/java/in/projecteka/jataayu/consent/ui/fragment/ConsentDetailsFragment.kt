@@ -2,99 +2,45 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.ConsentDetailsFragmentBinding
-import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
-import `in`.projecteka.jataayu.core.model.*
-import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
-import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
+import `in`.projecteka.jataayu.core.model.Consent
+import `in`.projecteka.jataayu.core.model.HiType
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetailsClickHandler,
+abstract class ConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     ResponseCallback {
 
-    private lateinit var binding: ConsentDetailsFragmentBinding
+    protected lateinit var binding: ConsentDetailsFragmentBinding
 
+    protected val viewModel: ConsentViewModel by sharedViewModel()
 
-    private lateinit var consent: Consent
+    protected lateinit var consent: Consent
 
-    private var hiTypeObjects = ArrayList<HiType>()
+    protected var hiTypeObjects = ArrayList<HiType>()
 
-    private lateinit var linkedAccounts : List<Links?>
+    protected val eventBusInstance: EventBus = EventBus.getDefault()
 
-    private val eventBusInstance = EventBus.getDefault()
-
-    private val viewModel: ConsentViewModel by sharedViewModel()
-
-    private val consentArtifactResponseObserver = Observer<ConsentArtifactResponse> {
-        if (it.consents.isNotEmpty()) {
-            eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
-            activity?.finish()
-        }
-    }
-
-    private val linkedAccountsObserver = Observer<LinkedAccountsResponse> { linkedAccountsResponse ->
-        linkedAccounts = linkedAccountsResponse.linkedPatient.links
-        linkedAccounts.forEach { link -> link?.careContexts?.forEach { it.contextChecked = true } }
+    private fun getGrantedConsentDetails() {
+        viewModel.getGrantedConsentDetails(consent.id, this)
     }
 
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
         itemViewBinding: ViewDataBinding
     ) {
-    }
-
-    override fun onEditClick(view: View) {
-        linkedAccounts.let {
-            eventBusInstance.postSticky(HiTypeAndLinks(hiTypeObjects, linkedAccounts))
-            (activity as ConsentDetailsActivity).editConsentDetails()
-        }
-    }
-
-    override fun onDenyConsent(view: View) {
-        activity?.finish()
-    }
-
-    override fun onGrantConsent(view: View) {
-        if (linkedAccounts.isNotEmpty()) {
-            showProgressBar(true)
-            viewModel.grantConsent(consent.id,
-                viewModel.getConsentArtifact(linkedAccounts, hiTypeObjects, consent.permission), this)
-        }
-    }
-
-    companion object {
-        fun newInstance() = ConsentDetailsFragment()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (!eventBusInstance.isRegistered(this))
-            eventBusInstance.register(this)
-
-        viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
-        if (viewModel.linkedAccountsResponse.value == null) {
-            showProgressBar(true)
-            viewModel.getLinkedAccounts(this)
-        }
-
-        viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
     }
 
     override fun onCreateView(
@@ -105,10 +51,13 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         return binding.root
     }
 
-    private fun renderUi() {
+    protected fun renderUi() {
+
         binding.consent = consent
 
-        binding.requestExpired = DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt)
+        binding.requestExpiredOrGranted = isExpiredOrGranted()
+
+        binding.isGrantedConsent = isGrantedConsent()
 
         eventBusInstance.postSticky(consent)
 
@@ -121,19 +70,15 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
                 binding.cgRequestInfoTypes.addView(newChip(hiType.type))
             }
         }
-
-        binding.clickHandler = this
     }
+
+    abstract fun isExpiredOrGranted(): Boolean
+    abstract fun isGrantedConsent(): Boolean
 
     private fun createHiTypesFromConsent() {
         for (hiType in consent.hiTypes) {
             hiTypeObjects.add(HiType(hiType, true))
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        eventBusInstance.unregister(this)
     }
 
     private fun newChip(description: String): Chip? {
@@ -145,12 +90,6 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
     override fun onVisible() {
         super.onVisible()
         setTitle(R.string.new_request)
-        renderUi()
-    }
-
-    @Subscribe(sticky = true)
-    public fun onConsentReceived(consent: Consent) {
-        this.consent = consent
     }
 
     override fun <T> onSuccess(body: T?) {
@@ -164,5 +103,4 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
     }
-
 }
