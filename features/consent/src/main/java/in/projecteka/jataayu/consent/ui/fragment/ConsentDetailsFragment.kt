@@ -13,6 +13,7 @@ import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -44,6 +45,7 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
 
     private val consentArtifactResponseObserver = Observer<ConsentArtifactResponse> {
         if (it.consents.isNotEmpty()) {
+            showLongToast(getString(R.string.consent_request_granted))
             eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
             activity?.finish()
         }
@@ -68,6 +70,7 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
     }
 
     override fun onDenyConsent(view: View) {
+        showLongToast(getString(R.string.consent_request_denied))
         activity?.finish()
     }
 

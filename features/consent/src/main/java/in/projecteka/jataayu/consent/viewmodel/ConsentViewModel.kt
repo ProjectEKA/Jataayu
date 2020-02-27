@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.R
+import `in`.projecteka.jataayu.consent.model.ConsentActionsRequest
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
@@ -25,6 +26,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
     val consentsListResponse = liveDataOf<ConsentsListResponse>()
     var requestedConsentsList = MutableLiveData<List<Consent>>()
     var grantedConsentsList = MutableLiveData<List<Consent>>()
+
     private val grantedConsentStatusList = listOf(
         R.string.status_active_granted_consents,
         R.string.status_expired_granted_consents,
@@ -79,21 +81,13 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
             val careReferences = ArrayList<CareReference>()
             link!!.careContexts.forEach { careContext ->
                 if (careContext.contextChecked) careReferences.add(
-                    newCareReference(
-                        link,
-                        careContext
-                    )
+                    newCareReference(link, careContext)
                 )
             }
 
             if (careReferences.isNotEmpty()) {
                 consentArtifactList.add(
-                    ConsentArtifact(
-                        hiTypes,
-                        link.hip,
-                        careReferences,
-                        permission
-                    )
+                    ConsentArtifact(hiTypes, link.hip, careReferences, permission)
                 )
             }
         }
@@ -176,7 +170,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
     }
 
     fun revokeConsent(consent: Consent) {
-        repository.revokeConsent(consent)
+        repository.revokeConsent(ConsentActionsRequest(consentId = consent.id))
     }
 }
 

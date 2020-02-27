@@ -37,4 +37,6 @@
     <string name="title_revoke_consent">Revoke consent?</string>
     <string name="btn_revoke_consent">Revoke</string>
     <string name="msg_revoke_consent">On revoking this consent, your health data will not be accessible to the requester.</string>
+    <string name="consent_request_denied">Consent request denied</string>
+    <string name="consent_request_granted">Consent request granted successfully</string>
 </resources>
