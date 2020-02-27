@@ -5,7 +5,7 @@
     <string name="tab_requests">requests</string>
     <string name="tab_consents">consents</string>
 
-    <string name="new_request">New request</string>
+    <string name="new_request">New Request</string>
     <string name="edit_request">Edit request</string>
     <string name="confirm_request">Confirm request</string>
     <string name="edit">Edit</string>
@@ -18,20 +18,20 @@
     <string name="loading_requests">We are loading your consent requests\n\nThis may take up a few seconds&#8230;</string>
     <string name="loading_linked_accounts">We are loading your accounts\n\nThis may take up a few seconds&#8230;</string>
 
-    <string name="status_active_requested_consents">Active requested consents (%d)</string>
-    <string name="status_expired_requested_consents">Expired requested consents (%d)</string>
-    <string name="status_all_requested_consents">All requested consents (%d)</string>
+    <string name="status_active_requested_consents">Active consent requests (%d)</string>
+    <string name="status_expired_requested_consents">Expired consent requests (%d)</string>
+    <string name="status_all_requested_consents">All consent requests (%d)</string>
 
-    <string name="status_active_granted_consents">Active granted consents (%d)</string>
-    <string name="status_expired_granted_consents">Expired granted consents (%d)</string>
-    <string name="status_all_granted_consents">All Granted Consents (%d)</string>
+    <string name="status_active_granted_consents">Active consents (%d)</string>
+    <string name="status_expired_granted_consents">Expired consents (%d)</string>
+    <string name="status_all_granted_consents">All Consents (%d)</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>
     <string name="accounts_to_provide_information">Accounts to provide information</string>
     <string name="all_linked_providers">All linked providers</string>
     <string name="confirm">confirm</string>
-    <string name="grant_consent_disclaimer">By granting this consent, you also agree to let %s view your linked accounts.</string>
+    <string name="grant_consent_disclaimer">By granting this consent, you also agree to let %s view health information from the linked accounts.</string>
     <string name="consent_removed">Consent removed</string>
     <string name="undo">Undo</string>
     <string name="title_revoke_consent">Revoke consent?</string>
@@ -39,4 +39,8 @@
     <string name="msg_revoke_consent">On revoking this consent, your health data will not be accessible to the requester.</string>
     <string name="consent_request_denied">Consent request denied</string>
     <string name="consent_request_granted">Consent request granted successfully</string>
+    <string name="consent_details">Consent Details</string>
+    <string name="all_providers">All Providers</string>
+    <string name="you_have_given_access_to">You have given access to</string>
+    <string name="all_linked_providers_with_count">All linked providers (%d)</string>
 </resources>

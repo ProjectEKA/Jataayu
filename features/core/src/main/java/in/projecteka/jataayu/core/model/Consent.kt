@@ -2,16 +2,18 @@ package `in`.projecteka.jataayu.core.model
 
 import `in`.projecteka.jataayu.core.BR
 import `in`.projecteka.jataayu.core.R
+import `in`.projecteka.jataayu.core.model.approveconsent.CareReference
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.google.gson.annotations.SerializedName
 
 data class Consent(
-    @SerializedName("id") val id: String,
-    @SerializedName("createdAt") val createdAt: String?,
+    @SerializedName("id", alternate = ["consentId"]) val id: String,
+    @SerializedName("createdAt") val createdAt: String,
     @SerializedName("purpose") val purpose: Purpose,
     @SerializedName("patient") val patient: PatientId,
     @SerializedName("hip") val hip: Hip?,
@@ -20,9 +22,11 @@ data class Consent(
     @SerializedName("hiTypes") val hiTypes: ArrayList<String>,
     @SerializedName("permission") @Bindable val permission: Permission,
     @SerializedName("status") var status: RequestStatus,
-    @SerializedName("lastUpdated") val lastUpdated: String
-) : BaseObservable(), IDataBindingModel, Cloneable {
+    @SerializedName("lastUpdated") val lastUpdated: String,
+    @SerializedName("careContexts") val careContexts : List<CareReference>?
+    ) : BaseObservable(), IDataBindingModel, Cloneable {
     var showDetails = true
+    var detailsVisibility = View.VISIBLE
     lateinit var relativeTimeSpan : String
     @StringRes var baseString = R.string.requested_timespan
 

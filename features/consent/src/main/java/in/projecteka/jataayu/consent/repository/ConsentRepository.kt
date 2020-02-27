@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.RevokeConsentResponse
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
+import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import retrofit2.Call
 
 interface ConsentRepository {
@@ -14,6 +15,7 @@ interface ConsentRepository {
     fun grantConsent(requestId: String, approveConsentRequest: ConsentArtifactRequest): Call<ConsentArtifactResponse>
     fun getLinkedAccounts(): Call<LinkedAccountsResponse>
     fun revokeConsent(consentActionsRequest: ConsentActionsRequest): Call<RevokeConsentResponse>
+    fun getGrantedConsentDetails(requestId: String): Call<List<GrantedConsentDetailsResponse>>
 }
 
 class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentRepository {
@@ -30,5 +32,9 @@ class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentReposi
 
     override fun revokeConsent(consentActionsRequest: ConsentActionsRequest): Call<RevokeConsentResponse> {
         return consentApi.revokeConsent(consentActionsRequest)
+    }
+
+    override fun getGrantedConsentDetails(requestId: String): Call<List<GrantedConsentDetailsResponse>> {
+        return consentApi.getGrantedConsentDetails(requestId)
     }
 }

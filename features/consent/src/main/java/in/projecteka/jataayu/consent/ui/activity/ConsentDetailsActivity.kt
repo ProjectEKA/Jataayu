@@ -3,10 +3,10 @@ package `in`.projecteka.jataayu.consent.ui.activity
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
-import `in`.projecteka.jataayu.consent.ui.fragment.ConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.ConsentsListFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.EditConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.GrantedConsentDetailsFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
@@ -52,7 +52,7 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
             viewModel.consentsListResponse.observe(this, Observer<ConsentsListResponse> { consentsListResponse ->
                 consentsListResponse.requests.find { it.id == consentId }?.let {
                     EventBus.getDefault().postSticky(it)
-                    replaceFragment(ConsentDetailsFragment.newInstance())
+                    replaceFragment(RequestedConsentDetailsFragment.newInstance())
                 }
             })
             viewModel.getConsents(this)
@@ -61,7 +61,7 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
 
     private fun getDetailsFragment(): BaseFragment {
         return if (getFlowType() == ConsentFlow.REQUESTED_CONSENTS.ordinal)
-            ConsentDetailsFragment.newInstance()
+            RequestedConsentDetailsFragment.newInstance()
         else GrantedConsentDetailsFragment.newInstance()
     }
 

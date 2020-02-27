@@ -79,8 +79,8 @@ public class GrantedConsentListFragmentTest {
     fun shouldRenderGratedConsents() {
         Thread.sleep(8000)
         KClick { id(sp_request_filter) }
-        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Active granted consents (1)"))).perform(click())
-        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Active granted consents (1)"))))
+        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Active consents (1)"))).perform(click())
+        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Active consents (1)"))))
         verifyGrantedConsentsRendered(1)
     }
 
@@ -88,16 +88,16 @@ public class GrantedConsentListFragmentTest {
     fun shouldRenderAllGrantedConsents() {
         Thread.sleep(8000)
         KClick { id(sp_request_filter) }
-        onData(allOf(`is`(instanceOf(String::class.java)), `is`("All Granted Consents (2)"))).perform(click())
-        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("All Granted Consents (2)"))))
+        onData(allOf(`is`(instanceOf(String::class.java)), `is`("All Consents (2)"))).perform(click())
+        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("All Consents (2)"))))
         verifyGrantedConsentsRendered(2)
     }
     @Test
     fun shouldRenderExpiredGrantedConsents() {
         Thread.sleep(10000)
         KClick { id(sp_request_filter) }
-        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Expired granted consents (1)"))).perform(click())
-        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Expired granted consents (1)"))))
+        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Expired consents (1)"))).perform(click())
+        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Expired consents (1)"))))
         verifyExpiredGrantedConsentsRendered()
     }
 
