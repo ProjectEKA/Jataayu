@@ -55,7 +55,7 @@ abstract class ConsentDetailsFragment : BaseFragment(), ItemClickCallback,
 
         binding.consent = consent
 
-        binding.requestExpiredOrGranted = isExpiredOrGranted()
+        binding.requestExpired = isExpiredOrGranted()
 
         binding.isGrantedConsent = isGrantedConsent()
 

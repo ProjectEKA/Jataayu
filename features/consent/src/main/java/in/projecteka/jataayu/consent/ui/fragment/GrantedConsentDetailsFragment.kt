@@ -12,6 +12,9 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.consent_details_fragment.*
 import okhttp3.ResponseBody
 import org.greenrobot.eventbus.Subscribe
@@ -22,6 +25,7 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ResponseCallback
     private lateinit var genericRecyclerViewAdapter: GenericRecyclerViewAdapter
     private lateinit var linkedAccounts: List<Links?>
     private lateinit var linkedAccountsAndCount : Pair<List<IDataBindingModel>, Int>
+    private val compositeDisposable = CompositeDisposable()
 
     private val grantedConsentDetailsObserver =
         Observer<List<GrantedConsentDetailsResponse>> { grantedConsents ->
@@ -41,18 +45,36 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ResponseCallback
         }
 
     private fun populateLinkedAccounts(grantedConsents: List<GrantedConsentDetailsResponse>) {
-        linkedAccountsAndCount= viewModel.getItems(grantedConsents, linkedAccounts)
-        genericRecyclerViewAdapter =
-            GenericRecyclerViewAdapter(this@GrantedConsentDetailsFragment, linkedAccountsAndCount.first)
-        rvLinkedAccounts.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = genericRecyclerViewAdapter
-            val dividerItemDecorator =
-                DividerItemDecorator(ContextCompat.getDrawable(context!!, R.color.transparent)!!)
-            addItemDecoration(dividerItemDecorator)
-        }
 
-        binding.tvProviders.text = String.format(context!!.getString(R.string.all_linked_providers_with_count), linkedAccountsAndCount.second)
+        compositeDisposable.add(io.reactivex.Observable.just(viewModel)
+            .map { it.getItems(grantedConsents, linkedAccounts) }
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                linkedAccountsAndCount = it
+                genericRecyclerViewAdapter =
+                    GenericRecyclerViewAdapter(
+                        this@GrantedConsentDetailsFragment,
+                        linkedAccountsAndCount.first
+                    )
+                rvLinkedAccounts.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = genericRecyclerViewAdapter
+                    val dividerItemDecorator =
+                        DividerItemDecorator(
+                            ContextCompat.getDrawable(
+                                context!!,
+                                R.color.transparent
+                            )!!
+                        )
+                    addItemDecoration(dividerItemDecorator)
+                }
+
+                binding.tvProviders.text = String.format(
+                    context!!.getString(R.string.all_linked_providers_with_count),
+                    linkedAccountsAndCount.second
+                )
+            })
     }
 
     companion object {

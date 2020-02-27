@@ -46,7 +46,7 @@ class ConsentDetailsFragmentTest{
         Thread.sleep(4000)
 
         readConsentAndLaunchFragment("consent_requested.json")
-        activityRule.activity.addFragment(ConsentDetailsFragment())
+        activityRule.activity.addFragment(RequestedConsentDetailsFragment())
     }
 
     private fun readConsentAndLaunchFragment(fileName: String) {
@@ -112,14 +112,14 @@ class ConsentDetailsFragmentTest{
             }
 
         displayed { id(R.id.disclaimer)
-        text("By granting this consent, you also agree to let Dr. Lakshmi view your linked accounts.")}
+        text("By granting this consent, you also agree to let Dr. Lakshmi view your health information from all the linked accounts.")}
     }
 
     @Test
     fun shouldNotShowButtonsForExpiredConsent(){
 
         readConsentAndLaunchFragment("consent_expired.json")
-        activityRule.activity.replaceFragment(ConsentDetailsFragment())
+        activityRule.activity.replaceFragment(RequestedConsentDetailsFragment())
 
         notDisplayed { id(R.id.btn_edit)
         text("Edit")}

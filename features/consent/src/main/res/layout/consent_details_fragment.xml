@@ -8,17 +8,12 @@
         <variable
             name="consent"
             type="in.projecteka.jataayu.core.model.Consent" />
-
-        <variable
-            name="grantedConsentArtifact"
-            type="in.projecteka.jataayu.core.model.grantedconsent.GrantedConsentArtifactDetails" />
-
         <variable
             name="clickHandler"
             type="in.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler" />
 
         <variable
-            name="requestExpiredOrGranted"
+            name="requestExpired"
             type="Boolean" />
 
         <variable
@@ -59,7 +54,7 @@
                     android:text="@string/edit"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:toggledVisibility="@{!requestExpiredOrGranted}" />
+                    app:toggledVisibility="@{!requestExpired}" />
 
                 <TextView
                     android:id="@+id/tv_requester_name"
@@ -264,7 +259,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintVertical_bias="1"
-            app:toggledVisibility="@{!requestExpiredOrGranted}">
+            app:toggledVisibility="@{!requestExpired}">
 
 
             <com.google.android.material.button.MaterialButton
