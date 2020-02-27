@@ -7,12 +7,15 @@ import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
-import `in`.projecteka.jataayu.network.utils.*
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PayloadResource
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,7 +24,6 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
-import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -51,6 +53,7 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
             }
             is Success -> {
                 if (it.data?.consents?.isNotEmpty() == true) {
+                    showLongToast(getString(R.string.consent_request_granted))
                     eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
                     activity?.finish()
                 }
@@ -70,7 +73,6 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
         }
     }
 
-
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
         itemViewBinding: ViewDataBinding
@@ -86,6 +88,7 @@ class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetails
     }
 
     override fun onDenyConsent(view: View) {
+        showLongToast(getString(R.string.consent_request_denied))
         activity?.finish()
     }
 

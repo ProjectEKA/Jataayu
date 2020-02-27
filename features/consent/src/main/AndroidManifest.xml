@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="in.projecteka.jataayu.consent">
 
     <application>
-        <activity android:name=".ui.activity.ConsentDetailsActivity">
+        <activity android:name=".ui.activity.ConsentDetailsActivity"
+            android:launchMode="singleTop">
+            <tools:validation testUrl="https://projecteka.github.io/consent/5c71c78e-a77e-4dd5-9f0f-6c3095118327" />
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="projecteka.github.io"
+                    android:pathPrefix="/consent/" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.R
+import `in`.projecteka.jataayu.consent.model.ConsentActionsRequest
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
@@ -31,7 +32,6 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel(),
 
     val requestedConsentsList = MutableLiveData<List<Consent>>()
     val grantedConsentsList = MutableLiveData<List<Consent>>()
-
 
     val onClickConsentEvent = SingleLiveEvent<Consent>()
 
@@ -81,12 +81,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel(),
 
             if (careReferences.isNotEmpty()) {
                 consentArtifactList.add(
-                    ConsentArtifact(
-                        hiTypes,
-                        link.hip,
-                        careReferences,
-                        permission
-                    )
+                    ConsentArtifact(hiTypes, link.hip, careReferences, permission)
                 )
             }
         }
@@ -130,7 +125,8 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel(),
                 }
             }
         }
-        return resources.getString(filterItem).format(count)
+
+        return String.format(resources.getString(filterItem), count)
     }
 
     fun getItems(links: List<Links?>): List<IDataBindingModel> {
@@ -165,7 +161,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel(),
     }
 
     fun revokeConsent(consent: Consent) {
-        repository.revokeConsent(consent)
+        repository.revokeConsent(ConsentActionsRequest(consentId = consent.id))
     }
 
     override fun onItemClick(
