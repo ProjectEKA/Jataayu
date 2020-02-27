@@ -80,7 +80,7 @@ public class RequestedConsentListFragmentTest {
         Thread.sleep(8000)
         KClick { id(sp_request_filter) }
         onData(allOf(`is`(instanceOf(String::class.java)), `is`("Active consent requests (1)"))).perform(click())
-        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Active requested consents (1)"))))
+        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Active consent requests (1)"))))
         verifyRequestsRendered(1)
     }
 

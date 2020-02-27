@@ -12,7 +12,6 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -46,20 +45,18 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ResponseCallback
         }
 
     private fun populateLinkedAccounts(grantedConsents: List<GrantedConsentDetailsResponse>) {
-
-        compositeDisposable.add(Observable.just(viewModel)
+        compositeDisposable.add(io.reactivex.Observable.just(viewModel)
             .map { it.getItems(grantedConsents, linkedAccounts) }
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.newThread())
-            .subscribe{
-                linkedAccountsAndCount= it
-                genericRecyclerViewAdapter =
-                    GenericRecyclerViewAdapter(this@GrantedConsentDetailsFragment, linkedAccountsAndCount.first)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                linkedAccountsAndCount = it
+                genericRecyclerViewAdapter = GenericRecyclerViewAdapter(
+                        this@GrantedConsentDetailsFragment, linkedAccountsAndCount.first)
                 rvLinkedAccounts.apply {
                     layoutManager = LinearLayoutManager(context)
                     adapter = genericRecyclerViewAdapter
-                    val dividerItemDecorator =
-                        DividerItemDecorator(ContextCompat.getDrawable(context!!, R.color.transparent)!!)
+                    val dividerItemDecorator = DividerItemDecorator(ContextCompat.getDrawable(context!!, R.color.transparent)!!)
                     addItemDecoration(dividerItemDecorator)
                 }
 

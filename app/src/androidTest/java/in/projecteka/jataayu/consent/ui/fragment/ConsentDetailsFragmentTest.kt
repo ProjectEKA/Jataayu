@@ -112,7 +112,7 @@ class ConsentDetailsFragmentTest{
             }
 
         displayed { id(R.id.disclaimer)
-        text("By granting this consent, you also agree to let Dr. Lakshmi view health information from the linked accounts.")}
+        text("By granting this consent, you also agree to let Dr. Lakshmi view your health information from all the linked accounts.")}
     }
 
     @Test
