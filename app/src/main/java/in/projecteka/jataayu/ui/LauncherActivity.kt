@@ -12,7 +12,8 @@ import `in`.projecteka.jataayu.ui.LauncherActivity.REQUEST_CODES.*
 import `in`.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
 import `in`.projecteka.jataayu.util.extension.startActivity
 import `in`.projecteka.jataayu.util.extension.startActivityForResult
-import `in`.projecteka.jataayu.util.sharedPref.SharedPrefsManager
+import `in`.projecteka.jataayu.util.sharedPref.getBoolean
+import `in`.projecteka.jataayu.util.sharedPref.putBoolean
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -81,7 +82,7 @@ class LauncherActivity : BaseActivity() {
 
     private fun redirectIfNeeded() {
         when {
-            SharedPrefsManager.getBoolean(PROVIDER_ADDED, false, this) -> {
+            getBoolean(PROVIDER_ADDED, false) -> {
                 binding = DataBindingUtil.setContentView(
                     this,
                     R.layout.activity_launcher
@@ -91,10 +92,10 @@ class LauncherActivity : BaseActivity() {
                 initBindings()
                 initUi()
             }
-            SharedPrefsManager.getBoolean(ACCOUNT_CREATED, false, this) -> {
+            getBoolean(ACCOUNT_CREATED, false) -> {
                 startActivityForResult(ProviderActivity::class.java, ADD_PROVIDER.ordinal)
             }
-            SharedPrefsManager.getBoolean(REGISTERED, false, this) -> {
+            getBoolean(REGISTERED, false) -> {
                 startActivityForResult(AccountCreationActivity::class.java, REQUEST_CODES.CREATE_ACCOUNT.ordinal)
             }
             else -> {
@@ -178,7 +179,7 @@ class LauncherActivity : BaseActivity() {
         if (resultCode != Activity.RESULT_OK) {
             finish()
         } else {
-            SharedPrefsManager.putBoolean(key, true, this)
+            putBoolean(key, true)
             redirectIfNeeded()
         }
     }
