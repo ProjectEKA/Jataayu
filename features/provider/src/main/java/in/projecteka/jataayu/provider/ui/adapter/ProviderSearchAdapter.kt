@@ -13,7 +13,7 @@ import android.text.Spanned
 import android.widget.TextView
 
 class ProviderSearchAdapter(itemClickCallback : ItemClickCallback, list : List<ProviderInfo>) :
-    GenericRecyclerViewAdapter(itemClickCallback, list) {
+    GenericRecyclerViewAdapter(list, itemClickCallback) {
     constructor(itemClickCallback : ItemClickCallback) : this(itemClickCallback, listOf())
 
     private var suggestions : List<ProviderInfo> = list

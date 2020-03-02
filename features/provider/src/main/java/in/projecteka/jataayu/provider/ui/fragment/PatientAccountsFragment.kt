@@ -67,8 +67,9 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
         viewModel.makeAccountsSelected()
 
         genericRecyclerViewAdapter = GenericRecyclerViewAdapter(
-            this@PatientAccountsFragment,
-            viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!)
+            viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!,
+            this@PatientAccountsFragment
+        )
 
         binding.rvSearchResults.apply {
             layoutManager = LinearLayoutManager(context)

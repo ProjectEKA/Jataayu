@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="linkedHip"
+            type="in.projecteka.jataayu.core.model.grantedconsent.LinkedHip" />
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin_small"
+            android:background="@drawable/expandable_item_selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:padding="@dimen/content_margin_small"
+            android:tag="@string/header">
+
+            <TextView
+                android:id="@+id/tv_hip_name"
+                style="@style/ConsentRequestHiuDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@{linkedHip.providerName}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Max Health Care" />
+
+            <TextView
+                android:id="@+id/tv_patient_reference_number"
+                style="@style/ConsentRequestHiuDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@{linkedHip.patientReferenceId}"
+                android:textSize="@dimen/text_size_large"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_hip_name"
+                tools:text="MCB7142" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

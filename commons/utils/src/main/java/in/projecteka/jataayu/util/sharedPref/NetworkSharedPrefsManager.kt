@@ -27,7 +27,7 @@ class NetworkSharedPrefsManager {
 
         fun getAuthToken(context: Context): String {
             val sharedPreferences = context.getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-            return sharedPreferences.getString(AUTH_TOKEN, "U2hyZXlhQG5jZw==") ?: "U2hyZXlhQG5jZw=="
+            return sharedPreferences.getString(AUTH_TOKEN, "") ?: ""
         }
 
         fun getBaseUrl(context: Context): String {

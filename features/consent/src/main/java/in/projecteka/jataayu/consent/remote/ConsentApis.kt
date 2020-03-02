@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.RevokeConsentResponse
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
+import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -24,4 +25,7 @@ interface ConsentApis {
 
     @POST("/revoke-consent")
     fun revokeConsent(@Body consentActionsRequest: ConsentActionsRequest): Call<RevokeConsentResponse>
+
+    @POST("/consent-requests/{request-id}/consent-artefacts")
+    fun getGrantedConsentDetails(@Path("request-id") requestId: String): Call<List<GrantedConsentDetailsResponse>>
 }

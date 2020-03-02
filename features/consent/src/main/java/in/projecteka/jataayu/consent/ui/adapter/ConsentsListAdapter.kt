@@ -14,7 +14,7 @@ import androidx.databinding.ViewDataBinding
 class ConsentsListAdapter(
     itemClickCallback: ItemClickCallback,
     requests: List<Consent>, val deleteConsentCallback: DeleteConsentCallback?
-) : GenericRecyclerViewAdapter(itemClickCallback, requests) {
+) : GenericRecyclerViewAdapter(requests, itemClickCallback) {
 
     constructor(itemClickCallback: ItemClickCallback,
                 requests: List<Consent>): this(itemClickCallback, requests, null)

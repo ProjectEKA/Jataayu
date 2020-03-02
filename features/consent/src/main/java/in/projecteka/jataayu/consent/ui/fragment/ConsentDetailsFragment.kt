@@ -2,176 +2,88 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.ConsentDetailsFragmentBinding
-import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
-import `in`.projecteka.jataayu.core.model.*
+import `in`.projecteka.jataayu.core.model.Consent
+import `in`.projecteka.jataayu.core.model.HiType
+import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
-import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
-import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
-import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.showLongToast
-import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class ConsentDetailsFragment : BaseFragment(), ItemClickCallback, ConsentDetailsClickHandler {
+abstract class ConsentDetailsFragment : BaseFragment() {
 
-    companion object {
-        fun newInstance() = ConsentDetailsFragment()
+    protected lateinit var binding: ConsentDetailsFragmentBinding
+
+    protected val viewModel: ConsentViewModel by sharedViewModel()
+
+    protected lateinit var consent: Consent
+
+    protected var hiTypeObjects = ArrayList<HiType>()
+
+    protected val eventBusInstance: EventBus = EventBus.getDefault()
+
+    abstract fun isExpiredOrGranted(): Boolean
+
+    abstract fun isGrantedConsent(): Boolean
+
+    private fun getGrantedConsentDetails() {
+        viewModel.getGrantedConsentDetails(consent.id)
     }
 
-    private lateinit var binding: ConsentDetailsFragmentBinding
-
-    private lateinit var consent: Consent
-
-    private var hiTypeObjects = ArrayList<HiType>()
-
-    private lateinit var linkedAccounts: List<Links>
-
-    private val eventBusInstance = EventBus.getDefault()
-
-    private val viewModel: ConsentViewModel by sharedViewModel()
-
-    private val consentArtifactResponseObserver = Observer<PayloadResource<ConsentArtifactResponse>> {
-        when (it) {
-            is Loading -> {
-                showProgressBar(it.isLoading)
-            }
-            is Success -> {
-                if (it.data?.consents?.isNotEmpty() == true) {
-                    showLongToast(getString(R.string.consent_request_granted))
-                    eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
-                    activity?.finish()
-                }
-            }
-        }
-    }
-
-    private val linkedAccountsObserver = Observer<PayloadResource<LinkedAccountsResponse>> {
-        when (it) {
-            is Loading -> showProgressBar(it.isLoading)
-            is Success -> {
-                it.data?.linkedPatient?.links?.let { links ->
-                    linkedAccounts = links
-                    linkedAccounts.forEach { link -> link.careContexts.forEach { it.contextChecked = true } }
-                }
-            }
-        }
-    }
-
-    override fun onItemClick(
-        iDataBindingModel: IDataBindingModel,
-        itemViewBinding: ViewDataBinding
-    ) {
-
-    }
-
-    override fun onEditClick(view: View) {
-        linkedAccounts.let {
-            eventBusInstance.postSticky(HiTypeAndLinks(hiTypeObjects, linkedAccounts))
-            (activity as ConsentDetailsActivity).editConsentDetails()
-        }
-    }
-
-    override fun onDenyConsent(view: View) {
-        showLongToast(getString(R.string.consent_request_denied))
-        activity?.finish()
-    }
-
-    override fun onGrantConsent(view: View) {
-        if (linkedAccounts.isNotEmpty()) {
-            showProgressBar(true)
-            viewModel.grantConsent(consent.id, viewModel.getConsentArtifact(linkedAccounts, hiTypeObjects, consent.permission))
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if (!eventBusInstance.isRegistered(this))
-            eventBusInstance.register(this)
-
-        initObservers()
-
-        if (viewModel.linkedAccountsResponse.value == null) {
-            viewModel.getLinkedAccounts()
-        }
-
-
-    }
-
-    private fun initObservers() {
-        viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
-
-        viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = ConsentDetailsFragmentBinding.inflate(inflater)
         return binding.root
     }
 
-    private fun renderUi() {
+    protected fun renderUi() {
+
         with(binding) {
-            consent = this@ConsentDetailsFragment.consent
-            requestExpired = DateTimeUtils.isDateExpired(this@ConsentDetailsFragment.consent.permission.dataExpiryAt)
+            this.consent = this@ConsentDetailsFragment.consent
+            requestExpired = isExpiredOrGranted()
+            isGrantedConsent = isGrantedConsent()
             cgRequestInfoTypes.removeAllViews()
         }
 
         eventBusInstance.postSticky(consent)
 
-
         if (hiTypeObjects.isEmpty()) createHiTypesFromConsent()
 
-        for (hiType in hiTypeObjects) {
+        hiTypeObjects.forEach { hiType ->
             if (hiType.isChecked) {
                 binding.cgRequestInfoTypes.addView(newChip(hiType.type))
             }
         }
-
-        binding.clickHandler = this
     }
 
     private fun createHiTypesFromConsent() {
-        for (hiType in consent.hiTypes) {
-            hiTypeObjects.add(HiType(hiType, true))
+        consent.hiTypes?.forEach {
+            hiTypeObjects.add(HiType(it, true))
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        eventBusInstance.unregister(this)
-    }
-
-    private fun newChip(description: String): Chip? {
-        val chip = Chip(context, null, R.style.Chip_NonEditable)
-        chip.text = description
-        return chip
-    }
+    private fun newChip(description: String): Chip? =
+        Chip(context, null, R.style.Chip_NonEditable).apply {
+            text = description
+        }
 
     override fun onVisible() {
         super.onVisible()
         setTitle(R.string.new_request)
-        renderUi()
-    }
-
-    @Subscribe(sticky = true)
-    public fun onConsentReceived(consent: Consent) {
-        this.consent = consent
     }
 
 }
