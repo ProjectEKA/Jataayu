@@ -12,6 +12,6 @@ interface UserAccountApis {
     @GET("patients/links")
     fun getUserAccounts(): Call<LinkedAccountsResponse>
 
-    @POST("create_account")
+    @POST("users")
     fun createAccount(@Body createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse>
 }

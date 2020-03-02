@@ -3,9 +3,9 @@ package `in`.projecteka.jataayu.core.model
 import com.google.gson.annotations.SerializedName
 
 data class CreateAccountResponse(
-    @SerializedName("access_token") val accessToken: String,
-    @SerializedName("expires_in") val expiresIn: Int,
-    @SerializedName("refresh_token") val refreshToken: String,
-    @SerializedName("refresh_expires_in") val refreshExpiresIn: Int,
-    @SerializedName("token_type") val tokenType: String
+    @SerializedName("accessToken") val accessToken: String,
+    @SerializedName("expiresIn") val expiresIn: Int,
+    @SerializedName("refreshToken") val refreshToken: String,
+    @SerializedName("refreshExpiresIn") val refreshExpiresIn: Int,
+    @SerializedName("tokenType") val tokenType: String
 )

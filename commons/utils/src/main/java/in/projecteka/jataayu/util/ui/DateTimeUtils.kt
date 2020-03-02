@@ -7,11 +7,18 @@ import java.util.*
 class DateTimeUtils {
     companion object {
         private const val DATE_FORMAT_DD_MM_YY = "dd MMM, yyyy"
+        private const val DATE_FORMAT_YYYY_MM_DD = "yyyy-MM-dd"
         private const val DATE_TIME_FORMAT_DD_MMM_YYYY_HH_A = "hh a, $DATE_FORMAT_DD_MM_YY"
         private const val TIME_FORMAT_HH_MM_A = "hh:mm a"
         fun getFormattedDate(utcDate: String): String {
             val date = getDate(utcDate)
             val outputFormat = SimpleDateFormat(DATE_FORMAT_DD_MM_YY, Locale.getDefault())
+            return outputFormat.format(date!!)
+        }
+
+        fun getFormattedDate(format: String, utcDate: String): String {
+            val date = getDate(utcDate)
+            val outputFormat = SimpleDateFormat(DATE_FORMAT_YYYY_MM_DD, Locale.getDefault())
             return outputFormat.format(date!!)
         }
 

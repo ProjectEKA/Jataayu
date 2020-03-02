@@ -336,7 +336,6 @@
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_male"
                         style="@style/Chip.ChoiceCustomized"
-                        android:checked="true"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/button_height"
                         android:layout_weight="1"
@@ -363,13 +362,23 @@
                 </com.google.android.material.chip.ChipGroup>
 
                 <TextView
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:id="@+id/tv_err_gender"
+                    style="@style/TextAppearance.ErrorMessage"
+                    android:text="Please select gender"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_small"
+                    app:layout_constraintTop_toBottomOf="@+id/cg_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
                     android:id="@+id/lbl_dob"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_small"
                     android:text="@string/date_of_birth_optional"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cg_gender" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_err_gender" />
 
                 <Button
                     android:layout_width="wrap_content"

@@ -49,7 +49,7 @@ class RegistrationFragmentTest{
     fun shouldDisplayCountryCode(){
         displayed {
             id(tv_country_code)
-            text("+91 - ")
+            text("+91-")
         }
     }
 

@@ -17,6 +17,7 @@ import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.show
 import `in`.projecteka.jataayu.util.extension.toUtc
+import `in`.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
 import android.os.Bundle
@@ -51,9 +52,13 @@ class CreateAccountFragment : BaseFragment(),
 
     companion object {
         fun newInstance() = CreateAccountFragment()
+        const val SPACE = " "
+        const val dob_format = "yyyy-MM-dd"
         const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
         const val passwordCriteria =
             "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"
+        const val ERROR_CODE_USERNAME_ALREADY_TAKEN = 2000
+        const val DEFAULT_CHECKED_ID = -1
     }
 
     override fun showOrHidePassword(view: View) {
@@ -76,14 +81,24 @@ class CreateAccountFragment : BaseFragment(),
             viewModel.createAccount(this, getCreateAccountRequest())
             viewModel.createAccountResponse.observe(this,
                 Observer<CreateAccountResponse> {
+                    NetworkSharedPrefsManager.setAuthToken(context!!, getAuthTokenWithTokenType(it))
                     activity?.setResult(Activity.RESULT_OK)
-                    activity?.finish()})
+                    activity?.finish()
+                    } )
         }
     }
 
+    private fun getAuthTokenWithTokenType(response: CreateAccountResponse): String {
+        return (response.tokenType).capitalize()+ SPACE + response.accessToken
+    }
+
     private fun getCreateAccountRequest(): CreateAccountRequest {
-        return CreateAccountRequest(et_username?.text.toString(), et_password?.text.toString(),
-            et_first_name?.text.toString(), et_last_name?.text.toString(), getGender(), dob)
+        return CreateAccountRequest(getUsername(), et_password?.text.toString(),
+            et_first_name?.text.toString(), et_last_name?.text.toString(), getGender(), DateTimeUtils.getFormattedDate(dob_format, dob))
+    }
+
+    private fun getUsername(): String {
+        return et_username?.text.toString() + getProviderName()
     }
 
     private fun getGender(): String {
@@ -117,6 +132,10 @@ class CreateAccountFragment : BaseFragment(),
         }
         if (binding.etFirstName.text?.isEmpty()!!) {
             binding.etFirstName.error = getString(R.string.should_not_be_empty)
+            valid = false
+        }
+        if (binding.cgGender.checkedChipId == DEFAULT_CHECKED_ID){
+            binding.tvErrGender.show(true)
             valid = false
         }
         return valid
@@ -177,7 +196,7 @@ class CreateAccountFragment : BaseFragment(),
 
     override fun onDateSelected(datePickerId: Int, date: Date) {
         dob = date.toUtc()
-        btn_dob.text = DateTimeUtils.getFormattedDate(date.toUtc())
+        btn_dob.text = DateTimeUtils.getFormattedDate(dob)
     }
 
     override fun onTimeSelected(timePair: Pair<Int, Int>) {}

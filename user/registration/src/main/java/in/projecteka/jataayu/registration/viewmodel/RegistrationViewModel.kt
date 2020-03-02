@@ -14,7 +14,7 @@ class RegistrationViewModel(val repository: AuthorizationRepository) : ViewModel
 
     companion object{
         const val INDIA_COUNTRY_CODE = "+91"
-        const val COUNTRY_CODE_SEPARATOR = " - "
+        const val COUNTRY_CODE_SEPARATOR = "-"
         const val MOBILE_IDENTIFIER_TYPE = "mobile"
     }
 

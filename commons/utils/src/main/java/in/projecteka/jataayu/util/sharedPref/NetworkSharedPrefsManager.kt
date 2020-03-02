@@ -11,6 +11,7 @@ class NetworkSharedPrefsManager {
         private const val ENVIRONMENT = "ENVIRONMENT"
         private const val NETWORK_HOST = "NETWORK_PREF_HOST"
         private const val AUTH_TOKEN = "AUTH_TOKEN"
+        private const val DEFAULT_EXPIRY = -1
         fun setNetworkPref(context: Context, environmentIndex: Int, endpoint: String) {
             val sharedPreferences = context.getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
             sharedPreferences.edit {
