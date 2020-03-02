@@ -14,20 +14,29 @@ import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.LinkedHip
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
-import `in`.projecteka.jataayu.network.utils.observeOn
+import `in`.projecteka.jataayu.network.utils.PayloadLiveData
+import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
+import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.util.extension.EMPTY
-import `in`.projecteka.jataayu.util.extension.liveDataOf
+import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() {
-    val consentsListResponse = liveDataOf<ConsentsListResponse>()
-    var requestedConsentsList = MutableLiveData<List<Consent>>()
-    var grantedConsentsList = MutableLiveData<List<Consent>>()
+class ConsentViewModel(private val repository: ConsentRepository) : ViewModel(), ItemClickCallback {
+
+    val consentListResponse = PayloadLiveData<ConsentsListResponse>()
+    val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
+    val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()
+    val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
+
+    val requestedConsentsList = MutableLiveData<List<Consent>>()
+    val grantedConsentsList = MutableLiveData<List<Consent>>()
+
+    val onClickConsentEvent = SingleLiveEvent<Consent>()
 
     private val grantedConsentStatusList = listOf(
         R.string.status_active_granted_consents,
@@ -42,55 +51,39 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
 
     internal var selectedProviderName = String.EMPTY
 
-    var requests = emptyList<Consent>()
+    fun getConsents() =
+        consentListResponse.fetch(repository.getConsents())
 
-    val linkedAccountsResponse = liveDataOf<LinkedAccountsResponse>()
 
-    val consentArtifactResponse = liveDataOf<ConsentArtifactResponse>()
+    fun getLinkedAccounts() =
+        linkedAccountsResponse.fetch(repository.getLinkedAccounts())
 
-    val grantedConsentDetailsResponse = liveDataOf<List<GrantedConsentDetailsResponse>>()
 
-    fun getConsents(responseCallback: ResponseCallback) {
-        repository.getConsents().observeOn(consentsListResponse, responseCallback)
-    }
-
-    fun getLinkedAccounts(responseCallback: ResponseCallback) {
-        repository.getLinkedAccounts().observeOn(linkedAccountsResponse, responseCallback)
-    }
-
-    fun getGrantedConsentDetails(requestId: String, responseCallback: ResponseCallback) {
-        repository.getGrantedConsentDetails(requestId).observeOn(grantedConsentDetailsResponse, responseCallback)
+    fun getGrantedConsentDetails(requestId: String) {
+        grantedConsentDetailsResponse.fetch(repository.getGrantedConsentDetails(requestId))
     }
 
     fun grantConsent(
         requestId: String,
-        consentArtifacts: List<ConsentArtifact>,
-        responseCallback: ResponseCallback
-    ) {
-        repository.grantConsent(requestId, ConsentArtifactRequest(consentArtifacts))
-            .observeOn(consentArtifactResponse, responseCallback)
-    }
+        consentArtifacts: List<ConsentArtifact>
+    ) =
+        consentArtifactResponse.fetch(repository.grantConsent(requestId, ConsentArtifactRequest((consentArtifacts))))
 
-    fun isRequestAvailable(): Boolean {
-        return consentsListResponse.value?.requests!!.isNotEmpty()
-    }
 
     fun getConsentArtifact(
-        links: List<Links?>,
+        links: List<Links>,
         hiTypeObjects: ArrayList<HiType>,
         permission: Permission
     ): List<ConsentArtifact> {
-        val consentArtifactList = ArrayList<ConsentArtifact>()
 
-        val hiTypes = ArrayList<String>()
-        hiTypeObjects.forEach { hiTypes.add(it.type) }
+        val consentArtifactList = ArrayList<ConsentArtifact>()
+        val hiTypes = hiTypeObjects.map { it.type }
+
 
         links.forEach { link ->
             val careReferences = ArrayList<CareReference>()
-            link!!.careContexts.forEach { careContext ->
-                if (careContext.contextChecked) careReferences.add(
-                    newCareReference(link, careContext)
-                )
+            link.careContexts.forEach { careContext ->
+                if (careContext.contextChecked) careReferences.add(newCareReference(link, careContext))
             }
 
             if (careReferences.isNotEmpty()) {
@@ -102,38 +95,40 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         return consentArtifactList
     }
 
-    fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> {
-        val items = mutableListOf<String>()
+    fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> =
         if (flow == ConsentFlow.GRANTED_CONSENTS) {
-            grantedConsentStatusList.forEach { items.add(getFormattedItem(resources, it, GRANTED)) }
+            grantedConsentStatusList.map { getFormattedItem(resources,it, GRANTED) }
         } else {
-            requestedConsentStatusList.forEach { items.add(getFormattedItem(resources, it, REQUESTED)) }
+            requestedConsentStatusList.map {
+                getFormattedItem(resources,it, REQUESTED)
+            }
         }
-        return items
-    }
+
 
     private fun getFormattedItem(
         resources: Resources,
         filterItem: Int,
         requestStatus: RequestStatus
     ): String {
-        var count = 0
+        val list = if (requestStatus == GRANTED) {
+            grantedConsentsList.value
+        } else {
+            requestedConsentsList.value
+        }
 
-        val list = if (requestStatus == GRANTED) grantedConsentsList.value else requestedConsentsList.value
-
-        list.let {
-            it?.forEach { consent ->
-                val dataExpired = DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt)
-                when (filterItem) {
-                    R.string.status_active_granted_consents, R.string.status_active_requested_consents -> {
-                        if (!dataExpired) count++
-                    }
-                    R.string.status_expired_granted_consents, R.string.status_expired_requested_consents -> {
-                        if (dataExpired) count++
-                    }
-                    else -> {
-                        count++
-                    }
+        val count = list?.count { consent ->
+            val dataExpired = DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt)
+            when (filterItem) {
+                R.string.status_active_granted_consents,
+                R.string.status_active_requested_consents -> {
+                    !dataExpired
+                }
+                R.string.status_expired_granted_consents,
+                R.string.status_expired_requested_consents -> {
+                    dataExpired
+                }
+                else -> {
+                    true
                 }
             }
         }
@@ -143,36 +138,31 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
 
     fun getItems(links: List<Links?>): List<IDataBindingModel> {
         val items = arrayListOf<IDataBindingModel>()
-        links.forEach { link ->
-            items.add(link?.hip!!)
+        links.filterNotNull().forEach { link ->
+            items.add(link.hip)
             items.addAll(link.careContexts)
         }
         return items
     }
 
-    private fun newCareReference(
-        link: Links,
-        it: CareContext
-    ) = CareReference(link.referenceNumber!!, it.referenceNumber)
+    private fun newCareReference(link: Links, it: CareContext) = CareReference(link.referenceNumber, it.referenceNumber)
 
     fun checkSelectionInBackground(listOfBindingModels: List<IDataBindingModel>?): Pair<Boolean, Boolean> {
-        var selectionCount = 0
         var selectableItemsCount = 0
+        var selectionCount = 0
 
-        listOfBindingModels?.forEach {
-            if (it is CareContext) {
-                selectableItemsCount++
-                if (it.contextChecked) selectionCount++
-            }
+        listOfBindingModels?.filterIsInstance<CareContext>()?.run {
+            selectableItemsCount = count()
+            selectionCount = count { it.contextChecked }
         }
         return Pair(selectableItemsCount == selectionCount, selectionCount > 0)
     }
 
-    fun filterConsents() {
-        requestedConsentsList.value = consentsListResponse.value?.requests!!.filter {
+    fun filterConsents(consentList: List<Consent>?) {
+        requestedConsentsList.value = consentList?.filter {
             it.status == REQUESTED
         }
-        grantedConsentsList.value = consentsListResponse.value?.requests!!.filter {
+        grantedConsentsList.value = consentList?.filter {
             it.status == GRANTED
         }
     }
@@ -180,18 +170,18 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
     fun revokeConsent(consent: Consent) {
         repository.revokeConsent(ConsentActionsRequest(consentId = consent.id))
     }
-    fun getItems(grantedConsents: List<GrantedConsentDetailsResponse>, linkedAccounts: List<Links?>): Pair<List<IDataBindingModel>,Int> {
+    fun getItems(grantedConsents: List<GrantedConsentDetailsResponse>, linkedAccounts: List<Links>?): Pair<List<IDataBindingModel>,Int> {
         var count = 0
         val items = arrayListOf<IDataBindingModel>()
         for (grantedConsent in grantedConsents) {
             val grantedAccountHipId = grantedConsent.consentDetail.hip?.id
-            linkedAccounts.forEach { link ->
-                if (grantedAccountHipId == link?.hip?.id) {
-                    val linkedHip = LinkedHip(link?.hip?.name!!, link.referenceNumber)
+            linkedAccounts?.forEach { link ->
+                if (grantedAccountHipId == link.hip.id) {
+                    val linkedHip = LinkedHip(link.hip.name, link.referenceNumber)
                     items.add(linkedHip)
                     count++
                     val careContextsList = arrayListOf<LinkedCareContext>()
-                    link.careContexts?.forEach { careContextsList.add(LinkedCareContext(it.referenceNumber, it.display)) }
+                    link.careContexts.forEach { careContextsList.add(LinkedCareContext(it.referenceNumber, it.display)) }
                     (careContextsList).forEach { linkedAccountCareContext ->
                         (grantedConsent.consentDetail.careContexts)?.forEach { grantedAccountCareContext ->
                             grantedAccountCareContext.careContextReference.toString()
@@ -205,6 +195,14 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
             }
         }
         return Pair(items, count)
+    }
+
+    override fun onItemClick(
+        iDataBindingModel: IDataBindingModel,
+        itemViewBinding: ViewDataBinding
+    ) {
+        if (iDataBindingModel is Consent)
+            onClickConsentEvent.value = iDataBindingModel
     }
 }
 

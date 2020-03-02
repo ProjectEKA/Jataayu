@@ -1,6 +1,6 @@
 package `in`.projecteka.jataayu.module
 
-import `in`.projecteka.featuresprovider.BuildConfig
+import `in`.projecteka.jataayu.BuildConfig
 import `in`.projecteka.jataayu.consent.remote.ConsentApis
 import `in`.projecteka.jataayu.consent.remote.UserVerificationApis
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository

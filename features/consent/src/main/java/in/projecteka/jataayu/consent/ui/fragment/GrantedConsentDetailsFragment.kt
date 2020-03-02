@@ -1,10 +1,12 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PayloadResource
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.Links
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
@@ -16,33 +18,42 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.consent_details_fragment.*
-import okhttp3.ResponseBody
-import org.greenrobot.eventbus.Subscribe
 
-class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ResponseCallback {
+class GrantedConsentDetailsFragment : ConsentDetailsFragment() {
+
 
     private lateinit var consentId: String
     private lateinit var genericRecyclerViewAdapter: GenericRecyclerViewAdapter
-    private lateinit var linkedAccounts: List<Links?>
-    private lateinit var linkedAccountsAndCount : Pair<List<IDataBindingModel>, Int>
+    private var linkedAccounts: List<Links>? = null
+    private lateinit var linkedAccountsAndCount: Pair<List<IDataBindingModel>, Int>
     private val compositeDisposable = CompositeDisposable()
 
     private val grantedConsentDetailsObserver =
-        Observer<List<GrantedConsentDetailsResponse>> { grantedConsents ->
-            this.consent = grantedConsents[0].consentDetail
-            renderUi()
-            populateLinkedAccounts(grantedConsents)
+        Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
+            when (payload) {
+                is Success -> {
+                    payload.data?.firstOrNull()?.consentDetail?.let { this.consent = it }
+                    renderUi()
+                    payload.data?.let { populateLinkedAccounts(it) }
+                }
+                is Loading -> {
+                    showProgressBar(payload.isLoading)
+                }
+            }
+
         }
 
-    private val linkedAccountsObserver = Observer<LinkedAccountsResponse> { linkedAccountsResponse ->
-            linkedAccounts = linkedAccountsResponse.linkedPatient.links
-            viewModel.grantedConsentDetailsResponse.observe(this, grantedConsentDetailsObserver)
-
-            if (viewModel.grantedConsentDetailsResponse.value == null) {
-                showProgressBar(true)
-                viewModel.getGrantedConsentDetails(consentId, this)
+    private val linkedAccountsObserver = Observer<PayloadResource<LinkedAccountsResponse>> { payload ->
+        when (payload) {
+            is Loading -> showProgressBar(payload.isLoading)
+            is Success -> {
+                linkedAccounts = payload.data?.linkedPatient?.links
+                if (viewModel.grantedConsentDetailsResponse.value == null) {
+                    viewModel.getGrantedConsentDetails(consentId)
+                }
             }
         }
+    }
 
     private fun populateLinkedAccounts(grantedConsents: List<GrantedConsentDetailsResponse>) {
         compositeDisposable.add(io.reactivex.Observable.just(viewModel)
@@ -51,8 +62,7 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ResponseCallback
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 linkedAccountsAndCount = it
-                genericRecyclerViewAdapter = GenericRecyclerViewAdapter(
-                        this@GrantedConsentDetailsFragment, linkedAccountsAndCount.first)
+                genericRecyclerViewAdapter = GenericRecyclerViewAdapter(linkedAccountsAndCount.first, viewModel)
                 rvLinkedAccounts.apply {
                     layoutManager = LinearLayoutManager(context)
                     adapter = genericRecyclerViewAdapter
@@ -60,7 +70,8 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ResponseCallback
                     addItemDecoration(dividerItemDecorator)
                 }
 
-                binding.tvProviders.text = String.format(context!!.getString(R.string.all_linked_providers_with_count), linkedAccountsAndCount.second)
+                binding.tvProviders.text =
+                    String.format(context!!.getString(R.string.all_linked_providers_with_count), linkedAccountsAndCount.second)
             })
     }
 
@@ -77,9 +88,7 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ResponseCallback
         return true
     }
 
-    override fun isGrantedConsent(): Boolean {
-        return true
-    }
+    override fun isGrantedConsent(): Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,33 +96,17 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ResponseCallback
         if (!eventBusInstance.isRegistered(this))
             eventBusInstance.register(this)
 
-        viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
+        initObservers()
 
         if (viewModel.linkedAccountsResponse.value == null) {
-            showProgressBar(true)
-            viewModel.getLinkedAccounts(this)
+            viewModel.getLinkedAccounts()
         }
     }
 
-    override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
-    }
+    private fun initObservers() {
+        viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
 
-    override fun onFailure(errorBody: ResponseBody) {
-        showProgressBar(false)
-    }
+        viewModel.grantedConsentDetailsResponse.observe(this, grantedConsentDetailsObserver)
 
-    override fun onFailure(t: Throwable) {
-        showProgressBar(false)
-    }
-
-    @Subscribe(sticky = true)
-    public fun onConsentIdReceived(consentId: String) {
-        this.consentId = consentId
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.dispose()
     }
 }

@@ -22,7 +22,10 @@ open class GenericRecyclerViewAdapter : RecyclerView.Adapter<GenericRecyclerView
         listOfBindingModels = ArrayList()
     }
 
-    constructor(itemClickCallback: ItemClickCallback, listIModels: List<IDataBindingModel>) {
+    constructor(
+        listIModels: List<IDataBindingModel>,
+        itemClickCallback: ItemClickCallback
+    ) {
         this.itemClickCallback = itemClickCallback
         listOfBindingModels.clear()
         listOfBindingModels.addAll(listIModels)

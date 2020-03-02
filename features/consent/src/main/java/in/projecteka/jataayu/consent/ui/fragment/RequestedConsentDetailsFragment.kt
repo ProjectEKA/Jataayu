@@ -8,7 +8,9 @@ import `in`.projecteka.jataayu.core.model.Links
 import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PayloadResource
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.showLongToast
@@ -16,24 +18,14 @@ import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import okhttp3.ResponseBody
 import org.greenrobot.eventbus.Subscribe
 
-class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetailsClickHandler,
-    ResponseCallback {
+class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetailsClickHandler {
 
-    private lateinit var linkedAccounts: List<Links?>
+    private var linkedAccounts: List<Links>? = null
 
     companion object {
         fun newInstance() = RequestedConsentDetailsFragment()
-    }
-
-    private val consentArtifactResponseObserver = Observer<ConsentArtifactResponse> {
-        if (it.consents.isNotEmpty()) {
-            showLongToast(getString(R.string.consent_request_granted))
-            eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
-            activity?.finish()
-        }
     }
 
     override fun isExpiredOrGranted(): Boolean {
@@ -44,12 +36,32 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
         return false
     }
 
+    private val consentArtifactResponseObserver = Observer<PayloadResource<ConsentArtifactResponse>> {
+        when (it) {
+            is Loading -> {
+                showProgressBar(it.isLoading)
+            }
+            is Success -> {
+                if (it.data?.consents?.isNotEmpty() == true) {
+                    showLongToast(getString(R.string.consent_request_granted))
+                    eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
+                    activity?.finish()
+                }
+            }
+        }
+    }
+
     private val linkedAccountsObserver =
-        Observer<LinkedAccountsResponse> { linkedAccountsResponse ->
-            linkedAccounts = linkedAccountsResponse.linkedPatient.links
-            linkedAccounts.forEach { link ->
-                link?.careContexts?.forEach {
-                    it.contextChecked = true
+        Observer<PayloadResource<LinkedAccountsResponse>> {
+            when (it) {
+                is Loading -> showProgressBar(it.isLoading)
+                is Success -> {
+                    linkedAccounts = it.data?.linkedPatient?.links
+                    linkedAccounts?.forEach { link ->
+                        link?.careContexts?.forEach {
+                            it.contextChecked = true
+                        }
+                    }
                 }
             }
         }
@@ -60,11 +72,9 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
         if (!eventBusInstance.isRegistered(this))
             eventBusInstance.register(this)
 
-        viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
-
         if (viewModel.linkedAccountsResponse.value == null) {
-            showProgressBar(true)
-            viewModel.getLinkedAccounts(this)
+            viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
+            viewModel.getLinkedAccounts()
         }
     }
 
@@ -74,8 +84,8 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
     }
 
     override fun onEditClick(view: View) {
-        linkedAccounts.let {
-            eventBusInstance.postSticky(HiTypeAndLinks(hiTypeObjects, linkedAccounts))
+        linkedAccounts?.let {
+            eventBusInstance.postSticky(HiTypeAndLinks(hiTypeObjects, it))
             (activity as ConsentDetailsActivity).editConsentDetails()
         }
     }
@@ -101,18 +111,6 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
         binding.clickHandler = this
     }
 
-    override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
-    }
-
-    override fun onFailure(errorBody: ResponseBody) {
-        showProgressBar(false)
-    }
-
-    override fun onFailure(t: Throwable) {
-        showProgressBar(false)
-    }
-
     @Subscribe(sticky = true)
     public fun onConsentReceived(consent: Consent) {
         this.consent = consent
@@ -126,14 +124,12 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
     }
 
     private fun grant() {
-        if (linkedAccounts.isNotEmpty()) {
-            showProgressBar(true)
-            viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
-            viewModel.grantConsent(
-                consent.id,
-                viewModel.getConsentArtifact(linkedAccounts, hiTypeObjects, consent.permission),
-                this
-            )
+        linkedAccounts?.let {
+            if (it.isNotEmpty()) {
+                showProgressBar(true)
+                viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
+                viewModel.grantConsent(consent.id, viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission))
+            }
         }
     }
 

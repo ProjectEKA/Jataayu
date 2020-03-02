@@ -5,7 +5,6 @@ import `in`.projecteka.jataayu.consent.databinding.ConsentDetailsFragmentBinding
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HiType
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
@@ -16,12 +15,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.google.android.material.chip.Chip
-import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-abstract class ConsentDetailsFragment : BaseFragment(), ItemClickCallback,
-    ResponseCallback {
+abstract class ConsentDetailsFragment : BaseFragment(), ItemClickCallback{
 
     protected lateinit var binding: ConsentDetailsFragmentBinding
 
@@ -47,56 +44,43 @@ abstract class ConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         return binding.root
     }
 
+    abstract fun isExpiredOrGranted(): Boolean
+    abstract fun isGrantedConsent(): Boolean
+
     protected fun renderUi() {
 
-        binding.consent = consent
-
-        binding.requestExpired = isExpiredOrGranted()
-
-        binding.isGrantedConsent = isGrantedConsent()
+        with(binding) {
+            this.consent = this@ConsentDetailsFragment.consent
+            requestExpired = isExpiredOrGranted()
+            isGrantedConsent = isGrantedConsent()
+            cgRequestInfoTypes.removeAllViews()
+        }
 
         eventBusInstance.postSticky(consent)
 
-        binding.cgRequestInfoTypes.removeAllViews()
-
         if (hiTypeObjects.isEmpty()) createHiTypesFromConsent()
 
-        for (hiType in hiTypeObjects) {
+        hiTypeObjects.forEach { hiType ->
             if (hiType.isChecked) {
                 binding.cgRequestInfoTypes.addView(newChip(hiType.type))
             }
         }
     }
 
-    abstract fun isExpiredOrGranted(): Boolean
-    abstract fun isGrantedConsent(): Boolean
-
     private fun createHiTypesFromConsent() {
-        for (hiType in consent.hiTypes) {
-            hiTypeObjects.add(HiType(hiType, true))
+        consent.hiTypes.forEach {
+            hiTypeObjects.add(HiType(it, true))
         }
     }
 
-    private fun newChip(description: String): Chip? {
-        val chip = Chip(context, null, R.style.Chip_NonEditable)
-        chip.text = description
-        return chip
-    }
+    private fun newChip(description: String): Chip? =
+        Chip(context, null, R.style.Chip_NonEditable).apply {
+            text = description
+        }
 
     override fun onVisible() {
         super.onVisible()
         setTitle(R.string.new_request)
     }
 
-    override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
-    }
-
-    override fun onFailure(errorBody: ResponseBody) {
-        showProgressBar(false)
-    }
-
-    override fun onFailure(t: Throwable) {
-        showProgressBar(false)
-    }
 }
