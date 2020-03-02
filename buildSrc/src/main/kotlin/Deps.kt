@@ -42,6 +42,7 @@ object LibVersions {
     const val preferences = "1.1.0"
     const val rxKotlin = "2.4.0"
     const val rxAndroid = "2.1.1"
+    const val otpView = "2.1.0"
 }
 
 object Modules {
@@ -132,5 +133,9 @@ object Deps {
         const val jacocoAgent = "org.jacoco:org.jacoco.agent:${LibVersions.jacoco}"
         const val dicemelonJacoco = "com.dicedmelon.gradle:jacoco-android:${LibVersions.dicemelonJacoco}"
         const val jacocoPalantir = "com.palantir:jacoco-coverage:${LibVersions.jacocoPalantir}"
+    }
+
+    object OtpView {
+        const val main = "com.github.mukeshsolanki:android-otpview-pinview:${LibVersions.otpView}"
     }
 }

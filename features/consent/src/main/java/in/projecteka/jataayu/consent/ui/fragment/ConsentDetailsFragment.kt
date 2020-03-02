@@ -5,20 +5,16 @@ import `in`.projecteka.jataayu.consent.databinding.ConsentDetailsFragmentBinding
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HiType
-import `in`.projecteka.jataayu.core.model.MessageEventType
-import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.extension.showLongToast
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
@@ -36,18 +32,6 @@ abstract class ConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     protected var hiTypeObjects = ArrayList<HiType>()
 
     protected val eventBusInstance: EventBus = EventBus.getDefault()
-
-    private val consentArtifactResponseObserver = Observer<ConsentArtifactResponse> {
-        if (it.consents.isNotEmpty()) {
-            showLongToast(getString(R.string.consent_request_granted))
-            eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
-            activity?.finish()
-        }
-    }
-
-    private fun getGrantedConsentDetails() {
-        viewModel.getGrantedConsentDetails(consent.id, this)
-    }
 
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,

@@ -11,6 +11,7 @@ import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.View
@@ -29,6 +30,7 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
 
     private val consentArtifactResponseObserver = Observer<ConsentArtifactResponse> {
         if (it.consents.isNotEmpty()) {
+            showLongToast(getString(R.string.consent_request_granted))
             eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
             activity?.finish()
         }
@@ -64,12 +66,10 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
             showProgressBar(true)
             viewModel.getLinkedAccounts(this)
         }
-
-        viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         eventBusInstance.unregister(this)
     }
 
@@ -85,14 +85,15 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
     }
 
     override fun onGrantConsent(view: View) {
-        if (linkedAccounts.isNotEmpty()) {
-            showProgressBar(true)
-            viewModel.grantConsent(
-                consent.id,
-                viewModel.getConsentArtifact(linkedAccounts, hiTypeObjects, consent.permission),
-                this
-            )
-        }
+        verifyAction()
+    }
+
+    private fun verifyAction() {
+        startAuthenticator()
+    }
+
+    private fun startAuthenticator() {
+        (activity as ConsentDetailsActivity).validateUser()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,6 +116,25 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
     @Subscribe(sticky = true)
     public fun onConsentReceived(consent: Consent) {
         this.consent = consent
+    }
+
+    @Subscribe
+    public fun onUserVerified(messageEventType: MessageEventType) {
+        if (messageEventType == MessageEventType.USER_VERIFIED) {
+            grant()
+        }
+    }
+
+    private fun grant() {
+        if (linkedAccounts.isNotEmpty()) {
+            showProgressBar(true)
+            viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
+            viewModel.grantConsent(
+                consent.id,
+                viewModel.getConsentArtifact(linkedAccounts, hiTypeObjects, consent.permission),
+                this
+            )
+        }
     }
 
     override fun onVisible() {

@@ -19,6 +19,7 @@
                     android:pathPrefix="/consent/" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.CreatePinActivity"/>
     </application>
 
 </manifest>

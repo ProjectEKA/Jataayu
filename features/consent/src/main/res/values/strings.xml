@@ -43,4 +43,13 @@
     <string name="all_providers">All Providers</string>
     <string name="you_have_given_access_to">You have given access to</string>
     <string name="all_linked_providers_with_count">All linked providers (%d)</string>
+    <string name="user_verification_label">For securing your\nhealth information,\nyou need a Consent PIN</string>
+    <string name="create_pin">Create a 4 digit consent PIN</string>
+    <string name="title_confirm_pin">Confirm consent PIN</string>
+    <string name="confirm_pin">Confirm PIN</string>
+    <string name="enter_pin">Enter 4 digit consent PIN</string>
+    <string name="error_msg_invalid_otp">Invalid PIN. Please enter the PIN again.</string>
+    <string name="error_msg_pin_mismatch">PIN does not match. Please enter the PIN again.</string>
+    <string name="confirm_consent_pin">Confirm Consent PIN</string>
+    <string name="create_consent_pin">Create Consent PIN</string>
 </resources>

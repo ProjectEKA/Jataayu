@@ -19,7 +19,7 @@
 
         <variable
             name="clickHandler"
-            type="in.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler" />
+            type="in.projecteka.jataayu.core.handler.OtpSubmissionClickHandler" />
 
         <variable
             name="isOtpEntered"
@@ -101,23 +101,10 @@
 
         <in.projecteka.jataayu.presentation.ui.view.OtpEditText
             android:id="@+id/et_otp"
-            style="@style/TextAppearance.ListItemSubHeader"
+            style="@style/Otp"
             android:layout_width="300dp"
             android:layout_height="@dimen/edittext_height"
             android:layout_marginTop="@dimen/content_margin_extra_small"
-            android:background="@drawable/rounded_corners_selector"
-            android:cursorVisible="true"
-            android:digits="1234567890"
-            android:inputType="number"
-            android:letterSpacing="2"
-            android:maxLength="6"
-            android:maxLines="1"
-            android:minEms="6"
-            android:paddingStart="@dimen/content_padding_medium"
-            android:paddingEnd="@dimen/content_padding_medium"
-            android:paddingBottom="@dimen/content_margin_large"
-            android:singleLine="true"
-            android:textIsSelectable="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"

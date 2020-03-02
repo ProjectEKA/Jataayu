@@ -43,7 +43,7 @@ class CreateAccountFragment : BaseFragment(),
     AccountCreationClickHandler, DateTimeSelectionCallback,
     CredentialsInputListener, ResponseCallback {
 
-    private var dob = ""
+    private var dob : String? = ""
     private lateinit var binding: FragmentCreateAccountBinding
 
     private val disposables = CompositeDisposable()
@@ -78,13 +78,15 @@ class CreateAccountFragment : BaseFragment(),
     override fun createAccount(view: View) {
         if (validateFields()) {
             showProgressBar(true)
-            viewModel.createAccount(this, getCreateAccountRequest())
-            viewModel.createAccountResponse.observe(this,
-                Observer<CreateAccountResponse> {
-                    NetworkSharedPrefsManager.setAuthToken(context!!, getAuthTokenWithTokenType(it))
-                    activity?.setResult(Activity.RESULT_OK)
-                    activity?.finish()
+            dob?.let {
+                viewModel.createAccount(this, getCreateAccountRequest())
+                viewModel.createAccountResponse.observe(this,
+                    Observer<CreateAccountResponse> {
+                        NetworkSharedPrefsManager.setAuthToken(context!!, getAuthTokenWithTokenType(it))
+                        activity?.setResult(Activity.RESULT_OK)
+                        activity?.finish()
                     } )
+            }
         }
     }
 
@@ -94,7 +96,7 @@ class CreateAccountFragment : BaseFragment(),
 
     private fun getCreateAccountRequest(): CreateAccountRequest {
         return CreateAccountRequest(getUsername(), et_password?.text.toString(),
-            et_first_name?.text.toString(), et_last_name?.text.toString(), getGender(), DateTimeUtils.getFormattedDate(dob_format, dob))
+            et_first_name?.text.toString(), et_last_name?.text.toString(), getGender(), DateTimeUtils.getFormattedDate(dob_format, dob!!))
     }
 
     private fun getUsername(): String {
@@ -196,7 +198,7 @@ class CreateAccountFragment : BaseFragment(),
 
     override fun onDateSelected(datePickerId: Int, date: Date) {
         dob = date.toUtc()
-        btn_dob.text = DateTimeUtils.getFormattedDate(dob)
+        dob?.let { btn_dob.text = DateTimeUtils.getFormattedDate(it) }
     }
 
     override fun onTimeSelected(timePair: Pair<Int, Int>) {}

@@ -4,7 +4,7 @@ package `in`.projecteka.jataayu.registration.ui.fragment
 import `in`.projecteka.jataayu.core.databinding.VerityOtpFragmentBinding
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
-import `in`.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler
+import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.core.utils.toErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
@@ -100,7 +100,7 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
         binding.clickHandler = this
         binding.isOtpEntered = false
         binding.errorMessage = String.EMPTY
-        binding.otpChangeWatcher = OtpChangeWatcher(this)
+        binding.otpChangeWatcher = OtpChangeWatcher(6, this)
     }
 
     override fun <T> onSuccess(body: T?) {

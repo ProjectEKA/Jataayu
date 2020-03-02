@@ -60,5 +60,6 @@
     <dimen name="button_elevation_pressed">4dp</dimen>
     <dimen name="prefix_margin">40dp</dimen>
     <dimen name="edit_text_height_large">56dp</dimen>
+    <dimen name="otp_et_dimen">40dp</dimen>
 
 </resources>

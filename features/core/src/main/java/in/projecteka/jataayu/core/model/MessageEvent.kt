@@ -1,5 +1,5 @@
 package `in`.projecteka.jataayu.core.model
 
 enum class MessageEventType {
-    CONSENT_GRANTED, ACCOUNT_LINKED, SELECT_CONSENTS_TAB
+    CONSENT_GRANTED, ACCOUNT_LINKED, SELECT_CONSENTS_TAB, USER_VERIFIED
 }

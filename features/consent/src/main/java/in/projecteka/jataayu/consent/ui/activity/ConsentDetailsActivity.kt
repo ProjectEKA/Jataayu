@@ -3,14 +3,15 @@ package `in`.projecteka.jataayu.consent.ui.activity
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
-import `in`.projecteka.jataayu.consent.ui.fragment.ConsentsListFragment
-import `in`.projecteka.jataayu.consent.ui.fragment.EditConsentDetailsFragment
-import `in`.projecteka.jataayu.consent.ui.fragment.GrantedConsentDetailsFragment
-import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentDetailsFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.*
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.projecteka.jataayu.util.extension.startActivityForResult
+import `in`.projecteka.jataayu.util.sharedPref.getBoolean
+import `in`.projecteka.jataayu.util.sharedPref.putBoolean
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -19,6 +20,7 @@ import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val PIN_CREATED = "PIN_CREATED"
 class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
     private val viewModel: ConsentViewModel by viewModel()
 
@@ -89,5 +91,21 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+    }
+
+    fun validateUser() {
+        if (getBoolean(PIN_CREATED, false)) {
+            addFragment(UserVerificationFragment.newInstance())
+        } else {
+            startActivityForResult(CreatePinActivity::class.java, 201)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 201 && resultCode == Activity.RESULT_OK) {
+            putBoolean(PIN_CREATED, true)
+            validateUser()
+        }
     }
 }

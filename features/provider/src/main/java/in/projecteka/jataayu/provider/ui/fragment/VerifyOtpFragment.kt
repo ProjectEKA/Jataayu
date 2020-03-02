@@ -5,11 +5,11 @@ import `in`.projecteka.jataayu.core.databinding.VerityOtpFragmentBinding
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.model.MessageEventType
-import `in`.projecteka.jataayu.core.model.handler.OtpSubmissionClickHandler
+import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
 import `in`.projecteka.jataayu.provider.model.Otp
+import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.ui.UiUtils
@@ -56,7 +56,7 @@ class VerifyOtpFragment : BaseFragment(),
         binding.mobile = viewModel.linkAccountsResponse.value?.link?.meta?.communicationHint
         binding.clickHandler = this
         binding.isOtpEntered = false
-        binding.otpChangeWatcher = OtpChangeWatcher(this)
+        binding.otpChangeWatcher = OtpChangeWatcher(6, this)
     }
 
     override fun onVisible() {

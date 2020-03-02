@@ -35,7 +35,7 @@ abstract class BaseActivity : AppCompatActivity() {
         supportFragmentManager.apply {
             addOnBackStackChangedListener {
                 if (fragments.isNotEmpty()) fragments.last {
-                    (it as BaseFragment).onVisible()
+                    (it as? BaseFragment)?.onVisible()
                     return@last true
                 }
             }

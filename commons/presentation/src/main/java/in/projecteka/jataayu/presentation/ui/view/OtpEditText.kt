@@ -35,7 +35,7 @@ class OtpEditText : AppCompatEditText {
         setBackgroundResource(0)
         mSpace *= multi //convert to pixels for our density
         mLineSpacing *= multi //convert to pixels for our density
-        mNumChars = 6f
+        mNumChars = minEms.toFloat()
         super.setOnClickListener { v ->
             // When tapped, move cursor to end of text.
             setSelection(Objects.requireNonNull(text!!).length)

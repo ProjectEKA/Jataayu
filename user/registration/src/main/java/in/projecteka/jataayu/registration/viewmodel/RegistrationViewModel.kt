@@ -6,11 +6,11 @@ import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
 import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
 import `in`.projecteka.jataayu.registration.model.VerifyIdentifierRequest
 import `in`.projecteka.jataayu.registration.model.VerifyIdentifierResponse
-import `in`.projecteka.jataayu.registration.repository.AuthorizationRepository
+import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
 
-class RegistrationViewModel(val repository: AuthorizationRepository) : ViewModel() {
+class RegistrationViewModel(private val repository: AuthenticationRepository) : ViewModel() {
 
     companion object{
         const val INDIA_COUNTRY_CODE = "+91"

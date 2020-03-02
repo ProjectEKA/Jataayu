@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.util.sharedPref
 
 import android.content.Context
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 
 fun Context.putInt(key: String, value: Int) {
@@ -36,6 +37,18 @@ fun Context.putBoolean(key: String, value: Boolean) {
 
 fun Context.getBoolean(key: String, defaultValue: Boolean): Boolean {
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+    return sharedPreferences.getBoolean(key, defaultValue)
+}
+
+fun Fragment.putBoolean(key: String, value: Boolean) {
+    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    val editor = sharedPreferences.edit()
+    editor.putBoolean(key, value)
+    editor.apply()
+}
+
+fun Fragment.getBoolean(key: String, defaultValue: Boolean): Boolean {
+    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     return sharedPreferences.getBoolean(key, defaultValue)
 }
 

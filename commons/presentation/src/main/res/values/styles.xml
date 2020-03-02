@@ -135,6 +135,14 @@
         <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 
+    <style name="TextAppearance.Label" parent="TextAppearance">
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:textColor">@color/labelTextColor</item>
+        <item name="android:gravity">center_horizontal|top</item>
+        <item name="android:lineSpacingExtra">1sp</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
     <style name="TextAppearance.ErrorMessage" parent="TextAppearance">
         <item name="android:textSize">@dimen/text_size_extra_small</item>
         <item name="android:textColor">@color/error_message_color</item>
@@ -182,6 +190,18 @@
         <item name="android:textColor">@color/chip_text_color_selector</item>
     </style>
 
+    <style name="Otp" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/rounded_corners_selector</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:digits">1234567890</item>
+        <item name="android:inputType">number</item>
+        <item name="android:letterSpacing">2</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLength">6</item>
+        <item name="android:minEms">6</item>
+    </style>
+
     <style name="DatePickerStyle" parent="Button">
         <item name="backgroundTint">@color/white</item>
         <item name="android:textColor">@color/black</item>
@@ -195,4 +215,20 @@
         <item name="android:paddingEnd">@dimen/content_margin_extra_small</item>
         <item name="android:paddingBottom">@dimen/content_margin_medium</item>
     </style>
+
+    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="actionMenuTextColor">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Slide">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
+    <color name="labelTextColor">#464646</color>
 </resources>

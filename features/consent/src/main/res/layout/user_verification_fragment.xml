@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data >
+        <variable
+            name="clickHandler"
+            type="in.projecteka.jataayu.core.handler.OtpSubmissionClickHandler" />
+
+        <variable
+            name="isOtpEntered"
+            type="Boolean" />
+
+        <variable
+            name="otpChangeWatcher"
+            type="in.projecteka.jataayu.core.handler.OtpChangeWatcher" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.ConfirmPinFragment">
+
+        <TextView
+            android:id="@+id/lbl_enter_otp"
+            style="@style/TextAppearance.ListItemSubHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="148dp"
+            android:gravity="center_horizontal"
+            android:text="@string/enter_pin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lbl_invalid_pin"
+            style="@style/TextAppearance.ErrorMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginTop="@dimen/content_padding_large"
+            android:text="@string/error_msg_invalid_otp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_pin" />
+
+        <in.projecteka.jataayu.presentation.ui.view.OtpEditText
+            android:id="@+id/et_pin"
+            style="@style/Otp"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/content_padding_large"
+            android:maxLength="4"
+            android:minEms="4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_enter_otp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_continue"
+            style="@style/Button.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+            android:onClick="@{clickHandler::onSubmitOtp}"
+            android:text="@string/confirm_pin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_pin"
+            app:layout_constraintVertical_bias="0.05">
+
+        </com.google.android.material.button.MaterialButton>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

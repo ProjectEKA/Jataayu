@@ -35,7 +35,6 @@ fun Fragment.setTitle(@StringRes resourceId: Int) {
     activity?.setTitle(resourceId)
 }
 
-
 inline fun <reified T : View> Activity.findView(id: Int): T = findViewById(id)
 
 inline fun <reified T : View> View.findView(id: Int): T = findViewById(id)

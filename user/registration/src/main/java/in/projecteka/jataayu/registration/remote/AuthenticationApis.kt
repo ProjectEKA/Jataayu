@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface AuthorizationApis {
+interface AuthenticationApis {
     @POST("users/verify")
     fun requestVerification(@Body requestVerificationRequest: RequestVerificationRequest): Call<RequestVerificationResponse>
 
