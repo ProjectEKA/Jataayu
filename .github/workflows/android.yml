@@ -48,3 +48,8 @@ jobs:
           arch: x86_64
           profile: Nexus 6
           script: ./gradlew connectedDebugAndroidTest
+      - name: Upload UI tests result
+        - uses: actions/upload-artifact@v1
+          with:
+            name: UiTests-Index.html
+            path: app/build/reports/androidTests/connected/index.html
