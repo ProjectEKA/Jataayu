@@ -55,7 +55,7 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
 
     private lateinit var binding: FragmentConsentDetailsEditBinding
     private lateinit var listItems: List<IDataBindingModel>
-    private lateinit var linkedAccounts: List<Links?>
+    private lateinit var linkedAccounts: List<Links>
 
     private val eventBusInstance: EventBus = EventBus.getDefault()
     lateinit var consent: Consent
@@ -119,10 +119,10 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
             }.addTo(CompositeDisposable())
     }
 
-    private fun renderLinkedAccounts(linkedAccounts: List<Links?>) {
+    private fun renderLinkedAccounts(linkedAccounts: List<Links>) {
         listItems = viewModel.getItems(linkedAccounts)
         this.linkedAccounts = linkedAccounts
-        genericRecyclerViewAdapter = GenericRecyclerViewAdapter(this@EditConsentDetailsFragment, listItems)
+        genericRecyclerViewAdapter = GenericRecyclerViewAdapter(listItems, this@EditConsentDetailsFragment)
         rvLinkedAccounts.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = genericRecyclerViewAdapter

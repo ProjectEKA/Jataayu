@@ -18,10 +18,10 @@ class ExpandableRecyclerViewAdapter(
     private val childItemClickCallback: ItemClickCallback,
     private val groupViewModelList: List<IGroupDataBindingModel>
 ) : GenericRecyclerViewAdapter(
-    getItemClickCallback(
+    groupViewModelList, getItemClickCallback(
         groupItemClickCallback,
         null
-    ), groupViewModelList
+    )
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): RecyclerGroupViewHolder {
         val iGroupDataBindingModel: IGroupDataBindingModel = groupViewModelList[position]
@@ -64,7 +64,7 @@ class ExpandableRecyclerViewAdapter(
 //                R.anim.layout_animation_fall_down
 //            )
             iGroupDataBindingModel.childrenViewModels?.let {
-                recyclerView.adapter = GenericRecyclerViewAdapter(getItemClickCallback(childItemClickCallback, binding), it)
+                recyclerView.adapter = GenericRecyclerViewAdapter(it, getItemClickCallback(childItemClickCallback, binding))
             }
             setItemClickListener(iGroupDataBindingModel, binding)
         }

@@ -19,11 +19,11 @@ import java.util.concurrent.TimeUnit
 fun createNetworkClient(context: Application, debug: Boolean = false) =
     retrofitClient(getBaseUrl(context), httpClient(debug, context, NetworkSharedPrefsManager.getAuthToken(context = context)))
 
-fun getBaseUrl(context: Application): String {
-    return if (isTestingMode(context)) MOCK_WEB_SERVER_TEST_URL else NetworkSharedPrefsManager.getBaseUrl(context)!!
+private fun getBaseUrl(context: Application): String {
+    return if (isTestingMode(context)) MOCK_WEB_SERVER_TEST_URL else NetworkSharedPrefsManager.getBaseUrl(context)
 }
 
-private fun httpClient(debug: Boolean, context: Context, authToken: String?): OkHttpClient {
+private fun httpClient(debug: Boolean, context: Context, authToken: String): OkHttpClient {
     val httpLoggingInterceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
     val clientBuilder = OkHttpClient.Builder()
         clientBuilder.connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
