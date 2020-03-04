@@ -6,7 +6,7 @@
     <application>
         <activity android:name=".ui.activity.ConsentDetailsActivity"
             android:launchMode="singleTop">
-            <tools:validation testUrl="https://projecteka.github.io/consent/5c71c78e-a77e-4dd5-9f0f-6c3095118327" />
+            <tools:validation testUrl="https://cm.projecteka.in/consent/5c71c78e-a77e-4dd5-9f0f-6c3095118327" />
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -15,7 +15,7 @@
 
                 <data
                     android:scheme="https"
-                    android:host="projecteka.github.io"
+                    android:host="cm.projecteka.in"
                     android:pathPrefix="/consent/" />
             </intent-filter>
         </activity>
