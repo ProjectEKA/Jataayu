@@ -9,9 +9,11 @@ import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
+import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,7 +22,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.consent_details_fragment.*
 import org.greenrobot.eventbus.Subscribe
 
-class GrantedConsentDetailsFragment : ConsentDetailsFragment() {
+class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ItemClickCallback {
 
 
     private lateinit var consentId: String
@@ -29,7 +31,7 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment() {
     private lateinit var linkedAccountsAndCount: Pair<List<IDataBindingModel>, Int>
     private val compositeDisposable = CompositeDisposable()
 
-    private val grantedConsentDetailsObserver =
+    private val grantedConsentDetailsObserver by lazy {
         Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
             when (payload) {
                 is Success -> {
@@ -41,16 +43,18 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment() {
                     showProgressBar(payload.isLoading)
                 }
             }
-
         }
+    }
 
-    private val linkedAccountsObserver = Observer<PayloadResource<LinkedAccountsResponse>> { payload ->
-        when (payload) {
-            is Loading -> showProgressBar(payload.isLoading)
-            is Success -> {
-                linkedAccounts = payload.data?.linkedPatient?.links
-                if (viewModel.grantedConsentDetailsResponse.value == null) {
-                    viewModel.getGrantedConsentDetails(consentId)
+    private val linkedAccountsObserver by lazy {
+        Observer<PayloadResource<LinkedAccountsResponse>> { payload ->
+            when (payload) {
+                is Loading -> showProgressBar(payload.isLoading)
+                is Success -> {
+                    linkedAccounts = payload.data?.linkedPatient?.links
+                    if (viewModel.grantedConsentDetailsResponse.value == null) {
+                        viewModel.getGrantedConsentDetails(consentId)
+                    }
                 }
             }
         }
@@ -63,7 +67,7 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 linkedAccountsAndCount = it
-                genericRecyclerViewAdapter = GenericRecyclerViewAdapter(linkedAccountsAndCount.first, viewModel)
+                genericRecyclerViewAdapter = GenericRecyclerViewAdapter(linkedAccountsAndCount.first, this)
                 rvLinkedAccounts.apply {
                     layoutManager = LinearLayoutManager(context)
                     adapter = genericRecyclerViewAdapter
@@ -114,5 +118,8 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment() {
     @Subscribe(sticky = true)
     public fun onConsentIdReceived(consentId: String) {
         this.consentId = consentId
+    }
+
+    override fun onItemClick(iDataBindingModel: IDataBindingModel, itemViewBinding: ViewDataBinding) {
     }
 }

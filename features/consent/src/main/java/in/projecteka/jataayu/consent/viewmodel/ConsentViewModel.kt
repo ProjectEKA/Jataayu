@@ -17,16 +17,14 @@ import `in`.projecteka.jataayu.core.model.grantedconsent.LinkedHip
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
-import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ConsentViewModel(private val repository: ConsentRepository) : ViewModel(), ItemClickCallback {
+class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() {
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
@@ -35,8 +33,6 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel(),
 
     val requestedConsentsList = MutableLiveData<List<Consent>>()
     val grantedConsentsList = MutableLiveData<List<Consent>>()
-
-    val onClickConsentEvent = SingleLiveEvent<Consent>()
 
     private val grantedConsentStatusList = listOf(
         R.string.status_active_granted_consents,
@@ -195,14 +191,6 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel(),
             }
         }
         return Pair(items, count)
-    }
-
-    override fun onItemClick(
-        iDataBindingModel: IDataBindingModel,
-        itemViewBinding: ViewDataBinding
-    ) {
-        if (iDataBindingModel is Consent)
-            onClickConsentEvent.value = iDataBindingModel
     }
 }
 

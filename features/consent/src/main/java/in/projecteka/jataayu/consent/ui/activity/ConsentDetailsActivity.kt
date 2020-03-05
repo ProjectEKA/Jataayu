@@ -70,7 +70,7 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
 
     private fun getDetailsFragment(): BaseFragment {
         return if (getFlowType() == ConsentFlow.REQUESTED_CONSENTS.ordinal)
-            GrantedConsentDetailsFragment.newInstance()
+            RequestedConsentDetailsFragment.newInstance()
         else GrantedConsentDetailsFragment.newInstance()
     }
 

@@ -13,6 +13,7 @@ import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
+import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
@@ -24,6 +25,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat.getDrawable
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -37,7 +39,7 @@ private const val INDEX_EXPIRED = 1
 private const val INDEX_ALL = 2
 
 abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
-    DeleteConsentCallback {
+    DeleteConsentCallback, ItemClickCallback {
     abstract fun getConsentList(): List<Consent>
     abstract fun getNoNewConsentsMessage(): String
     abstract fun getConsentFlow(): ConsentFlow
@@ -74,28 +76,14 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
                 }
             }
         })
-        viewModel.onClickConsentEvent.observe(this, Observer {
-            val intent = Intent(context, ConsentDetailsActivity::class.java)
-            intent.putExtra(CONSENT_FLOW, getConsentFlow().ordinal)
-            startActivity(intent)
-
-            if (getConsentFlow() == ConsentFlow.GRANTED_CONSENTS) {
-                EventBus.getDefault().postSticky(it.id)
-            } else {
-                EventBus.getDefault().postSticky(it)
-            }
-
-            if (!EventBus.getDefault().isRegistered(this)) {
-                EventBus.getDefault().register(this)
-            }
-        })
     }
 
     private fun initSpinner(selectedPosition: Int) {
         val arrayAdapter = ArrayAdapter<String>(
             context!!,
             android.R.layout.simple_dropdown_item_1line, android.R.id.text1,
-            viewModel.populateFilterItems(resources,getConsentFlow()))
+            viewModel.populateFilterItems(resources, getConsentFlow())
+        )
         binding.spRequestFilter.adapter = arrayAdapter
         arrayAdapter.notifyDataSetChanged()
         binding.spRequestFilter.setSelection(selectedPosition)
@@ -117,7 +105,7 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
 
     protected fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
         consentsListAdapter = ConsentsListAdapter(
-            viewModel,
+            this@ConsentsListFragment,
             requests, this@ConsentsListFragment
         )
         rvConsents.apply {
@@ -128,7 +116,6 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
         initSpinner(selectedSpinnerPosition)
         sp_request_filter.setSelection(INDEX_ACTIVE)
     }
-
 
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -174,5 +161,26 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
         viewModel.grantedConsentsList.value = consents
         initSpinner(sp_request_filter.selectedItemPosition)
         viewModel.revokeConsent(iDataBindingModel as Consent)
+    }
+
+    override fun onItemClick(
+        iDataBindingModel: IDataBindingModel,
+        itemViewBinding: ViewDataBinding
+    ) {
+        if (iDataBindingModel is Consent) {
+            val intent = Intent(context, ConsentDetailsActivity::class.java)
+            intent.putExtra(CONSENT_FLOW, getConsentFlow().ordinal)
+            startActivity(intent)
+
+            if (getConsentFlow() == ConsentFlow.GRANTED_CONSENTS) {
+                EventBus.getDefault().postSticky(iDataBindingModel.id)
+            } else {
+                EventBus.getDefault().postSticky(iDataBindingModel)
+            }
+
+            if (!EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().register(this)
+            }
+        }
     }
 }
