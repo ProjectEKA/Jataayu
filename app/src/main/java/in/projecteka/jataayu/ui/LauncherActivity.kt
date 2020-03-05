@@ -13,6 +13,7 @@ import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
 import `in`.projecteka.jataayu.registration.ui.activity.RegistrationActivity
 import `in`.projecteka.jataayu.ui.LauncherActivity.RequestCodes.*
 import `in`.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.extension.startActivity
 import `in`.projecteka.jataayu.util.extension.startActivityForResult
 import `in`.projecteka.jataayu.util.sharedPref.getBoolean
@@ -159,6 +160,9 @@ class LauncherActivity : BaseActivity() {
                 runOnUiThread{ showSnackbar(getString(R.string.account_linked_successfully)) }
                 eventBusInstance.post(ProviderAddedEvent.PROVIDER_ADDED)
             }
+            MessageEventType.ACCOUNT_CREATED -> {
+                runOnUiThread{ showLongToast(getString(R.string.registered_successfully)) }
+            }
         }
     }
 
@@ -186,6 +190,7 @@ class LauncherActivity : BaseActivity() {
             REGISTER.ordinal -> startFlowIfRequired(resultCode, REGISTERED)
             CREATE_ACCOUNT.ordinal -> {
                 startFlowIfRequired(resultCode, ACCOUNT_CREATED)
+                eventBusInstance.post(MessageEventType.ACCOUNT_CREATED)
             }
             ADD_PROVIDER.ordinal -> startFlowIfRequired(resultCode, PROVIDER_ADDED)
         }

@@ -42,7 +42,7 @@ class CreateAccountFragment : BaseFragment(),
     AccountCreationClickHandler, DateTimeSelectionCallback,
     CredentialsInputListener, ResponseCallback {
 
-    private var dob : String? = ""
+    private var dob : String? = null
     private lateinit var binding: FragmentCreateAccountBinding
 
     private val disposables = CompositeDisposable()
@@ -89,10 +89,10 @@ class CreateAccountFragment : BaseFragment(),
                     activity?.setResult(Activity.RESULT_OK)
                     activity?.finish()
                 } )
-            dob?.let {
-                viewModel.createAccount(this, getCreateAccountRequest())
             }
-        }
+        dob?.let {
+            viewModel.createAccount(this, getCreateAccountRequest())
+        } ?: showProgressBar(false)
     }
 
     private fun getCreateAccountRequest(): CreateAccountRequest {
@@ -141,6 +141,10 @@ class CreateAccountFragment : BaseFragment(),
         }
         if (binding.etFirstName.text?.isEmpty()!!) {
             binding.etFirstName.error = getString(R.string.should_not_be_empty)
+            valid = false
+        }
+        if(binding.etLastName.text?.isEmpty()!!){
+            binding.etLastName.error = getString(R.string.should_not_be_empty)
             valid = false
         }
         if (binding.cgGender.checkedChipId == DEFAULT_CHECKED_ID){
