@@ -2,8 +2,13 @@ package in.projecteka.jataayu.network.utils;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+
+import in.projecteka.jataayu.network.model.ErrorResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -12,7 +17,8 @@ public abstract class RetrofitCallback<T> implements Callback<T> {
 
     private ResponseCallback responseCallback;
 
-    public RetrofitCallback() {}
+    public RetrofitCallback() {
+    }
 
     public RetrofitCallback(ResponseCallback responseCallback) {
         this.responseCallback = responseCallback;
@@ -29,7 +35,12 @@ public abstract class RetrofitCallback<T> implements Callback<T> {
             }
         } else {
             if (response.errorBody() != null && responseCallback != null) {
-                responseCallback.onFailure(response.errorBody());
+                try {
+                    ErrorResponse errorResponse = new Gson().fromJson(response.errorBody().string(), ErrorResponse.class);
+                    responseCallback.onFailure(errorResponse);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

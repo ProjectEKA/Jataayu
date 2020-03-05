@@ -10,12 +10,15 @@ import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HiType
 import `in`.projecteka.jataayu.core.model.Links
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.DateTimeSelectionCallback
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog.Companion.UNDEFINED_DATE
@@ -41,7 +44,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_consent_details_edit.*
-import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -244,11 +246,13 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
         showProgressBar(false)
     }
 
-    override fun onFailure(errorBody: ResponseBody) {
+    override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

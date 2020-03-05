@@ -7,7 +7,10 @@ import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.core.model.MessageEventType
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
@@ -17,7 +20,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.get
 
@@ -80,11 +82,13 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         showProgressBar(false)
     }
 
-    override fun onFailure(errorBody: ResponseBody) {
+    override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

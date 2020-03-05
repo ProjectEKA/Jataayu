@@ -3,8 +3,11 @@ package `in`.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.callback.DateTimeSelectionCallback
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog
 import `in`.projecteka.jataayu.user.account.R
@@ -34,7 +37,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_create_account.*
-import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
@@ -222,11 +224,13 @@ class CreateAccountFragment : BaseFragment(),
         showProgressBar(false)
     }
 
-    override fun onFailure(errorBody: ResponseBody) {
+    override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

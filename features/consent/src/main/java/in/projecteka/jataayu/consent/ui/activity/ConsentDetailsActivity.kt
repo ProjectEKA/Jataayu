@@ -5,9 +5,12 @@ import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.ui.fragment.*
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.extension.startActivityForResult
@@ -18,7 +21,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -92,12 +94,14 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
         showProgressBar(false)
     }
 
-    override fun onFailure(errorBody: ResponseBody) {
+    override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
+        showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        showErrorDialog(t.localizedMessage)
     }
 
     fun validateUser() {

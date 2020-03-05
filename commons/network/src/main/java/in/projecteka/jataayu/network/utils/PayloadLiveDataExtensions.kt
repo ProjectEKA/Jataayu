@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.network.utils
 
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,6 +20,11 @@ fun <T> PayloadLiveData<T>.failure(error: Throwable) {
     value = Failure(error)
 }
 
+fun <T> PayloadLiveData<T>.partialFailure(responseBody: ResponseBody?) {
+    loading(false)
+    value = PartialFailure(responseBody)
+}
+
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>) {
     value = Loading(true)
     call.enqueue(object : Callback<T> {
@@ -30,7 +36,7 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>) {
             if (response.isSuccessful) {
                 success(response.body())
             } else {
-                failure(RuntimeException(response.errorBody().toString()))
+                partialFailure(response.errorBody())
             }
         }
     })

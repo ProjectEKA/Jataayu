@@ -5,8 +5,9 @@ import `in`.projecteka.jataayu.core.databinding.VerityOtpFragmentBinding
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
-import `in`.projecteka.jataayu.core.utils.toErrorResponse
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.registration.listener.MobileNumberChangeHandler
 import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
@@ -21,11 +22,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import retrofit2.Response
 
 class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, ResponseCallback, MobileNumberChangeHandler,
     OtpChangeHandler {
@@ -110,16 +109,14 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
         activity?.finish()
     }
 
-    override fun onFailure(errorBody: ResponseBody) {
+    override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
-        if((errorBody is Response<*>)) {
-            val errorResponse = errorBody.errorBody()?.toErrorResponse()
-            if(errorResponse?.error?.code == ERROR_CODE_INVALID_OTP)
-                binding.errorMessage = context?.getString(R.string.invalid_otp)
-        }
+        if(errorBody.error.code == ERROR_CODE_INVALID_OTP)
+            binding.errorMessage = context?.getString(R.string.invalid_otp)
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

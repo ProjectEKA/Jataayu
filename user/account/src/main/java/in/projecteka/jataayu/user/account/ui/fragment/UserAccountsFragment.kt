@@ -2,12 +2,16 @@ package `in`.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.get
@@ -20,7 +24,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -88,12 +91,14 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
         showProgressBar(false)
     }
 
-    override fun onFailure(errorBody: ResponseBody) {
+    override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 
     override fun onDestroy() {

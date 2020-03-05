@@ -1,6 +1,6 @@
 package `in`.projecteka.jataayu.core.utils
 
-import `in`.projecteka.jataayu.core.model.ErrorResponse
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.util.extension.fromJson
 import com.google.gson.Gson
 import okhttp3.ResponseBody

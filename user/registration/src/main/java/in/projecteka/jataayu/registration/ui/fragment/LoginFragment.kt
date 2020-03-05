@@ -1,9 +1,12 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
-import `in`.projecteka.jataayu.network.utils.Failure
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.registration.listener.LoginClickHandler
 import `in`.projecteka.jataayu.registration.listener.LoginEnableListener
@@ -21,7 +24,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_login.*
-import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListener,
@@ -62,8 +64,9 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
                     activity?.setResult(Activity.RESULT_OK)
                     activity?.finish()
                 }
-                is Failure -> {
-
+                is PartialFailure -> {
+                    context?.showAlertDialog(getString(R.string.failure), it.responseBody?.string(),
+                        getString(android.R.string.ok))
                 }
             }
         }
@@ -122,11 +125,13 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
         (activity as LoginActivity).showProgressBar(false)
     }
 
-    override fun onFailure(errorBody: ResponseBody) {
+    override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

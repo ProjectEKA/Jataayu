@@ -4,11 +4,14 @@ import `in`.projecteka.featuresprovider.R
 import `in`.projecteka.featuresprovider.databinding.PatientAccountsFragmentBinding
 import `in`.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
 import `in`.projecteka.jataayu.core.model.CareContext
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.model.LinkAccountsResponse
 import `in`.projecteka.jataayu.provider.ui.ProviderActivity
@@ -23,7 +26,6 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccountsScreenHandler,
@@ -108,11 +110,13 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
         showProgressBar(false)
     }
 
-    override fun onFailure(errorBody: ResponseBody) {
+    override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

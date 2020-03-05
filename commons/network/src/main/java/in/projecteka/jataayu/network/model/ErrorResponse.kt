@@ -1,4 +1,4 @@
-package `in`.projecteka.jataayu.core.model
+package `in`.projecteka.jataayu.network.model
 
 import com.google.gson.annotations.SerializedName
 

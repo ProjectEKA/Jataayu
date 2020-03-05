@@ -1,9 +1,9 @@
 package `in`.projecteka.jataayu.network.utils
 
-import okhttp3.ResponseBody
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 
 interface ResponseCallback {
     fun <T> onSuccess(body: T?)
-    fun onFailure(errorBody: ResponseBody)
+    fun onFailure(errorBody: ErrorResponse)
     fun onFailure(t: Throwable)
 }
