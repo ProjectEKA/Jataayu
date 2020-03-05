@@ -8,6 +8,8 @@ import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.extension.startActivityForResult
@@ -94,10 +96,12 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
 
     override fun onFailure(errorBody: ResponseBody) {
         showProgressBar(false)
+        showAlertDialog(getString(R.string.failure), errorBody.string(), getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        showErrorDialog(t.localizedMessage)
     }
 
     fun validateUser() {

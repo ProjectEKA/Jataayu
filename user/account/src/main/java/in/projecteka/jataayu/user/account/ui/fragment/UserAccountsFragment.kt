@@ -7,7 +7,10 @@ import `in`.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapte
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.get
@@ -90,10 +93,12 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
 
     override fun onFailure(errorBody: ResponseBody) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.string(), getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 
     override fun onDestroy() {

@@ -16,6 +16,8 @@ import `in`.projecteka.jataayu.presentation.callback.DateTimeSelectionCallback
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog.Companion.UNDEFINED_DATE
@@ -246,9 +248,11 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
 
     override fun onFailure(errorBody: ResponseBody) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.string(), getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

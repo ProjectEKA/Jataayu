@@ -1,6 +1,8 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.registration.listener.ContinueClickHandler
 import `in`.projecteka.jataayu.registration.listener.MobileNumberChangeHandler
@@ -73,9 +75,11 @@ class RegistrationFragment : BaseFragment(), ContinueClickHandler, MobileNumberC
 
     override fun onFailure(errorBody: ResponseBody) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.string(), getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

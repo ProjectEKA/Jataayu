@@ -14,8 +14,10 @@ import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
+import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,7 +28,6 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.consent_request_fragment.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -70,7 +71,8 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
                     viewModel.filterConsents(it.data?.requests)
                 }
                 is Failure -> {
-                    //do nothing for now.
+                    context?.showAlertDialog(getString(R.string.failure), it.error.message ?: getString(R.string.something_went_wrong),
+                        getString(android.R.string.ok))
                 }
             }
         })
@@ -157,14 +159,11 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
     }
 
     override fun confirmRevoke(iDataBindingModel: IDataBindingModel) {
-        MaterialAlertDialogBuilder(context)
-            .setTitle(R.string.title_revoke_consent)
-            .setPositiveButton(R.string.btn_revoke_consent) { _, _ ->
-                revokeConsent(iDataBindingModel)
-            }
-            .setNegativeButton(android.R.string.cancel, null)
-            .setMessage(R.string.msg_revoke_consent)
-            .show()
+        val onClickListener = DialogInterface.OnClickListener { _: DialogInterface, _: Int ->
+            revokeConsent(iDataBindingModel)
+        }
+        context?.showAlertDialog(R.string.title_revoke_consent, R.string.msg_revoke_consent, R.string.btn_revoke_consent,
+            onClickListener, android.R.string.cancel, null)
     }
 
     private fun revokeConsent(iDataBindingModel: IDataBindingModel) {

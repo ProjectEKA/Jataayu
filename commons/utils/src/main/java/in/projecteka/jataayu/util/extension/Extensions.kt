@@ -8,12 +8,16 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
+
+fun <T> ViewModel.liveDataOf() = MutableLiveData<T>()
 
 fun <T> Context.startActivity(clazz: Class<T>) {
     startActivity(Intent(this, clazz))

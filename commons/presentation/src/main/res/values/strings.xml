@@ -2,4 +2,6 @@
     <string name="app_name">presentation</string>
     <string name="header">header</string>
     <string name="body">body</string>
+    <string name="failure">Failure</string>
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>

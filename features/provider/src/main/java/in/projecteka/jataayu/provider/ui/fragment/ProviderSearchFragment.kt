@@ -8,6 +8,8 @@ import `in`.projecteka.jataayu.core.model.Request
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.callback.TextWatcherCallback
 import `in`.projecteka.jataayu.provider.domain.ProviderNameWatcher
@@ -173,9 +175,11 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
 
     override fun onFailure(errorBody: ResponseBody) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.string(), getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

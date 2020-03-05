@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.core.utils.toErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.registration.listener.MobileNumberChangeHandler
 import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
@@ -121,5 +122,6 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

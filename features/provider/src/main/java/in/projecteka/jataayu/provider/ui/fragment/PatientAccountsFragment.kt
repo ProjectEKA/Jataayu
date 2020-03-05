@@ -9,6 +9,8 @@ import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.model.LinkAccountsResponse
 import `in`.projecteka.jataayu.provider.ui.ProviderActivity
@@ -110,9 +112,11 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
 
     override fun onFailure(errorBody: ResponseBody) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.string(), getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

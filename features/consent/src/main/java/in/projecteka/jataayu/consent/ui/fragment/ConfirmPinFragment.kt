@@ -7,6 +7,8 @@ import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
@@ -97,9 +99,11 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
 
     override fun onFailure(errorBody: ResponseBody) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.string(), getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }

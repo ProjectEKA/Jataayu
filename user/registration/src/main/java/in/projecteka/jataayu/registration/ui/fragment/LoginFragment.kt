@@ -4,6 +4,8 @@ import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.registration.listener.LoginClickHandler
 import `in`.projecteka.jataayu.registration.listener.LoginEnableListener
@@ -63,7 +65,8 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
                     activity?.finish()
                 }
                 is Failure -> {
-
+                    context?.showAlertDialog(getString(R.string.failure), it.error.message ?: getString(R.string.something_went_wrong),
+                        getString(android.R.string.ok))
                 }
             }
         }
@@ -124,9 +127,11 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
 
     override fun onFailure(errorBody: ResponseBody) {
         showProgressBar(false)
+        context?.showAlertDialog(getString(R.string.failure), errorBody.string(), getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
+        context?.showErrorDialog(t.localizedMessage)
     }
 }
