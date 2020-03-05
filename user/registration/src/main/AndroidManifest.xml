@@ -7,6 +7,10 @@
             android:label="Registration"
             android:name=".RegistrationActivity">
         </activity>
+        <activity
+            android:label="Login"
+            android:name=".LoginActivity">
+        </activity>
     </application>
 
 </manifest>

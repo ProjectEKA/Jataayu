@@ -25,11 +25,11 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class VerifyOtpFragment : BaseFragment(),
     OtpSubmissionClickHandler, OtpChangeHandler, ResponseCallback {
+    private lateinit var binding: VerityOtpFragmentBinding
+
     override fun setButtonEnabled(isOtpEntered: Boolean) {
         binding.isOtpEntered = isOtpEntered
     }
-
-    private lateinit var binding: VerityOtpFragmentBinding
     private val eventBus = EventBus.getDefault()
 
     companion object {

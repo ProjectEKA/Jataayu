@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="loginClickHandler"
+            type="in.projecteka.jataayu.registration.listener.LoginClickHandler" />
+        <variable
+            name="enableLogin"
+            type="Boolean" />
+        <variable
+        name="passwordInputType"
+        type="Integer" />
+        <variable
+            name="loginValuesWatcher"
+            type="in.projecteka.jataayu.registration.listener.LoginValuesWatcher" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:padding="@dimen/content_margin_medium"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        tools:context=".ui.fragment.RegistrationFragment">
+        <TextView
+            android:id="@+id/tv_welcome"
+            android:textSize="32sp"
+            app:layout_constraintRight_toRightOf="parent"
+            style="@style/TextAppearance.Light"
+            android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_username_lbl"
+            android:layout_marginTop="35dp"
+            android:text="@string/username"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_username"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height_large"
+            android:layout_marginTop="@dimen/content_margin_extra_small"
+            app:cardElevation="@dimen/content_padding_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_username_lbl">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:padding="@dimen/content_margin_medium">
+
+                <EditText
+                    app:onValueChanged="@{loginValuesWatcher}"
+                    android:id="@+id/et_username"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
+                    android:layout_weight=".7"
+                    android:background="@color/white"
+                    android:cursorVisible="true"
+                    android:drawableStart="@drawable/ic_username"
+                    android:drawablePadding="@dimen/content_margin_medium"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_medium"/>
+
+                <TextView
+                    android:id="@+id/tv_provider_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:drawablePadding="@dimen/content_margin_medium"
+                    android:text="@string/ncg"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_medium" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:id="@+id/tv_password_lbl"
+            android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+            android:text="@string/password"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_password"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/edit_text_height_large"
+            android:layout_marginTop="@dimen/content_margin_extra_small"
+            app:cardElevation="@dimen/content_padding_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_password_lbl">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:padding="@dimen/content_margin_medium">
+
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="0dp"
+                    app:onValueChanged="@{loginValuesWatcher}"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
+                    android:layout_weight=".7"
+                    android:background="@color/white"
+                    android:inputType="@{passwordInputType}"
+                    android:cursorVisible="true"
+                    android:drawableStart="@drawable/ic_password"
+                    android:drawablePadding="@dimen/content_margin_medium"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_medium"/>
+
+                <Button
+                    android:onClick="@{loginClickHandler::showOrHidePassword}"
+                    android:id="@+id/btn_show_hide_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:background="@color/transparent"
+                    android:drawablePadding="@dimen/content_margin_medium"
+                    android:focusable="true"
+                    android:gravity="end"
+                    android:text="Show"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_medium" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_marginTop="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cv_password"
+            app:layout_constraintRight_toRightOf="parent"
+            android:id="@+id/btn_login"
+            android:text="login"
+            android:onClick="@{loginClickHandler::onLoginClick}"
+            android:enabled="@{enableLogin}"
+            style="@style/Button"
+            android:layout_width="match_parent"/>
+        <TextView
+            app:layout_constraintBottom_toTopOf="@id/btn_register"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/tv_dont_have_account"
+            android:text="@string/don_t_have_an_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <com.google.android.material.button.MaterialButton
+            android:text="@string/register"
+            android:id="@+id/btn_register"
+            style="@style/Button.Secondary"
+            android:onClick="@{loginClickHandler::onRegisterClick}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

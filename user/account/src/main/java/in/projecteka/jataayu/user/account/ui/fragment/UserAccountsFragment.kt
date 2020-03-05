@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
+import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
@@ -20,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.ResponseBody
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback {
@@ -27,6 +30,7 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
     private val viewModel: UserAccountsViewModel by viewModel()
     private var listItems: List<IDataBindingModel> = emptyList()
     private var compositeDisposable = CompositeDisposable()
+    private val eventBusInstance = EventBus.getDefault()
 
     private val observer = Observer<LinkedAccountsResponse> {
         binding.linkedPatient = it.linkedPatient
@@ -94,7 +98,24 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
 
     override fun onDestroy() {
         compositeDisposable.dispose()
+        eventBusInstance.unregister(this)
         super.onDestroy()
+    }
+
+    @Subscribe
+    public fun onEvent(providerAddedEvent: ProviderAddedEvent) {
+        when (providerAddedEvent) {
+            ProviderAddedEvent.PROVIDER_ADDED -> {
+                    showProgressBar(true)
+                    viewModel.getUserAccounts(this)
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!eventBusInstance.isRegistered(this))
+            eventBusInstance.register(this)
     }
 }
 

@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.observeOn
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
 import `in`.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
 import java.util.regex.Pattern
@@ -24,8 +25,24 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Vi
             val links = linkedAccountsResponse.value?.linkedPatient?.links!!
             for (link in links) {
                 val careContextsList = arrayListOf<LinkedCareContext>()
-                link?.careContexts?.forEach { careContextsList.add(LinkedCareContext(it.referenceNumber, it.display)) }
-                items.add(LinkedAccount(link?.hip!!.name, link.referenceNumber, link.display, careContextsList, R.id.childItemsList,false))
+                link?.careContexts?.forEach {
+                    careContextsList.add(
+                        LinkedCareContext(
+                            it.referenceNumber,
+                            it.display
+                        )
+                    )
+                }
+                items.add(
+                    LinkedAccount(
+                        link?.hip!!.name,
+                        link.referenceNumber,
+                        link.display,
+                        careContextsList,
+                        R.id.childItemsList,
+                        false
+                    )
+                )
             }
         }
         return items
@@ -35,12 +52,17 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Vi
         responseCallback: ResponseCallback,
         createAccountRequest: CreateAccountRequest
     ) {
-        repository.createAccount(createAccountRequest).observeOn(createAccountResponse, responseCallback)
+        repository.createAccount(createAccountRequest)
+            .observeOn(createAccountResponse, responseCallback)
     }
 
     fun isValid(text: String, criteria: String): Boolean {
         val pattern = Pattern.compile(criteria)
         val matcher = pattern.matcher(text)
         return matcher.matches()
+    }
+
+    fun getAuthTokenWithTokenType(response: CreateAccountResponse): String {
+        return (response.tokenType).capitalize() + CreateAccountFragment.SPACE + response.accessToken
     }
 }

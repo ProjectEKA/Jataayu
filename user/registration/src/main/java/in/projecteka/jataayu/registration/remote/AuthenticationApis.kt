@@ -1,9 +1,7 @@
 package `in`.projecteka.jataayu.registration.remote
 
-import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
-import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
-import `in`.projecteka.jataayu.registration.model.VerifyIdentifierRequest
-import `in`.projecteka.jataayu.registration.model.VerifyIdentifierResponse
+import `in`.projecteka.jataayu.core.model.CreateAccountResponse
+import `in`.projecteka.jataayu.registration.model.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -14,4 +12,7 @@ interface AuthenticationApis {
 
     @POST("users/permit")
     fun verifyIdentifier(@Body body: VerifyIdentifierRequest): Call<VerifyIdentifierResponse>
+
+    @POST("sessions")
+    fun login(@Body loginRequest: LoginRequest): Call<CreateAccountResponse>
 }

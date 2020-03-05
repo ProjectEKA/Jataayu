@@ -1,12 +1,12 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
-import `in`.projecteka.jataayu.network.utils.Loading
-import `in`.projecteka.jataayu.network.utils.PayloadResource
-import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.Links
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PayloadResource
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
@@ -18,6 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.consent_details_fragment.*
+import org.greenrobot.eventbus.Subscribe
 
 class GrantedConsentDetailsFragment : ConsentDetailsFragment() {
 
@@ -108,5 +109,10 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment() {
 
         viewModel.grantedConsentDetailsResponse.observe(this, grantedConsentDetailsObserver)
 
+    }
+
+    @Subscribe(sticky = true)
+    public fun onConsentIdReceived(consentId: String) {
+        this.consentId = consentId
     }
 }

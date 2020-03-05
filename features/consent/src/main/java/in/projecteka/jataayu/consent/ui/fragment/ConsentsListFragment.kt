@@ -43,7 +43,6 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
     abstract fun getConsentFlow(): ConsentFlow
 
     protected lateinit var binding: ConsentRequestFragmentBinding
-    private lateinit var flow: ConsentFlow
     private lateinit var consentsListAdapter: ConsentsListAdapter
 
     private val viewModel: ConsentViewModel by sharedViewModel()
@@ -52,17 +51,15 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
         const val CONSENT_FLOW = "consent_flow"
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = ConsentRequestFragmentBinding.inflate(inflater)
-        flow = getConsentFlow()
+
         initBindings()
         return binding.root
     }
-
 
     private fun initObservers() {
         viewModel.consentListResponse.observe(this, Observer {
@@ -79,9 +76,15 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
         })
         viewModel.onClickConsentEvent.observe(this, Observer {
             val intent = Intent(context, ConsentDetailsActivity::class.java)
-            intent.putExtra(CONSENT_FLOW, flow.ordinal)
+            intent.putExtra(CONSENT_FLOW, getConsentFlow().ordinal)
             startActivity(intent)
-            EventBus.getDefault().postSticky(it)
+
+            if (getConsentFlow() == ConsentFlow.GRANTED_CONSENTS) {
+                EventBus.getDefault().postSticky(it.id)
+            } else {
+                EventBus.getDefault().postSticky(it)
+            }
+
             if (!EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().register(this)
             }

@@ -17,6 +17,7 @@ import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.registration.remote.AuthenticationApis
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepositoryImpl
+import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationViewModel
 import `in`.projecteka.jataayu.user.account.remote.UserAccountApis
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
@@ -31,6 +32,7 @@ val viewModelModule = module {
     viewModel { UserAccountsViewModel(get()) }
     viewModel { RegistrationViewModel(get()) }
     viewModel { UserVerificationViewModel(get()) }
+    viewModel { LoginViewModel(get()) }
 }
 
 val repositoryModule = module {

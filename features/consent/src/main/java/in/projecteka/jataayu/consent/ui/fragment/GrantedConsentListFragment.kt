@@ -14,8 +14,8 @@ class GrantedConsentListFragment : ConsentsListFragment(){
     companion object {
         fun newInstance() = GrantedConsentListFragment()
     }
-    private val grantedConsentObserver = Observer<List<Consent>> {
-        renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition)
+    private val grantedConsentObserver = Observer<List<Consent>?> {
+        it?.let { renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition) }
     }
 
     private val viewModel: ConsentViewModel by sharedViewModel()

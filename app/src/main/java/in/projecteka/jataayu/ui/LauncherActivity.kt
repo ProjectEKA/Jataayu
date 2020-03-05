@@ -4,11 +4,14 @@ import `in`.projecteka.jataayu.R
 import `in`.projecteka.jataayu.account.AccountCreationActivity
 import `in`.projecteka.jataayu.consent.ui.fragment.ConsentHostFragment
 import `in`.projecteka.jataayu.core.model.MessageEventType
+import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.databinding.ActivityLauncherBinding
+import `in`.projecteka.jataayu.module.networkModule
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.provider.ui.ProviderActivity
+import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
 import `in`.projecteka.jataayu.registration.ui.activity.RegistrationActivity
-import `in`.projecteka.jataayu.ui.LauncherActivity.REQUEST_CODES.*
+import `in`.projecteka.jataayu.ui.LauncherActivity.RequestCodes.*
 import `in`.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
 import `in`.projecteka.jataayu.util.extension.startActivity
 import `in`.projecteka.jataayu.util.extension.startActivityForResult
@@ -31,6 +34,8 @@ import kotlinx.android.synthetic.main.activity_launcher.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 
 
 class LauncherActivity : BaseActivity() {
@@ -50,11 +55,12 @@ class LauncherActivity : BaseActivity() {
         }
     }
 
-    enum class REQUEST_CODES {
-        REGISTER, CREATE_ACCOUNT, ADD_PROVIDER
+    enum class RequestCodes {
+        REGISTER, CREATE_ACCOUNT, ADD_PROVIDER, LOGIN
     }
 
     companion object {
+        const val LOGGED_IN = "logged_in"
         const val REGISTERED = "registered"
         const val ACCOUNT_CREATED = "account_created"
         const val PROVIDER_ADDED = "provider_added"
@@ -82,7 +88,7 @@ class LauncherActivity : BaseActivity() {
 
     private fun redirectIfNeeded() {
         when {
-            getBoolean(PROVIDER_ADDED, false) -> {
+            getBoolean(PROVIDER_ADDED, false) || getBoolean(LOGGED_IN, false) -> {
                 binding = DataBindingUtil.setContentView(
                     this,
                     R.layout.activity_launcher
@@ -96,10 +102,10 @@ class LauncherActivity : BaseActivity() {
                 startActivityForResult(ProviderActivity::class.java, ADD_PROVIDER.ordinal)
             }
             getBoolean(REGISTERED, false) -> {
-                startActivityForResult(AccountCreationActivity::class.java, REQUEST_CODES.CREATE_ACCOUNT.ordinal)
+                startActivityForResult(AccountCreationActivity::class.java, RequestCodes.CREATE_ACCOUNT.ordinal)
             }
             else -> {
-                startActivityForResult(RegistrationActivity::class.java, REGISTER.ordinal)
+                startActivityForResult(LoginActivity::class.java, LOGIN.ordinal)
             }
         }
     }
@@ -146,10 +152,13 @@ class LauncherActivity : BaseActivity() {
     public fun onEvent(messageEventType: MessageEventType) {
         when (messageEventType) {
             MessageEventType.CONSENT_GRANTED -> {
-                showSnackbar(getString(R.string.consent_granted))
+                runOnUiThread{ showSnackbar(getString(R.string.consent_granted)) }
                 eventBusInstance.post(MessageEventType.SELECT_CONSENTS_TAB)
             }
-            MessageEventType.ACCOUNT_LINKED -> showSnackbar(getString(R.string.account_linked_successfully))
+            MessageEventType.ACCOUNT_LINKED -> {
+                runOnUiThread{ showSnackbar(getString(R.string.account_linked_successfully)) }
+                eventBusInstance.post(ProviderAddedEvent.PROVIDER_ADDED)
+            }
         }
     }
 
@@ -168,19 +177,32 @@ class LauncherActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        unloadKoinModules(listOf(networkModule))
+        loadKoinModules(listOf(networkModule))
         when (requestCode) {
+            LOGIN.ordinal -> {
+                startFlowIfRequired(resultCode, LOGGED_IN)
+            }
             REGISTER.ordinal -> startFlowIfRequired(resultCode, REGISTERED)
-            CREATE_ACCOUNT.ordinal -> startFlowIfRequired(resultCode, ACCOUNT_CREATED)
+            CREATE_ACCOUNT.ordinal -> {
+                startFlowIfRequired(resultCode, ACCOUNT_CREATED)
+            }
             ADD_PROVIDER.ordinal -> startFlowIfRequired(resultCode, PROVIDER_ADDED)
         }
     }
 
     private fun startFlowIfRequired(resultCode: Int, key: String) {
-        if (resultCode != Activity.RESULT_OK) {
-            finish()
-        } else {
-            putBoolean(key, true)
-            redirectIfNeeded()
+        when (resultCode) {
+            Activity.RESULT_CANCELED -> {
+                finish()
+            }
+            Activity.RESULT_FIRST_USER -> {
+                startActivityForResult(RegistrationActivity::class.java, REGISTER.ordinal)
+            }
+            else -> {
+                putBoolean(key, true)
+                redirectIfNeeded()
+            }
         }
     }
 

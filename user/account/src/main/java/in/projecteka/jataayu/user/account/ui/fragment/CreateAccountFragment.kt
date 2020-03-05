@@ -83,25 +83,24 @@ class CreateAccountFragment : BaseFragment(),
     override fun createAccount(view: View) {
         if (validateFields()) {
             showProgressBar(true)
+            viewModel.createAccountResponse.observe(this,
+                Observer<CreateAccountResponse> {
+                    NetworkSharedPrefsManager.setAuthToken(context!!, viewModel.getAuthTokenWithTokenType(it))
+                    activity?.setResult(Activity.RESULT_OK)
+                    activity?.finish()
+                } )
             dob?.let {
                 viewModel.createAccount(this, getCreateAccountRequest())
-                viewModel.createAccountResponse.observe(this,
-                    Observer<CreateAccountResponse> {
-                        NetworkSharedPrefsManager.setAuthToken(context!!, getAuthTokenWithTokenType(it))
-                        activity?.setResult(Activity.RESULT_OK)
-                        activity?.finish()
-                    } )
             }
         }
-    }
-
-    private fun getAuthTokenWithTokenType(response: CreateAccountResponse): String {
-        return (response.tokenType).capitalize()+ SPACE + response.accessToken
     }
 
     private fun getCreateAccountRequest(): CreateAccountRequest {
         return CreateAccountRequest(getUsername(), et_password?.text.toString(),
             et_first_name?.text.toString(), et_last_name?.text.toString(), getGender(), DateTimeUtils.getFormattedDate(dob_format, dob!!))
+    }
+    private fun getProviderName(): String {
+        return binding.tvProviderName.text.toString()
     }
 
     private fun getUsername(): String {
@@ -166,9 +165,6 @@ class CreateAccountFragment : BaseFragment(),
             .subscribe { errorText.show(!it) }
     }
 
-    private fun getProviderName(): String {
-        return binding.tvProviderName.text.toString()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

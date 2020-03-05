@@ -1,0 +1,7 @@
+{
+  "accessToken": "U2hyZXlhQG5jZw==",
+  "expiresIn": 3600,
+  "refreshExpiresIn": 1800,
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI",
+  "tokenType": "bearer"
+}

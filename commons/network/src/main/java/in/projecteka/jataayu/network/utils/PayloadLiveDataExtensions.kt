@@ -27,7 +27,11 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>) {
         }
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
-            success(response.body())
+            if (response.isSuccessful) {
+                success(response.body())
+            } else {
+                failure(RuntimeException(response.errorBody().toString()))
+            }
         }
     })
 }

@@ -27,7 +27,7 @@ class RegistrationFragment : BaseFragment(), ContinueClickHandler, MobileNumberC
 
     private val viewModel: RegistrationViewModel by sharedViewModel()
     private val registrationObserver = Observer<RequestVerificationResponse> {
-        (activity as RegistrationActivity).redirectToOtpScreen()
+        (activity as? RegistrationActivity)?.redirectToOtpScreen()
         EventBus.getDefault().postSticky(et_mobile_number.text.toString())
         EventBus.getDefault().postSticky(it)
     }
