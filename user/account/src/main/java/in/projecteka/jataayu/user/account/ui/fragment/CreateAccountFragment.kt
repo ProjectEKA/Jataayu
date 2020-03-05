@@ -116,11 +116,14 @@ class CreateAccountFragment : BaseFragment(),
     }
 
     override fun onSelectDateClick(view: View) {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DATE, -1)
+
         val datePickerDialog = DatePickerDialog(
             R.id.btn_dob,
             System.currentTimeMillis(),
             DatePickerDialog.UNDEFINED_DATE,
-            System.currentTimeMillis(),
+            calendar.timeInMillis,
             this
         )
         datePickerDialog.show(fragmentManager!!, System.currentTimeMillis().toString())

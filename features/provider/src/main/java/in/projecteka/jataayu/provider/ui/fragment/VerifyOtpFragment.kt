@@ -4,8 +4,8 @@ import `in`.projecteka.featuresprovider.R
 import `in`.projecteka.jataayu.core.databinding.VerityOtpFragmentBinding
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
-import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
+import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.model.Otp
