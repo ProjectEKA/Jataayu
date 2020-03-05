@@ -149,7 +149,7 @@ class LauncherActivity : BaseActivity() {
         active = consentFragment
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Subscribe
     public fun onEvent(messageEventType: MessageEventType) {
         when (messageEventType) {
             MessageEventType.CONSENT_GRANTED -> {
