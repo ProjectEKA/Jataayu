@@ -1,6 +1,6 @@
 package `in`.projecteka.jataayu.network.interceptor
 
-import `in`.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager
+import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
 import android.content.Context
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
@@ -11,7 +11,7 @@ class HostSelectionInterceptor(private val context: Context) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val url = NetworkSharedPrefsManager.getBaseUrl(context = context)!!
+        val url = context.getBaseUrl()!!
         val newRequest = url.toHttpUrlOrNull()?.let {
             val newUrl = chain.request().url.newBuilder()
                     .scheme(it.scheme)

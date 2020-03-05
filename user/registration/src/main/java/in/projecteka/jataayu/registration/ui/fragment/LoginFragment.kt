@@ -12,7 +12,7 @@ import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentLoginBinding
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
-import `in`.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager
+import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
 import android.app.Activity
 import android.os.Bundle
 import android.text.InputType
@@ -53,8 +53,7 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
             when (it) {
                 is Loading -> showProgressBar(it.isLoading, "Logging in...")
                 is Success -> {
-                    NetworkSharedPrefsManager.setAuthToken(
-                        context!!,
+                    context?.setAuthToken(
                         viewModel.getAuthTokenWithTokenType(
                             authToken = it.data?.accessToken,
                             tokenType = it.data?.tokenType

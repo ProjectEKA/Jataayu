@@ -13,7 +13,7 @@
             type="Integer" />
 
         <variable
-            name="authToken"
+            name="token"
             type="String" />
     </data>
 
@@ -85,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/content_padding_large"
-                android:text="@{authToken}"
+                android:text="@{token}"
                 android:hint="@string/hint_authtoken"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rg_environment_options" />

@@ -17,7 +17,7 @@ import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.show
 import `in`.projecteka.jataayu.util.extension.toUtc
-import `in`.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager
+import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
 import android.os.Bundle
@@ -85,7 +85,7 @@ class CreateAccountFragment : BaseFragment(),
             showProgressBar(true)
             viewModel.createAccountResponse.observe(this,
                 Observer<CreateAccountResponse> {
-                    NetworkSharedPrefsManager.setAuthToken(context!!, viewModel.getAuthTokenWithTokenType(it))
+                    context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
                     activity?.setResult(Activity.RESULT_OK)
                     activity?.finish()
                 } )

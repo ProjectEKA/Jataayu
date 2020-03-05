@@ -8,11 +8,7 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCKOON_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.PROD_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.TEST_URL
-import `in`.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.getAuthToken
-import `in`.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.getBaseUrl
-import `in`.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.getEndpointIndex
-import `in`.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.setAuthToken
-import `in`.projecteka.jataayu.util.sharedPref.NetworkSharedPrefsManager.Companion.setNetworkPref
+import `in`.projecteka.jataayu.util.sharedPref.*
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.KeyEvent
@@ -45,10 +41,10 @@ abstract class BaseActivity : AppCompatActivity() {
     private val okListener = DialogInterface.OnClickListener { _, _ ->
         networkPrefDialogBinding.apply {
             etEndpoint.text?.toString()?.let {
-                setNetworkPref(this@BaseActivity, selectedEnvironmentIndex!!, it)
+                setNetworkPref(selectedEnvironmentIndex!!, it)
             }
             etAuthToken.text?.toString()?.let {
-                setAuthToken(context = this@BaseActivity, authToken = etAuthToken.text.toString())
+                setAuthToken(etAuthToken.text.toString())
             }
         }
     }
@@ -68,10 +64,10 @@ abstract class BaseActivity : AppCompatActivity() {
         networkPrefDialogBinding = NetworkPrefDialogBinding.inflate(layoutInflater)
 
         networkPrefDialogBinding.apply {
-            endpoint = getBaseUrl(this@BaseActivity)
-            authToken = getAuthToken(this@BaseActivity)
-            rgEnvironmentOptions.check(rgEnvironmentOptions.getChildAt(getEndpointIndex(this@BaseActivity)).id)
-            selectedEnvironmentIndex = getEndpointIndex(this@BaseActivity)
+            endpoint = getBaseUrl()
+            token = getAuthToken()
+            rgEnvironmentOptions.check(rgEnvironmentOptions.getChildAt(getEndpointIndex()).id)
+            selectedEnvironmentIndex = getEndpointIndex()
 
             rgEnvironmentOptions.setOnCheckedChangeListener { _, _ ->
                 selectedEnvironmentIndex = rgEnvironmentOptions.indexOfChild(
