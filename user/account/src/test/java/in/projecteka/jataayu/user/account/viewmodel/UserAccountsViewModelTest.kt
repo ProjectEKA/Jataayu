@@ -3,12 +3,13 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import junit.framework.Assert
-import junit.framework.Assert.assertEquals
+import junit.framework.Assert.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -106,6 +107,30 @@ class UserAccountsViewModelTest {
                         LinkedCareContext(referenceNumber="131", display="National Cancer program")),
                 childrenResourceId=2131427419, isExpanded=false))
         assertEquals(list, viewModel.getDisplayAccounts())
+    }
+
+    @Test
+    fun shouldReturnTrueIfUsernameIsValid() {
+        assertTrue(viewModel.isValid("raj", CreateAccountFragment.usernameCriteria))
+        assertTrue(viewModel.isValid("rajkiran.bande", CreateAccountFragment.usernameCriteria))
+        assertTrue(viewModel.isValid("rajkiran20", CreateAccountFragment.usernameCriteria))
+        assertTrue(viewModel.isValid("1raj-bande", CreateAccountFragment.usernameCriteria))
+    }
+
+    @Test
+    fun shouldReturnFalseIfPasswordIsNotValid() {
+        assertFalse(viewModel.isValid("1raj_bande", CreateAccountFragment.usernameCriteria))
+        assertFalse(viewModel.isValid("raj@bande", CreateAccountFragment.usernameCriteria))
+        assertFalse(viewModel.isValid("rb", CreateAccountFragment.usernameCriteria))
+    }
+    @Test
+    fun shouldReturnTrueIfPasswordIsValid() {
+        assertTrue(viewModel.isValid("@Abcd432", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("Abcd123@%1!\"#\$%&'()*+,-./:;<=>?@", CreateAccountFragment.passwordCriteria))
+        assertFalse(viewModel.isValid("Abcd@43", CreateAccountFragment.passwordCriteria))
+        assertFalse(viewModel.isValid("Abcd@xyz", CreateAccountFragment.passwordCriteria))
+        assertFalse(viewModel.isValid("1111@222", CreateAccountFragment.passwordCriteria))
+        assertFalse(viewModel.isValid("Abcd4321", CreateAccountFragment.passwordCriteria))
     }
 
     private fun getLinkedAccountsData(): LinkedAccountsResponse? {

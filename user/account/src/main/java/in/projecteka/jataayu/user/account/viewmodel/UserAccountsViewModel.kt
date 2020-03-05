@@ -8,6 +8,7 @@ import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
+import java.util.regex.Pattern
 
 class UserAccountsViewModel(private val repository: UserAccountsRepository) : ViewModel() {
     var linkedAccountsResponse = liveDataOf<LinkedAccountsResponse>()
@@ -35,5 +36,11 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Vi
         createAccountRequest: CreateAccountRequest
     ) {
         repository.createAccount(createAccountRequest).observeOn(createAccountResponse, responseCallback)
+    }
+
+    fun isValid(text: String, criteria: String): Boolean {
+        val pattern = Pattern.compile(criteria)
+        val matcher = pattern.matcher(text)
+        return matcher.matches()
     }
 }

@@ -37,7 +37,6 @@ import kotlinx.android.synthetic.main.fragment_create_account.*
 import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
-import java.util.regex.Pattern
 
 class CreateAccountFragment : BaseFragment(),
     AccountCreationClickHandler, DateTimeSelectionCallback,
@@ -55,9 +54,15 @@ class CreateAccountFragment : BaseFragment(),
         const val SPACE = " "
         const val dob_format = "yyyy-MM-dd"
         const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
-        const val passwordCriteria =
-            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"
-        const val ERROR_CODE_USERNAME_ALREADY_TAKEN = 2000
+        /*^                 # start-of-string
+        (?=.*[0-9])       # a digit must occur at least once
+        (?=.*[a-z])       # a lower case letter must occur at least once
+        (?=.*[A-Z])       # an upper case letter must occur at least once
+        (?=.*[@#$%^&+=])  # a special character must occur at least once
+        (?=\S+$)          # no whitespace allowed in the entire string
+        .{8,}             # anything, at least eight places though
+        $                 # end-of-string*/
+        const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=])(?=\\S+\$).{8,}\$"
         const val DEFAULT_CHECKED_ID = -1
     }
 
@@ -139,6 +144,8 @@ class CreateAccountFragment : BaseFragment(),
         if (binding.cgGender.checkedChipId == DEFAULT_CHECKED_ID){
             binding.tvErrGender.show(true)
             valid = false
+        } else {
+            binding.tvErrGender.show(false)
         }
         return valid
     }
@@ -151,9 +158,9 @@ class CreateAccountFragment : BaseFragment(),
         editTextDisposable(password, passwordCriteria, binding.passwordErrorText)?.let { disposables.add(it) }
     }
 
-    private fun editTextDisposable(username: String, criteria: String, errorText: TextView): Disposable? {
-        return Observable.just(username)
-            .map { isValid(username, criteria) }
+    private fun editTextDisposable(text: String, criteria: String, errorText: TextView): Disposable? {
+        return Observable.just(text)
+            .map { viewModel.isValid(text, criteria) }
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { errorText.show(!it) }
@@ -219,10 +226,4 @@ class CreateAccountFragment : BaseFragment(),
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
     }
-}
-
-fun isValid(userName: String, criteria: String): Boolean {
-    val pattern = Pattern.compile(criteria)
-    val matcher = pattern.matcher(userName)
-    return matcher.matches()
 }
