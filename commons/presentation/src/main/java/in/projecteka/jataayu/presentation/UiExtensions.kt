@@ -14,8 +14,9 @@ fun View.wobble() {
 }
 
 fun Context.showErrorDialog(errorMessage: String?) {
-    showAlertDialog(getString(R.string.failure), errorMessage ?:
-    getString(R.string.something_went_wrong), getString(android.R.string.ok))
+    showAlertDialog(
+        getString(R.string.failure), errorMessage ?: getString(R.string.something_went_wrong), getString(android.R.string.ok)
+    )
 }
 
 fun Context.showAlertDialog(
@@ -26,12 +27,17 @@ fun Context.showAlertDialog(
     negativeBtnText: String? = null,
     negativeBtnClickListener: DialogInterface.OnClickListener? = null
 ) {
+
+    val defaultClickListener = DialogInterface.OnClickListener { dialog, which -> dialog?.dismiss() }
+
     var builder = MaterialAlertDialogBuilder(this)
         .setTitle(title)
-        .setPositiveButton(positiveBtnText, positiveBtnClickListener)
+        .setPositiveButton(
+            positiveBtnText,
+            positiveBtnClickListener ?: defaultClickListener)
 
     message?.let { builder = builder.setMessage(message) }
-    negativeBtnText?.let { builder = builder.setNegativeButton(negativeBtnText, negativeBtnClickListener) }
+    negativeBtnText?.let { builder = builder.setNegativeButton(negativeBtnText, negativeBtnClickListener ?: defaultClickListener) }
 
     builder.show()
 }
