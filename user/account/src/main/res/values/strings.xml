@@ -15,8 +15,8 @@
     <string name="female">Female</string>
     <string name="others">Others</string>
     <string name="date_of_birth_optional">Date of birth</string>
-    <string name="username_validation_hint">Username should be alphanumeric\nIt may contain . and -\nMinimum length 3 characters</string>
-    <string name="password_validation_hint">Minimum length 8 characters\nIt must contain one capital letter, one small letter, one number\nIt must also contain one valid special character</string>
+    <string name="username_validation_hint">Minimum length 3\nIt may contain . and -</string>
+    <string name="password_validation_hint">Minimum length 8\nIt must contain one capital letter, one small letter, one number\nIt must also contain one special character</string>
     <string name="alphabets_and_space_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890</string>
     <string name="account_details">Account details</string>
     <string name="should_not_be_empty">Should not be empty</string>
