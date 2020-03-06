@@ -1,10 +1,7 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
 import `in`.projecteka.jataayu.network.model.ErrorResponse
-import `in`.projecteka.jataayu.network.utils.Loading
-import `in`.projecteka.jataayu.network.utils.PartialFailure
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
-import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.network.utils.*
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
@@ -24,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_login.*
+import org.junit.internal.runners.statements.Fail
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListener,
@@ -44,6 +42,8 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
         return binding.root
     }
 
+
+
     override fun onRegisterClick(view: View) {
         activity?.setResult(Activity.RESULT_FIRST_USER)
         activity?.finish()
@@ -51,26 +51,6 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
 
     override fun onLoginClick(view: View) {
         viewModel.login(getUsername(), binding.etPassword.text.toString())
-        viewModel.loginResponse.observe(this, Observer {
-            when (it) {
-                is Loading -> showProgressBar(it.isLoading, "Logging in...")
-                is Success -> {
-                    context?.setAuthToken(
-                        viewModel.getAuthTokenWithTokenType(
-                            authToken = it.data?.accessToken,
-                            tokenType = it.data?.tokenType
-                        )
-                    )
-                    activity?.setResult(Activity.RESULT_OK)
-                    activity?.finish()
-                }
-                is PartialFailure -> {
-                    context?.showAlertDialog(getString(R.string.failure), it.responseBody?.string(),
-                        getString(android.R.string.ok))
-                }
-            }
-        }
-        )
     }
 
     private fun getProviderName(): String {
@@ -108,6 +88,28 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBindings()
+        viewModel.loginResponse.observe(this, Observer {
+            when (it) {
+                is Loading -> showProgressBar(it.isLoading, "Logging in...")
+                is Success -> {
+                    context?.setAuthToken(
+                        viewModel.getAuthTokenWithTokenType(
+                            authToken = it.data?.accessToken,
+                            tokenType = it.data?.tokenType
+                        )
+                    )
+                    activity?.setResult(Activity.RESULT_OK)
+                    activity?.finish()
+                }
+                is PartialFailure-> {
+                    context?.showAlertDialog(getString(R.string.failure), it.responseBody?.string(),
+                        getString(android.R.string.ok))
+                }
+                is Failure -> {
+                    context?.showErrorDialog(it.error.localizedMessage)
+                }
+            }
+        })
     }
 
     private fun initBindings() {
