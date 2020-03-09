@@ -5,6 +5,7 @@ import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.ui.fragment.*
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
+import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
@@ -116,7 +117,7 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 201 && resultCode == Activity.RESULT_OK) {
             putBoolean(PIN_CREATED, true)
-            validateUser()
+            EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
         }
     }
 }
