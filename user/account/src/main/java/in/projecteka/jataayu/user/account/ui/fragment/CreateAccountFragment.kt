@@ -91,15 +91,16 @@ class CreateAccountFragment : BaseFragment(),
                     activity?.setResult(Activity.RESULT_OK)
                     activity?.finish()
                 } )
-            }
-        dob?.let {
             viewModel.createAccount(this, getCreateAccountRequest())
-        } ?: showProgressBar(false)
+            }
     }
 
     private fun getCreateAccountRequest(): CreateAccountRequest {
+        dob?.let {
+            dob = DateTimeUtils.getFormattedDate(dob_format, dob!!)
+        }
         return CreateAccountRequest(getUsername(), et_password?.text.toString(),
-            et_first_name?.text.toString(), et_last_name?.text.toString(), getGender(), DateTimeUtils.getFormattedDate(dob_format, dob!!))
+            et_first_name?.text.toString(), et_last_name?.text.toString(), getGender(), dob)
     }
     private fun getProviderName(): String {
         return binding.tvProviderName.text.toString()
@@ -118,14 +119,11 @@ class CreateAccountFragment : BaseFragment(),
     }
 
     override fun onSelectDateClick(view: View) {
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DATE, -1)
-
         val datePickerDialog = DatePickerDialog(
             R.id.btn_dob,
             System.currentTimeMillis(),
             DatePickerDialog.UNDEFINED_DATE,
-            calendar.timeInMillis,
+            System.currentTimeMillis(),
             this
         )
         datePickerDialog.show(fragmentManager!!, System.currentTimeMillis().toString())
@@ -143,10 +141,6 @@ class CreateAccountFragment : BaseFragment(),
         }
         if (binding.etFirstName.text?.isEmpty()!!) {
             binding.etFirstName.error = getString(R.string.should_not_be_empty)
-            valid = false
-        }
-        if(binding.etLastName.text?.isEmpty()!!){
-            binding.etLastName.error = getString(R.string.should_not_be_empty)
             valid = false
         }
         if (binding.cgGender.checkedChipId == DEFAULT_CHECKED_ID){

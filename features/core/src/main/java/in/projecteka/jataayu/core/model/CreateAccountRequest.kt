@@ -8,5 +8,5 @@ data class CreateAccountRequest(
     @SerializedName("firstName") val firstName: String,
     @SerializedName("lastName") val lastName: String,
     @SerializedName("gender") val gender: String,
-    @SerializedName("dateOfBirth") val dateOfBirth: String
+    @SerializedName("dateOfBirth") val dateOfBirth: String?
 )

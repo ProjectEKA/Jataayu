@@ -84,7 +84,7 @@
             <EditText
                 android:id="@+id/et_auth_token"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_marginBottom="@dimen/content_padding_large"
                 android:text="@{token}"
                 android:hint="@string/hint_authtoken"

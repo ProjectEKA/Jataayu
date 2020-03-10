@@ -9,12 +9,12 @@
     <string name="create_username">Create Username</string>
     <string name="create_password">Create Password</string>
     <string name="first_name">First name</string>
-    <string name="last_name">Last name</string>
+    <string name="last_name">Last name (optional)</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="others">Others</string>
-    <string name="date_of_birth_optional">Date of birth</string>
+    <string name="date_of_birth_optional">Date of birth (optional)</string>
     <string name="username_validation_hint">Minimum length 3\nIt may contain . and -</string>
     <string name="password_validation_hint">Minimum length 8\nIt must contain one capital letter, one small letter, one number\nIt must also contain one special character</string>
     <string name="alphabets_and_space_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890</string>
