@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
+import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.showAlertDialog
@@ -23,6 +24,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.get
 
 private const val PIN = "PIN"
@@ -76,8 +78,21 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                     showProgressBar(true)
                     viewModel.createPinResponse.observe(this, Observer {
                         activity?.let {
-                            it.setResult(Activity.RESULT_OK)
-                            it.finish()
+                            showProgressBar(true)
+                            viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
+                                if (userVerificationResponse.isValid) {
+                                    EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
+                                    it.setResult(Activity.RESULT_OK)
+                                    it.finish()
+                                } else {
+//                                    binding.lblInvalidPin.visibility = View.VISIBLE
+                                    it.setResult(Activity.RESULT_CANCELED)
+                                    it.finish()
+                                }
+                            })
+                            viewModel.verifyUser(pin, this)
+//                            it.setResult(Activity.RESULT_OK)
+//                            it.finish()
                         }
                     })
                     if (context?.getConsentPinCreationAPIintegrationStatus()!!){

@@ -44,5 +44,5 @@ fun Context.setConsentPinCreationAPIintegrationStatus(status: Boolean){
 
 fun Context.getConsentPinCreationAPIintegrationStatus(): Boolean {
     val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-    return sharedPreferences.getBoolean(CONSENT_CREATION_PIN_API_INTEGRATION, false) ?: false
+    return sharedPreferences.getBoolean(CONSENT_CREATION_PIN_API_INTEGRATION, true) ?: true
 }

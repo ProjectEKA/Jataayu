@@ -80,7 +80,6 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
 
     override fun onDestroy() {
         super.onDestroy()
-        eventBusInstance.unregister(this)
     }
 
     override fun onEditClick(view: View) {
@@ -120,12 +119,15 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
     public fun onUserVerified(messageEventType: MessageEventType) {
         if (messageEventType == MessageEventType.USER_VERIFIED) {
             grant()
+            eventBusInstance.unregister(this)
         }
     }
 
     private fun grant() {
         linkedAccounts?.let {
             if (it.isNotEmpty()) {
+                if (!eventBusInstance.isRegistered(this))
+                    eventBusInstance.register(this)
                 showProgressBar(true)
                 viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
                 viewModel.grantConsent(consent.id, viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission))
