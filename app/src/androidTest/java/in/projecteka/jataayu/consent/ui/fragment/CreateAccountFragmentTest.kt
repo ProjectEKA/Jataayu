@@ -75,7 +75,7 @@ class CreateAccountFragmentTest{
 
             allOf {
                 id(R.id.lbl_last_name)
-                text("Last name")
+                text("Last name (optional)")
             }
 
             id(R.id.et_last_name)
