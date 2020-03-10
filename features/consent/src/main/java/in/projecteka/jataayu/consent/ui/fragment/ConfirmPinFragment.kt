@@ -13,6 +13,7 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.sharedPref.getConsentPinCreationAPIintegrationStatus
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
@@ -79,7 +80,14 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                             it.finish()
                         }
                     })
-                    viewModel.createPin(confirmedPin, this)
+                    if (context?.getConsentPinCreationAPIintegrationStatus()!!){
+                        viewModel.createPin(confirmedPin, this)
+                    } else{
+                        activity?.let {
+                            it.setResult(Activity.RESULT_OK)
+                            it.finish()
+                        }
+                    }
                 } else {
                     binding.lblInvalidPin.visibility = VISIBLE
                     binding.etPin.setText("")

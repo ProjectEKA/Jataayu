@@ -26,6 +26,6 @@ interface ConsentApis {
     @POST("/revoke-consent")
     fun revokeConsent(@Body consentActionsRequest: ConsentActionsRequest): Call<RevokeConsentResponse>
 
-    @POST("/consent-requests/{request-id}/consent-artefacts")
+    @GET("/consent-requests/{request-id}/consent-artefacts")
     fun getGrantedConsentDetails(@Path("request-id") requestId: String): Call<List<GrantedConsentDetailsResponse>>
 }

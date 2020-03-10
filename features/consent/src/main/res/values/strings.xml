@@ -6,6 +6,7 @@
     <string name="tab_consents">consents</string>
 
     <string name="new_request">New Request</string>
+    <string name="granted_consent">Granted Consent</string>
     <string name="edit_request">Edit request</string>
     <string name="confirm_request">Confirm request</string>
     <string name="edit">Edit</string>

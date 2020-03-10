@@ -78,6 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:id="@+id/til_auth_token"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/til_endpoint">
             <EditText
@@ -90,6 +91,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rg_environment_options" />
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/tv_toggle_lbl"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+            android:text="@string/consent_pin_api_integration"
+            app:layout_constraintTop_toBottomOf="@+id/til_auth_token"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ToggleButton
+            android:id="@+id/toggle_btn_api_integration_status"
+            android:layout_marginLeft="@dimen/content_margin_large"
+            android:layout_marginTop="@dimen/content_margin_medium"
+            app:layout_constraintTop_toBottomOf="@+id/til_auth_token"
+            app:layout_constraintLeft_toRightOf="@id/tv_toggle_lbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,7 @@ private const val NETWORK_PREF = "NETWORK_PREF_FILE"
 private const val ENVIRONMENT = "ENVIRONMENT"
 private const val NETWORK_HOST = "NETWORK_PREF_HOST"
 private const val AUTH_TOKEN = "AUTH_TOKEN"
+private const val CONSENT_CREATION_PIN_API_INTEGRATION = "CONSENT_CREATION_PIN_API_INTEGRATION"
 
 fun Context.setNetworkPref(environmentIndex: Int, endpoint: String) {
     val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
@@ -34,4 +35,14 @@ fun Context.getBaseUrl(): String {
 
 fun Context.getEndpointIndex(): Int {
     return getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE).getInt(ENVIRONMENT, 0)
+}
+
+fun Context.setConsentPinCreationAPIintegrationStatus(status: Boolean){
+    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
+    sharedPreferences.edit { putBoolean(CONSENT_CREATION_PIN_API_INTEGRATION, status) }
+}
+
+fun Context.getConsentPinCreationAPIintegrationStatus(): Boolean {
+    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
+    return sharedPreferences.getBoolean(CONSENT_CREATION_PIN_API_INTEGRATION, false) ?: false
 }

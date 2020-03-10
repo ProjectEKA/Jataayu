@@ -11,6 +11,7 @@ import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
+import `in`.projecteka.jataayu.util.extension.setTitle
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
@@ -121,5 +122,10 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ItemClickCallbac
     }
 
     override fun onItemClick(iDataBindingModel: IDataBindingModel, itemViewBinding: ViewDataBinding) {
+    }
+
+    override fun onVisible() {
+        super.onVisible()
+        setTitle(R.string.granted_consent)
     }
 }
