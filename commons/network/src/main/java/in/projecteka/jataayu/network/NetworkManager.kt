@@ -10,10 +10,11 @@ import `in`.projecteka.jataayu.util.sharedPref.getAuthToken
 import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
 import android.app.Application
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.SecureRandom
 import java.security.cert.CertificateException
@@ -25,7 +26,7 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 fun createNetworkClient(context: Application, debug: Boolean = false) =
-    retrofitClient(getBaseUrl(context), httpClient(debug, context, context.getAuthToken()))
+    retrofitClient(getBaseUrl(context), httpClient(debug, context, context.getAuthToken()), gson())
 
 private fun getBaseUrl(context: Application): String {
     return if (isTestingMode(context)) MOCK_WEB_SERVER_TEST_URL else context.getBaseUrl()
@@ -91,13 +92,15 @@ private fun addRequestResponseLogger(
     clientBuilder.addInterceptor(httpLoggingInterceptor)
 }
 
-private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient): Retrofit {
+private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient,gson: Gson): Retrofit {
     return Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(httpClient)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson()))
         .build()
 }
+
+private fun gson(): Gson = GsonBuilder()
+    .create()
 
 private fun isTestingMode(context: Context) = context.javaClass.simpleName != "JataayuApp"

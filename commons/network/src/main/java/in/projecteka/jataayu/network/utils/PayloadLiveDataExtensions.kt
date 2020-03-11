@@ -1,8 +1,12 @@
 package `in`.projecteka.jataayu.network.utils
 
+import `in`.projecteka.jataayu.network.model.Error
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import okhttp3.ResponseBody
+import org.koin.core.context.GlobalContext.get
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Converter
 import retrofit2.Response
 
 
@@ -20,9 +24,9 @@ fun <T> PayloadLiveData<T>.failure(error: Throwable) {
     value = Failure(error)
 }
 
-fun <T> PayloadLiveData<T>.partialFailure(responseBody: ResponseBody?) {
+fun <T> PayloadLiveData<T>.partialFailure(error: Error?) {
     loading(false)
-    value = PartialFailure(responseBody)
+    value = PartialFailure(error)
 }
 
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>) {
@@ -36,7 +40,12 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>) {
             if (response.isSuccessful) {
                 success(response.body())
             } else {
-                partialFailure(response.errorBody())
+                response.errorBody()?.let{
+                    val errorConverter: Converter<ResponseBody, ErrorResponse> =
+                        get().koin.get()
+                    partialFailure(errorConverter.convert(it)?.error)
+                } ?: failure(Exception("Unknown Error"))
+
             }
         }
     })

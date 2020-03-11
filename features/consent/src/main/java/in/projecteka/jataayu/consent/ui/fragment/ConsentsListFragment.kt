@@ -73,7 +73,7 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
                     viewModel.filterConsents(it.data?.requests)
                 }
                 is PartialFailure -> {
-                    context?.showAlertDialog(getString(R.string.failure), it.responseBody?.string(),
+                    context?.showAlertDialog(getString(R.string.failure), it.error?.message,
                         getString(android.R.string.ok))
                 }
             }

@@ -10,6 +10,7 @@ import `in`.projecteka.jataayu.consent.repository.UserVerificationRepositoryImpl
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel
 import `in`.projecteka.jataayu.network.createNetworkClient
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.provider.remote.ProviderApis
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.provider.repository.ProviderRepositoryImpl
@@ -23,8 +24,12 @@ import `in`.projecteka.jataayu.user.account.remote.UserAccountApis
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepositoryImpl
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
+import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import retrofit2.Converter
+import retrofit2.Retrofit
 
 val viewModelModule = module {
     viewModel { ProviderSearchViewModel(get()) }
@@ -44,9 +49,11 @@ val repositoryModule = module {
 }
 
 val networkModule = module {
-    single { createNetworkClient(get(), BuildConfig.DEBUG).create(ProviderApis::class.java) }
-    single { createNetworkClient(get(), BuildConfig.DEBUG).create(ConsentApis::class.java) }
-    single { createNetworkClient(get(), BuildConfig.DEBUG).create(UserAccountApis::class.java) }
-    single { createNetworkClient(get(), BuildConfig.DEBUG).create(AuthenticationApis::class.java) }
-    single { createNetworkClient(get(), BuildConfig.DEBUG).create(UserVerificationApis::class.java) }
+    single { createNetworkClient(get(), BuildConfig.DEBUG) }
+    single<Converter<ResponseBody,ErrorResponse>> { get<Retrofit>().responseBodyConverter(ErrorResponse::class.java, arrayOfNulls<Annotation>(0)) }
+    single { get<Retrofit>().create(ProviderApis::class.java) }
+    single { get<Retrofit>().create(ConsentApis::class.java) }
+    single { get<Retrofit>().create(UserAccountApis::class.java) }
+    single { get<Retrofit>().create(AuthenticationApis::class.java) }
+    single { get<Retrofit>().create(UserVerificationApis::class.java) }
 }

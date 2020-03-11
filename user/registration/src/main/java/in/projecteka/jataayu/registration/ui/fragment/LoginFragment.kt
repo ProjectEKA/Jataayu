@@ -1,10 +1,7 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
 import `in`.projecteka.jataayu.network.model.ErrorResponse
-import `in`.projecteka.jataayu.network.utils.Loading
-import `in`.projecteka.jataayu.network.utils.PartialFailure
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
-import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.network.utils.*
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
@@ -105,13 +102,15 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
                     activity?.setResult(Activity.RESULT_OK)
                     activity?.finish()
                 }
-                is PartialFailure -> {
-                    context?.showAlertDialog(getString(R.string.failure), it.responseBody?.string(),
+                is PartialFailure-> {
+                    context?.showAlertDialog(getString(R.string.failure), it.error?.message,
                         getString(android.R.string.ok))
                 }
+                is Failure -> {
+                    context?.showErrorDialog(it.error.localizedMessage)
+                }
             }
-        }
-        )
+        })
     }
 
     private fun initBindings() {
