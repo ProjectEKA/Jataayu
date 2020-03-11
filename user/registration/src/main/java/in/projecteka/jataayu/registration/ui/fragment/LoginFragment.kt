@@ -51,26 +51,6 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
 
     override fun onLoginClick(view: View) {
         viewModel.login(getUsername(), binding.etPassword.text.toString())
-        viewModel.loginResponse.observe(this, Observer {
-            when (it) {
-                is Loading -> showProgressBar(it.isLoading, "Logging in...")
-                is Success -> {
-                    context?.setAuthToken(
-                        viewModel.getAuthTokenWithTokenType(
-                            authToken = it.data?.accessToken,
-                            tokenType = it.data?.tokenType
-                        )
-                    )
-                    activity?.setResult(Activity.RESULT_OK)
-                    activity?.finish()
-                }
-                is PartialFailure -> {
-                    context?.showAlertDialog(getString(R.string.failure), it.responseBody?.string(),
-                        getString(android.R.string.ok))
-                }
-            }
-        }
-        )
     }
 
     private fun getProviderName(): String {
@@ -107,7 +87,31 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initObservers()
         initBindings()
+    }
+
+    private fun initObservers() {
+        viewModel.loginResponse.observe(this, Observer {
+            when (it) {
+                is Loading -> showProgressBar(it.isLoading, "Logging in...")
+                is Success -> {
+                    context?.setAuthToken(
+                        viewModel.getAuthTokenWithTokenType(
+                            authToken = it.data?.accessToken,
+                            tokenType = it.data?.tokenType
+                        )
+                    )
+                    activity?.setResult(Activity.RESULT_OK)
+                    activity?.finish()
+                }
+                is PartialFailure -> {
+                    context?.showAlertDialog(getString(R.string.failure), it.responseBody?.string(),
+                        getString(android.R.string.ok))
+                }
+            }
+        }
+        )
     }
 
     private fun initBindings() {
