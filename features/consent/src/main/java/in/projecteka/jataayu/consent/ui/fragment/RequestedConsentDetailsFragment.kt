@@ -14,6 +14,7 @@ import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.showLongToast
+import `in`.projecteka.jataayu.util.sharedPref.getAuthToken
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.View
@@ -130,7 +131,7 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
                     eventBusInstance.register(this)
                 showProgressBar(true)
                 viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
-                viewModel.grantConsent(consent.id, viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission))
+                viewModel.grantConsent(consent.id, viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission), context?.getAuthToken()!!)
             }
         }
     }

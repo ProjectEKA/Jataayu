@@ -14,6 +14,8 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.sharedPref.getConsentPinCreationAPIintegrationStatus
+import `in`.projecteka.jataayu.util.sharedPref.setConsentTempToken
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,6 +31,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
 
     companion object {
         fun newInstance() = UserVerificationFragment()
+        private const val ERROR_CODE_INVALID_PIN = 401
     }
 
     private var viewModel = UserVerificationViewModel(get())
@@ -44,6 +47,14 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initBindings()
+        initObservers()
+    }
+
+    private fun initObservers() {
+        viewModel.userVerificationResponse.observe(this, Observer { it ->
+            context?.setConsentTempToken(it.temporaryToken)
+            EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
+        })
     }
 
     private fun initBindings() {
@@ -61,17 +72,12 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         binding.lblInvalidPin.visibility = View.GONE
         UiUtils.hideKeyboard(activity!!)
         val pin = binding.etPin.text.toString()
-        showProgressBar(true)
-        viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
-            if (userVerificationResponse.isValid) {
-                EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
-            } else {
-                binding.lblInvalidPin.visibility = View.VISIBLE
-                binding.etPin.setText("")
-                binding.etPin.wobble()
-            }
-        })
-        viewModel.verifyUser(pin, this)
+        if(context?.getConsentPinCreationAPIintegrationStatus()!!){
+            showProgressBar(true)
+            viewModel.verifyUser(pin, this)
+        } else{
+            EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
+        }
     }
 
     override fun setButtonEnabled(isOtpEntered: Boolean) {
@@ -85,6 +91,12 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
     override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
         context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
+
+        if(errorBody.error.code == ERROR_CODE_INVALID_PIN){
+            binding.lblInvalidPin.visibility = View.VISIBLE
+            binding.etPin.setText("")
+            binding.etPin.wobble()
+        }
     }
 
     override fun onFailure(t: Throwable) {

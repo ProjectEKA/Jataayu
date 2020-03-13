@@ -18,7 +18,6 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
-import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
@@ -61,9 +60,10 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
 
     fun grantConsent(
         requestId: String,
-        consentArtifacts: List<ConsentArtifact>
+        consentArtifacts: List<ConsentArtifact>,
+        authToken: String
     ) =
-        consentArtifactResponse.fetch(repository.grantConsent(requestId, ConsentArtifactRequest((consentArtifacts))))
+        consentArtifactResponse.fetch(repository.grantConsent(requestId, ConsentArtifactRequest((consentArtifacts)), authToken))
 
 
     fun getConsentArtifact(

@@ -9,10 +9,10 @@ class RequestInterceptor(private val authToken: String) : Interceptor {
 
         val modifiedRequest = original.newBuilder()
             .header("Content-Type", "application/json")
-            .header("Authorization", authToken)
             .method(original.method, original.body)
-            .build()
-
-        return chain.proceed(modifiedRequest)
+           if (original.header("Authorization") == null) {
+               modifiedRequest.header("Authorization", authToken)
+           }
+        return chain.proceed(modifiedRequest.build())
     }
 }

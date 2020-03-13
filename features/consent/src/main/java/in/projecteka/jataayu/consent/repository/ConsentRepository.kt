@@ -12,15 +12,15 @@ import retrofit2.Call
 
 interface ConsentRepository {
     fun getConsents(): Call<ConsentsListResponse>
-    fun grantConsent(requestId: String, approveConsentRequest: ConsentArtifactRequest): Call<ConsentArtifactResponse>
+    fun grantConsent(requestId: String, approveConsentRequest: ConsentArtifactRequest, authToken: String): Call<ConsentArtifactResponse>
     fun getLinkedAccounts(): Call<LinkedAccountsResponse>
     fun revokeConsent(consentActionsRequest: ConsentActionsRequest): Call<RevokeConsentResponse>
     fun getGrantedConsentDetails(requestId: String): Call<List<GrantedConsentDetailsResponse>>
 }
 
 class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentRepository {
-    override fun grantConsent(requestId: String, approveConsentRequest: ConsentArtifactRequest): Call<ConsentArtifactResponse> {
-        return consentApi.approveConsent(requestId, approveConsentRequest)
+    override fun grantConsent(requestId: String, approveConsentRequest: ConsentArtifactRequest, authToken: String): Call<ConsentArtifactResponse> {
+        return consentApi.approveConsent(requestId, approveConsentRequest, authToken)
     }
 
     override fun getConsents(): Call<ConsentsListResponse> {

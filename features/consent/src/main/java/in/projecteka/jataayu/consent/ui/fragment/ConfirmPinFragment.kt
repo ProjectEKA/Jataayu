@@ -15,6 +15,7 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.sharedPref.getConsentPinCreationAPIintegrationStatus
+import `in`.projecteka.jataayu.util.sharedPref.setConsentTempToken
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
@@ -80,19 +81,13 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                         activity?.let {
                             showProgressBar(true)
                             viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
-                                if (userVerificationResponse.isValid) {
-                                    EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
+                                activity?.setConsentTempToken(userVerificationResponse.temporaryToken)
+                                EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
                                     it.setResult(Activity.RESULT_OK)
                                     it.finish()
-                                } else {
-//                                    binding.lblInvalidPin.visibility = View.VISIBLE
-                                    it.setResult(Activity.RESULT_CANCELED)
-                                    it.finish()
-                                }
                             })
                             viewModel.verifyUser(pin, this)
-//                            it.setResult(Activity.RESULT_OK)
-//                            it.finish()
+
                         }
                     })
                     if (context?.getConsentPinCreationAPIintegrationStatus()!!){
@@ -128,5 +123,8 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
         context?.showErrorDialog(t.localizedMessage)
+        activity?.setResult(Activity.RESULT_CANCELED)
+        activity?.finish()
+
     }
 }
