@@ -7,9 +7,9 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface UserVerificationApis {
-    @POST("/pin")
+    @POST("patients/pin")
     fun getCreatePinResponse(@Body pin: String): Call<CreatePinResponse>
 
-    @POST("/verify-pin")
+    @POST("consent-requests/verify-pin")
     fun getUserVerificationResponse(@Body pin: String): Call<UserVerificationResponse>
 }
