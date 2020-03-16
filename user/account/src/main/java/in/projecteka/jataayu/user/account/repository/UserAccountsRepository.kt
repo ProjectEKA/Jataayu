@@ -3,12 +3,14 @@ package `in`.projecteka.jataayu.user.account.repository
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
+import `in`.projecteka.jataayu.core.model.MyProfile
 import `in`.projecteka.jataayu.user.account.remote.UserAccountApis
 import retrofit2.Call
 
 interface UserAccountsRepository {
     fun getUserAccounts() : Call<LinkedAccountsResponse>
     fun createAccount(createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse>
+    fun getMyProfile(): Call<MyProfile>
 }
 
 class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis): UserAccountsRepository {
@@ -18,5 +20,9 @@ class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis): 
 
     override fun createAccount(createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse> {
         return userAccountApis.createAccount(createAccountRequest)
+    }
+
+    override fun getMyProfile(): Call<MyProfile> {
+        return userAccountApis.getMyProfile()
     }
 }

@@ -15,6 +15,7 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.extension.startActivityForResult
+import `in`.projecteka.jataayu.util.sharedPref.PIN_CREATED
 import `in`.projecteka.jataayu.util.sharedPref.getBoolean
 import `in`.projecteka.jataayu.util.sharedPref.putBoolean
 import android.app.Activity
@@ -25,7 +26,6 @@ import androidx.lifecycle.Observer
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-private const val PIN_CREATED = "PIN_CREATED"
 class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
     private val viewModel: ConsentViewModel by viewModel()
 

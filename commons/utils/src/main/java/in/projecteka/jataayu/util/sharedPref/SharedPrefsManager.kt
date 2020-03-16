@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 
+ const val PIN_CREATED = "PIN_CREATED"
+
 fun Context.putInt(key: String, value: Int) {
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
     val editor = sharedPreferences.edit()

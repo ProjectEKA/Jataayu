@@ -14,7 +14,9 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.sharedPref.PIN_CREATED
 import `in`.projecteka.jataayu.util.sharedPref.getConsentPinCreationAPIintegrationStatus
+import `in`.projecteka.jataayu.util.sharedPref.putBoolean
 import `in`.projecteka.jataayu.util.sharedPref.setConsentTempToken
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
@@ -79,6 +81,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                     showProgressBar(true)
                     viewModel.createPinResponse.observe(this, Observer {
                         activity?.let {
+                            putBoolean(PIN_CREATED, true)
                             showProgressBar(true)
                             viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
                                 activity?.setConsentTempToken(userVerificationResponse.temporaryToken)
@@ -91,6 +94,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                         }
                     })
                     if (context?.getConsentPinCreationAPIintegrationStatus()!!){
+                        showProgressBar(true)
                         viewModel.createPin(confirmedPin, this)
                     } else{
                         activity?.let {

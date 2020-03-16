@@ -10,6 +10,7 @@ private const val NETWORK_HOST = "NETWORK_PREF_HOST"
 private const val AUTH_TOKEN = "AUTH_TOKEN"
 private const val CONSENT_TEMP_TOKEN = "CONSENT_TEMP_TOKEN"
 private const val CONSENT_CREATION_PIN_API_INTEGRATION = "CONSENT_CREATION_PIN_API_INTEGRATION"
+private const val HAS_TRANSACTION_PIN = "HAS_TRANSACTION_PIN"
 
 fun Context.setNetworkPref(environmentIndex: Int, endpoint: String) {
     val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
@@ -56,4 +57,13 @@ fun Context.setConsentTempToken(tempToken: String) {
 fun Context.getConsentTempToken(): String {
     val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
     return sharedPreferences.getString(CONSENT_TEMP_TOKEN, "") ?: ""
+}
+fun Context.setConsentPinStatus(status: Boolean) {
+    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
+    sharedPreferences.edit { putBoolean(HAS_TRANSACTION_PIN, status) }
+}
+
+fun Context.getConsentPinStatus(): Boolean {
+    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
+    return sharedPreferences.getBoolean(HAS_TRANSACTION_PIN, false) ?: false
 }
