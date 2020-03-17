@@ -1,19 +1,20 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.repository.UserVerificationRepository
-import `in`.projecteka.jataayu.core.model.CreatePinResponse
 import `in`.projecteka.jataayu.core.model.UserVerificationResponse
+import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.network.utils.observeOn
 import `in`.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
 
 class UserVerificationViewModel(private val userVerificationRepository: UserVerificationRepository) : ViewModel() {
-    internal var createPinResponse = liveDataOf<CreatePinResponse>()
+    internal var createPinResponse = PayloadLiveData<Void>()
     internal var userVerificationResponse = liveDataOf<UserVerificationResponse>()
 
-    fun createPin(pin: String, responseCallback: ResponseCallback) {
-        userVerificationRepository.createPin(pin).observeOn(createPinResponse, responseCallback)
+    fun createPin(pin: String) {
+        createPinResponse.fetch(userVerificationRepository.createPin(pin))
     }
 
     fun verifyUser(pin: String, responseCallback: ResponseCallback) {

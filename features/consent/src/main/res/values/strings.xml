@@ -21,6 +21,7 @@
 
     <string name="status_active_requested_consents">Active consent requests (%d)</string>
     <string name="status_expired_requested_consents">Expired consent requests (%d)</string>
+    <string name="status_denied_consent_requests">Denied consent requests (%d)</string>
     <string name="status_all_requested_consents">All consent requests (%d)</string>
 
     <string name="status_active_granted_consents">Active consents (%d)</string>
@@ -53,4 +54,6 @@
     <string name="error_msg_pin_mismatch">PIN does not match. Please enter the PIN again.</string>
     <string name="confirm_consent_pin">Confirm Consent PIN</string>
     <string name="create_consent_pin">Create Consent PIN</string>
+    <string name="creating_pin">Creating transaction PIN...</string>
+    <string name="denying_consent">Denying consent...</string>
 </resources>

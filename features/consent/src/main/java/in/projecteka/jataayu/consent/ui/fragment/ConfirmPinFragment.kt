@@ -8,7 +8,10 @@ import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.network.model.ErrorResponse
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
@@ -80,22 +83,32 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                 if (confirmedPin == pin) {
                     showProgressBar(true)
                     viewModel.createPinResponse.observe(this, Observer {
-                        activity?.let {
-                            putBoolean(PIN_CREATED, true)
-                            showProgressBar(true)
-                            viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
-                                activity?.setConsentTempToken(userVerificationResponse.temporaryToken)
-                                EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
-                                    it.setResult(Activity.RESULT_OK)
-                                    it.finish()
-                            })
-                            viewModel.verifyUser(pin, this)
 
+                        when (it) {
+                            is Loading -> showProgressBar(it.isLoading, getString(R.string.creating_pin))
+                            is Success -> {
+                                activity?.let {
+                                    putBoolean(PIN_CREATED, true)
+                                    showProgressBar(true)
+                                    viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
+                                        activity?.setConsentTempToken(userVerificationResponse.temporaryToken)
+                                        EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
+                                        it.setResult(Activity.RESULT_OK)
+                                        it.finish()
+                                    })
+                                    viewModel.verifyUser(pin, this)
+
+                                }
+                            }
+                            is PartialFailure -> {
+                                context?.showAlertDialog(getString(R.string.failure), it.error?.message,
+                                    getString(android.R.string.ok))
+                            }
                         }
                     })
                     if (context?.getConsentPinCreationAPIintegrationStatus()!!){
                         showProgressBar(true)
-                        viewModel.createPin(confirmedPin, this)
+                        viewModel.createPin(confirmedPin)
                     } else{
                         activity?.let {
                             it.setResult(Activity.RESULT_OK)
