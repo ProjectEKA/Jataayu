@@ -6,8 +6,7 @@ import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.*
-import `in`.projecteka.jataayu.core.model.RequestStatus.GRANTED
-import `in`.projecteka.jataayu.core.model.RequestStatus.REQUESTED
+import `in`.projecteka.jataayu.core.model.RequestStatus.*
 import `in`.projecteka.jataayu.core.model.approveconsent.CareReference
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifact
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
@@ -28,6 +27,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
     val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()
+    val consentDenyResponse = PayloadLiveData<Void>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
 
     val requestedConsentsList = MutableLiveData<List<Consent>>()
@@ -41,6 +41,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
     private val requestedConsentStatusList = listOf(
         R.string.status_active_requested_consents,
         R.string.status_expired_requested_consents,
+        R.string.status_denied_consent_requests,
         R.string.status_all_requested_consents
     )
 
@@ -91,6 +92,10 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         return consentArtifactList
     }
 
+    fun denyConsent(requestId: String){
+        consentDenyResponse.fetch(repository.denyConsent(requestId))
+    }
+
     fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> =
         if (flow == ConsentFlow.GRANTED_CONSENTS) {
             grantedConsentStatusList.map { getFormattedItem(resources,it, GRANTED) }
@@ -115,17 +120,18 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         val count = list?.count { consent ->
             val dataExpired = DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt)
             when (filterItem) {
+                R.string.status_denied_consent_requests -> {
+                    consent.status == DENIED
+                }
                 R.string.status_active_granted_consents,
                 R.string.status_active_requested_consents -> {
-                    !dataExpired
+                    if (consent.status != DENIED) !dataExpired else false
                 }
                 R.string.status_expired_granted_consents,
                 R.string.status_expired_requested_consents -> {
-                    dataExpired
+                    if (consent.status != DENIED) dataExpired else false
                 }
-                else -> {
-                    true
-                }
+                else -> true
             }
         }
 
@@ -156,7 +162,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
 
     fun filterConsents(consentList: List<Consent>?) {
         requestedConsentsList.value = consentList?.filter {
-            it.status == REQUESTED
+            it.status == REQUESTED || it.status == DENIED
         }
         grantedConsentsList.value = consentList?.filter {
             it.status == GRANTED

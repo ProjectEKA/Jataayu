@@ -2,15 +2,11 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
-import `in`.projecteka.jataayu.core.model.Consent
-import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
-import `in`.projecteka.jataayu.core.model.Links
-import `in`.projecteka.jataayu.core.model.MessageEventType
+import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
-import `in`.projecteka.jataayu.network.utils.Loading
-import `in`.projecteka.jataayu.network.utils.PayloadResource
-import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.network.utils.*
+import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.showLongToast
@@ -29,12 +25,36 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
         fun newInstance() = RequestedConsentDetailsFragment()
     }
 
-    override fun isExpiredOrGranted(): Boolean {
-        return DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt)
+    override fun isExpiredOrGrantedOrDenied(): Boolean {
+        return (DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt)||(consent.status == RequestStatus.DENIED))
     }
 
     override fun isGrantedConsent(): Boolean {
         return false
+    }
+
+    private val consentDenyObserver = Observer<PayloadResource<Void>> {
+        when (it) {
+            is Loading -> showProgressBar(it.isLoading, getString(R.string.denying_consent))
+            is Success -> {
+                activity?.let {
+                    eventBusInstance.post(MessageEventType.CONSENT_DENIED)
+                    activity?.finish()
+                }
+            }
+            is PartialFailure -> {
+                context?.showAlertDialog(
+                    getString(R.string.failure), it.error?.message,
+                    getString(android.R.string.ok)
+                )
+            }
+            is Failure -> {
+                context?.showAlertDialog(
+                    getString(R.string.failure), it.error?.message,
+                    getString(android.R.string.ok)
+                )
+            }
+        }
     }
 
     private val consentArtifactResponseObserver = Observer<PayloadResource<ConsentArtifactResponse>> {
@@ -77,6 +97,8 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
             viewModel.linkedAccountsResponse.observe(this, linkedAccountsObserver)
             viewModel.getLinkedAccounts()
         }
+        viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
+        viewModel.consentDenyResponse.observe(this, consentDenyObserver)
     }
 
     override fun onDestroy() {
@@ -91,7 +113,7 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
     }
 
     override fun onDenyConsent(view: View) {
-        activity?.finish()
+        viewModel.denyConsent(consent.id)
     }
 
     override fun onGrantConsent(view: View) {
@@ -130,7 +152,6 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
                 if (!eventBusInstance.isRegistered(this))
                     eventBusInstance.register(this)
                 showProgressBar(true)
-                viewModel.consentArtifactResponse.observe(this, consentArtifactResponseObserver)
                 viewModel.grantConsent(consent.id, viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission), context?.getAuthToken()!!)
             }
         }

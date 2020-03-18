@@ -16,6 +16,7 @@ interface ConsentRepository {
     fun getLinkedAccounts(): Call<LinkedAccountsResponse>
     fun revokeConsent(consentActionsRequest: ConsentActionsRequest): Call<RevokeConsentResponse>
     fun getGrantedConsentDetails(requestId: String): Call<List<GrantedConsentDetailsResponse>>
+    fun denyConsent(requestId: String): Call<Void>
 }
 
 class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentRepository {
@@ -36,5 +37,9 @@ class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentReposi
 
     override fun getGrantedConsentDetails(requestId: String): Call<List<GrantedConsentDetailsResponse>> {
         return consentApi.getGrantedConsentDetails(requestId)
+    }
+
+    override fun denyConsent(requestId: String): Call<Void> {
+        return consentApi.denyConsent(requestId)
     }
 }

@@ -90,7 +90,7 @@ class GrantedConsentDetailsFragment : ConsentDetailsFragment(), ItemClickCallbac
         eventBusInstance.unregister(this)
     }
 
-    override fun isExpiredOrGranted(): Boolean {
+    override fun isExpiredOrGrantedOrDenied(): Boolean {
         return true
     }
 

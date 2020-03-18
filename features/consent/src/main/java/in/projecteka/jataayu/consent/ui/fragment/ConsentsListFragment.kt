@@ -9,6 +9,7 @@ import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.MessageEventType
+import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.Success
@@ -37,7 +38,8 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 private const val INDEX_ACTIVE = 0
 private const val INDEX_EXPIRED = 1
-private const val INDEX_ALL = 2
+private const val INDEX_DENIED = 2
+private const val INDEX_ALL = 3
 
 abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     DeleteConsentCallback, ItemClickCallback {
@@ -126,8 +128,16 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            INDEX_ACTIVE -> filterRequests(getConsentList().filter { !isDateExpired(it.permission.dataExpiryAt) })
-            INDEX_EXPIRED -> filterRequests(getConsentList().filter { isDateExpired(it.permission.dataExpiryAt) })
+            INDEX_ACTIVE -> filterRequests(getConsentList().filter { !isDateExpired(it.permission.dataExpiryAt) && it.status != RequestStatus.DENIED })
+            INDEX_EXPIRED -> filterRequests(getConsentList().filter { isDateExpired(it.permission.dataExpiryAt) && it.status != RequestStatus.DENIED})
+            INDEX_DENIED ->
+            {
+                if (getConsentFlow() == ConsentFlow.REQUESTED_CONSENTS) {
+                    filterRequests(getConsentList().filter { it.status.equals(RequestStatus.DENIED) })
+                } else{
+                    filterRequests(getConsentList())
+                }
+            }
             INDEX_ALL -> filterRequests(getConsentList())
         }
     }

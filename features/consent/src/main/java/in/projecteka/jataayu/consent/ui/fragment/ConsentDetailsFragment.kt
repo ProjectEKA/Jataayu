@@ -44,14 +44,14 @@ abstract class ConsentDetailsFragment : BaseFragment(), ItemClickCallback{
         return binding.root
     }
 
-    abstract fun isExpiredOrGranted(): Boolean
+    abstract fun isExpiredOrGrantedOrDenied(): Boolean
     abstract fun isGrantedConsent(): Boolean
 
     protected fun renderUi() {
 
         with(binding) {
             this.consent = this@ConsentDetailsFragment.consent
-            requestExpired = isExpiredOrGranted()
+            requestExpired = isExpiredOrGrantedOrDenied()
             isGrantedConsent = isGrantedConsent()
             cgRequestInfoTypes.removeAllViews()
         }

@@ -91,7 +91,7 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
     private fun initObservers() {
         viewModel.loginResponse.observe(this, Observer {
             when (it) {
-                is Loading -> showProgressBar(it.isLoading, "Logging in...")
+                is Loading -> showProgressBar(it.isLoading, getString(R.string.logging_in))
                 is Success -> {
                     context?.setAuthToken(
                         viewModel.getAuthTokenWithTokenType(

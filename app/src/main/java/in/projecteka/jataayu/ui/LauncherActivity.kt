@@ -34,7 +34,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_launcher.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
@@ -162,6 +161,9 @@ class LauncherActivity : BaseActivity() {
             }
             MessageEventType.ACCOUNT_CREATED -> {
                 runOnUiThread{ showLongToast(getString(R.string.registered_successfully)) }
+            }
+            MessageEventType.CONSENT_DENIED -> {
+                runOnUiThread{ showSnackbar(getString(R.string.consent_denied))}
             }
         }
     }

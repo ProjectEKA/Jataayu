@@ -25,4 +25,7 @@ interface ConsentApis {
 
     @GET("consent-requests/{request-id}/consent-artefacts")
     fun getGrantedConsentDetails(@Path("request-id") requestId: String): Call<List<GrantedConsentDetailsResponse>>
+
+    @DELETE("consent-requests/{request-id}/deny")
+    fun denyConsent(@Path("request-id") requestId: String): Call<Void>
 }
