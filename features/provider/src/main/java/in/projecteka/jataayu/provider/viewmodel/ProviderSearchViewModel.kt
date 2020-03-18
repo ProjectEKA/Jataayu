@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.provider.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CareContext
+import `in`.projecteka.jataayu.core.model.Patient
 import `in`.projecteka.jataayu.core.model.ProviderInfo
 import `in`.projecteka.jataayu.core.model.Request
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
@@ -33,9 +34,23 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
         providerRepository.getPatientAccounts(request).observeOn(patientDiscoveryResponse, responseCallback)
     }
 
-    fun linkPatientAccounts(patientDiscoveryResponse: PatientDiscoveryResponse, responseCallback: ResponseCallback) {
-        providerRepository.linkPatientAccounts(patientDiscoveryResponse)
-            .observeOn(linkAccountsResponse, responseCallback)
+    fun linkPatientAccounts(listCareContexts: List<CareContext>, responseCallback: ResponseCallback) {
+
+        var linkedAccounts = ArrayList<CareContext>()
+
+        listCareContexts.forEach {
+                if (it.contextChecked){
+                linkedAccounts.add(it)
+            }
+        }
+
+        val discoveryResponse = patientDiscoveryResponse.value
+        val selectedAccountsResponse = PatientDiscoveryResponse(Patient(discoveryResponse?.patient?.referenceNumber!!,
+            discoveryResponse.patient.display, linkedAccounts, discoveryResponse.patient?.matchedBy!!),
+            discoveryResponse.transactionId)
+
+
+        providerRepository.linkPatientAccounts(selectedAccountsResponse!!).observeOn(linkAccountsResponse, responseCallback)
     }
 
     fun verifyOtp(referenceNumber: String, otp: Otp, responseCallback: ResponseCallback) {

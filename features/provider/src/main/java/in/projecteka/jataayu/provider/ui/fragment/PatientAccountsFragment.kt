@@ -95,7 +95,7 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
     override fun onLinkAccountsClick(view: View) {
         showProgressBar(true)
         observeLinkAccountsResponse()
-        viewModel.linkPatientAccounts(viewModel.patientDiscoveryResponse.value!!, this)
+        viewModel.linkPatientAccounts((genericRecyclerViewAdapter.listOfBindingModels as List<CareContext>), this)
     }
 
     private fun observeLinkAccountsResponse() {

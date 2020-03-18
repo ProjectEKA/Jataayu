@@ -25,7 +25,7 @@ import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-x
+
 @RunWith(MockitoJUnitRunner::class)
 class ConsentViewModelTest {
 
