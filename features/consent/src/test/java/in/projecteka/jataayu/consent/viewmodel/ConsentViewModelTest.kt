@@ -25,7 +25,7 @@ import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
+x
 @RunWith(MockitoJUnitRunner::class)
 class ConsentViewModelTest {
 
@@ -70,6 +70,7 @@ class ConsentViewModelTest {
     fun shouldPopulateFilterItemsForRequestedConsents() {
         `when`(resources.getString(R.string.status_active_requested_consents)).thenReturn("Active requested consents (%d)")
         `when`(resources.getString(R.string.status_expired_requested_consents)).thenReturn("Expired requested consents (%d)")
+        `when`(resources.getString(R.string.status_denied_consent_requests)).thenReturn("Denied consent requests (%d)")
         `when`(resources.getString(R.string.status_all_requested_consents)).thenReturn("All requested consents (%d)")
         val populatedFilterItems = consentViewModel.populateFilterItems(resources, ConsentFlow.REQUESTED_CONSENTS)
 
@@ -91,6 +92,7 @@ class ConsentViewModelTest {
         val list = ArrayList<String>(3)
         list.add("Active requested consents (1)")
         list.add("Expired requested consents (1)")
+        list.add("Denied consent requests (0)")
         list.add("All requested consents (2)")
         return list
     }
