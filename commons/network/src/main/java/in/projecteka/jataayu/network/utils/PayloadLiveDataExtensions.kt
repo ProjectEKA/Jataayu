@@ -41,9 +41,13 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>) {
                 success(response.body())
             } else {
                 response.errorBody()?.let{
-                    val errorConverter: Converter<ResponseBody, ErrorResponse> =
-                        get().koin.get()
-                    partialFailure(errorConverter.convert(it)?.error)
+                    if(it.contentType()?.type == "text") {
+                        val errorConverter: Converter<ResponseBody, ErrorResponse> =
+                            get().koin.get()
+                        partialFailure(errorConverter.convert(it)?.error)
+                    }else{
+                        failure(Exception("Something went wrong"))
+                    }
                 } ?: failure(Exception("Unknown Error"))
 
             }
