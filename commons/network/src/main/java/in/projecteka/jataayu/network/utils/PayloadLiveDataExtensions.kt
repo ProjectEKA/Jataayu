@@ -41,7 +41,7 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>) {
                 success(response.body())
             } else {
                 response.errorBody()?.let{
-                    if(it.contentType()?.type == "text") {
+                    if(it.contentType()?.type == "application") {
                         val errorConverter: Converter<ResponseBody, ErrorResponse> =
                             get().koin.get()
                         partialFailure(errorConverter.convert(it)?.error)

@@ -9,6 +9,6 @@ interface UserVerificationApis {
     @POST("patients/pin")
     fun getCreatePinResponse(@Body pin: String): Call<Void>
 
-    @POST("consent-requests/verify-pin")
+    @POST("patients/verify-pin")
     fun getUserVerificationResponse(@Body pin: String): Call<UserVerificationResponse>
 }
