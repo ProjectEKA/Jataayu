@@ -10,7 +10,7 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.showLongToast
-import `in`.projecteka.jataayu.util.sharedPref.getAuthToken
+import `in`.projecteka.jataayu.util.sharedPref.getConsentTempToken
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.View
@@ -152,7 +152,7 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
                 if (!eventBusInstance.isRegistered(this))
                     eventBusInstance.register(this)
                 showProgressBar(true)
-                viewModel.grantConsent(consent.id, viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission), context?.getAuthToken()!!)
+                viewModel.grantConsent(consent.id, viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission), context?.getConsentTempToken()!!)
             }
         }
     }
