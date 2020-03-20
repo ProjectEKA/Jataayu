@@ -51,6 +51,7 @@ class CreateAccountFragment : BaseFragment(),
 
     private val viewModel: UserAccountsViewModel by sharedViewModel()
 
+    private var isCriteriaMatch: Boolean = true
     companion object {
         fun newInstance() = CreateAccountFragment()
         const val SPACE = " "
@@ -83,16 +84,19 @@ class CreateAccountFragment : BaseFragment(),
     }
 
     override fun createAccount(view: View) {
-        if (validateFields()) {
-            showProgressBar(true)
-            viewModel.createAccountResponse.observe(this,
-                Observer<CreateAccountResponse> {
-                    context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
-                    activity?.setResult(Activity.RESULT_OK)
-                    activity?.finish()
-                } )
-            viewModel.createAccount(this, getCreateAccountRequest())
+//        if (isCriteriaMatch) {
+            if (binding.usernameErrorText.visibility == View.GONE && binding.passwordErrorText.visibility == View.GONE){
+            if (validateFields()) {
+                showProgressBar(true)
+                viewModel.createAccountResponse.observe(this,
+                    Observer<CreateAccountResponse> {
+                        context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
+                        activity?.setResult(Activity.RESULT_OK)
+                        activity?.finish()
+                    })
+                viewModel.createAccount(this, getCreateAccountRequest())
             }
+        }
     }
 
     private fun getCreateAccountRequest(): CreateAccountRequest {
@@ -165,7 +169,10 @@ class CreateAccountFragment : BaseFragment(),
             .map { viewModel.isValid(text, criteria) }
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { errorText.show(!it) }
+            .subscribe {
+                errorText.show(!it)
+                isCriteriaMatch = it
+            }
     }
 
 
