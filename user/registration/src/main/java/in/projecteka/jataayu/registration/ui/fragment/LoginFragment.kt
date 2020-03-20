@@ -21,7 +21,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_login.*
-import org.junit.internal.runners.statements.Fail
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListener,
@@ -103,7 +102,7 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
                     activity?.finish()
                 }
                 is PartialFailure-> {
-                    context?.showAlertDialog(getString(R.string.failure), it.responseBody?.string(),
+                    context?.showAlertDialog(getString(R.string.failure), it.error?.message,
                         getString(android.R.string.ok))
                 }
                 is Failure -> {
