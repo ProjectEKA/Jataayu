@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 
  const val PIN_CREATED = "PIN_CREATED"
+ const val MOBILE_NUMBER = "MOBILE_NUMBER"
+ const val DEFAULT_MOBILE = ""
 
 fun Context.putInt(key: String, value: Int) {
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)

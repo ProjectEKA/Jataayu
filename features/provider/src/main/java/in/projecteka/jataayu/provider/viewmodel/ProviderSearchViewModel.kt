@@ -16,7 +16,6 @@ import `in`.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
 
 class ProviderSearchViewModel(private val providerRepository: ProviderRepository) : ViewModel() {
-    val mobile = "9876543210"
     val providers = liveDataOf<List<ProviderInfo>>()
     var providersList = emptyList<ProviderInfo>()
     val patientDiscoveryResponse = liveDataOf<PatientDiscoveryResponse>()

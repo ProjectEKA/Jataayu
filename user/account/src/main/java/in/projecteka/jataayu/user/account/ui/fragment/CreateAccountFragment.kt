@@ -84,7 +84,6 @@ class CreateAccountFragment : BaseFragment(),
     }
 
     override fun createAccount(view: View) {
-//        if (isCriteriaMatch) {
             if (binding.usernameErrorText.visibility == View.GONE && binding.passwordErrorText.visibility == View.GONE){
             if (validateFields()) {
                 showProgressBar(true)
