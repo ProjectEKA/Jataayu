@@ -192,7 +192,6 @@ class LauncherActivity : BaseActivity() {
             REGISTER.ordinal -> startFlowIfRequired(resultCode, REGISTERED)
             CREATE_ACCOUNT.ordinal -> {
                 startFlowIfRequired(resultCode, ACCOUNT_CREATED)
-                eventBusInstance.post(MessageEventType.ACCOUNT_CREATED)
             }
             ADD_PROVIDER.ordinal -> startFlowIfRequired(resultCode, PROVIDER_ADDED)
         }
@@ -208,6 +207,9 @@ class LauncherActivity : BaseActivity() {
             }
             else -> {
                 putBoolean(key, true)
+                if (key == ACCOUNT_CREATED && getBoolean(ACCOUNT_CREATED, false)){
+                    eventBusInstance.post(MessageEventType.ACCOUNT_CREATED)
+                }
                 redirectIfNeeded()
             }
         }
