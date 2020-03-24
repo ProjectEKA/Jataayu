@@ -16,7 +16,10 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.get
-import `in`.projecteka.jataayu.util.sharedPref.*
+import `in`.projecteka.jataayu.util.sharedPref.MOBILE_NUMBER
+import `in`.projecteka.jataayu.util.sharedPref.PIN_CREATED
+import `in`.projecteka.jataayu.util.sharedPref.putBoolean
+import `in`.projecteka.jataayu.util.sharedPref.putString
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -44,9 +47,11 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
 
     private val profileObserver = Observer<MyProfile> {
         putBoolean(PIN_CREATED, it.hasTransactionPin)
-        it.verifiedIdentifiers.forEach { identifier ->
-            if (identifier.type == VERIFIED_IDENTIFIER_MOBILE){
-                activity?.putString(MOBILE_NUMBER, identifier.value)
+        if (it.verifiedIdentifiers != null){
+            it.verifiedIdentifiers.forEach { identifier ->
+                if (identifier.type == VERIFIED_IDENTIFIER_MOBILE){
+                    activity?.putString(MOBILE_NUMBER, identifier.value)
+                }
             }
         }
     }

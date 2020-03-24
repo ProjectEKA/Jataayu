@@ -15,6 +15,7 @@ import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.greenrobot.eventbus.Subscribe
 
 class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetailsClickHandler {
@@ -113,7 +114,12 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
     }
 
     override fun onDenyConsent(view: View) {
-        viewModel.denyConsent(consent.id)
+        MaterialAlertDialogBuilder(context)
+            .setTitle(R.string.title_deny_consent)
+            .setPositiveButton(R.string.btn_deny_consent) { _, _ -> viewModel.denyConsent(consent.id) }
+            .setNegativeButton(android.R.string.cancel, null)
+            .setMessage(R.string.msg_deny_consent)
+            .show()
     }
 
     override fun onGrantConsent(view: View) {
