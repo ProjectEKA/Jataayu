@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.network
 
 import `in`.projecteka.jataayu.network.interceptor.HostSelectionInterceptor
 import `in`.projecteka.jataayu.network.interceptor.RequestInterceptor
+import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.CONNECT_TIMEOUT
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCK_WEB_SERVER_TEST_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.READ_TIMEOUT
@@ -73,6 +74,7 @@ private fun httpClient(debug: Boolean, context: Context, authToken: String): OkH
         .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
     clientBuilder.addInterceptor(RequestInterceptor(authToken))
+    clientBuilder.addInterceptor(UnauthorisedUserRedirectInterceptor())
     if (debug && !isTestingMode(context)) {
         addRequestResponseLogger(httpLoggingInterceptor, clientBuilder)
         addBaseUrlChanger(clientBuilder, context)
@@ -92,7 +94,7 @@ private fun addRequestResponseLogger(
     clientBuilder.addInterceptor(httpLoggingInterceptor)
 }
 
-private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient,gson: Gson): Retrofit {
+private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient, gson: Gson): Retrofit {
     return Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(httpClient)

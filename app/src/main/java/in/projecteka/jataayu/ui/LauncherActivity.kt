@@ -16,8 +16,7 @@ import `in`.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
 import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.extension.startActivity
 import `in`.projecteka.jataayu.util.extension.startActivityForResult
-import `in`.projecteka.jataayu.util.sharedPref.getBoolean
-import `in`.projecteka.jataayu.util.sharedPref.putBoolean
+import `in`.projecteka.jataayu.util.sharedPref.*
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -32,7 +31,6 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_launcher.*
-import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
@@ -43,7 +41,6 @@ class LauncherActivity : BaseActivity() {
     private lateinit var active: Fragment
     private lateinit var accountsFragment: UserAccountsFragment
     private lateinit var consentFragment: ConsentHostFragment
-    private val eventBusInstance = EventBus.getDefault()
 
     private val stateChangeListener = object : View.OnAttachStateChangeListener {
         override fun onViewDetachedFromWindow(v: View?) {
@@ -60,21 +57,15 @@ class LauncherActivity : BaseActivity() {
     }
 
     companion object {
-        const val LOGGED_IN = "logged_in"
-        const val REGISTERED = "registered"
-        const val ACCOUNT_CREATED = "account_created"
-        const val PROVIDER_ADDED = "provider_added"
+//        const val LOGGED_IN = "logged_in"
+//        const val REGISTERED = "registered"
+//        const val ACCOUNT_CREATED = "account_created"
+//        const val PROVIDER_ADDED = "provider_added"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         redirectIfNeeded()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (!eventBusInstance.isRegistered(this))
-            eventBusInstance.register(this)
     }
 
     private fun initFragments() {
@@ -87,21 +78,21 @@ class LauncherActivity : BaseActivity() {
     }
 
     private fun redirectIfNeeded() {
-        when {
-            getBoolean(PROVIDER_ADDED, false) || getBoolean(LOGGED_IN, false) -> {
+
+        when{
+            hasProviders() || isUserLoggedIn() -> {
                 binding = DataBindingUtil.setContentView(
                     this,
                     R.layout.activity_launcher
                 )
-
                 initFragments()
                 initBindings()
                 initUi()
             }
-            getBoolean(ACCOUNT_CREATED, false) -> {
+            isAccountCreated() -> {
                 startActivityForResult(ProviderActivity::class.java, ADD_PROVIDER.ordinal)
             }
-            getBoolean(REGISTERED, false) -> {
+            isUserRegistered() -> {
                 startActivityForResult(AccountCreationActivity::class.java, RequestCodes.CREATE_ACCOUNT.ordinal)
             }
             else -> {
@@ -176,29 +167,11 @@ class LauncherActivity : BaseActivity() {
         snackbar.show()
     }
 
-    override fun onDestroy() {
-        eventBusInstance.unregister(this)
-        super.onDestroy()
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         unloadKoinModules(listOf(networkModule))
         loadKoinModules(listOf(networkModule))
-        when (requestCode) {
-            LOGIN.ordinal -> {
-                startFlowIfRequired(resultCode, LOGGED_IN)
-            }
-            REGISTER.ordinal -> startFlowIfRequired(resultCode, REGISTERED)
-            CREATE_ACCOUNT.ordinal -> {
-                startFlowIfRequired(resultCode, ACCOUNT_CREATED)
-                eventBusInstance.post(MessageEventType.ACCOUNT_CREATED)
-            }
-            ADD_PROVIDER.ordinal -> startFlowIfRequired(resultCode, PROVIDER_ADDED)
-        }
-    }
 
-    private fun startFlowIfRequired(resultCode: Int, key: String) {
         when (resultCode) {
             Activity.RESULT_CANCELED -> {
                 finish()
@@ -207,7 +180,15 @@ class LauncherActivity : BaseActivity() {
                 startActivityForResult(RegistrationActivity::class.java, REGISTER.ordinal)
             }
             else -> {
-                putBoolean(key, true)
+                when(requestCode){
+                    LOGIN.ordinal -> setIsUserLoggedIn(true)
+                    REGISTER.ordinal -> setIsUserRegistered(true)
+                    CREATE_ACCOUNT.ordinal -> {
+                        setUserAccountCreated(true)
+                        eventBusInstance.post(MessageEventType.ACCOUNT_CREATED)
+                    }
+                    ADD_PROVIDER.ordinal -> setProviderAdded(true)
+                }
                 redirectIfNeeded()
             }
         }
