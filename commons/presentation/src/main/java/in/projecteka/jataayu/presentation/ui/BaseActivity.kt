@@ -61,11 +61,10 @@ abstract class BaseActivity : AppCompatActivity() {
     fun onSessionInvalid(messageEventType: UserUnauthorizedRedirectEvent) {
         if (messageEventType == UserUnauthorizedRedirectEvent.REDIRECT) {
             logout()
-//            showLongToast("Session expired, redirecting to Login...")
+            showLongToast("Session expired, redirecting to Login...")
             showLongToast(this::class.java.simpleName)
             val intent = Intent().apply {
                 action = REDIRECT_ACTIVITY_ACTION
-//                addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK)
                 addFlags(FLAG_ACTIVITY_CLEAR_TOP)
             }
             startActivity(intent)
