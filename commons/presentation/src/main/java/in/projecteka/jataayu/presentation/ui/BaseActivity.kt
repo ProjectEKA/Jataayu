@@ -62,7 +62,6 @@ abstract class BaseActivity : AppCompatActivity() {
         if (messageEventType == UserUnauthorizedRedirectEvent.REDIRECT) {
             logout()
             showLongToast("Session expired, redirecting to Login...")
-            showLongToast(this::class.java.simpleName)
             val intent = Intent().apply {
                 action = REDIRECT_ACTIVITY_ACTION
                 addFlags(FLAG_ACTIVITY_CLEAR_TOP)
