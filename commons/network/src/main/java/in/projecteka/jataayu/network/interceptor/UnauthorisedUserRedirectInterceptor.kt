@@ -6,7 +6,7 @@ import okhttp3.Response
 import org.greenrobot.eventbus.EventBus
 import java.net.HttpURLConnection
 
-class UnauthorisedUserRedirectInterceptor : Interceptor {
+class UnauthorisedUserRedirectInterceptor(private val eventBusInstance: EventBus) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
@@ -21,7 +21,7 @@ class UnauthorisedUserRedirectInterceptor : Interceptor {
             }
             else -> {
                 if (response.code == HttpURLConnection.HTTP_UNAUTHORIZED || response.code == HttpURLConnection.HTTP_FORBIDDEN) {
-                    EventBus.getDefault().post(UserUnauthorizedRedirectEvent.REDIRECT)
+                    eventBusInstance.post(UserUnauthorizedRedirectEvent.REDIRECT)
                 }
                 response
             }

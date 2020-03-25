@@ -15,6 +15,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.SecureRandom
@@ -74,7 +75,7 @@ private fun httpClient(debug: Boolean, context: Context, authToken: String): OkH
         .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
     clientBuilder.addInterceptor(RequestInterceptor(authToken))
-    clientBuilder.addInterceptor(UnauthorisedUserRedirectInterceptor())
+    addInvalidSessionRedirectInterceptor(clientBuilder)
     if (debug && !isTestingMode(context)) {
         addRequestResponseLogger(httpLoggingInterceptor, clientBuilder)
         addBaseUrlChanger(clientBuilder, context)
@@ -92,6 +93,10 @@ private fun addRequestResponseLogger(
 ) {
     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
     clientBuilder.addInterceptor(httpLoggingInterceptor)
+}
+
+private fun addInvalidSessionRedirectInterceptor(clientBuilder: OkHttpClient.Builder) {
+    clientBuilder.addInterceptor(UnauthorisedUserRedirectInterceptor(EventBus.getDefault()))
 }
 
 private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient, gson: Gson): Retrofit {
