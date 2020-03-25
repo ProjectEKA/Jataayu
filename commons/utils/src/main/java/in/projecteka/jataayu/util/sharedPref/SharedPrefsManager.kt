@@ -9,6 +9,7 @@ private const val REGISTERED = "registered"
 private const val ACCOUNT_CREATED = "account_created"
 private const val PROVIDER_ADDED = "provider_added"
 private const val PIN_CREATED = "PIN_CREATED"
+const val MOBILE_NUMBER = "MOBILE_NUMBER"
 
 fun Context.putInt(key: String, value: Int) {
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -126,6 +127,14 @@ fun Context.hasProviders(): Boolean {
     return getBoolean(PROVIDER_ADDED, false)
 }
 
+fun Context.setMobileIdentifier(mobileNumber: String) {
+    putString(MOBILE_NUMBER, mobileNumber)
+}
+
+fun Context.getMobileIdentifier(): String {
+    return getString(MOBILE_NUMBER, "") ?: ""
+}
+
 fun Context.resetCredentials() {
     setAuthToken("")
     setConsentPinCreationAPIintegrationStatus(false)
@@ -136,4 +145,5 @@ fun Context.resetCredentials() {
     setIsUserRegistered(false)
     setUserAccountCreated(false)
     setProviderAdded(false)
+    setMobileIdentifier("")
 }

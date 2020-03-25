@@ -56,13 +56,6 @@ class LauncherActivity : BaseActivity() {
         REGISTER, CREATE_ACCOUNT, ADD_PROVIDER, LOGIN
     }
 
-    companion object {
-//        const val LOGGED_IN = "logged_in"
-//        const val REGISTERED = "registered"
-//        const val ACCOUNT_CREATED = "account_created"
-//        const val PROVIDER_ADDED = "provider_added"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         redirectIfNeeded()

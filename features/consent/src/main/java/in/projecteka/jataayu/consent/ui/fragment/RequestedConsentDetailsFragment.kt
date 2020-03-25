@@ -10,11 +10,12 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.showLongToast
-import `in`.projecteka.jataayu.util.sharedPref.getAuthToken
+import `in`.projecteka.jataayu.util.sharedPref.getConsentTempToken
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.greenrobot.eventbus.Subscribe
 
 class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetailsClickHandler {
@@ -113,7 +114,12 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
     }
 
     override fun onDenyConsent(view: View) {
-        viewModel.denyConsent(consent.id)
+        MaterialAlertDialogBuilder(context)
+            .setTitle(R.string.title_deny_consent)
+            .setPositiveButton(R.string.btn_deny_consent) { _, _ -> viewModel.denyConsent(consent.id) }
+            .setNegativeButton(android.R.string.cancel, null)
+            .setMessage(R.string.msg_deny_consent)
+            .show()
     }
 
     override fun onGrantConsent(view: View) {
@@ -152,7 +158,7 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
                 if (!eventBusInstance.isRegistered(this))
                     eventBusInstance.register(this)
                 showProgressBar(true)
-                viewModel.grantConsent(consent.id, viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission), context?.getAuthToken()!!)
+                viewModel.grantConsent(consent.id, viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission), context?.getConsentTempToken()!!)
             }
         }
     }

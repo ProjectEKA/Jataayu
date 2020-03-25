@@ -96,7 +96,6 @@ class ProviderSearchFragmentTest {
         VisibilityAssertions.notDisplayed { id(sv_provider) }
         displayed {
             id(tv_mobile_number)
-            text("98XXXXXX10")
         }
     }
 

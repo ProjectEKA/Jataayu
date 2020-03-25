@@ -7,5 +7,6 @@ data class MyProfile(
     @SerializedName("firstName") val firstName: String,
     @SerializedName("lastName") val lastName: String,
     @SerializedName("gender") val gender: String,
-    @SerializedName("hasTransactionPin") val hasTransactionPin: Boolean
+    @SerializedName("hasTransactionPin") val hasTransactionPin: Boolean,
+    @SerializedName("verifiedIdentifiers") val verifiedIdentifiers: List<Identifier>
     )
