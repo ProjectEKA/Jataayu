@@ -75,11 +75,12 @@ private fun httpClient(debug: Boolean, context: Context, authToken: String): OkH
         .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
     clientBuilder.addInterceptor(RequestInterceptor(authToken))
-    addInvalidSessionRedirectInterceptor(clientBuilder)
+
     if (debug && !isTestingMode(context)) {
         addRequestResponseLogger(httpLoggingInterceptor, clientBuilder)
         addBaseUrlChanger(clientBuilder, context)
     }
+    addInvalidSessionRedirectInterceptor(context.getBaseUrl(), clientBuilder)
     return clientBuilder.build()
 }
 
@@ -95,8 +96,8 @@ private fun addRequestResponseLogger(
     clientBuilder.addInterceptor(httpLoggingInterceptor)
 }
 
-private fun addInvalidSessionRedirectInterceptor(clientBuilder: OkHttpClient.Builder) {
-    clientBuilder.addInterceptor(UnauthorisedUserRedirectInterceptor(EventBus.getDefault()))
+private fun addInvalidSessionRedirectInterceptor(baseUrl: String, clientBuilder: OkHttpClient.Builder) {
+    clientBuilder.addInterceptor(UnauthorisedUserRedirectInterceptor(baseUrl, EventBus.getDefault()))
 }
 
 private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient, gson: Gson): Retrofit {

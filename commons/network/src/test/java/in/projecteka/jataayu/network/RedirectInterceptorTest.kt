@@ -36,18 +36,16 @@ class RedirectInterceptorTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        redirectInterceptor = UnauthorisedUserRedirectInterceptor(eventBus)
         mockWebServer = MockWebServer()
+        redirectInterceptor = UnauthorisedUserRedirectInterceptor(mockWebServer.url("/").toString(), eventBus)
         okHttpClient = OkHttpClient.Builder()
             .addInterceptor(redirectInterceptor)
             .build()
-
         retrofit = Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
-
         testApi = retrofit.create(TestAPI::class.java)
     }
 
@@ -165,7 +163,7 @@ class RedirectInterceptorTest {
         }
         mockWebServer.enqueue(response)
 
-        testApi.verifyPatient().execute()
+        testApi.permitUser().execute()
 
         verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
     }
@@ -178,7 +176,20 @@ class RedirectInterceptorTest {
         }
         mockWebServer.enqueue(response)
 
-        testApi.verifyPatient().execute()
+        testApi.permitUser().execute()
+
+        verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
+    }
+
+    @Test
+    fun `test for login having path session but returning 401 status code`() {
+        val response = MockResponse().apply {
+            setResponseCode(401)
+            setBody("{\"one\":\"two\",\"key\":\"value\"}")
+        }
+        mockWebServer.enqueue(response)
+
+        testApi.getSession().execute()
 
         verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
     }
@@ -195,7 +206,7 @@ class RedirectInterceptorTest {
         @GET("users/permit")
         fun permitUser(): Call<JsonObject>
 
-        @GET("session")
+        @GET("sessions")
         fun getSession(): Call<JsonObject>
 
     }
