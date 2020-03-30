@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.network
 
 import `in`.projecteka.jataayu.network.interceptor.HostSelectionInterceptor
 import `in`.projecteka.jataayu.network.interceptor.RequestInterceptor
+import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.CONNECT_TIMEOUT
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCK_WEB_SERVER_TEST_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.READ_TIMEOUT
@@ -14,6 +15,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.SecureRandom
@@ -73,10 +75,12 @@ private fun httpClient(debug: Boolean, context: Context, authToken: String): OkH
         .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
     clientBuilder.addInterceptor(RequestInterceptor(authToken))
+
     if (debug && !isTestingMode(context)) {
         addRequestResponseLogger(httpLoggingInterceptor, clientBuilder)
         addBaseUrlChanger(clientBuilder, context)
     }
+    addInvalidSessionRedirectInterceptor(context.getBaseUrl(), clientBuilder)
     return clientBuilder.build()
 }
 
@@ -92,7 +96,11 @@ private fun addRequestResponseLogger(
     clientBuilder.addInterceptor(httpLoggingInterceptor)
 }
 
-private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient,gson: Gson): Retrofit {
+private fun addInvalidSessionRedirectInterceptor(baseUrl: String, clientBuilder: OkHttpClient.Builder) {
+    clientBuilder.addInterceptor(UnauthorisedUserRedirectInterceptor(baseUrl, EventBus.getDefault()))
+}
+
+private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient, gson: Gson): Retrofit {
     return Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(httpClient)

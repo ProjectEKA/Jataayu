@@ -88,28 +88,6 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initBindings()
-        viewModel.loginResponse.observe(this, Observer {
-            when (it) {
-                is Loading -> showProgressBar(it.isLoading, "Logging in...")
-                is Success -> {
-                    context?.setAuthToken(
-                        viewModel.getAuthTokenWithTokenType(
-                            authToken = it.data?.accessToken,
-                            tokenType = it.data?.tokenType
-                        )
-                    )
-                    activity?.setResult(Activity.RESULT_OK)
-                    activity?.finish()
-                }
-                is PartialFailure-> {
-                    context?.showAlertDialog(getString(R.string.failure), it.error?.message,
-                        getString(android.R.string.ok))
-                }
-                is Failure -> {
-                    context?.showErrorDialog(it.error.localizedMessage)
-                }
-            }
-        })
     }
 
     private fun initObservers() {

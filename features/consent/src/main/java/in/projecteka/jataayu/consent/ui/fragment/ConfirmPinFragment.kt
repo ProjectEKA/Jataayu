@@ -17,10 +17,9 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.sharedPref.PIN_CREATED
 import `in`.projecteka.jataayu.util.sharedPref.getConsentPinCreationAPIintegrationStatus
-import `in`.projecteka.jataayu.util.sharedPref.putBoolean
 import `in`.projecteka.jataayu.util.sharedPref.setConsentTempToken
+import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
@@ -88,7 +87,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                             is Loading -> showProgressBar(it.isLoading, getString(R.string.creating_pin))
                             is Success -> {
                                 activity?.let {
-                                    putBoolean(PIN_CREATED, true)
+                                    it.setPinCreated(true)
                                     showProgressBar(true)
                                     viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
                                         activity?.setConsentTempToken(userVerificationResponse.temporaryToken)
