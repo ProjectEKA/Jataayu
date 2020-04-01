@@ -1,15 +1,16 @@
 package `in`.projecteka.jataayu.network
 
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
-import `in`.projecteka.jataayu.util.event.UserUnauthorizedRedirectEvent
+import android.content.Context
+import android.content.Intent
 import com.google.gson.JsonObject
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.greenrobot.eventbus.EventBus
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
@@ -18,6 +19,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+
 
 @RunWith(MockitoJUnitRunner::class)
 class RedirectInterceptorTest {
@@ -29,7 +31,7 @@ class RedirectInterceptorTest {
     lateinit var testApi: TestAPI
 
     @Mock
-    lateinit var eventBus: EventBus
+    lateinit var context: Context
 
     lateinit var redirectInterceptor: UnauthorisedUserRedirectInterceptor
 
@@ -37,7 +39,7 @@ class RedirectInterceptorTest {
     fun setup() {
         MockitoAnnotations.initMocks(this)
         mockWebServer = MockWebServer()
-        redirectInterceptor = UnauthorisedUserRedirectInterceptor(mockWebServer.url("/").toString(), eventBus)
+        redirectInterceptor = UnauthorisedUserRedirectInterceptor(context, mockWebServer.url("/").toString())
         okHttpClient = OkHttpClient.Builder()
             .addInterceptor(redirectInterceptor)
             .build()
@@ -47,6 +49,8 @@ class RedirectInterceptorTest {
             .client(okHttpClient)
             .build()
         testApi = retrofit.create(TestAPI::class.java)
+
+        doNothing().`when`(context).startActivity(ArgumentMatchers.any())
     }
 
     @Test
@@ -59,7 +63,7 @@ class RedirectInterceptorTest {
 
         testApi.test().execute()
 
-        verify(eventBus, times(1)).post(UserUnauthorizedRedirectEvent.REDIRECT)
+        verify(context, times(1)).startActivity(ArgumentMatchers.any())
     }
 
     @Test
@@ -72,20 +76,21 @@ class RedirectInterceptorTest {
 
         testApi.test().execute()
 
-        verify(eventBus, times(1)).post(UserUnauthorizedRedirectEvent.REDIRECT)
+        verify(context, times(1)).startActivity(ArgumentMatchers.any())
+
     }
 
     @Test
     fun `test for a response with 5XX response code`() {
         val response = MockResponse().apply {
-            setResponseCode(501)
+            setResponseCode(503)
             setBody("{\"one\":\"two\",\"key\":\"value\"}")
         }
         mockWebServer.enqueue(response)
 
         testApi.test().execute()
 
-        verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
+        verify(context, never()).startActivity(ArgumentMatchers.any())
     }
 
     @Test
@@ -98,7 +103,7 @@ class RedirectInterceptorTest {
 
         testApi.test().execute()
 
-        verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
+        verify(context, never()).startActivity(ArgumentMatchers.any())
     }
 
     @Test
@@ -112,7 +117,7 @@ class RedirectInterceptorTest {
 
         testApi.test().execute()
 
-        verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
+        verify(context, never()).startActivity(ArgumentMatchers.any())
     }
 
     @Test
@@ -126,7 +131,7 @@ class RedirectInterceptorTest {
 
         testApi.test().execute()
 
-        verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
+        verify(context, never()).startActivity(ArgumentMatchers.any())
     }
 
     @Test
@@ -139,11 +144,11 @@ class RedirectInterceptorTest {
 
         testApi.getSession().execute()
 
-        verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
+        verify(context, never()).startActivity(ArgumentMatchers.any())
     }
 
     @Test
-    fun `test for a request having path patients|verify-pin but returning 401 status code`() {
+    fun `test for a request having path patients|verify-pin and returning 401 status code`() {
         val response = MockResponse().apply {
             setResponseCode(401)
             setBody("{\"one\":\"two\",\"key\":\"value\"}")
@@ -151,8 +156,9 @@ class RedirectInterceptorTest {
         mockWebServer.enqueue(response)
 
         testApi.verifyPatient().execute()
+        verify(context, times(1)).startActivity(ArgumentMatchers.any())
 
-        verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
+
     }
 
     @Test
@@ -165,7 +171,7 @@ class RedirectInterceptorTest {
 
         testApi.permitUser().execute()
 
-        verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
+        verify(context, never()).startActivity(ArgumentMatchers.any())
     }
 
     @Test
@@ -178,7 +184,7 @@ class RedirectInterceptorTest {
 
         testApi.permitUser().execute()
 
-        verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
+        verify(context, never()).startActivity(ArgumentMatchers.any())
     }
 
     @Test
@@ -191,9 +197,8 @@ class RedirectInterceptorTest {
 
         testApi.getSession().execute()
 
-        verify(eventBus, never()).post(UserUnauthorizedRedirectEvent.REDIRECT)
+        verify(context, never()).startActivity(ArgumentMatchers.any())
     }
-
 
     interface TestAPI {
 

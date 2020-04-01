@@ -1,7 +1,5 @@
 package `in`.projecteka.jataayu.network.interceptor
 
-import `in`.projecteka.jataayu.util.extension.showLongToast
-import `in`.projecteka.jataayu.util.sharedPref.resetCredentials
 import android.content.Context
 import android.content.Intent
 import okhttp3.Interceptor
@@ -11,7 +9,7 @@ import java.net.HttpURLConnection
 class UnauthorisedUserRedirectInterceptor(private val context: Context, private val baseUrl: String) : Interceptor {
 
     companion object {
-        private const val REDIRECT_ACTIVITY_ACTION = "in.projecteka.jataayu.home"
+        const val REDIRECT_ACTIVITY_ACTION = "in.projecteka.jataayu.home"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -21,22 +19,24 @@ class UnauthorisedUserRedirectInterceptor(private val context: Context, private 
         return when (response.request.url.toString()) {
             "${baseUrl}users/verify",
             "${baseUrl}users/permit",
-            "${baseUrl}sessions",
-            "${baseUrl}patients/verify-pin" -> {
+            "${baseUrl}sessions" -> {
                 response
             }
             else -> {
-                if (response.code == HttpURLConnection.HTTP_UNAUTHORIZED || response.code == HttpURLConnection.HTTP_FORBIDDEN) {
-                    context.resetCredentials()
-                    context.showLongToast("Session expired, redirecting to Login...")
-                    val intent = Intent().apply {
-                        action = REDIRECT_ACTIVITY_ACTION
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    }
-                    context.startActivity(intent)
+                if (isSessionInvalid(response.code)) {
+                    context.startActivity(getRedirectIntent())
                 }
                 response
             }
         }
+    }
+
+    private fun isSessionInvalid(statusCode: Int) = statusCode == HttpURLConnection.HTTP_UNAUTHORIZED || statusCode == HttpURLConnection
+        .HTTP_FORBIDDEN
+
+    private fun getRedirectIntent() = Intent().apply {
+        action = REDIRECT_ACTIVITY_ACTION
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                Intent.FLAG_ACTIVITY_CLEAR_TASK
     }
 }

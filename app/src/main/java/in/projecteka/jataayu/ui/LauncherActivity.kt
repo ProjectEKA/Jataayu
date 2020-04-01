@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.databinding.ActivityLauncherBinding
 import `in`.projecteka.jataayu.module.networkModule
+import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.provider.ui.ProviderActivity
 import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
@@ -72,6 +73,10 @@ class LauncherActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(intent.action == UnauthorisedUserRedirectInterceptor.REDIRECT_ACTIVITY_ACTION){
+            resetCredentials()
+            showLongToast("Session expired, redirecting to Login...")
+        }
         redirectIfNeeded()
     }
 
