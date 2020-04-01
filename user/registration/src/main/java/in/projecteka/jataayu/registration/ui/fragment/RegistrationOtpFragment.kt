@@ -17,6 +17,7 @@ import `in`.projecteka.jataayu.registration.viewmodel.RegistrationViewModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
+import `in`.projecteka.jataayu.util.sharedPref.setMobileIdentifier
 import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -68,6 +69,7 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
     fun onMobileNumberReceived(mobileNumber: String) {
         mobileNumber?.let {
             binding.message = String.format(getString(R.string.otp_sent), it)
+            activity?.setMobileIdentifier(mobileNumber)
             eventBus.removeStickyEvent(mobileNumber)
         }
     }
