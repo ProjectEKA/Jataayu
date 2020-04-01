@@ -8,12 +8,8 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCKOON_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.PROD_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.TEST_URL
-import `in`.projecteka.jataayu.util.event.UserUnauthorizedRedirectEvent
-import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.sharedPref.*
 import android.content.DialogInterface
-import android.content.Intent
-import android.content.Intent.*
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MenuItem
@@ -24,24 +20,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.base_activity.*
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var binding: BaseActivityBinding
     private lateinit var networkPrefDialogBinding: NetworkPrefDialogBinding
     protected val eventBusInstance = EventBus.getDefault()
-
-    companion object {
-        private const val REDIRECT_ACTIVITY_ACTION = "in.projecteka.jataayu.home"
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (!eventBusInstance.isRegistered(this))
-            eventBusInstance.register(this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,19 +38,6 @@ abstract class BaseActivity : AppCompatActivity() {
                     return@last true
                 }
             }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSessionInvalid(messageEventType: UserUnauthorizedRedirectEvent) {
-        if (messageEventType == UserUnauthorizedRedirectEvent.REDIRECT) {
-            logout()
-            showLongToast("Session expired, redirecting to Login...")
-            val intent = Intent().apply {
-                action = REDIRECT_ACTIVITY_ACTION
-                addFlags(FLAG_ACTIVITY_CLEAR_TOP)
-            }
-            startActivity(intent)
         }
     }
 
@@ -169,14 +140,5 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun isProgressBarShowing(): Boolean {
         return binding.progressBarVisibility == true
-    }
-
-    private fun logout() {
-        resetCredentials()
-    }
-
-    override fun onPause() {
-        eventBusInstance.unregister(this)
-        super.onPause()
     }
 }

@@ -42,6 +42,20 @@ class LauncherActivity : BaseActivity() {
     private lateinit var accountsFragment: UserAccountsFragment
     private lateinit var consentFragment: ConsentHostFragment
 
+    override fun onStart() {
+        super.onStart()
+        if(!eventBusInstance.isRegistered(this)){
+            eventBusInstance.register(this)
+        }
+    }
+
+    override fun onDestroy() {
+        if(eventBusInstance.isRegistered(this)){
+            eventBusInstance.unregister(this)
+        }
+        super.onDestroy()
+    }
+
     private val stateChangeListener = object : View.OnAttachStateChangeListener {
         override fun onViewDetachedFromWindow(v: View?) {
 

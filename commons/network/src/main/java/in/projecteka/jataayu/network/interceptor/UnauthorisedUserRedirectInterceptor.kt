@@ -1,21 +1,22 @@
 package `in`.projecteka.jataayu.network.interceptor
 
-import `in`.projecteka.jataayu.util.event.UserUnauthorizedRedirectEvent
-import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
+import `in`.projecteka.jataayu.util.extension.showLongToast
+import `in`.projecteka.jataayu.util.sharedPref.resetCredentials
 import android.content.Context
+import android.content.Intent
 import okhttp3.Interceptor
 import okhttp3.Response
-import org.greenrobot.eventbus.EventBus
-import org.koin.core.context.GlobalContext.get
 import java.net.HttpURLConnection
 
-class UnauthorisedUserRedirectInterceptor(private val baseUrl: String, private val eventBusInstance: EventBus) : Interceptor {
+class UnauthorisedUserRedirectInterceptor(private val context: Context, private val baseUrl: String) : Interceptor {
+
+    companion object {
+        private const val REDIRECT_ACTIVITY_ACTION = "in.projecteka.jataayu.home"
+    }
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
         val response = chain.proceed(chain.request())
-
-
 
         return when (response.request.url.toString()) {
             "${baseUrl}users/verify",
@@ -26,7 +27,13 @@ class UnauthorisedUserRedirectInterceptor(private val baseUrl: String, private v
             }
             else -> {
                 if (response.code == HttpURLConnection.HTTP_UNAUTHORIZED || response.code == HttpURLConnection.HTTP_FORBIDDEN) {
-                    eventBusInstance.post(UserUnauthorizedRedirectEvent.REDIRECT)
+                    context.resetCredentials()
+                    context.showLongToast("Session expired, redirecting to Login...")
+                    val intent = Intent().apply {
+                        action = REDIRECT_ACTIVITY_ACTION
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    }
+                    context.startActivity(intent)
                 }
                 response
             }
