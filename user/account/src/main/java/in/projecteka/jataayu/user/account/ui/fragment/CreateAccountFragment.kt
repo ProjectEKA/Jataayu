@@ -99,11 +99,12 @@ class CreateAccountFragment : BaseFragment(),
     }
 
     private fun getCreateAccountRequest(): CreateAccountRequest {
+        var formattedDob: String? = null
         dob?.let {
-            dob = DateTimeUtils.getFormattedDate(dob_format, dob!!)
+            formattedDob = DateTimeUtils.getFormattedDate(dob_format, dob!!)
         }
         return CreateAccountRequest(getUsername(), et_password?.text.toString(),
-            et_first_name?.text.toString(), et_last_name?.text.toString(), getGender(), dob)
+            et_first_name?.text.toString(), et_last_name?.text.toString(), getGender(), formattedDob)
     }
     private fun getProviderName(): String {
         return binding.tvProviderName.text.toString()
