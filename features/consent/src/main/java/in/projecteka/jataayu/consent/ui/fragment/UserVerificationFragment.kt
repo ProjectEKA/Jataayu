@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.core.model.MessageEventType
+import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.showAlertDialog
@@ -17,6 +18,7 @@ import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.sharedPref.getConsentPinCreationAPIintegrationStatus
 import `in`.projecteka.jataayu.util.sharedPref.setConsentTempToken
 import `in`.projecteka.jataayu.util.ui.UiUtils
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +33,8 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
 
     companion object {
         fun newInstance() = UserVerificationFragment()
-        private const val ERROR_CODE_INVALID_PIN = 401
+        private const val ERROR_CODE_INVALID_PIN = 1022
+        private const val ERROR_CODE_TOKEN_INVALID = 1017
     }
 
     private var viewModel = UserVerificationViewModel(get())
@@ -72,10 +75,10 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         binding.lblInvalidPin.visibility = View.GONE
         UiUtils.hideKeyboard(activity!!)
         val pin = binding.etPin.text.toString()
-        if(context?.getConsentPinCreationAPIintegrationStatus()!!){
+        if (context?.getConsentPinCreationAPIintegrationStatus()!!) {
             showProgressBar(true)
             viewModel.verifyUser(pin, this)
-        } else{
+        } else {
             EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
         }
     }
@@ -90,12 +93,24 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
 
     override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
-        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
 
-        if(errorBody.error.code == ERROR_CODE_INVALID_PIN){
-            binding.lblInvalidPin.visibility = View.VISIBLE
-            binding.etPin.setText("")
-            binding.etPin.wobble()
+        when (errorBody.error.code) {
+            ERROR_CODE_INVALID_PIN -> {
+                context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
+                binding.lblInvalidPin.visibility = View.VISIBLE
+                binding.etPin.setText("")
+                binding.etPin.wobble()
+            }
+            ERROR_CODE_TOKEN_INVALID -> {
+                startActivity(Intent().apply {
+                    action = UnauthorisedUserRedirectInterceptor.REDIRECT_ACTIVITY_ACTION
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                })
+            }
+            else -> {
+                context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
+            }
         }
     }
 
