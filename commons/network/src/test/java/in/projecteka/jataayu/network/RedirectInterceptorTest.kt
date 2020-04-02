@@ -156,7 +156,7 @@ class RedirectInterceptorTest {
         mockWebServer.enqueue(response)
 
         testApi.verifyPatient().execute()
-        verify(context, times(1)).startActivity(ArgumentMatchers.any())
+        verify(context, never()).startActivity(ArgumentMatchers.any())
 
 
     }

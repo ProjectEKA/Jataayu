@@ -19,6 +19,7 @@ class UnauthorisedUserRedirectInterceptor(private val context: Context, private 
         return when (response.request.url.toString()) {
             "${baseUrl}users/verify",
             "${baseUrl}users/permit",
+            "${baseUrl}patients/verify-pin",
             "${baseUrl}sessions" -> {
                 response
             }
