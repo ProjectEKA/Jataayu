@@ -1,35 +1,42 @@
 package `in`.projecteka.jataayu.network.interceptor
 
-import `in`.projecteka.jataayu.util.event.UserUnauthorizedRedirectEvent
-import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
 import android.content.Context
+import android.content.Intent
 import okhttp3.Interceptor
 import okhttp3.Response
-import org.greenrobot.eventbus.EventBus
-import org.koin.core.context.GlobalContext.get
 import java.net.HttpURLConnection
 
-class UnauthorisedUserRedirectInterceptor(private val baseUrl: String, private val eventBusInstance: EventBus) : Interceptor {
+class UnauthorisedUserRedirectInterceptor(private val context: Context, private val baseUrl: String) : Interceptor {
+
+    companion object {
+        const val REDIRECT_ACTIVITY_ACTION = "in.projecteka.jataayu.home"
+    }
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
         val response = chain.proceed(chain.request())
 
-
-
         return when (response.request.url.toString()) {
             "${baseUrl}users/verify",
             "${baseUrl}users/permit",
-            "${baseUrl}sessions",
-            "${baseUrl}patients/verify-pin" -> {
+            "${baseUrl}sessions" -> {
                 response
             }
             else -> {
-                if (response.code == HttpURLConnection.HTTP_UNAUTHORIZED || response.code == HttpURLConnection.HTTP_FORBIDDEN) {
-                    eventBusInstance.post(UserUnauthorizedRedirectEvent.REDIRECT)
+                if (isSessionInvalid(response.code)) {
+                    context.startActivity(getRedirectIntent())
                 }
                 response
             }
         }
+    }
+
+    private fun isSessionInvalid(statusCode: Int) = statusCode == HttpURLConnection.HTTP_UNAUTHORIZED || statusCode == HttpURLConnection
+        .HTTP_FORBIDDEN
+
+    private fun getRedirectIntent() = Intent().apply {
+        action = REDIRECT_ACTIVITY_ACTION
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                Intent.FLAG_ACTIVITY_CLEAR_TASK
     }
 }

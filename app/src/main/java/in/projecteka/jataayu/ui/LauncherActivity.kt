@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.databinding.ActivityLauncherBinding
 import `in`.projecteka.jataayu.module.networkModule
+import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.provider.ui.ProviderActivity
 import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
@@ -42,6 +43,20 @@ class LauncherActivity : BaseActivity() {
     private lateinit var accountsFragment: UserAccountsFragment
     private lateinit var consentFragment: ConsentHostFragment
 
+    override fun onStart() {
+        super.onStart()
+        if(!eventBusInstance.isRegistered(this)){
+            eventBusInstance.register(this)
+        }
+    }
+
+    override fun onDestroy() {
+        if(eventBusInstance.isRegistered(this)){
+            eventBusInstance.unregister(this)
+        }
+        super.onDestroy()
+    }
+
     private val stateChangeListener = object : View.OnAttachStateChangeListener {
         override fun onViewDetachedFromWindow(v: View?) {
 
@@ -58,6 +73,10 @@ class LauncherActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(intent.action == UnauthorisedUserRedirectInterceptor.REDIRECT_ACTIVITY_ACTION){
+            resetCredentials()
+            showLongToast("Session expired, redirecting to Login...")
+        }
         redirectIfNeeded()
     }
 

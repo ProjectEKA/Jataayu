@@ -4,7 +4,7 @@ import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.PROD_URL
 import android.content.Context
 import androidx.core.content.edit
 
-private const val NETWORK_PREF = "NETWORK_PREF_FILE"
+const val NETWORK_PREF = "NETWORK_PREF_FILE"
 private const val ENVIRONMENT = "ENVIRONMENT"
 private const val NETWORK_HOST = "NETWORK_PREF_HOST"
 private const val AUTH_TOKEN = "AUTH_TOKEN"
