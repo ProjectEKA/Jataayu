@@ -15,4 +15,5 @@
     <string name="we_will_be_sending_info_to">We will be sending following information to</string>
     <string name="we_found_following_accounts_with">We found following accounts with</string>
     <string name="otp_label_text">has sent an SMS with OTP to your registered mobile</string>
+    <string name="your_patient_id_or_hospital_registration_no_or_enrollment_no">Your Patient ID or Hospital Registration No or Enrollment No</string>
 </resources>

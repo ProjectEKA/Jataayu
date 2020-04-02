@@ -5,6 +5,7 @@ import `in`.projecteka.featuresprovider.databinding.ProviderSearchFragmentBindin
 import `in`.projecteka.jataayu.core.model.Hip
 import `in`.projecteka.jataayu.core.model.ProviderInfo
 import `in`.projecteka.jataayu.core.model.Request
+import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
@@ -40,6 +41,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
 
     companion object {
         fun newInstance() = ProviderSearchFragment()
+        const val UNVERIFIED_IDENTIFIER_MEDICAL_RECORD = "MR"
 
     }
     private val viewModel: ProviderSearchViewModel by sharedViewModel()
@@ -161,7 +163,11 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     override fun onSearchButtonClick(view: View) {
-        viewModel.getPatientAccounts(Request(Hip(selectedProvider.hip.id, selectedProvider.hip.name)), this)
+        var unverifiedIdentifiers= ArrayList<UnverifiedIdentifier>()
+        if (binding.etPatientId.text.toString().isNotEmpty()){
+            unverifiedIdentifiers.add(UnverifiedIdentifier(binding.etPatientId.text.toString(), UNVERIFIED_IDENTIFIER_MEDICAL_RECORD))
+        }
+        viewModel.getPatientAccounts(Request(Hip(selectedProvider.hip.id, selectedProvider.hip.name), unverifiedIdentifiers), this)
         showProgressBar(true, getString(R.string.looking_up_info))
         observePatients()
     }

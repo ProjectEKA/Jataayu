@@ -237,6 +237,43 @@
             app:toggledVisibility="@{!inEditMode}"
             tools:text="98765 43210" />
 
+        <TextView
+            android:id="@+id/lbl_patient_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_size_medium"
+            android:drawablePadding="@dimen/content_padding_small"
+            android:padding="@dimen/content_padding_medium"
+            android:paddingStart="@dimen/content_margin_extra_large"
+            android:paddingEnd="@dimen/content_margin_extra_large"
+            android:text="@string/your_patient_id_or_hospital_registration_no_or_enrollment_no"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_mobile_number"
+            app:toggledVisibility="@{!inEditMode}" />
+
+        <EditText
+            android:layout_marginTop="@dimen/content_margin_medium"
+            android:id="@+id/et_patient_id"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_edittext_height"
+            android:layout_marginStart="@dimen/content_margin_extra_large"
+            android:layout_marginEnd="@dimen/content_margin_extra_large"
+            android:background="@color/gray"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/content_padding_medium"
+            android:paddingStart="@dimen/content_margin_extra_large"
+            android:paddingEnd="@dimen/content_margin_extra_large"
+            android:popupElevation="0dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintTop_toBottomOf="@id/lbl_patient_id"
+            app:toggledVisibility="@{!inEditMode}" />
+        
         <FrameLayout
             android:id="@+id/button_bar"
             android:layout_width="match_parent"
