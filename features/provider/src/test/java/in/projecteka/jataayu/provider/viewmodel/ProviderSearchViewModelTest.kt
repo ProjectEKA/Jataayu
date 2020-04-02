@@ -3,6 +3,7 @@ package `in`.projecteka.jataayu.provider.viewmodel
 import `in`.projecteka.jataayu.core.model.Hip
 import `in`.projecteka.jataayu.core.model.ProviderInfo
 import `in`.projecteka.jataayu.core.model.Request
+import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
@@ -111,7 +112,9 @@ class ProviderSearchViewModelTest {
     }
 
     private fun setUpPatients(): PatientDiscoveryResponse {
-        val request = Request(Hip("1", " Tata"))
+        var unverifiedIdentifiers = ArrayList<UnverifiedIdentifier>()
+        unverifiedIdentifiers.add(UnverifiedIdentifier("XXX", "MR"))
+        val request = Request(Hip("1", " Tata"), unverifiedIdentifiers)
         val patients = Gson().fromJson<PatientDiscoveryResponse>(
             TestUtils.readFile("patient_info_from_providers.json"),
             PatientDiscoveryResponse::class.java

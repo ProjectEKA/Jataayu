@@ -69,7 +69,7 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
     fun onMobileNumberReceived(mobileNumber: String) {
         mobileNumber?.let {
             binding.message = String.format(getString(R.string.otp_sent), it)
-            activity?.setMobileIdentifier(mobileNumber)
+            activity?.setMobileIdentifier(viewModel.getMobileNumber(mobileNumber))
             eventBus.removeStickyEvent(mobileNumber)
         }
     }

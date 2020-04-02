@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.provider.repository
 
 import `in`.projecteka.jataayu.core.model.Hip
 import `in`.projecteka.jataayu.core.model.Request
+import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
 import `in`.projecteka.jataayu.provider.remote.ProviderApis
 import org.junit.Before
 import org.junit.Test
@@ -28,7 +29,9 @@ class ProviderRepositoryImplTest {
 
     @Test
     fun shouldCallGetPatientsApi() {
-        val request = Request(Hip("1", " Tata"))
+        var unverifiedIdentifiers = ArrayList<UnverifiedIdentifier>()
+        unverifiedIdentifiers.add(UnverifiedIdentifier("XXX", "MR"))
+        val request = Request(Hip("1", " Tata"), unverifiedIdentifiers)
         ProviderRepositoryImpl(providerSearchApi).getPatientAccounts(request)
         verify(providerSearchApi).getPatientAccounts(request)
     }
