@@ -15,7 +15,6 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.sharedPref.getConsentPinCreationAPIintegrationStatus
 import `in`.projecteka.jataayu.util.sharedPref.setConsentTempToken
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.content.Intent
@@ -75,12 +74,8 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         binding.lblInvalidPin.visibility = View.GONE
         UiUtils.hideKeyboard(activity!!)
         val pin = binding.etPin.text.toString()
-        if (context?.getConsentPinCreationAPIintegrationStatus()!!) {
-            showProgressBar(true)
-            viewModel.verifyUser(pin, this)
-        } else {
-            EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
-        }
+        showProgressBar(true)
+        viewModel.verifyUser(pin, this)
     }
 
     override fun setButtonEnabled(isOtpEntered: Boolean) {

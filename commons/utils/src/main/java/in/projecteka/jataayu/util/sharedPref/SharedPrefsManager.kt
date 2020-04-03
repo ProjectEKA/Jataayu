@@ -137,7 +137,6 @@ fun Context.getMobileIdentifier(): String {
 
 fun Context.resetCredentials() {
     setAuthToken("")
-    setConsentPinCreationAPIintegrationStatus(false)
     setConsentPinStatus(false)
     setConsentTempToken("")
     setPinCreated(false)

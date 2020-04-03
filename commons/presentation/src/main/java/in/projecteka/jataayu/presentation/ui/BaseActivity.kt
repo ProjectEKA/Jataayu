@@ -49,7 +49,6 @@ abstract class BaseActivity : AppCompatActivity() {
             etAuthToken.text?.toString()?.let {
                 setAuthToken(etAuthToken.text.toString())
             }
-            setConsentPinCreationAPIintegrationStatus(toggleBtnApiIntegrationStatus.isChecked)
         }
     }
 
@@ -79,7 +78,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 )
                 etEndpoint.setText(getUrlForSelectedEnvironment(selectedEnvironmentIndex!!))
             }
-            toggleBtnApiIntegrationStatus.isChecked = getConsentPinCreationAPIintegrationStatus()
         }
 
         alertDialogBuilder.apply {

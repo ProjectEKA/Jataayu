@@ -39,16 +39,6 @@ fun Context.getEndpointIndex(): Int {
     return getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE).getInt(ENVIRONMENT, 0)
 }
 
-fun Context.setConsentPinCreationAPIintegrationStatus(status: Boolean){
-    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-    sharedPreferences.edit { putBoolean(CONSENT_CREATION_PIN_API_INTEGRATION, status) }
-}
-
-fun Context.getConsentPinCreationAPIintegrationStatus(): Boolean {
-    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-    return sharedPreferences.getBoolean(CONSENT_CREATION_PIN_API_INTEGRATION, true) ?: true
-}
-
 fun Context.setConsentTempToken(tempToken: String) {
     val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
     sharedPreferences.edit { putString(CONSENT_TEMP_TOKEN, tempToken) }
