@@ -149,7 +149,7 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
 
     @Subscribe
     fun onConsentGranted(messageEventType: MessageEventType) {
-        if (messageEventType == MessageEventType.CONSENT_GRANTED) {
+        if (messageEventType == MessageEventType.CONSENT_GRANTED || messageEventType == MessageEventType.CONSENT_DENIED) {
             viewModel.getConsents()
             EventBus.getDefault().unregister(this)
         }
