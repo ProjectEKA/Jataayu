@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModel
 import java.util.regex.Pattern
 
 class UserAccountsViewModel(private val repository: UserAccountsRepository) : ViewModel() {
-    var linkedAccountsResponse = liveDataOf<LinkedAccountsResponse>()
-    var createAccountResponse = liveDataOf<CreateAccountResponse>()
-    var myProfileResponse = liveDataOf<MyProfile>()
+    var linkedAccountsResponse = liveDataOf<LinkedAccountsResponse?>()
+    var createAccountResponse = liveDataOf<CreateAccountResponse?>()
+    var myProfileResponse = liveDataOf<MyProfile?>()
 
     fun getUserAccounts(responseCallback: ResponseCallback) {
         repository.getUserAccounts().observeOn(linkedAccountsResponse, responseCallback)

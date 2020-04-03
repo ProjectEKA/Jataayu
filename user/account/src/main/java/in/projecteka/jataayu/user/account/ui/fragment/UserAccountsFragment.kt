@@ -38,23 +38,25 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
     private var compositeDisposable = CompositeDisposable()
     private val eventBusInstance = EventBus.getDefault()
 
-    private val observer = Observer<LinkedAccountsResponse> {
-        binding.linkedPatient = it.linkedPatient
+    private val observer = Observer<LinkedAccountsResponse?> {
+        it?.let { binding.linkedPatient = it.linkedPatient }
         getUserAccounts()
     }
 
-    private val profileObserver = Observer<MyProfile> {
-        context?.setPinCreated(it.hasTransactionPin)
-        it.verifiedIdentifiers.forEach { identifier ->
-            if (identifier.type == VERIFIED_IDENTIFIER_MOBILE) {
-                activity?.setMobileIdentifier(identifier.value)
+    private val profileObserver = Observer<MyProfile?> {
+        it?.let {
+            context?.setPinCreated(it.hasTransactionPin)
+            it.verifiedIdentifiers.forEach { identifier ->
+                if (identifier.type == VERIFIED_IDENTIFIER_MOBILE) {
+                    activity?.setMobileIdentifier(identifier.value)
+                }
             }
         }
     }
 
     companion object {
         fun newInstance() = UserAccountsFragment()
-        private val VERIFIED_IDENTIFIER_MOBILE = "MOBILE"
+        private const val VERIFIED_IDENTIFIER_MOBILE = "MOBILE"
     }
 
     override fun onCreateView(

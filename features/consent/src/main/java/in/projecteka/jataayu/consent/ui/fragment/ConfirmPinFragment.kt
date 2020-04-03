@@ -81,34 +81,40 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
             bundle.getString(PIN)?.let { pin ->
                 if (confirmedPin == pin) {
                     showProgressBar(true)
-                    viewModel.createPinResponse.observe(this, Observer {
+                    viewModel.createPinResponse.observe(this, Observer { payloadResource ->
 
-                        when (it) {
-                            is Loading -> showProgressBar(it.isLoading, getString(R.string.creating_pin))
+                        when (payloadResource) {
+                            is Loading -> showProgressBar(payloadResource.isLoading, getString(R.string.creating_pin))
                             is Success -> {
-                                activity?.let {
-                                    it.setPinCreated(true)
+                                activity?.let { fragmentActivity ->
+                                    fragmentActivity.setPinCreated(true)
                                     showProgressBar(true)
-                                    viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
-                                        activity?.setConsentTempToken(userVerificationResponse.temporaryToken)
-                                        EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
-                                        it.setResult(Activity.RESULT_OK)
-                                        it.finish()
-                                    })
+                                    viewModel.userVerificationResponse.observe(
+                                        this,
+                                        Observer { userVerificationResponse ->
+                                            userVerificationResponse?.temporaryToken?.let {
+                                                activity?.setConsentTempToken(it)
+                                                EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
+                                                fragmentActivity.setResult(Activity.RESULT_OK)
+                                                fragmentActivity.finish()
+                                            }
+                                        })
                                     viewModel.verifyUser(pin, this)
 
                                 }
                             }
                             is PartialFailure -> {
-                                context?.showAlertDialog(getString(R.string.failure), it.error?.message,
-                                    getString(android.R.string.ok))
+                                context?.showAlertDialog(
+                                    getString(R.string.failure), payloadResource.error?.message,
+                                    getString(android.R.string.ok)
+                                )
                             }
                         }
                     })
-                    if (context?.getConsentPinCreationAPIintegrationStatus()!!){
+                    if (context?.getConsentPinCreationAPIintegrationStatus()!!) {
                         showProgressBar(true)
                         viewModel.createPin(confirmedPin)
-                    } else{
+                    } else {
                         activity?.let {
                             it.setResult(Activity.RESULT_OK)
                             it.finish()

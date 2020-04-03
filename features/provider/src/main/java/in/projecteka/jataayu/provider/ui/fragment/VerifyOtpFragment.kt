@@ -66,7 +66,7 @@ class VerifyOtpFragment : BaseFragment(),
         setTitle(R.string.verification)
     }
 
-    private val observer = Observer<SuccessfulLinkingResponse> {
+    private val observer = Observer<SuccessfulLinkingResponse?> {
         eventBus.post(MessageEventType.ACCOUNT_LINKED)
         activity?.setResult(RESULT_OK)
         activity?.finish()

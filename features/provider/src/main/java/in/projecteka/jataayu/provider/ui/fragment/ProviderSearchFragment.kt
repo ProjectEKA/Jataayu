@@ -49,9 +49,11 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     private lateinit var selectedProvider : ProviderInfo
     private lateinit var providersList: ProviderSearchAdapter
 
-    private val providersObserver = Observer<List<ProviderInfo>> { providerNames ->
-        providersList.updateData(lastQuery, providerNames)
-        showNoResultsFoundView(providerNames.isEmpty())
+    private val providersObserver = Observer<List<ProviderInfo>?> { providerNames ->
+        providerNames?.let {
+            providersList.updateData(lastQuery, it)
+            showNoResultsFoundView(it.isEmpty())
+        }
     }
 
     private val patientAccountsObserver =

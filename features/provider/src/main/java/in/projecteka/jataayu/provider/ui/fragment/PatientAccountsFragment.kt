@@ -102,7 +102,7 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
         viewModel.linkAccountsResponse.observe(this, linkAccountsObserver)
     }
 
-    private val linkAccountsObserver = Observer<LinkAccountsResponse> { _ ->
+    private val linkAccountsObserver = Observer<LinkAccountsResponse?> { _ ->
         (activity as ProviderActivity).showVerifyOtpScreen()
     }
 

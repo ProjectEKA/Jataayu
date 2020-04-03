@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel
 
 class UserVerificationViewModel(private val userVerificationRepository: UserVerificationRepository) : ViewModel() {
     internal var createPinResponse = PayloadLiveData<Void>()
-    internal var userVerificationResponse = liveDataOf<UserVerificationResponse>()
+    internal var userVerificationResponse = liveDataOf<UserVerificationResponse?>()
 
     fun createPin(pin: String) {
         createPinResponse.fetch(userVerificationRepository.createPin(pin))

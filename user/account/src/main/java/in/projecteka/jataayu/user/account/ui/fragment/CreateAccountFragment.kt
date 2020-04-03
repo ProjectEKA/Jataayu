@@ -2,7 +2,6 @@ package `in`.projecteka.jataayu.user.account.ui.fragment
 
 
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.callback.DateTimeSelectionCallback
@@ -88,10 +87,12 @@ class CreateAccountFragment : BaseFragment(),
             if (validateFields()) {
                 showProgressBar(true)
                 viewModel.createAccountResponse.observe(this,
-                    Observer<CreateAccountResponse> {
-                        context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
-                        activity?.setResult(Activity.RESULT_OK)
-                        activity?.finish()
+                    Observer {
+                        it?.let {
+                            context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
+                            activity?.setResult(Activity.RESULT_OK)
+                            activity?.finish()
+                        }
                     })
                 viewModel.createAccount(this, getCreateAccountRequest())
             }
