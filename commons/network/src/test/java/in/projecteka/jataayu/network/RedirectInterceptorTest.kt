@@ -2,7 +2,6 @@ package `in`.projecteka.jataayu.network
 
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import android.content.Context
-import android.content.Intent
 import com.google.gson.JsonObject
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse

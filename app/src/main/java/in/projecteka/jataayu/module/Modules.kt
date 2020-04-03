@@ -26,7 +26,6 @@ import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepositoryImp
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.Retrofit

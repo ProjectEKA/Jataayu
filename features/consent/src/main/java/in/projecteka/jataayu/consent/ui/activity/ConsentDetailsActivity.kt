@@ -15,7 +15,8 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.extension.startActivityForResult
-import `in`.projecteka.jataayu.util.sharedPref.*
+import `in`.projecteka.jataayu.util.sharedPref.getPinCreated
+import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
