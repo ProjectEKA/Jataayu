@@ -18,9 +18,9 @@ class RegistrationViewModel(private val repository: AuthenticationRepository) : 
         const val MOBILE_IDENTIFIER_TYPE = "mobile"
     }
 
-    var requestVerificationResponse = liveDataOf<RequestVerificationResponse>()
+    var requestVerificationResponse = liveDataOf<RequestVerificationResponse?>()
 
-    private var verifyIdentifierResponse = liveDataOf<VerifyIdentifierResponse>()
+    private var verifyIdentifierResponse = liveDataOf<VerifyIdentifierResponse?>()
 
     fun requestVerification(identifierType: String, identifier: String, responseCallback: ResponseCallback) {
         repository.requestVerification(RequestVerificationRequest(identifierType, identifier)).observeOn(requestVerificationResponse, responseCallback)

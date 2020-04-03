@@ -16,11 +16,11 @@ import `in`.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
 
 class ProviderSearchViewModel(private val providerRepository: ProviderRepository) : ViewModel() {
-    val providers = liveDataOf<List<ProviderInfo>>()
+    val providers = liveDataOf<List<ProviderInfo>?>()
     var providersList = emptyList<ProviderInfo>()
-    val patientDiscoveryResponse = liveDataOf<PatientDiscoveryResponse>()
-    val linkAccountsResponse = liveDataOf<LinkAccountsResponse>()
-    val successfulLinkingResponse = liveDataOf<SuccessfulLinkingResponse>()
+    val patientDiscoveryResponse = liveDataOf<PatientDiscoveryResponse?>()
+    val linkAccountsResponse = liveDataOf<LinkAccountsResponse?>()
+    val successfulLinkingResponse = liveDataOf<SuccessfulLinkingResponse?>()
 
     internal var selectedProviderName = String.EMPTY
 
@@ -35,7 +35,7 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
 
     fun linkPatientAccounts(listCareContexts: List<CareContext>, responseCallback: ResponseCallback) {
 
-        var linkedAccounts = ArrayList<CareContext>()
+        val linkedAccounts = ArrayList<CareContext>()
 
         listCareContexts.forEach {
                 if (it.contextChecked){
@@ -45,11 +45,11 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
 
         val discoveryResponse = patientDiscoveryResponse.value
         val selectedAccountsResponse = PatientDiscoveryResponse(Patient(discoveryResponse?.patient?.referenceNumber!!,
-            discoveryResponse.patient.display, linkedAccounts, discoveryResponse.patient?.matchedBy!!),
+            discoveryResponse.patient.display, linkedAccounts, discoveryResponse.patient.matchedBy),
             discoveryResponse.transactionId)
 
 
-        providerRepository.linkPatientAccounts(selectedAccountsResponse!!).observeOn(linkAccountsResponse, responseCallback)
+        providerRepository.linkPatientAccounts(selectedAccountsResponse).observeOn(linkAccountsResponse, responseCallback)
     }
 
     fun verifyOtp(referenceNumber: String, otp: Otp, responseCallback: ResponseCallback) {
