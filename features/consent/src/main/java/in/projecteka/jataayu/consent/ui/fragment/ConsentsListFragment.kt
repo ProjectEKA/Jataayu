@@ -103,7 +103,6 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getConsents()
         initObservers()
     }
 
@@ -191,5 +190,10 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
                 EventBus.getDefault().register(this)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getConsents()
     }
 }
