@@ -6,4 +6,5 @@
     <string name="account_linked_successfully">Account linked successfully</string>
     <string name="consent_granted">Consent granted</string>
     <string name="consent_denied">Consent Denied Successfully</string>
+    <string name="consent_revoked">Consent Revoked Successfully</string>
 </resources>

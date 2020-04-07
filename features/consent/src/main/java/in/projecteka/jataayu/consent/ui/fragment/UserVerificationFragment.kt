@@ -56,6 +56,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         viewModel.userVerificationResponse.observe(this, Observer { it ->
             context?.setConsentTempToken(it.temporaryToken)
             EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
+            activity?.finish()
         })
     }
 

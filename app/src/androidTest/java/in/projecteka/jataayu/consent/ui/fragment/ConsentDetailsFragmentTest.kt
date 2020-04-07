@@ -13,6 +13,7 @@ import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.notDi
 import com.google.gson.Gson
 import okhttp3.mockwebserver.MockWebServer
 import org.greenrobot.eventbus.EventBus
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -134,7 +135,7 @@ class ConsentDetailsFragmentTest{
         }
     }
 
-    @Before
+    @After
     fun tearDown(){
         webServer.shutdown()
     }

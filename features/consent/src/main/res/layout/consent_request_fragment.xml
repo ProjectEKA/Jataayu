@@ -13,6 +13,10 @@
             type="Boolean" />
 
         <variable
+            name="hideFilter"
+            type="Boolean" />
+
+        <variable
             name="listener"
             type="android.widget.AdapterView.OnItemSelectedListener" />
 
@@ -44,7 +48,7 @@
             android:layout_marginStart="@dimen/content_margin_small"
             android:layout_marginTop="@dimen/content_margin_extra_extra_large"
             android:drawSelectorOnTop="true"
-            app:toggledVisibility="@{!hideRequestsList}"
+            app:toggledVisibility="@{!hideFilter}"
             android:drawablePadding="6dp"
             android:fontFamily="sans-serif-medium"
             app:onItemSelected="@{listener}"

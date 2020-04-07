@@ -4,25 +4,17 @@ import `in`.projecteka.jataayu.R
 import `in`.projecteka.jataayu.consent.R.id.*
 import `in`.projecteka.jataayu.testUtil.MockServerDispatcher
 import `in`.projecteka.jataayu.ui.activity.TestsOnlyActivity
-import androidx.test.espresso.Espresso.onData
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withSpinnerText
 import androidx.test.filters.LargeTest
 import androidx.test.runner.AndroidJUnit4
 import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.displayed
 import br.com.concretesolutions.kappuccino.custom.recyclerView.RecyclerViewInteractions.recyclerView
 import okhttp3.mockwebserver.MockWebServer
-import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import br.com.concretesolutions.kappuccino.actions.ClickActions.click as KClick
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -72,34 +64,8 @@ public class GrantedConsentListFragmentTest {
         @Test
         fun shouldRenderGrantedConsents() {
             Thread.sleep(8000)
-            verifyGrantedConsentsRendered(1)
+            verifyGrantedConsentsRendered(2)
         }
-
-    @Test
-    fun shouldRenderGratedConsents() {
-        Thread.sleep(8000)
-        KClick { id(sp_request_filter) }
-        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Active consents (1)"))).perform(click())
-        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Active consents (1)"))))
-        verifyGrantedConsentsRendered(1)
-    }
-
-    @Test
-    fun shouldRenderAllGrantedConsents() {
-        Thread.sleep(8000)
-        KClick { id(sp_request_filter) }
-        onData(allOf(`is`(instanceOf(String::class.java)), `is`("All Consents (2)"))).perform(click())
-        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("All Consents (2)"))))
-        verifyGrantedConsentsRendered(2)
-    }
-    @Test
-    fun shouldRenderExpiredGrantedConsents() {
-        Thread.sleep(10000)
-        KClick { id(sp_request_filter) }
-        onData(allOf(`is`(instanceOf(String::class.java)), `is`("Expired consents (1)"))).perform(click())
-        onView(withId(sp_request_filter)).check(matches(withSpinnerText(containsString("Expired consents (1)"))))
-        verifyExpiredGrantedConsentsRendered()
-    }
 
     private fun verifyGrantedConsentsRendered(expectedCount: Int) {
         recyclerView(R.id.rvConsents) {

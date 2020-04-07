@@ -80,9 +80,9 @@ class ConsentViewModelTest {
     @Test
     fun shouldPopulateFilterItemsForGrantedConsents() {
 
+        `when`(resources.getString(R.string.status_all_granted_consents)).thenReturn("All Granted Consents (%d)")
         `when`(resources.getString(R.string.status_active_granted_consents)).thenReturn("Active granted consents (%d)")
         `when`(resources.getString(R.string.status_expired_granted_consents)).thenReturn("Expired granted consents (%d)")
-        `when`(resources.getString(R.string.status_all_granted_consents)).thenReturn("All Granted Consents (%d)")
         val populatedFilterItems = consentViewModel.populateFilterItems(resources, ConsentFlow.GRANTED_CONSENTS)
 
         assertEquals(dummyGrantedFilterList(), populatedFilterItems)
@@ -99,9 +99,9 @@ class ConsentViewModelTest {
 
     private fun dummyGrantedFilterList(): ArrayList<String> {
         val list = ArrayList<String>(3)
+        list.add("All Granted Consents (2)")
         list.add("Active granted consents (1)")
         list.add("Expired granted consents (1)")
-        list.add("All Granted Consents (2)")
         return list
     }
 

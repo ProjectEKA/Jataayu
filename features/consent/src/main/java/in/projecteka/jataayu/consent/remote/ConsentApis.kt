@@ -1,9 +1,8 @@
 package `in`.projecteka.jataayu.consent.remote
 
-import `in`.projecteka.jataayu.consent.model.ConsentActionsRequest
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
+import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
-import `in`.projecteka.jataayu.core.model.RevokeConsentResponse
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
@@ -20,8 +19,8 @@ interface ConsentApis {
     @POST("consent-requests/{request-id}/approve")
     fun approveConsent(@Path("request-id") requestId: String, @Body approveConsentRequest: ConsentArtifactRequest, @Header("Authorization") authToken: String): Call<ConsentArtifactResponse>
 
-    @POST("revoke-consent")
-    fun revokeConsent(@Body consentActionsRequest: ConsentActionsRequest): Call<RevokeConsentResponse>
+    @POST("consents/revoke")
+    fun revokeConsent(@Body revokeConsentRequest: RevokeConsentRequest, @Header("Authorization") authToken: String): Call<Void>
 
     @GET("consent-requests/{request-id}/consent-artefacts")
     fun getGrantedConsentDetails(@Path("request-id") requestId: String): Call<List<GrantedConsentDetailsResponse>>

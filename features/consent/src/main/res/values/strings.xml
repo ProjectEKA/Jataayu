@@ -56,7 +56,7 @@
     <string name="create_consent_pin">Create Consent PIN</string>
     <string name="creating_pin">Creating transaction PIN&#8230;</string>
     <string name="denying_consent">Denying consent&#8230;</string>
+    <string name="revoking_consent">Revoking consent&#8230;</string>
     <string name="title_deny_consent">Deny consent?</string>
-    <string name="btn_deny_consent">Deny</string>
     <string name="msg_deny_consent">Are you sure you want to deny this consent request?</string>
 </resources>

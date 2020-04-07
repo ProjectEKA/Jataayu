@@ -1,9 +1,9 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.R
-import `in`.projecteka.jataayu.consent.model.ConsentActionsRequest
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
+import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.RequestStatus.*
@@ -29,14 +29,15 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
     val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()
     val consentDenyResponse = PayloadLiveData<Void>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
+    val revokeConsentResponse = PayloadLiveData<Void>()
 
     val requestedConsentsList = MutableLiveData<List<Consent>>()
     val grantedConsentsList = MutableLiveData<List<Consent>>()
 
     private val grantedConsentStatusList = listOf(
+        R.string.status_all_granted_consents,
         R.string.status_active_granted_consents,
-        R.string.status_expired_granted_consents,
-        R.string.status_all_granted_consents
+        R.string.status_expired_granted_consents
     )
     private val requestedConsentStatusList = listOf(
         R.string.status_active_requested_consents,
@@ -169,8 +170,10 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         }
     }
 
-    fun revokeConsent(consent: Consent) {
-        repository.revokeConsent(ConsentActionsRequest(consentId = consent.id))
+    fun revokeConsent(consentArtifactId: String, authToken: String) {
+        val list: ArrayList<String> = ArrayList()
+        list.add(consentArtifactId)
+        revokeConsentResponse.fetch(repository.revokeConsent(RevokeConsentRequest(list), authToken))
     }
     fun getItems(grantedConsents: List<GrantedConsentDetailsResponse>, linkedAccounts: List<Links>?): Pair<List<IDataBindingModel>,Int> {
         var count = 0

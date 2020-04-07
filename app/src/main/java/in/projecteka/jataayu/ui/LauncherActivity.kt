@@ -33,6 +33,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavig
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_launcher.*
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
@@ -151,28 +152,32 @@ class LauncherActivity : BaseActivity() {
         active = consentFragment
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public fun onEvent(messageEventType: MessageEventType) {
         when (messageEventType) {
             MessageEventType.CONSENT_GRANTED -> {
-                runOnUiThread{ showSnackbar(getString(R.string.consent_granted)) }
+               showSnackbar(getString(R.string.consent_granted))
                 eventBusInstance.post(MessageEventType.SELECT_CONSENTS_TAB)
             }
             MessageEventType.ACCOUNT_LINKED -> {
-                runOnUiThread{ showSnackbar(getString(R.string.account_linked_successfully)) }
+                showSnackbar(getString(R.string.account_linked_successfully))
                 eventBusInstance.post(ProviderAddedEvent.PROVIDER_ADDED)
             }
             MessageEventType.ACCOUNT_CREATED -> {
-                runOnUiThread{ showLongToast(getString(R.string.registered_successfully)) }
+                showLongToast(getString(R.string.registered_successfully))
             }
             MessageEventType.CONSENT_DENIED -> {
-                runOnUiThread{ showSnackbar(getString(R.string.consent_denied))}
+                showSnackbar(getString(R.string.consent_denied))
+            }
+            MessageEventType.CONSENT_REVOKED -> {
+                showSnackbar(getString(R.string.consent_revoked))
             }
         }
     }
 
     private fun showSnackbar(message: String) {
         val spannableString = SpannableString(message)
+
         spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         val snackbar = Snackbar.make(fragment_container, spannableString, 2000)
         snackbar.anchorView = bottom_navigation

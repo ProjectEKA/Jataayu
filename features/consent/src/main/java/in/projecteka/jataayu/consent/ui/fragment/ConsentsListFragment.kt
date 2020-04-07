@@ -5,21 +5,21 @@ import `in`.projecteka.jataayu.consent.callback.DeleteConsentCallback
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
+import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.core.model.RequestStatus
-import `in`.projecteka.jataayu.network.utils.Loading
-import `in`.projecteka.jataayu.network.utils.PartialFailure
-import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
+import `in`.projecteka.jataayu.network.utils.*
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.projecteka.jataayu.util.sharedPref.getConsentTempToken
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -46,6 +46,7 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
     abstract fun getConsentList(): List<Consent>
     abstract fun getNoNewConsentsMessage(): String
     abstract fun getConsentFlow(): ConsentFlow
+    private lateinit var consentToRevoke: Consent
 
     protected lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var consentsListAdapter: ConsentsListAdapter
@@ -54,6 +55,7 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
 
     companion object {
         const val CONSENT_FLOW = "consent_flow"
+        const val PIN_VERIFICATION = 300
     }
 
     override fun onCreateView(
@@ -72,6 +74,11 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
                 is Loading -> showProgressBar(it.isLoading, getString(R.string.loading_requests))
                 is Success -> {
                     binding.hideRequestsList = it.data?.requests.isNullOrEmpty()
+                    if (getConsentFlow() == ConsentFlow.REQUESTED_CONSENTS) {
+                        binding.hideFilter = binding.hideRequestsList
+                    } else {
+                        binding.hideFilter = true
+                    }
                     viewModel.filterConsents(it.data?.requests)
                 }
                 is PartialFailure -> {
@@ -80,6 +87,54 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
                 }
             }
         })
+
+        if (getConsentFlow() == ConsentFlow.GRANTED_CONSENTS) {
+            viewModel.grantedConsentDetailsResponse.observe(
+                this,
+                Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
+                    when (payload) {
+                        is Success -> {
+                            payload.data?.firstOrNull()?.consentDetail?.let {
+                                viewModel.revokeConsent(
+                                    it.id,
+                                    context?.getConsentTempToken()!!
+                                )
+                            }
+
+                        }
+                        is Loading -> {
+                            showProgressBar(payload.isLoading)
+                        }
+                    }
+                })
+
+            viewModel.revokeConsentResponse.observe(this, Observer<PayloadResource<Void>> {
+                when (it) {
+                    is Loading -> showProgressBar(
+                        it.isLoading,
+                        getString(R.string.revoking_consent)
+                    )
+                    is Success -> {
+                        activity?.let {
+                            EventBus.getDefault().post(MessageEventType.CONSENT_REVOKED)
+                            viewModel.getConsents()
+                        }
+                    }
+                    is PartialFailure -> {
+                        context?.showAlertDialog(
+                            getString(R.string.failure), it.error?.message,
+                            getString(android.R.string.ok)
+                        )
+                    }
+                    is Failure -> {
+                        context?.showAlertDialog(
+                            getString(R.string.failure), it.error?.message,
+                            getString(android.R.string.ok)
+                        )
+                    }
+                }
+            })
+        }
     }
 
     private fun initSpinner(selectedPosition: Int) {
@@ -97,6 +152,11 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
         binding.noNewConsentsMessage = getNoNewConsentsMessage()
         binding.listener = this
         binding.hideRequestsList = true
+        if (getConsentFlow() == ConsentFlow.REQUESTED_CONSENTS) {
+            binding.hideFilter = binding.hideRequestsList
+        } else {
+            binding.hideFilter = true
+        }
         showProgressBar(false)
         initSpinner(0)
     }
@@ -147,28 +207,38 @@ abstract class ConsentsListFragment : BaseFragment(), AdapterView.OnItemSelected
     }
 
     @Subscribe
-    fun onConsentGranted(messageEventType: MessageEventType) {
-        if (messageEventType == MessageEventType.CONSENT_GRANTED || messageEventType == MessageEventType.CONSENT_DENIED) {
+    fun onEventReceived(messageEventType: MessageEventType) {
+        if (messageEventType == MessageEventType.CONSENT_GRANTED || messageEventType == MessageEventType.CONSENT_DENIED ||
+            messageEventType == MessageEventType.CONSENT_REVOKED) {
             viewModel.getConsents()
+            unregisterEventBus()
+        } else if (messageEventType == MessageEventType.USER_VERIFIED) {
+            revokeConsent()
+            unregisterEventBus()
+        }
+    }
+
+    private fun unregisterEventBus() {
+        if (EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().unregister(this)
         }
     }
 
-    override fun confirmRevoke(iDataBindingModel: IDataBindingModel) {
-        val onClickListener = DialogInterface.OnClickListener { _: DialogInterface, _: Int ->
-            revokeConsent(iDataBindingModel)
-        }
-        context?.showAlertDialog(R.string.title_revoke_consent, R.string.msg_revoke_consent, R.string.btn_revoke_consent,
-            onClickListener, android.R.string.cancel, null)
+    private fun revokeConsent() {
+        getConsentArtifactId()
     }
 
-    private fun revokeConsent(iDataBindingModel: IDataBindingModel) {
-        consentsListAdapter.notifyItemRemoved(consentsListAdapter.removeItem(iDataBindingModel))
-        val consents = ArrayList(viewModel.grantedConsentsList.value!!)
-        consents.remove(iDataBindingModel)
-        viewModel.grantedConsentsList.value = consents
-        initSpinner(sp_request_filter.selectedItemPosition)
-        viewModel.revokeConsent(iDataBindingModel as Consent)
+    private fun getConsentArtifactId() {
+        viewModel.getGrantedConsentDetails(consentToRevoke.id)
+    }
+
+    override fun askForConsentPin(iDataBindingModel: IDataBindingModel) {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+        consentToRevoke = (iDataBindingModel as Consent)
+        val intent = Intent(context, PinVerificationActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onItemClick(
