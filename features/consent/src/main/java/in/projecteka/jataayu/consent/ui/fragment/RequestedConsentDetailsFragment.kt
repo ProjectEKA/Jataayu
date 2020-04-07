@@ -165,7 +165,7 @@ class RequestedConsentDetailsFragment : ConsentDetailsFragment(), ConsentDetails
 
     override fun onVisible() {
         super.onVisible()
-        setTitle(R.string.new_request)
+        setTitle(if(consent.status == RequestStatus.DENIED) R.string.denied_consent else R.string.new_request )
         renderUi()
     }
 }
