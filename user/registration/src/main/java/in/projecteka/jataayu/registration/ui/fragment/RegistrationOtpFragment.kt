@@ -36,8 +36,8 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
         binding.isOtpEntered = boolean
     }
 
-    companion object{
-        const val ERROR_CODE_INVALID_OTP = 1001
+    companion object {
+        private const val ERROR_CODE_INVALID_OTP = 1003
         fun newInstance() = RegistrationOtpFragment()
     }
 
@@ -46,17 +46,18 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
     private lateinit var sessionId: String
 
     override fun onSubmitOtp(view: View) {
-            binding.errorMessage = String.EMPTY
+        binding.errorMessage = String.EMPTY
         showProgressBar(true)
         viewModel.verifyIdentifier(sessionId, binding.etOtp.text.toString(), this)
     }
 
     override fun onStart() {
         super.onStart()
-        if(!eventBus.isRegistered(this)) {
+        if (!eventBus.isRegistered(this)) {
             eventBus.register(this)
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,7 +76,7 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
     }
 
     @Subscribe(sticky = true)
-    fun onSessionIdReceived(requestVerificationResponse: RequestVerificationResponse){
+    fun onSessionIdReceived(requestVerificationResponse: RequestVerificationResponse) {
         requestVerificationResponse.let {
             this.sessionId = requestVerificationResponse.sessionId
             eventBus.removeStickyEvent(requestVerificationResponse)
@@ -113,8 +114,11 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
 
     override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
-        if(errorBody.error.code == ERROR_CODE_INVALID_OTP)
-            binding.errorMessage = context?.getString(R.string.invalid_otp)
+        when (errorBody.error.code) {
+            ERROR_CODE_INVALID_OTP -> {
+                binding.errorMessage = context?.getString(R.string.invalid_otp)
+            }
+        }
     }
 
     override fun onFailure(t: Throwable) {
