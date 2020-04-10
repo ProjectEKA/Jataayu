@@ -146,6 +146,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             }
         }
     }
+
     override fun onEditClick(view: View) {
         linkedAccounts?.let {
             eventBusInstance.postSticky(HiTypeAndLinks(hiTypeObjects, it))
@@ -187,12 +188,12 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
 
     override fun onVisible() {
         super.onVisible()
-        setTitle(R.string.new_request)
+        setTitle(if (consent.status == RequestStatus.DENIED) R.string.denied_consent else R.string.new_request)
         renderUi()
     }
 
     private fun isExpiredOrGrantedOrDenied(): Boolean {
-        return (DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt)||(consent.status == RequestStatus.DENIED))
+        return (DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt) || (consent.status == RequestStatus.DENIED))
     }
 
     @Subscribe(sticky = true)
@@ -214,9 +215,12 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 if (!eventBusInstance.isRegistered(this))
                     eventBusInstance.register(this)
                 showProgressBar(true)
-                viewModel.grantConsent(consent.id, viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission), context?.getConsentTempToken()!!)
+                viewModel.grantConsent(
+                    consent.id,
+                    viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission),
+                    context?.getConsentTempToken()!!
+                )
             }
         }
     }
-
 }
