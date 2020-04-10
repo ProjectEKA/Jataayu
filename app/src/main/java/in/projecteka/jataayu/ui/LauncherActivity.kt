@@ -194,6 +194,10 @@ class LauncherActivity : BaseActivity() {
                 finish()
             }
             Activity.RESULT_FIRST_USER -> {
+                /**
+                 * use [Router] to start activities based on class path
+                 * startRegistration(this){ }
+                 */
                 startActivityForResult(RegistrationActivity::class.java, REGISTER.ordinal)
             }
             else -> {
