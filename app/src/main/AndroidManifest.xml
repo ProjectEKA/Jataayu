@@ -12,13 +12,20 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name, android:label, android:theme">
-        <activity
-            android:name=".ui.LauncherActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+
+        <activity-alias
+            android:name=".LauncherActivity"
+            android:targetActivity=".ui.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity-alias>
+
+        <activity
+            android:name=".ui.LauncherActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="in.projecteka.jataayu.home" />
                 <category android:name="android.intent.category.DEFAULT" />
