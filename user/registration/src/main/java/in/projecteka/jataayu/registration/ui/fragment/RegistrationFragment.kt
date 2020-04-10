@@ -52,6 +52,7 @@ class RegistrationFragment : BaseFragment(), ContinueClickHandler, MobileNumberC
         binding.mobileNumberWatcher = MobileNumberChangeWatcher(this)
         binding.isValidMobileNumber = false
         binding.countryCode = viewModel.getCountryCode()
+        viewModel.requestVerificationResponse.observe(this, registrationObserver)
     }
 
     override fun onVisible() {
@@ -62,7 +63,6 @@ class RegistrationFragment : BaseFragment(), ContinueClickHandler, MobileNumberC
     override fun onContinueClick(view: View) {
         showProgressBar(true, getString(R.string.sending_otp))
         viewModel.requestVerification(MOBILE_IDENTIFIER_TYPE, viewModel.getMobileNumber(binding.etMobileNumber.text.toString()), this)
-        viewModel.requestVerificationResponse.observe(this, registrationObserver)
     }
 
     override fun setButtonEnabled(boolean: Boolean) {

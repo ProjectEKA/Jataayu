@@ -184,7 +184,7 @@ class RedirectInterceptorTest {
 
         testApi.permitUser().execute()
 
-        verify(context, never()).startActivity(ArgumentMatchers.any())
+        verify(context, times(1)).startActivity(ArgumentMatchers.any())
     }
 
     @Test
