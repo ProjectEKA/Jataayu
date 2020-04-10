@@ -1,7 +1,7 @@
 package `in`.projecteka.jataayu.consent.ui.adapter
 
-import `in`.projecteka.jataayu.consent.ui.fragment.GrantedConsentListFragment
-import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentListFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.GrantedFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.RequestedFragment
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -20,9 +20,9 @@ class ConsentPagerAdapter(private val context: Context, fm: FragmentManager) :
 
     override fun getItem(position: Int): Fragment {
         return if (position == REQUESTS_INDEX) {
-            RequestedConsentListFragment.newInstance()
+            RequestedFragment.newInstance()
         } else {
-            GrantedConsentListFragment.newInstance()
+            GrantedFragment.newInstance()
         }
     }
 

@@ -40,7 +40,9 @@ class ConsentsListAdapter(
             binding.executePendingBindings()
             setItemClickListener(iDataBindingModel)
             deleteConsentCallback?.let {
-                (binding as ConsentItemBinding).ibDeleteConsent.setOnClickListener{ deleteConsentCallback.confirmRevoke(iDataBindingModel) }
+                (binding as ConsentItemBinding).ibDeleteConsent.setOnClickListener{
+                    deleteConsentCallback.askForConsentPin(iDataBindingModel)
+                }
             }
         }
     }

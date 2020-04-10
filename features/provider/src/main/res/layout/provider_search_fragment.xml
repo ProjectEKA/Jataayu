@@ -273,7 +273,7 @@
             android:textSize="@dimen/text_size_small"
             app:layout_constraintTop_toBottomOf="@id/lbl_patient_id"
             app:toggledVisibility="@{!inEditMode}" />
-        
+
         <FrameLayout
             android:id="@+id/button_bar"
             android:layout_width="match_parent"

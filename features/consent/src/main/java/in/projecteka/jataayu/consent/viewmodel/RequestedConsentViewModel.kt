@@ -3,10 +3,10 @@ package `in`.projecteka.jataayu.consent.viewmodel
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
-import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.*
-import `in`.projecteka.jataayu.core.model.RequestStatus.*
+import `in`.projecteka.jataayu.core.model.RequestStatus.DENIED
+import `in`.projecteka.jataayu.core.model.RequestStatus.REQUESTED
 import `in`.projecteka.jataayu.core.model.approveconsent.CareReference
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifact
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
@@ -22,23 +22,16 @@ import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() {
+class RequestedConsentViewModel(private val repository: ConsentRepository) : ViewModel() {
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
     val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()
     val consentDenyResponse = PayloadLiveData<Void>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
-    val revokeConsentResponse = PayloadLiveData<Void>()
 
     val requestedConsentsList = MutableLiveData<List<Consent>>()
-    val grantedConsentsList = MutableLiveData<List<Consent>>()
 
-    private val grantedConsentStatusList = listOf(
-        R.string.status_all_granted_consents,
-        R.string.status_active_granted_consents,
-        R.string.status_expired_granted_consents
-    )
     private val requestedConsentStatusList = listOf(
         R.string.status_active_requested_consents,
         R.string.status_expired_requested_consents,
@@ -98,13 +91,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
     }
 
     fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> =
-        if (flow == ConsentFlow.GRANTED_CONSENTS) {
-            grantedConsentStatusList.map { getFormattedItem(resources,it, GRANTED) }
-        } else {
-            requestedConsentStatusList.map {
-                getFormattedItem(resources,it, REQUESTED)
-            }
-        }
+        requestedConsentStatusList.map { getFormattedItem(resources,it, REQUESTED)  }
 
 
     private fun getFormattedItem(
@@ -112,11 +99,7 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         filterItem: Int,
         requestStatus: RequestStatus
     ): String {
-        val list = if (requestStatus == GRANTED) {
-            grantedConsentsList.value
-        } else {
-            requestedConsentsList.value
-        }
+        val list = requestedConsentsList.value
 
         val count = list?.count { consent ->
             val dataExpired = DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt)
@@ -165,16 +148,8 @@ class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() 
         requestedConsentsList.value = consentList?.filter {
             it.status == REQUESTED || it.status == DENIED
         }
-        grantedConsentsList.value = consentList?.filter {
-            it.status == GRANTED
-        }
     }
 
-    fun revokeConsent(consentArtifactId: String, authToken: String) {
-        val list: ArrayList<String> = ArrayList()
-        list.add(consentArtifactId)
-        revokeConsentResponse.fetch(repository.revokeConsent(RevokeConsentRequest(list), authToken))
-    }
     fun getItems(grantedConsents: List<GrantedConsentDetailsResponse>, linkedAccounts: List<Links>?): Pair<List<IDataBindingModel>,Int> {
         var count = 0
         val items = arrayListOf<IDataBindingModel>()

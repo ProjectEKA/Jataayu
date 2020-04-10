@@ -22,7 +22,7 @@ import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ConsentViewModel(private val repository: ConsentRepository) : ViewModel() {
+class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewModel() {
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()

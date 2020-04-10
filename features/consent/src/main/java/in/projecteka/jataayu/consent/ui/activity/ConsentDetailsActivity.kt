@@ -4,7 +4,7 @@ import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.ui.fragment.*
-import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentViewModel
 import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.PayloadResource
@@ -15,7 +15,8 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.extension.startActivityForResult
-import `in`.projecteka.jataayu.util.sharedPref.*
+import `in`.projecteka.jataayu.util.sharedPref.getPinCreated
+import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -25,7 +26,7 @@ import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
-    private val viewModel: ConsentViewModel by viewModel()
+    private val viewModel: RequestedConsentViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +60,7 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
                     is Success -> {
                         payload.data?.requests?.find { it.id == consentId }?.let {
                             EventBus.getDefault().postSticky(it)
-                            replaceFragment(RequestedConsentDetailsFragment.newInstance())
+                            replaceFragment(RequestedConsentDetailsFragment())
                         }
                     }
                 }
@@ -76,9 +77,9 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
     }
 
     private fun getFlowType(): Int {
-        if (intent.hasExtra(ConsentsListFragment.CONSENT_FLOW)) {
+        if (intent.hasExtra(RequestedFragment.CONSENT_FLOW)) {
             intent.extras?.getInt(
-                ConsentsListFragment.CONSENT_FLOW,
+                RequestedFragment.CONSENT_FLOW,
                 ConsentFlow.REQUESTED_CONSENTS.ordinal
             )?.let { return it }
         }

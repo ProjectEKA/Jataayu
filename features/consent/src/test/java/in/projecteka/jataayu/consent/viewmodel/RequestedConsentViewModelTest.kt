@@ -27,7 +27,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
-class ConsentViewModelTest {
+class RequestedConsentViewModelTest {
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
@@ -41,7 +41,7 @@ class ConsentViewModelTest {
     @Mock
     private lateinit var call: Call<ConsentsListResponse>
 
-    private lateinit var consentViewModel: ConsentViewModel
+    private lateinit var consentViewModel: RequestedConsentViewModel
 
     private lateinit var consentsListResponse: ConsentsListResponse
 
@@ -50,7 +50,7 @@ class ConsentViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        consentViewModel = ConsentViewModel(repository)
+        consentViewModel = RequestedConsentViewModel(repository)
 
         consentsListResponse = Gson()
             .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)
@@ -77,17 +77,6 @@ class ConsentViewModelTest {
         assertEquals(dummyRequestedFilterList(), populatedFilterItems)
     }
 
-    @Test
-    fun shouldPopulateFilterItemsForGrantedConsents() {
-
-        `when`(resources.getString(R.string.status_active_granted_consents)).thenReturn("Active granted consents (%d)")
-        `when`(resources.getString(R.string.status_expired_granted_consents)).thenReturn("Expired granted consents (%d)")
-        `when`(resources.getString(R.string.status_all_granted_consents)).thenReturn("All Granted Consents (%d)")
-        val populatedFilterItems = consentViewModel.populateFilterItems(resources, ConsentFlow.GRANTED_CONSENTS)
-
-        assertEquals(dummyGrantedFilterList(), populatedFilterItems)
-    }
-
     private fun dummyRequestedFilterList(): ArrayList<String> {
         val list = ArrayList<String>(3)
         list.add("Active requested consents (1)")
@@ -96,15 +85,6 @@ class ConsentViewModelTest {
         list.add("All requested consents (2)")
         return list
     }
-
-    private fun dummyGrantedFilterList(): ArrayList<String> {
-        val list = ArrayList<String>(3)
-        list.add("Active granted consents (1)")
-        list.add("Expired granted consents (1)")
-        list.add("All Granted Consents (2)")
-        return list
-    }
-
 
     @Test
     fun shouldFetchConsents() {
@@ -117,15 +97,10 @@ class ConsentViewModelTest {
     fun shouldFilterConsents() {
         consentViewModel.filterConsents(consentsListResponse.requests)
         assertEquals(dummyRequestedConsentsList(), consentViewModel.requestedConsentsList.value)
-        assertEquals(dummyGrantedConsentsList(), consentViewModel.grantedConsentsList.value)
     }
 
     private fun dummyRequestedConsentsList(): List<Consent>? {
         return getData("requested_consents.json")
-    }
-
-    private fun dummyGrantedConsentsList(): List<Consent>? {
-        return getData("granted_consents.json")
     }
 
     private fun getData(fileName: String) = Gson().fromJson<List<Consent>>(TestUtils.readFile(fileName))
