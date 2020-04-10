@@ -67,17 +67,6 @@ class GrantedConsentViewModelTest {
     }
 
     @Test
-    fun shouldPopulateFilterItemsForRequestedConsents() {
-        `when`(resources.getString(R.string.status_active_requested_consents)).thenReturn("Active requested consents (%d)")
-        `when`(resources.getString(R.string.status_expired_requested_consents)).thenReturn("Expired requested consents (%d)")
-        `when`(resources.getString(R.string.status_denied_consent_requests)).thenReturn("Denied consent requests (%d)")
-        `when`(resources.getString(R.string.status_all_requested_consents)).thenReturn("All requested consents (%d)")
-        val populatedFilterItems = consentViewModel.populateFilterItems(resources, ConsentFlow.REQUESTED_CONSENTS)
-
-        assertEquals(dummyRequestedFilterList(), populatedFilterItems)
-    }
-
-    @Test
     fun shouldPopulateFilterItemsForGrantedConsents() {
 
         `when`(resources.getString(R.string.status_all_granted_consents)).thenReturn("All Granted Consents (%d)")
@@ -86,15 +75,6 @@ class GrantedConsentViewModelTest {
         val populatedFilterItems = consentViewModel.populateFilterItems(resources, ConsentFlow.GRANTED_CONSENTS)
 
         assertEquals(dummyGrantedFilterList(), populatedFilterItems)
-    }
-
-    private fun dummyRequestedFilterList(): ArrayList<String> {
-        val list = ArrayList<String>(3)
-        list.add("Active requested consents (1)")
-        list.add("Expired requested consents (1)")
-        list.add("Denied consent requests (0)")
-        list.add("All requested consents (2)")
-        return list
     }
 
     private fun dummyGrantedFilterList(): ArrayList<String> {
@@ -116,12 +96,7 @@ class GrantedConsentViewModelTest {
     @Test
     fun shouldFilterConsents() {
         consentViewModel.filterConsents(consentsListResponse.requests)
-        assertEquals(dummyRequestedConsentsList(), consentViewModel.requestedConsentsList.value)
         assertEquals(dummyGrantedConsentsList(), consentViewModel.grantedConsentsList.value)
-    }
-
-    private fun dummyRequestedConsentsList(): List<Consent>? {
-        return getData("requested_consents.json")
     }
 
     private fun dummyGrantedConsentsList(): List<Consent>? {

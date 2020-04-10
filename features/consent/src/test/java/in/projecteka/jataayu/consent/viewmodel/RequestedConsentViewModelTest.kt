@@ -77,17 +77,6 @@ class RequestedConsentViewModelTest {
         assertEquals(dummyRequestedFilterList(), populatedFilterItems)
     }
 
-    @Test
-    fun shouldPopulateFilterItemsForGrantedConsents() {
-
-        `when`(resources.getString(R.string.status_all_granted_consents)).thenReturn("All Granted Consents (%d)")
-        `when`(resources.getString(R.string.status_active_granted_consents)).thenReturn("Active granted consents (%d)")
-        `when`(resources.getString(R.string.status_expired_granted_consents)).thenReturn("Expired granted consents (%d)")
-        val populatedFilterItems = consentViewModel.populateFilterItems(resources, ConsentFlow.GRANTED_CONSENTS)
-
-        assertEquals(dummyGrantedFilterList(), populatedFilterItems)
-    }
-
     private fun dummyRequestedFilterList(): ArrayList<String> {
         val list = ArrayList<String>(3)
         list.add("Active requested consents (1)")
@@ -96,15 +85,6 @@ class RequestedConsentViewModelTest {
         list.add("All requested consents (2)")
         return list
     }
-
-    private fun dummyGrantedFilterList(): ArrayList<String> {
-        val list = ArrayList<String>(3)
-        list.add("All Granted Consents (2)")
-        list.add("Active granted consents (1)")
-        list.add("Expired granted consents (1)")
-        return list
-    }
-
 
     @Test
     fun shouldFetchConsents() {
@@ -121,10 +101,6 @@ class RequestedConsentViewModelTest {
 
     private fun dummyRequestedConsentsList(): List<Consent>? {
         return getData("requested_consents.json")
-    }
-
-    private fun dummyGrantedConsentsList(): List<Consent>? {
-        return getData("granted_consents.json")
     }
 
     private fun getData(fileName: String) = Gson().fromJson<List<Consent>>(TestUtils.readFile(fileName))
