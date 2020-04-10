@@ -32,7 +32,7 @@ public class GrantedConsentListFragmentTest {
         webServer.start(8080)
         webServer.dispatcher = MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
 
-        val requestListFragment = GrantedConsentListFragment()
+        val requestListFragment = GrantedFragment()
         activityRule.activity.addFragment(requestListFragment)
     }
 

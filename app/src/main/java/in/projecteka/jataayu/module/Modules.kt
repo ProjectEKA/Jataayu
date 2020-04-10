@@ -1,6 +1,5 @@
 package `in`.projecteka.jataayu.module
 
-import `in`.projecteka.jataayu.BuildConfig
 import `in`.projecteka.jataayu.consent.remote.ConsentApis
 import `in`.projecteka.jataayu.consent.remote.UserVerificationApis
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
@@ -8,7 +7,10 @@ import `in`.projecteka.jataayu.consent.repository.ConsentRepositoryImpl
 import `in`.projecteka.jataayu.consent.repository.UserVerificationRepository
 import `in`.projecteka.jataayu.consent.repository.UserVerificationRepositoryImpl
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel
+import `in`.projecteka.jataayu.network.BuildConfig
 import `in`.projecteka.jataayu.network.createNetworkClient
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.provider.remote.ProviderApis
@@ -26,13 +28,14 @@ import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepositoryImp
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import okhttp3.ResponseBody
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.Retrofit
 
 val viewModelModule = module {
     viewModel { ProviderSearchViewModel(get()) }
+    viewModel { RequestedConsentViewModel(get()) }
+    viewModel { GrantedConsentViewModel(get()) }
     viewModel { ConsentViewModel(get()) }
     viewModel { UserAccountsViewModel(get()) }
     viewModel { RegistrationViewModel(get()) }

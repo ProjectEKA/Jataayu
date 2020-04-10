@@ -3,7 +3,7 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.FragmentConsentDetailsEditBinding
 import `in`.projecteka.jataayu.consent.ui.handler.PickerClickHandler
-import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentViewModel
 import `in`.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
 import `in`.projecteka.jataayu.core.model.CareContext
 import `in`.projecteka.jataayu.core.model.Consent
@@ -63,7 +63,7 @@ class EditConsentDetailsFragment : BaseFragment(), PickerClickHandler, DateTimeS
     lateinit var consent: Consent
     private lateinit var modifiedConsent: Consent
     private var hiTypes = ArrayList<HiType>()
-    private val viewModel: ConsentViewModel by sharedViewModel()
+    private val viewModel: RequestedConsentViewModel by sharedViewModel()
     private lateinit var genericRecyclerViewAdapter: GenericRecyclerViewAdapter
 
     companion object {
