@@ -1,19 +1,16 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
-import `in`.projecteka.jataayu.core.model.CareContext
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HiType
 import `in`.projecteka.jataayu.core.model.Links
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
 import `in`.projecteka.jataayu.presentation.callback.DateTimeSelectionCallback
-import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.extension.toUtc
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
-import com.google.android.material.chip.ChipGroup
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -54,7 +51,7 @@ class EditConsentDetailsVM() : ViewModel(), DateTimeSelectionCallback {
         expiryTimeLabel.set(modifiedConsent.getConsentExpiryTime())
     }
 
-    fun onHITypesAndLinksReceived(hiTypeAndLinks: HiTypeAndLinks) {
+    fun updateHITypesAndLinksReceived(hiTypeAndLinks: HiTypeAndLinks) {
         updateHITypes(hiTypeAndLinks.hiTypes)
         updateProviderLinks(hiTypeAndLinks.linkedAccounts)
     }
@@ -88,23 +85,24 @@ class EditConsentDetailsVM() : ViewModel(), DateTimeSelectionCallback {
             }
         }
         onAddLinksEvent.value = linkedAccounts
-        checkSelectionInBackground()
+        checkEditValid()
 
     }
 
     fun onClickSave() {
-        onSaveClicked.value = modifiedConsent
+        if (saveEnabled.get())
+            onSaveClicked.value = modifiedConsent
     }
 
-    fun markHITypeChecked(id: String,checked: Boolean){
+    fun markHITypeChecked(id: String, checked: Boolean) {
         hiTypes.find { it.type == id }?.apply {
             isChecked = checked
         }
-        checkSelectionInBackground()
+        checkEditValid()
     }
 
-    fun checkSelectionInBackground() {
-        val careContexts = linkedAccounts.flatMap {it.careContexts}
+    fun checkEditValid() {
+        val careContexts = linkedAccounts.flatMap { it.careContexts }
         val selectableItemsCount = careContexts.count()
         val selectionCount = careContexts.count { it.contextChecked }
         allProvidersChecked.set(selectableItemsCount == selectionCount)
@@ -116,24 +114,24 @@ class EditConsentDetailsVM() : ViewModel(), DateTimeSelectionCallback {
             FROM_DATE_DATEPICKER_ID -> {
                 modifiedConsent.updateFromDate(date.toUtc())
                 fromDateLabel.set(modifiedConsent.getPermissionStartDate())
-                checkSelectionInBackground()
+                checkEditValid()
             }
             TO_DATE_DATEPICKER_ID -> {
-                checkSelectionInBackground()
                 modifiedConsent.updateToDate(date.toUtc())
                 toDateLabel.set(modifiedConsent.getPermissionEndDate())
+                checkEditValid()
             }
             EXPIRY_DATE_DATEPICKER_ID -> {
-                checkSelectionInBackground()
                 modifiedConsent.permission.dataExpiryAt = date.toUtc()
                 expiryDateLabel.set(modifiedConsent.getConsentExpiryDate())
                 expiryTimeLabel.set(modifiedConsent.getConsentExpiryTime())
+                checkEditValid()
             }
         }
     }
 
     override fun onTimeSelected(timePair: Pair<Int, Int>) {
-        checkSelectionInBackground()
+        checkEditValid()
         with(Calendar.getInstance()) {
             time = DateTimeUtils.getDate(modifiedConsent.permission.dataExpiryAt)
             set(Calendar.HOUR_OF_DAY, timePair.first)

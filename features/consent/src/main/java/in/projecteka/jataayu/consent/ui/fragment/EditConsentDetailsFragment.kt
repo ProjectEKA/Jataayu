@@ -16,7 +16,6 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog.Companion.UNDEFINED_DATE
 import `in`.projecteka.jataayu.presentation.ui.fragment.TimePickerDialog
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -140,7 +139,7 @@ class EditConsentDetailsFragment : BaseFragment(), ItemClickCallback, CompoundBu
 
     @Subscribe(sticky = true)
     public fun onHitypesAndLinkesReceived(hiTypeAndLinks: HiTypeAndLinks) {
-        viewModel.onHITypesAndLinksReceived(hiTypeAndLinks)
+        viewModel.updateHITypesAndLinksReceived(hiTypeAndLinks)
     }
 
     override fun onStart() {
@@ -165,7 +164,7 @@ class EditConsentDetailsFragment : BaseFragment(), ItemClickCallback, CompoundBu
             checkbox.toggle()
             (iDataBindingModel as CareContext).contextChecked = checkbox.isChecked
 
-            viewModel.checkSelectionInBackground()
+            viewModel.checkEditValid()
         }
     }
 
