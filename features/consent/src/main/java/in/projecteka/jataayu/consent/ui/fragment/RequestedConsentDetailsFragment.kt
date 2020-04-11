@@ -136,7 +136,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             cgRequestInfoTypes.removeAllViews()
         }
 
-        eventBusInstance.postSticky(consent)
+//        eventBusInstance.postSticky(consent)
 
         if (hiTypeObjects.isEmpty()) createHiTypesFromConsent()
 

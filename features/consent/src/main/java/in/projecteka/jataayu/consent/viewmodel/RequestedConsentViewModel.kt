@@ -68,7 +68,7 @@ class RequestedConsentViewModel(private val repository: ConsentRepository) : Vie
     ): List<ConsentArtifact> {
 
         val consentArtifactList = ArrayList<ConsentArtifact>()
-        val hiTypes = hiTypeObjects.map { it.type }
+        val hiTypes: List<String> = hiTypeObjects.mapNotNull { if(it.isChecked) it.type else null }
 
 
         links.forEach { link ->
@@ -120,15 +120,6 @@ class RequestedConsentViewModel(private val repository: ConsentRepository) : Vie
         }
 
         return String.format(resources.getString(filterItem), count)
-    }
-
-    fun getItems(links: List<Links?>): List<IDataBindingModel> {
-        val items = arrayListOf<IDataBindingModel>()
-        links.filterNotNull().forEach { link ->
-            items.add(link.hip)
-            items.addAll(link.careContexts)
-        }
-        return items
     }
 
     private fun newCareReference(link: Links, it: CareContext) = CareReference(link.referenceNumber, it.referenceNumber)

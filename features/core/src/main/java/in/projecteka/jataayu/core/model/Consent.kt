@@ -5,7 +5,6 @@ import `in`.projecteka.jataayu.core.R
 import `in`.projecteka.jataayu.core.model.approveconsent.CareReference
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
-import android.view.View
 import androidx.annotation.StringRes
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
@@ -26,7 +25,6 @@ data class Consent(
     @SerializedName("careContexts") val careContexts : List<CareReference>?
     ) : BaseObservable(), IDataBindingModel, Cloneable {
     var showDetails = true
-    var detailsVisibility = View.VISIBLE
     lateinit var relativeTimeSpan : String
     @StringRes var baseString = R.string.requested_timespan
 

@@ -64,10 +64,10 @@
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:drawablePadding">@dimen/content_margin_small</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="backgroundTint">@color/button_color_selector</item>
         <item name="cornerRadius">@dimen/button_corner_radius</item>
         <item name="android:stateListAnimator">@animator/button_state_list_anim</item>
-        <item name="android:textColor">@color/button_text_color</item>
+        <item name="android:textColor">@color/button_text_color_selector</item>
     </style>
 
     <style name="Button.Secondary" parent="Widget.MaterialComponents.Button.OutlinedButton">

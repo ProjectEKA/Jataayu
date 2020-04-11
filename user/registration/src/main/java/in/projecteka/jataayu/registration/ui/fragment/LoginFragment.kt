@@ -22,11 +22,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListener,
     ResponseCallback {
     private lateinit var binding: FragmentLoginBinding
-    private val viewModel: LoginViewModel by sharedViewModel()
+    private val viewModel: LoginViewModel by viewModel()
 
     companion object {
         const val SPACE = " "
