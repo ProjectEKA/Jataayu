@@ -22,7 +22,8 @@ fun Context.setNetworkPref(environmentIndex: Int, endpoint: String) {
 
 fun Context.setAuthToken(authToken: String) {
     val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-    sharedPreferences.edit { putString(AUTH_TOKEN, authToken) }
+    sharedPreferences.edit(true) { putString(AUTH_TOKEN, authToken) }
+
 }
 
 fun Context.getAuthToken(): String {

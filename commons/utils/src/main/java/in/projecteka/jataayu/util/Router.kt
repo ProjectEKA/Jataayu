@@ -6,7 +6,18 @@ import android.content.Intent
 typealias IntentDefinition = Intent.() -> Unit
 
 private const val ACTIVITY_REGISTRATION = "in.projecteka.jataayu.registration.ui.activity.RegistrationActivity"
+private const val ACTIVITY_PROVIDER = "In.projecteka.jataayu.provider.ui.ProviderActivity"
+private const val ACTIVITY_ACCOUNT_CREATION = "in.projecteka.jataayu.account.AccountCreationActivity"
 private const val ACTIVITY_LOGIN = "in.projecteka.jataayu.registration.ui.activity.LoginActivity"
+private const val ACTIVITY_LAUNCHER = "in.projecteka.jataayu.ui.LauncherActivity"
+
+private fun defaultIntentDefinition(
+    context: Context,
+    clazz: String,
+    intentDefinition: IntentDefinition? = null) = Intent(context, context.classLoader.loadClass(clazz))
+    .apply {
+        intentDefinition?.let { it(this) }
+    }
 
 fun startRegistration(context: Context, intentDefinition: IntentDefinition? = null) {
     context.startActivity(Intent(context, context.classLoader.loadClass(ACTIVITY_REGISTRATION)).apply {
@@ -14,3 +25,26 @@ fun startRegistration(context: Context, intentDefinition: IntentDefinition? = nu
     })
 }
 
+fun startProvider(context: Context, intentDefinition: IntentDefinition? = null) {
+    context.startActivity(Intent(context, context.classLoader.loadClass(ACTIVITY_PROVIDER)).apply {
+        intentDefinition?.let { it(this) }
+    })
+}
+
+fun startAccountCreation(context: Context, intentDefinition: IntentDefinition? = null) {
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_ACCOUNT_CREATION, intentDefinition))
+}
+
+fun startLogin(context: Context, intentDefinition: IntentDefinition? = null) {
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_LOGIN, intentDefinition))
+}
+
+fun startLauncher(context: Context, intentDefinition: IntentDefinition? = null) {
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_LAUNCHER, intentDefinition))
+}
+
+fun removeLogin(context: Context, intentDefinition: IntentDefinition? = null){
+    context.startActivity(Intent(context, context.classLoader.loadClass(ACTIVITY_LOGIN)).apply {
+        intentDefinition?.let { it(this) }
+    })
+}

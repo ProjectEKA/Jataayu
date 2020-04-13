@@ -13,7 +13,7 @@ interface ProviderApis {
     @GET("providers")
     fun getProviders(@Query("name") name: String): Call<List<ProviderInfo>>
 
-    @POST("patients/discover")
+    @POST("patients/discover/carecontexts")
     fun getPatientAccounts(@Body request: Request): Call<PatientDiscoveryResponse>
 
     @POST("patients/link")

@@ -73,7 +73,7 @@ private fun httpClient(debug: Boolean, context: Context, authToken: String): OkH
     clientBuilder.connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
         .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-    clientBuilder.addInterceptor(RequestInterceptor(authToken))
+    clientBuilder.addInterceptor(RequestInterceptor(context))
 
     if (debug && !isTestingMode(context)) {
         addRequestResponseLogger(httpLoggingInterceptor, clientBuilder)
