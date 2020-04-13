@@ -9,4 +9,8 @@ class LoginActivity : BaseActivity(){
         super.onCreate(savedInstanceState)
         addFragment(LoginFragment.newInstance())
     }
+
+    override fun onResume() {
+        super.onResume()
+    }
 }

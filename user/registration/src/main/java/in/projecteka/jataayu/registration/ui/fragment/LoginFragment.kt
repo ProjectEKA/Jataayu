@@ -13,6 +13,8 @@ import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentLoginBinding
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
+import `in`.projecteka.jataayu.util.sharedPref.setIsUserLoggedIn
+import `in`.projecteka.jataayu.util.startRegistration
 import android.app.Activity
 import android.os.Bundle
 import android.text.InputType
@@ -44,8 +46,9 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
 
 
     override fun onRegisterClick(view: View) {
-        activity?.setResult(Activity.RESULT_FIRST_USER)
-        activity?.finish()
+        startRegistration(activity!!, null)
+//        activity?.setResult(Activity.RESULT_FIRST_USER)
+//        activity?.finish()
     }
 
     override fun onLoginClick(view: View) {
@@ -95,12 +98,8 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
             when (it) {
                 is Loading -> showProgressBar(it.isLoading, getString(R.string.logging_in))
                 is Success -> {
-                    context?.setAuthToken(
-                        viewModel.getAuthTokenWithTokenType(
-                            authToken = it.data?.accessToken,
-                            tokenType = it.data?.tokenType
-                        )
-                    )
+                    context?.setAuthToken(viewModel.getAuthTokenWithTokenType(authToken = it.data?.accessToken, tokenType = it.data?.tokenType))
+                    context?.setIsUserLoggedIn(true)
                     activity?.setResult(Activity.RESULT_OK)
                     activity?.finish()
                 }

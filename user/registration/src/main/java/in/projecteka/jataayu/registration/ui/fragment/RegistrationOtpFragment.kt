@@ -17,8 +17,9 @@ import `in`.projecteka.jataayu.registration.viewmodel.RegistrationViewModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
+import `in`.projecteka.jataayu.util.sharedPref.setIsUserRegistered
 import `in`.projecteka.jataayu.util.sharedPref.setMobileIdentifier
-import android.app.Activity
+import `in`.projecteka.jataayu.util.startAccountCreation
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ import android.view.ViewGroup
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+
 
 class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, ResponseCallback, MobileNumberChangeHandler,
     OtpChangeHandler {
@@ -108,8 +110,13 @@ class RegistrationOtpFragment : BaseFragment(), OtpSubmissionClickHandler, Respo
     override fun <T> onSuccess(body: T?) {
         context?.setAuthToken((body as VerifyIdentifierResponse).temporaryToken)
         showProgressBar(false)
-        activity?.setResult(Activity.RESULT_OK)
+        activity?.setIsUserRegistered(true)
+//        activity?.setResult(Activity.RESULT_OK)
         activity?.finish()
+//        val intent = Intent(activity, Activity::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//        startActivity(intent)
+        startAccountCreation(activity!!, null)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {

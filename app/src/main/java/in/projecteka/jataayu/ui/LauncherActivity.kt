@@ -11,8 +11,9 @@ import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInter
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.provider.ui.ProviderActivity
 import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
-import `in`.projecteka.jataayu.registration.ui.activity.RegistrationActivity
-import `in`.projecteka.jataayu.ui.LauncherActivity.RequestCodes.*
+import `in`.projecteka.jataayu.registration.ui.fragment.LoginFragment
+import `in`.projecteka.jataayu.ui.LauncherActivity.RequestCodes.ADD_PROVIDER
+import `in`.projecteka.jataayu.ui.LauncherActivity.RequestCodes.LOGIN
 import `in`.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
 import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.extension.startActivity
@@ -28,6 +29,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
 import com.google.android.material.snackbar.Snackbar
@@ -94,15 +96,14 @@ class LauncherActivity : BaseActivity() {
 
         when{
             hasProviders() || isUserLoggedIn() -> {
-                binding = DataBindingUtil.setContentView(
-                    this,
-                    R.layout.activity_launcher
-                )
-                initFragments()
-                initBindings()
-                initUi()
+                loadAccountsFragment()
             }
             isAccountCreated() -> {
+                val manager: FragmentManager = this.getSupportFragmentManager()
+                val trans: FragmentTransaction = manager.beginTransaction()
+                trans.remove(LoginFragment.newInstance())
+                trans.commit()
+                manager.popBackStack()
                 startActivityForResult(ProviderActivity::class.java, ADD_PROVIDER.ordinal)
             }
             isUserRegistered() -> {
@@ -112,6 +113,16 @@ class LauncherActivity : BaseActivity() {
                 startActivityForResult(LoginActivity::class.java, LOGIN.ordinal)
             }
         }
+    }
+
+    private fun xloadAccountsFragment() {
+        binding = DataBindingUtil.setContentView(
+            this,
+            R.layout.activity_launcher
+        )
+        initFragments()
+        initBindings()
+        initUi()
     }
 
     private fun initUi() {
@@ -183,38 +194,6 @@ class LauncherActivity : BaseActivity() {
         snackbar.anchorView = bottom_navigation
         snackbar.show()
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        unloadKoinModules(listOf(networkModule))
-        loadKoinModules(listOf(networkModule))
-
-        when (resultCode) {
-            Activity.RESULT_CANCELED -> {
-                finish()
-            }
-            Activity.RESULT_FIRST_USER -> {
-                /**
-                 * use [Router] to start activities based on class path
-                 * startRegistration(this){ }
-                 */
-                startActivityForResult(RegistrationActivity::class.java, REGISTER.ordinal)
-            }
-            else -> {
-                when(requestCode){
-                    LOGIN.ordinal -> setIsUserLoggedIn(true)
-                    REGISTER.ordinal -> setIsUserRegistered(true)
-                    CREATE_ACCOUNT.ordinal -> {
-                        setUserAccountCreated(true)
-                        eventBusInstance.post(MessageEventType.ACCOUNT_CREATED)
-                    }
-                    ADD_PROVIDER.ordinal -> setProviderAdded(true)
-                }
-                redirectIfNeeded()
-            }
-        }
-    }
-
     override fun showProgressBar(shouldShow: Boolean) {
         showProgressBar(shouldShow, "")
     }
@@ -231,4 +210,15 @@ class LauncherActivity : BaseActivity() {
     override fun setProgressBarMessage(message: String) {
         binding.progressBarMessage = message
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        unloadKoinModules(listOf(networkModule))
+        loadKoinModules(listOf(networkModule))
+
+        if(resultCode == Activity.RESULT_CANCELED && requestCode == LOGIN.ordinal){
+            finish()
+        } else if (resultCode == Activity.RESULT_OK && requestCode == LOGIN.ordinal)
+                loadAccountsFragment()
+        }
 }

@@ -273,9 +273,5 @@ class EditConsentDetailsFragmentTest {
             }
         }
 
-    }
-
-    private fun nestedScrollTo(): ViewAction? {
-        return NestedScrollAction()
-    }
+    }w
 }

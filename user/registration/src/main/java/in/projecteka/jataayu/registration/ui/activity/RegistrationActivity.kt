@@ -15,4 +15,6 @@ class RegistrationActivity : BaseActivity(){
     fun redirectToOtpScreen(){
         addFragment(RegistrationOtpFragment.newInstance())
     }
+
+
 }
