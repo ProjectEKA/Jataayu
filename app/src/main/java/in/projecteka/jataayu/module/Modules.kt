@@ -6,10 +6,7 @@ import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.consent.repository.ConsentRepositoryImpl
 import `in`.projecteka.jataayu.consent.repository.UserVerificationRepository
 import `in`.projecteka.jataayu.consent.repository.UserVerificationRepositoryImpl
-import `in`.projecteka.jataayu.consent.viewmodel.ConsentViewModel
-import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentViewModel
-import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentViewModel
-import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.*
 import `in`.projecteka.jataayu.network.BuildConfig
 import `in`.projecteka.jataayu.network.createNetworkClient
 import `in`.projecteka.jataayu.network.model.ErrorResponse
@@ -41,6 +38,7 @@ val viewModelModule = module {
     viewModel { RegistrationViewModel(get()) }
     viewModel { UserVerificationViewModel(get()) }
     viewModel { LoginViewModel(get()) }
+    viewModel { EditConsentDetailsVM() }
 }
 
 val repositoryModule = module {

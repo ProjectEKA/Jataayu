@@ -7,24 +7,28 @@
     <data>
 
         <variable
-            name="saveEnabled"
-            type="Boolean" />
+            name="viewModel"
+            type="in.projecteka.jataayu.consent.viewmodel.EditConsentDetailsVM" />
 
-        <variable
-            name="allProvidersChecked"
-            type="Boolean" />
+        <!--        <variable-->
+        <!--            name="saveEnabled"-->
+        <!--            type="Boolean" />-->
 
-        <variable
-            name="consent"
-            type="in.projecteka.jataayu.core.model.Consent" />
+        <!--        <variable-->
+        <!--            name="allProvidersChecked"-->
+        <!--            type="Boolean" />-->
 
-        <variable
-            name="pickerClickHandler"
-            type="in.projecteka.jataayu.consent.ui.handler.PickerClickHandler" />
+        <!--        <variable-->
+        <!--            name="consent"-->
+        <!--            type="in.projecteka.jataayu.core.model.Consent" />-->
 
-        <variable
-            name="clickHandler"
-            type="in.projecteka.jataayu.provider.ui.handler.EditConsentClickHandler" />
+        <!--        <variable-->
+        <!--            name="pickerClickHandler"-->
+        <!--            type="in.projecteka.jataayu.consent.ui.handler.PickerClickHandler" />-->
+
+        <!--        <variable-->
+        <!--            name="clickHandler"-->
+        <!--            type="in.projecteka.jataayu.provider.ui.handler.EditConsentClickHandler" />-->
     </data>
 
 
@@ -37,10 +41,10 @@
             android:id="@+id/edit_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="@dimen/content_margin_medium"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:isScrollContainer="true"
             android:measureAllChildren="true"
+            android:padding="@dimen/content_margin_medium"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toTopOf="@+id/button_bottom_bar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -50,8 +54,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
                 android:background="@color/grey_background"
+                android:clipToPadding="false"
                 android:padding="@dimen/content_margin_medium">
 
                 <TextView
@@ -59,7 +63,7 @@
                     style="@style/ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{consent.requester.name}"
+                    android:text="@{viewModel.modifiedConsent.requester.name}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="@{consent.hiu.name}"
+                    android:text="@{viewModel.modifiedConsent.hiu.name}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_requester_name"
                     tools:text="Infinity Health care and diagnostics" />
@@ -90,7 +94,7 @@
                     style="@style/ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{consent.purpose.text}"
+                    android:text="@{viewModel.modifiedConsent.purpose.text}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_purpose_of_request"
                     tools:text="General Consulting" />
@@ -119,9 +123,9 @@
                     style="@style/DatePickerStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{pickerClickHandler::onDatePickerClick}"
+                    android:onClick="@{()->viewModel.onDateClicked(viewModel.FROM_DATE_DATEPICKER_ID)}"
                     android:stateListAnimator="@animator/button_state_list_anim"
-                    android:text="@{consent.getPermissionStartDate()}"
+                    android:text="@{viewModel.fromDateLabel}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -143,9 +147,9 @@
                     style="@style/DatePickerStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{pickerClickHandler::onDatePickerClick}"
+                    android:onClick="@{()-> viewModel.onDateClicked(viewModel.TO_DATE_DATEPICKER_ID)}"
                     android:stateListAnimator="@animator/button_state_list_anim"
-                    android:text="@{consent.getPermissionEndDate()}"
+                    android:text="@{viewModel.toDateLabel}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -166,11 +170,11 @@
                     android:id="@+id/cg_request_info_types"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:singleSelection="false"
                     android:layout_marginTop="@dimen/content_margin_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/lbl_requests_info_type" />
+                    app:layout_constraintTop_toBottomOf="@id/lbl_requests_info_type"
+                    app:singleSelection="false" />
 
                 <TextView
                     android:id="@+id/tv_expiry_label"
@@ -187,9 +191,9 @@
                     style="@style/DatePickerStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{pickerClickHandler::onDatePickerClick}"
+                    android:onClick="@{()->viewModel.onDateClicked(viewModel.EXPIRY_DATE_DATEPICKER_ID)}"
                     android:stateListAnimator="@animator/button_state_list_anim"
-                    android:text="@{consent.getConsentExpiryDate()}"
+                    android:text="@{viewModel.expiryDateLabel}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_expiry_label"
                     tools:text="01 Jan, 2019" />
@@ -201,59 +205,59 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/content_margin_large"
                     android:drawableEnd="@drawable/ic_clock"
-                    android:onClick="@{pickerClickHandler::onTimePickerClick}"
+                    android:onClick="@{()-> viewModel.onTimePickerClick()}"
                     android:stateListAnimator="@animator/button_state_list_anim"
-                    android:text="@{consent.getConsentExpiryTime()}"
+                    android:text="@{viewModel.expiryTimeLabel}"
                     app:layout_constraintLeft_toRightOf="@id/tv_expiry_date"
                     app:layout_constraintTop_toBottomOf="@+id/tv_expiry_label"
                     tools:text="11 59 PM" />
 
-                    <TextView
-                        android:id="@+id/lbl_sub_title"
-                        style="@style/TextAppearance.ListItemSubHeader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin_medium"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_expiry_time"
-                        android:text="@string/accounts_to_provide_information"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_medium"
-                        app:layout_constraintStart_toStartOf="@id/start_guideline" />
+                <TextView
+                    android:id="@+id/lbl_sub_title"
+                    style="@style/TextAppearance.ListItemSubHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_medium"
+                    android:text="@string/accounts_to_provide_information"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_medium"
+                    app:layout_constraintStart_toStartOf="@id/start_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_expiry_time" />
 
-                    <CheckBox
-                        android:id="@+id/cb_link_all_providers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin_large"
-                        android:fontFamily="sans-serif-medium"
-                        android:onClick="@{clickHandler::toggleProvidersSelection}"
-                        android:paddingStart="@dimen/content_margin_medium"
-                        android:paddingEnd="@dimen/content_margin_medium"
-                        android:checked="@{allProvidersChecked, default=true}"
-                        android:text="@string/all_linked_providers"
-                        android:textSize="@dimen/text_size_large"
-                        app:layout_constraintStart_toStartOf="@id/start_guideline"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_sub_title" />
+                <CheckBox
+                    android:id="@+id/cb_link_all_providers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_large"
+                    android:checked="@{viewModel.allProvidersChecked}"
+                    android:fontFamily="sans-serif-medium"
+                    android:onClick="@{()->viewModel.toggleProvidersSelection()}"
+                    android:paddingStart="@dimen/content_margin_medium"
+                    android:paddingEnd="@dimen/content_margin_medium"
+                    android:text="@string/all_linked_providers"
+                    android:textSize="@dimen/text_size_large"
+                    app:layout_constraintStart_toStartOf="@id/start_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_sub_title" />
 
-                    <View
-                        android:id="@+id/divider"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/divider_height"
-                        android:layout_marginTop="@dimen/content_margin_medium"
-                        android:background="@color/black"
-                        app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                        app:layout_constraintStart_toStartOf="@id/start_guideline"
-                        app:layout_constraintTop_toBottomOf="@id/cb_link_all_providers" />
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginTop="@dimen/content_margin_medium"
+                    android:background="@color/black"
+                    app:layout_constraintEnd_toEndOf="@id/end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/cb_link_all_providers" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvLinkedAccounts"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin_medium"
-                        app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                        app:layout_constraintStart_toStartOf="@id/start_guideline"
-                        app:layout_constraintTop_toBottomOf="@+id/divider"
-                        tools:listitem="@layout/patient_account_result_item" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvLinkedAccounts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_medium"
+                    app:layout_constraintEnd_toEndOf="@id/end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/start_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/divider"
+                    tools:listitem="@layout/patient_account_result_item" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/start_guideline"
@@ -262,12 +266,12 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_begin="0dp" />
 
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/end_guideline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_end="0dp" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/end_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="0dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -276,22 +280,21 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/white"
-            android:elevation="10dp"
-            android:orientation="horizontal"
             android:clipToPadding="false"
+            android:elevation="10dp"
             android:padding="@dimen/content_margin_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintVertical_bias="1">
+            app:layout_constraintRight_toRightOf="parent">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_save"
                 style="@style/Button"
-                android:enabled="@{saveEnabled, default=true}"
-                android:onClick="@{clickHandler::onSaveClick}"
                 android:layout_width="match_parent"
                 android:layout_gravity="center_vertical"
+                android:baselineAligned="false"
+                android:enabled="@{viewModel.saveEnabled}"
+                android:onClick="@{() -> viewModel.onClickSave()}"
                 android:text="@string/save" />
         </LinearLayout>
 

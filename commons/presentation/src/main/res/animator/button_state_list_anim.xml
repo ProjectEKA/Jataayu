@@ -39,7 +39,7 @@
     </item>
 
     <!-- Disabled state -->
-    <item>
+    <item android:state_enabled="false">
         <set>
             <objectAnimator
                 android:duration="0"

@@ -9,6 +9,7 @@
 
     <color name="selected_tab_color">@color/colorPrimary</color>
     <color name="deselected_tab_color">@color/textColorSecondary</color>
+    <color name="deselected_text_color">#7e7e7e</color>
 
     <color name="gray">#F1F1F1</color>
     <color name="white">#FFF</color>
