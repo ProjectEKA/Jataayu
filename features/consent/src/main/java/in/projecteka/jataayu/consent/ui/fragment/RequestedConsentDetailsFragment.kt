@@ -136,8 +136,6 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             cgRequestInfoTypes.removeAllViews()
         }
 
-//        eventBusInstance.postSticky(consent)
-
         if (hiTypeObjects.isEmpty()) createHiTypesFromConsent()
 
         hiTypeObjects.forEach { hiType ->
@@ -188,7 +186,15 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
 
     override fun onVisible() {
         super.onVisible()
-        setTitle(if (consent.status == RequestStatus.DENIED) R.string.denied_consent else R.string.new_request)
+        setTitle(
+            when (consent.status) {
+                RequestStatus.DENIED -> R.string.denied_consent
+                RequestStatus.GRANTED -> R.string.granted_consent
+                RequestStatus.REQUESTED -> if (DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt))
+                    R.string.expired_consent
+                else R.string.new_request
+            }
+        )
         renderUi()
     }
 
