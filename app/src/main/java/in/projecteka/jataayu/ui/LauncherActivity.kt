@@ -221,4 +221,15 @@ class LauncherActivity : BaseActivity() {
         } else if (resultCode == Activity.RESULT_OK && requestCode == LOGIN.ordinal)
                 loadAccountsFragment()
         }
+
+    private fun loadAccountsFragment() {
+        binding = DataBindingUtil.setContentView(
+            this,
+            R.layout.activity_launcher
+        )
+        initFragments()
+        initBindings()
+        initUi()
+    }
+
 }
