@@ -29,7 +29,7 @@ fun <T> PayloadLiveData<T>.partialFailure(error: Error?) {
     value = PartialFailure(error)
 }
 
-fun <T> PayloadLiveData<T>.fetch(call: Call<T>) {
+fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
     value = Loading(true)
     call.enqueue(object : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {
@@ -53,4 +53,5 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>) {
             }
         }
     })
+    return this
 }

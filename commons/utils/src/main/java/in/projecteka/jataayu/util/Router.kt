@@ -14,7 +14,8 @@ private const val ACTIVITY_LAUNCHER = "in.projecteka.jataayu.ui.LauncherActivity
 private fun defaultIntentDefinition(
     context: Context,
     clazz: String,
-    intentDefinition: IntentDefinition? = null) = Intent(context, context.classLoader.loadClass(clazz))
+    intentDefinition: IntentDefinition? = null
+) = Intent(context, context.classLoader.loadClass(clazz))
     .apply {
         intentDefinition?.let { it(this) }
     }
@@ -26,9 +27,7 @@ fun startRegistration(context: Context, intentDefinition: IntentDefinition? = nu
 }
 
 fun startProvider(context: Context, intentDefinition: IntentDefinition? = null) {
-    context.startActivity(Intent(context, context.classLoader.loadClass(ACTIVITY_PROVIDER)).apply {
-        intentDefinition?.let { it(this) }
-    })
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_PROVIDER, intentDefinition))
 }
 
 fun startAccountCreation(context: Context, intentDefinition: IntentDefinition? = null) {
@@ -41,10 +40,4 @@ fun startLogin(context: Context, intentDefinition: IntentDefinition? = null) {
 
 fun startLauncher(context: Context, intentDefinition: IntentDefinition? = null) {
     context.startActivity(defaultIntentDefinition(context, ACTIVITY_LAUNCHER, intentDefinition))
-}
-
-fun removeLogin(context: Context, intentDefinition: IntentDefinition? = null){
-    context.startActivity(Intent(context, context.classLoader.loadClass(ACTIVITY_LOGIN)).apply {
-        intentDefinition?.let { it(this) }
-    })
 }

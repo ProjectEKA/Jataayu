@@ -3,6 +3,7 @@ package `in`.projecteka.jataayu.registration.listener
 import android.text.Editable
 import android.text.TextWatcher
 
+//todo: remove
 class MobileNumberChangeWatcher(private val mobileNumberChangeListener: MobileNumberChangeHandler) : TextWatcher {
     override fun afterTextChanged(s: Editable?) {
     }

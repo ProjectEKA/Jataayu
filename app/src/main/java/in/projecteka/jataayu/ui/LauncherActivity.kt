@@ -92,16 +92,13 @@ class LauncherActivity : BaseActivity() {
             isAccountCreated() -> {
                 startProvider(this)
                 finish()
-//                startActivityForResult(ProviderActivity::class.java, ADD_PROVIDER.ordinal)
             }
             isUserRegistered() -> {
                 startAccountCreation(this)
                 finish()
-//                startActivityForResult(AccountCreationActivity::class.java, RequestCodes.CREATE_ACCOUNT.ordinal)
             }
             else -> {
-//                startActivityForResult(LoginActivity::class.java, LOGIN.ordinal)
-                startLogin(this, null)
+                startLogin(this)
                 finish()
             }
         }
