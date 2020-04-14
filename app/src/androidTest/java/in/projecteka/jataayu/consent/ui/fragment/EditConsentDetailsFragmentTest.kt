@@ -204,9 +204,9 @@ class EditConsentDetailsFragmentTest {
     }
 
     @Test
-    fun shouldEnableSaveButtonIfAllTheAccountsSelected() {
+    fun shouldNotEnableSaveButtonIfNoEditMade() {
         onView(withId(rvLinkedAccounts)).perform(nestedScrollTo())
-        onView(withId(btn_save)).check(matches(isEnabled()))
+        onView(withId(btn_save)).check(matches(not(isEnabled())))
     }
 
     @Test

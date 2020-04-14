@@ -11,6 +11,7 @@ import java.util.*
 
 open class GenericRecyclerViewAdapter : RecyclerView.Adapter<GenericRecyclerViewAdapter.RecyclerViewHolder> {
     var listOfBindingModels = arrayListOf<IDataBindingModel>()
+        private set
     var itemClickCallback: ItemClickCallback? = null
 
     constructor() {

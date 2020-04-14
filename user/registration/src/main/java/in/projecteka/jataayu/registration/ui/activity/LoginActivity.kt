@@ -7,10 +7,13 @@ import android.os.Bundle
 class LoginActivity : BaseActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initToolbar()
         addFragment(LoginFragment.newInstance())
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun initToolbar(){
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
     }
+
 }

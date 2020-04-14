@@ -5,11 +5,9 @@ import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
-import `in`.projecteka.jataayu.presentation.callback.DateTimeSelectionCallback
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.presentation.ui.fragment.DatePickerDialog
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.listener.AccountCreationClickHandler
@@ -24,6 +22,7 @@ import `in`.projecteka.jataayu.util.extension.toUtc
 import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
 import `in`.projecteka.jataayu.util.sharedPref.setUserAccountCreated
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
+import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
 import android.app.Activity
 import android.os.Bundle
 import android.text.InputType
@@ -31,7 +30,10 @@ import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatCheckedTextView
 import androidx.lifecycle.Observer
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -44,10 +46,8 @@ import java.util.*
 
 
 class CreateAccountFragment : BaseFragment(),
-    AccountCreationClickHandler, DateTimeSelectionCallback,
-    CredentialsInputListener, ResponseCallback {
+    AccountCreationClickHandler, CredentialsInputListener, ResponseCallback, AdapterView.OnItemSelectedListener {
 
-    private var dob : String? = null
     private lateinit var binding: FragmentCreateAccountBinding
 
     private val disposables = CompositeDisposable()
@@ -55,10 +55,11 @@ class CreateAccountFragment : BaseFragment(),
     private val viewModel: UserAccountsViewModel by sharedViewModel()
 
     private var isCriteriaMatch: Boolean = true
+    private var selectedYob: Int? = null
     companion object {
         fun newInstance() = CreateAccountFragment()
         const val SPACE = " "
-        const val dob_format = "yyyy-MM-dd"
+        const val YOB = "yyyy"
         const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
         /*^                 # start-of-string
         (?=.*[0-9])       # a digit must occur at least once
@@ -103,12 +104,8 @@ class CreateAccountFragment : BaseFragment(),
         }
     }
     private fun getCreateAccountRequest(): CreateAccountRequest {
-        var formattedDob: String? = null
-        dob?.let {
-            formattedDob = DateTimeUtils.getFormattedDate(dob_format, dob!!)
-        }
         return CreateAccountRequest(getUsername(), et_password?.text.toString(),
-            et_first_name?.text.toString(), et_last_name?.text.toString(), getGender(), formattedDob)
+            et_name?.text.toString(), getGender(), selectedYob)
     }
     private fun getProviderName(): String {
         return binding.tvProviderName.text.toString()
@@ -126,17 +123,6 @@ class CreateAccountFragment : BaseFragment(),
         }
     }
 
-    override fun onSelectDateClick(view: View) {
-        val datePickerDialog = DatePickerDialog(
-            R.id.btn_dob,
-            System.currentTimeMillis(),
-            DatePickerDialog.UNDEFINED_DATE,
-            System.currentTimeMillis(),
-            this
-        )
-        datePickerDialog.show(fragmentManager!!, System.currentTimeMillis().toString())
-    }
-
     private fun validateFields(): Boolean {
         var valid = true
         if (binding.etUsername.text.isEmpty()) {
@@ -147,8 +133,8 @@ class CreateAccountFragment : BaseFragment(),
             binding.passwordErrorText.show(true)
             valid = false
         }
-        if (binding.etFirstName.text?.isEmpty()!!) {
-            binding.etFirstName.error = getString(R.string.should_not_be_empty)
+        if (binding.etName.text?.isEmpty()!!) {
+            binding.etName.error = getString(R.string.should_not_be_empty)
             valid = false
         }
         if (binding.cgGender.checkedChipId == DEFAULT_CHECKED_ID){
@@ -190,7 +176,27 @@ class CreateAccountFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initSpinner()
         initBindings()
+    }
+
+    private fun initSpinner() {
+        val arrayAdapter = ArrayAdapter<String>(
+            context!!,
+            android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, getYearsToPopulate())
+        binding.spinnerYob.adapter = arrayAdapter
+        arrayAdapter.notifyDataSetChanged()
+        binding.spinnerYob.setSelection(0)
+    }
+
+    private fun getYearsToPopulate(): List<String> {
+        var years = arrayListOf<String>()
+        years.add(YOB)
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        for (year in currentYear downTo (currentYear-120)){
+            years.add(year.toString())
+        }
+        return years
     }
 
     override fun onDestroy() {
@@ -203,6 +209,7 @@ class CreateAccountFragment : BaseFragment(),
         binding.clickHandler = this
         binding.userNameChangeWatcher = UsernameChangeWatcher(this)
         binding.passwordChangeWatcher = PasswordChangeWatcher(this)
+        binding.listener = this
     }
 
     private fun getVisiblePasswordInputType(): Int {
@@ -212,13 +219,6 @@ class CreateAccountFragment : BaseFragment(),
     private fun getPasswordInputType(): Int {
         return InputType.TYPE_CLASS_TEXT + TYPE_TEXT_VARIATION_PASSWORD
     }
-
-    override fun onDateSelected(datePickerId: Int, date: Date) {
-        dob = date.toUtc()
-        dob?.let { btn_dob.text = DateTimeUtils.getFormattedDate(it) }
-    }
-
-    override fun onTimeSelected(timePair: Pair<Int, Int>) {}
 
     override fun onVisible() {
         super.onVisible()
@@ -237,5 +237,14 @@ class CreateAccountFragment : BaseFragment(),
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
         context?.showErrorDialog(t.localizedMessage)
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        if (position != 0){
+            selectedYob = (view as AppCompatCheckedTextView).text.toString().toInt()
+        }
     }
 }
