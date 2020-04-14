@@ -1,8 +1,10 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
+import NestedScrollAction
 import `in`.projecteka.jataayu.R
 import `in`.projecteka.jataayu.ui.activity.TestsOnlyActivity
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.runner.AndroidJUnit4
 import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.displayed
@@ -66,20 +68,11 @@ class CreateAccountFragmentTest{
 
 
             allOf {
-                id(R.id.lbl_first_name)
-                text("First name")
+                id(R.id.lbl_name)
+                text("Name")
             }
 
-            id(R.id.et_first_name)
-
-
-            allOf {
-                id(R.id.lbl_last_name)
-                text("Last name (optional)")
-            }
-
-            id(R.id.et_last_name)
-
+            id(R.id.et_name)
 
             allOf {
                 id(R.id.lbl_gender)
@@ -109,5 +102,9 @@ class CreateAccountFragmentTest{
             }
 
         }
+    }
+
+    private fun nestedScrollTo(): ViewAction? {
+        return NestedScrollAction()
     }
 }
