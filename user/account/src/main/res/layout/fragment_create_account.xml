@@ -21,6 +21,9 @@
         <variable
             name="passwordChangeWatcher"
             type="in.projecteka.jataayu.user.account.listener.PasswordChangeWatcher" />
+        <variable
+            name="listener"
+            type="android.widget.AdapterView.OnItemSelectedListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -226,11 +229,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/password_error_text" />
 
                 <TextView
-                    android:id="@+id/lbl_first_name"
+                    android:id="@+id/lbl_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_small"
-                    android:text="@string/first_name"
+                    android:text="@string/name"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_patient_details" />
 
@@ -242,7 +245,7 @@
                     app:cardElevation="@dimen/content_padding_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lbl_first_name">
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_name">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -252,58 +255,13 @@
                         android:padding="@dimen/content_margin_medium">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_first_name"
+                            android:id="@+id/et_name"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="start"
                             android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
                             android:layout_weight=".7"
-                            android:background="@color/white"
-                            android:cursorVisible="true"
-                            android:digits="@string/alphabets_and_space_only"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_medium" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <TextView
-                    android:id="@+id/lbl_last_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/content_margin_extra_small"
-                    android:text="@string/last_name"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cv_first_name" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cv_last_name"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/edit_text_height_large"
-                    android:layout_marginTop="@dimen/content_margin_extra_small"
-                    app:cardElevation="@dimen/content_padding_medium"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lbl_last_name">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clipToPadding="false"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/content_margin_medium">
-
-                        <EditText
-                            android:id="@+id/et_last_name"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="start"
-                            android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
-                            android:layout_weight=".7"
+                            android:hint="firstname middlename lastname"
                             android:background="@color/white"
                             android:cursorVisible="true"
                             android:digits="@string/alphabets_and_space_only"
@@ -324,7 +282,7 @@
                     android:layout_marginTop="@dimen/content_margin_extra_small"
                     android:text="@string/gender"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cv_last_name" />
+                    app:layout_constraintTop_toBottomOf="@+id/cv_first_name" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/cg_gender"
@@ -375,27 +333,30 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/lbl_dob"
+                    android:id="@+id/lbl_yob"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/content_margin_extra_small"
-                    android:text="@string/date_of_birth_optional"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:text="@string/year_of_birth_optional"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_err_gender" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatSpinner
                     android:layout_width="wrap_content"
+                    android:drawSelectorOnTop="true"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_small"
-                    android:id="@+id/btn_dob"
-                    android:background="@color/white"
+                    android:id="@+id/spinner_yob"
                     android:drawableRight="@drawable/ic_calendar"
                     android:drawablePadding="@dimen/content_margin_large"
-                    android:padding="@dimen/content_margin_medium"
-                    android:text="dd MMM, yyyy"
-                    android:onClick="@{clickHandler::onSelectDateClick}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lbl_dob" />
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginLeft="@dimen/content_margin_medium"
+                    android:text="yyyy"
+                    app:onItemSelected="@{listener}"
+                    app:layout_constraintLeft_toRightOf="@+id/lbl_yob"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_yob"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_err_gender" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>

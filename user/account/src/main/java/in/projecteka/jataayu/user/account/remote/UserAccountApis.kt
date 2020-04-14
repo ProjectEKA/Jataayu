@@ -13,7 +13,7 @@ interface UserAccountApis {
     @GET("patients/links")
     fun getUserAccounts(): Call<LinkedAccountsResponse>
 
-    @POST("users")
+    @POST("patients/profile")
     fun createAccount(@Body createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse>
 
     @GET("patients/me")
