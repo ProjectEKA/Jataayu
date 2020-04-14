@@ -8,11 +8,13 @@ open class BaseFragment : Fragment() {
     open fun onBackPressedCallback() {}
 
     protected fun showProgressBar(shouldShow: Boolean) {
-        showProgressBar(shouldShow, "")
+        if (activity?.isFinishing == false) {
+            showProgressBar(shouldShow, "")
+        }
     }
 
     protected fun showProgressBar(shouldShow: Boolean, progressBarMessage: String) {
-        activity?.let{
+        activity?.let {
             if (it is BaseActivity) {
                 it.showProgressBar(shouldShow, progressBarMessage)
             }

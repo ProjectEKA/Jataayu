@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/lbl_otp_info"
-            style="@style/TextAppearance.ListItemSubHeader"
+            style="@style/TextAppearance.Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/fab_margin_bottom"
@@ -31,6 +31,7 @@
             android:gravity="center"
             android:text="@{viewModel.otpMessageLbl}"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

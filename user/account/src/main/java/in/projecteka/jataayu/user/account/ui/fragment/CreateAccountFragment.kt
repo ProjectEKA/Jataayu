@@ -23,6 +23,7 @@ import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
 import `in`.projecteka.jataayu.util.sharedPref.setUserAccountCreated
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
+import `in`.projecteka.jataayu.util.startProvider
 import android.app.Activity
 import android.os.Bundle
 import android.text.InputType
@@ -91,14 +92,6 @@ class CreateAccountFragment : BaseFragment(),
             if (binding.usernameErrorText.visibility == View.GONE && binding.passwordErrorText.visibility == View.GONE){
             if (validateFields()) {
                 showProgressBar(true)
-                viewModel.createAccountResponse.observe(this,
-                    Observer<CreateAccountResponse> {
-                        context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
-                        activity?.setUserAccountCreated(true)
-                        showLongToast(getString(R.string.registered_successfully))
-                        activity?.setResult(Activity.RESULT_OK)
-                        activity?.finish()
-                    })
                 viewModel.createAccount(this, getCreateAccountRequest())
             }
         }
@@ -178,6 +171,18 @@ class CreateAccountFragment : BaseFragment(),
         super.onViewCreated(view, savedInstanceState)
         initSpinner()
         initBindings()
+        initObservers()
+    }
+
+    private fun initObservers(){
+        viewModel.createAccountResponse.observe(this,
+            Observer<CreateAccountResponse> {
+                context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
+                activity?.setUserAccountCreated(true)
+                showLongToast(getString(R.string.registered_successfully))
+                startProvider(activity!!)
+                activity?.finish()
+            })
     }
 
     private fun initSpinner() {

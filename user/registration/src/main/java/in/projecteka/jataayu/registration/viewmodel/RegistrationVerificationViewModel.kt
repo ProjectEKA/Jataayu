@@ -13,7 +13,7 @@ class RegistrationVerificationViewModel : ViewModel(), TextWatcher {
         const val OTP_LENGTH = 6
     }
 
-    val otpMessageLbl = ObservableField<String>()
+    val otpMessageLbl = ObservableField<CharSequence>()
     val errorLbl = ObservableField<String>()
     val otpText = ObservableField<String>()
     val mobileNumberText = ObservableField<String>()
@@ -33,22 +33,5 @@ class RegistrationVerificationViewModel : ViewModel(), TextWatcher {
     fun onClickVerify() {
         onClickVerifyEvent.value = otpText.get()
     }
-
-    //    fun requestVerification(identifierType: String, identifier: String, responseCallback: ResponseCallback) {
-//        repository.requestVerification(RequestVerificationRequest(identifierType, identifier)).observeOn(requestVerificationResponse, responseCallback)
-//    }
-
-//    fun verifyIdentifier(sessionId: String, otp: String, responseCallback: ResponseCallback) {
-//        repository.verifyIdentifier(VerifyIdentifierRequest(sessionId, otp)).observeOn(verifyIdentifierResponse, responseCallback)
-//    }
-
-//    fun getMobileNumber(mobileNumber: String): String {
-////        return getCountryCode() + mobileNumber
-//    }
-
-//    fun getCountryCode(): String? {
-//        return INDIA_COUNTRY_CODE + COUNTRY_CODE_SEPARATOR
-//    }
-
 
 }

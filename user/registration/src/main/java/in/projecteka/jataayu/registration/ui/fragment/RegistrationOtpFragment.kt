@@ -2,7 +2,6 @@ package `in`.projecteka.jataayu.registration.ui.fragment
 
 
 import `in`.projecteka.jataayu.network.utils.PartialFailure
-import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentOtpVerificationBinding
@@ -10,11 +9,14 @@ import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewMo
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationVerificationViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.bold
 import androidx.lifecycle.Observer
-import org.junit.runner.notification.Failure
+import okhttp3.internal.format
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -49,7 +51,11 @@ class RegistrationOtpFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        viewModel.mobileNumberText.set(parentVM.getIdentifierValue())
+
+        viewModel.otpMessageLbl.set(SpannableStringBuilder()
+            .append(getString(R.string.otp_sent))
+            .bold { append(" ${parentVM.getIdentifierValue()}")})
+
         initObservers()
     }
 

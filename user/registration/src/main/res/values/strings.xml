@@ -3,7 +3,7 @@
     <string name="enter_mobile_number_to_verify">Enter mobile number to verify</string>
     <string name="continue_text">Continue</string>
     <string name="sending_otp">Please wait while we send an OTP to this number</string>
-    <string name="otp_sent">We have sent an SMS with OTP to %s</string>
+    <string name="otp_sent">We have sent an SMS with OTP to </string>
     <string name="verification">Verification</string>
     <string name="welcome">Welcome</string>
     <string name="password">Password</string>
