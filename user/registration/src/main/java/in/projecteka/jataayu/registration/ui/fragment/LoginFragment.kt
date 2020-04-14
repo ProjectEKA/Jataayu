@@ -99,11 +99,7 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
                 is Loading -> showProgressBar(it.isLoading, getString(R.string.logging_in))
                 is Success -> {
                     activity?.setAuthToken(viewModel.getAuthTokenWithTokenType(authToken = it.data?.accessToken, tokenType = it.data?.tokenType))
-//                    activity?.setAuthToken(
-//                        "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJfOVpfRHhEcXlkb3BEc1FsY18zQ3l6XzYyOEpHMFVuSlRhOVJ2UE00dVVZIn0.eyJqdGkiOiI1YTQxOGZiZS1hYzA5LTRmZTEtYTE5Mi1jMjc2MmQ4YWI1ZjMiLCJleHAiOjE1ODY3ODY5MzAsIm5iZiI6MCwiaWF0IjoxNTg2Nzg1MTMwLCJpc3MiOiJodHRwOi8vMTcyLjE2LjIuMjc6ODA4MS9hdXRoL3JlYWxtcy9jb25zZW50LW1hbmFnZXIiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMjYwODRmNzctZmEwZC00ZDg2LWE1MDktNWMyNGE5OGRjNWZkIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY29uc2VudC1zZXJ2aWNlIiwiYXV0aF90aW1lIjowLCJzZXNzaW9uX3N0YXRlIjoiYzQ1ZDUyOTItM2ZiNS00YTViLWE2MjMtMzk0N2EzZTgyODVlIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6ImphbmFraSIsInByZWZlcnJlZF91c2VybmFtZSI6ImphbmFraUBuY2ciLCJnaXZlbl9uYW1lIjoiamFuYWtpIiwiZmFtaWx5X25hbWUiOiIifQ.wTiLPcIzC_WAb9fLAs9HqNjWU4Ip2gN_GMU4gnU43NEFb03lDBA8SH6ZWq4GRhgIvwu9vrLMmbEjhF_ziViqBR_9SYJ0bfbZ0874Bx73-hMpwyMfRgmv9PrmnlDQLA78koPMK1-_vyelivyIBxGQT_cDND1I0tSGCzjVrIxk1h9c1C9OfJZbUJPEE_sKTZ7oCkBwMyP3YQyZ9xyvP2VE1Drcrl-CnhV7Cdalvqvdqx__7xUs4NAo2VzQHrXnt7PiCwHfKOJ2RFPye18hzBqUHM-vuOOuEwhcf5o6YXQPFT6yAnZp5HKS7EDsmv6vJMOus9cbgRDZnBOR6BHzd1yWtw"
-//                    )
                     activity?.setIsUserLoggedIn(true)
-//                    activity?.setResult(Activity.RESULT_OK)
                     activity?.finish()
                     startLauncher(activity!!)
 
