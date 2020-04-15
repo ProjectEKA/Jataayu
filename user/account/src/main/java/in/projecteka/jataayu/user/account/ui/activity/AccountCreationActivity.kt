@@ -1,4 +1,4 @@
-package `in`.projecteka.jataayu.account
+package `in`.projecteka.jataayu.user.account.ui.activity
 
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment

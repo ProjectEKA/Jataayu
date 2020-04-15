@@ -5,7 +5,7 @@
     <application>
         <activity
             android:label="AccountCreation"
-            android:name="in.projecteka.jataayu.account.AccountCreationActivity">
+            android:name=".ui.activity.AccountCreationActivity">
         </activity>
     </application>
 

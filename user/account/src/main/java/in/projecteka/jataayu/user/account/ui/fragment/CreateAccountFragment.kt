@@ -17,10 +17,13 @@ import `in`.projecteka.jataayu.user.account.listener.UsernameChangeWatcher
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.show
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.extension.toUtc
 import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
+import `in`.projecteka.jataayu.util.sharedPref.setUserAccountCreated
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
+import `in`.projecteka.jataayu.util.startProvider
 import android.app.Activity
 import android.os.Bundle
 import android.text.InputType
@@ -41,6 +44,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_create_account.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
+
 
 class CreateAccountFragment : BaseFragment(),
     AccountCreationClickHandler, CredentialsInputListener, ResponseCallback, AdapterView.OnItemSelectedListener {
@@ -88,17 +92,10 @@ class CreateAccountFragment : BaseFragment(),
             if (binding.usernameErrorText.visibility == View.GONE && binding.passwordErrorText.visibility == View.GONE){
             if (validateFields()) {
                 showProgressBar(true)
-                viewModel.createAccountResponse.observe(this,
-                    Observer<CreateAccountResponse> {
-                        context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
-                        activity?.setResult(Activity.RESULT_OK)
-                        activity?.finish()
-                    })
                 viewModel.createAccount(this, getCreateAccountRequest())
             }
         }
     }
-
     private fun getCreateAccountRequest(): CreateAccountRequest {
         return CreateAccountRequest(getUsername(), et_password?.text.toString(),
             et_name?.text.toString(), getGender(), selectedYob)
@@ -174,6 +171,18 @@ class CreateAccountFragment : BaseFragment(),
         super.onViewCreated(view, savedInstanceState)
         initSpinner()
         initBindings()
+        initObservers()
+    }
+
+    private fun initObservers(){
+        viewModel.createAccountResponse.observe(this,
+            Observer<CreateAccountResponse> {
+                context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
+                activity?.setUserAccountCreated(true)
+                showLongToast(getString(R.string.registered_successfully))
+                startProvider(activity!!)
+                activity?.finish()
+            })
     }
 
     private fun initSpinner() {

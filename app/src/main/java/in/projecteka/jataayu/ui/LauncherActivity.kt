@@ -1,25 +1,20 @@
 package `in`.projecteka.jataayu.ui
 
 import `in`.projecteka.jataayu.R
-import `in`.projecteka.jataayu.account.AccountCreationActivity
 import `in`.projecteka.jataayu.consent.ui.fragment.ConsentHostFragment
 import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.databinding.ActivityLauncherBinding
-import `in`.projecteka.jataayu.module.networkModule
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.provider.ui.ProviderActivity
-import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
-import `in`.projecteka.jataayu.registration.ui.activity.RegistrationActivity
-import `in`.projecteka.jataayu.ui.LauncherActivity.RequestCodes.*
 import `in`.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
 import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.extension.startActivity
-import `in`.projecteka.jataayu.util.extension.startActivityForResult
 import `in`.projecteka.jataayu.util.sharedPref.*
-import android.app.Activity
-import android.content.Intent
+import `in`.projecteka.jataayu.util.startAccountCreation
+import `in`.projecteka.jataayu.util.startLogin
+import `in`.projecteka.jataayu.util.startProvider
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
@@ -34,8 +29,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_launcher.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.koin.core.context.loadKoinModules
-import org.koin.core.context.unloadKoinModules
 
 
 class LauncherActivity : BaseActivity() {
@@ -94,24 +87,31 @@ class LauncherActivity : BaseActivity() {
 
         when{
             hasProviders() || isUserLoggedIn() -> {
-                binding = DataBindingUtil.setContentView(
-                    this,
-                    R.layout.activity_launcher
-                )
-                initFragments()
-                initBindings()
-                initUi()
+                loadAccountsFragment()
             }
             isAccountCreated() -> {
-                startActivityForResult(ProviderActivity::class.java, ADD_PROVIDER.ordinal)
+                startProvider(this)
+                finish()
             }
             isUserRegistered() -> {
-                startActivityForResult(AccountCreationActivity::class.java, RequestCodes.CREATE_ACCOUNT.ordinal)
+                startAccountCreation(this)
+                finish()
             }
             else -> {
-                startActivityForResult(LoginActivity::class.java, LOGIN.ordinal)
+                startLogin(this)
+                finish()
             }
         }
+    }
+
+    private fun loadAccountsFragment() {
+        binding = DataBindingUtil.setContentView(
+            this,
+            R.layout.activity_launcher
+        )
+        initFragments()
+        initBindings()
+        initUi()
     }
 
     private fun initUi() {
@@ -183,38 +183,6 @@ class LauncherActivity : BaseActivity() {
         snackbar.anchorView = bottom_navigation
         snackbar.show()
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        unloadKoinModules(listOf(networkModule))
-        loadKoinModules(listOf(networkModule))
-
-        when (resultCode) {
-            Activity.RESULT_CANCELED -> {
-                finish()
-            }
-            Activity.RESULT_FIRST_USER -> {
-                /**
-                 * use [Router] to start activities based on class path
-                 * startRegistration(this){ }
-                 */
-                startActivityForResult(RegistrationActivity::class.java, REGISTER.ordinal)
-            }
-            else -> {
-                when(requestCode){
-                    LOGIN.ordinal -> setIsUserLoggedIn(true)
-                    REGISTER.ordinal -> setIsUserRegistered(true)
-                    CREATE_ACCOUNT.ordinal -> {
-                        setUserAccountCreated(true)
-                        eventBusInstance.post(MessageEventType.ACCOUNT_CREATED)
-                    }
-                    ADD_PROVIDER.ordinal -> setProviderAdded(true)
-                }
-                redirectIfNeeded()
-            }
-        }
-    }
-
     override fun showProgressBar(shouldShow: Boolean) {
         showProgressBar(shouldShow, "")
     }
@@ -231,4 +199,13 @@ class LauncherActivity : BaseActivity() {
     override fun setProgressBarMessage(message: String) {
         binding.progressBarMessage = message
     }
+
+   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        unloadKoinModules(listOf(networkModule))
+        loadKoinModules(listOf(networkModule))
+
+        if (resultCode == Activity.RESULT_OK && requestCode == LOGIN.ordinal)
+                loadAccountsFragment()
+        }*/
 }

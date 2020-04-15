@@ -75,10 +75,10 @@
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:stateListAnimator">@animator/button_state_list_anim</item>
         <item name="cornerRadius">@dimen/button_corner_radius</item>
-        <item name="strokeColor">@color/colorPrimary</item>
+        <item name="strokeColor">@color/button_color_selector</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="rippleColor">@color/gray</item>
-        <item name="android:textColor">@color/secondary_button_text_color</item>
+        <item name="android:textColor">@color/outline_button_text_color_selector</item>
     </style>
 
     <style name="Button.Negative" parent="Widget.MaterialComponents.Button.OutlinedButton">

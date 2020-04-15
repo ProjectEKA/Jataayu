@@ -1,85 +1,45 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
-import `in`.projecteka.jataayu.network.model.ErrorResponse
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
-import `in`.projecteka.jataayu.presentation.showAlertDialog
-import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.registration.listener.ContinueClickHandler
-import `in`.projecteka.jataayu.registration.listener.MobileNumberChangeHandler
-import `in`.projecteka.jataayu.registration.listener.MobileNumberChangeWatcher
-import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
 import `in`.projecteka.jataayu.registration.ui.activity.R
-import `in`.projecteka.jataayu.registration.ui.activity.RegistrationActivity
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentRegistrationBinding
-import `in`.projecteka.jataayu.registration.viewmodel.RegistrationViewModel
-import `in`.projecteka.jataayu.registration.viewmodel.RegistrationViewModel.Companion.MOBILE_IDENTIFIER_TYPE
+import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel
+import `in`.projecteka.jataayu.registration.viewmodel.RegistrationFragmentViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_registration.*
-import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class RegistrationFragment : BaseFragment(), ContinueClickHandler, MobileNumberChangeHandler, ResponseCallback {
+class RegistrationFragment : BaseFragment() {
     private lateinit var binding: FragmentRegistrationBinding
 
-    private val viewModel: RegistrationViewModel by sharedViewModel()
-    private val registrationObserver = Observer<RequestVerificationResponse> {
-        (activity as? RegistrationActivity)?.redirectToOtpScreen()
-        EventBus.getDefault().postSticky(et_mobile_number.text.toString())
-        EventBus.getDefault().postSticky(it)
-    }
+    private val parentVM: RegistrationActivityViewModel by sharedViewModel()
+    private val viewModel: RegistrationFragmentViewModel by viewModel()
 
     companion object {
         fun newInstance() = RegistrationFragment()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentRegistrationBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.clickHandler = this
-        binding.mobileNumberWatcher = MobileNumberChangeWatcher(this)
-        binding.isValidMobileNumber = false
-        binding.countryCode = viewModel.getCountryCode()
-        viewModel.requestVerificationResponse.observe(this, registrationObserver)
+        binding.viewModel = viewModel
+
+        viewModel.onContinueClicked.observe(this, Observer {
+            parentVM.requestVerification(it)
+        })
     }
 
     override fun onVisible() {
         super.onVisible()
         setTitle(R.string.register)
-    }
-
-    override fun onContinueClick(view: View) {
-        showProgressBar(true, getString(R.string.sending_otp))
-        viewModel.requestVerification(MOBILE_IDENTIFIER_TYPE, viewModel.getMobileNumber(binding.etMobileNumber.text.toString()), this)
-    }
-
-    override fun setButtonEnabled(boolean: Boolean) {
-        binding.isValidMobileNumber = boolean
-    }
-
-    override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
-    }
-
-    override fun onFailure(errorBody: ErrorResponse) {
-        showProgressBar(false)
-        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
-    }
-
-    override fun onFailure(t: Throwable) {
-        showProgressBar(false)
-        context?.showErrorDialog(t.localizedMessage)
     }
 }

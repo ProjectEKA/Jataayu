@@ -15,8 +15,11 @@ import `in`.projecteka.jataayu.provider.model.Otp
 import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.sharedPref.setProviderAdded
+import `in`.projecteka.jataayu.util.startLauncher
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -67,9 +70,11 @@ class VerifyOtpFragment : BaseFragment(),
     }
 
     private val observer = Observer<SuccessfulLinkingResponse> {
-        eventBus.post(MessageEventType.ACCOUNT_LINKED)
-        activity?.setResult(RESULT_OK)
         activity?.finish()
+        context?.setProviderAdded(true)
+        startLauncher(activity!!){
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
     }
 
     override fun onSubmitOtp(view: View) {

@@ -1,19 +1,22 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
-import `in`.projecteka.jataayu.network.model.ErrorResponse
-import `in`.projecteka.jataayu.network.utils.*
+import `in`.projecteka.jataayu.network.utils.Failure
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PartialFailure
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.registration.listener.LoginClickHandler
 import `in`.projecteka.jataayu.registration.listener.LoginEnableListener
 import `in`.projecteka.jataayu.registration.listener.LoginValuesWatcher
-import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentLoginBinding
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
-import android.app.Activity
+import `in`.projecteka.jataayu.util.sharedPref.setIsUserLoggedIn
+import `in`.projecteka.jataayu.util.startLauncher
+import `in`.projecteka.jataayu.util.startRegistration
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -21,11 +24,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_login.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListener,
-    ResponseCallback {
+
+class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListener{
     private lateinit var binding: FragmentLoginBinding
     private val viewModel: LoginViewModel by viewModel()
 
@@ -43,10 +45,10 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
     }
 
 
-
     override fun onRegisterClick(view: View) {
-        activity?.setResult(Activity.RESULT_FIRST_USER)
-        activity?.finish()
+        startRegistration(activity!!, null)
+//        activity?.setResult(Activity.RESULT_FIRST_USER)
+//        activity?.finish()
     }
 
     override fun onLoginClick(view: View) {
@@ -96,18 +98,17 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
             when (it) {
                 is Loading -> showProgressBar(it.isLoading, getString(R.string.logging_in))
                 is Success -> {
-                    context?.setAuthToken(
-                        viewModel.getAuthTokenWithTokenType(
-                            authToken = it.data?.accessToken,
-                            tokenType = it.data?.tokenType
-                        )
-                    )
-                    activity?.setResult(Activity.RESULT_OK)
+                    activity?.setAuthToken(viewModel.getAuthTokenWithTokenType(authToken = it.data?.accessToken, tokenType = it.data?.tokenType))
+                    activity?.setIsUserLoggedIn(true)
                     activity?.finish()
+                    startLauncher(activity!!)
+
                 }
-                is PartialFailure-> {
-                    context?.showAlertDialog(getString(R.string.failure), it.error?.message,
-                        getString(android.R.string.ok))
+                is PartialFailure -> {
+                    context?.showAlertDialog(
+                        getString(R.string.failure), it.error?.message,
+                        getString(android.R.string.ok)
+                    )
                 }
                 is Failure -> {
                     context?.showErrorDialog(it.error.localizedMessage)
@@ -125,19 +126,5 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
 
     override fun enableLoginButton() {
         binding.enableLogin = et_username.text.isNotEmpty() && et_password.text.isNotEmpty()
-    }
-
-    override fun <T> onSuccess(body: T?) {
-        (activity as LoginActivity).showProgressBar(false)
-    }
-
-    override fun onFailure(errorBody: ErrorResponse) {
-        showProgressBar(false)
-        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
-    }
-
-    override fun onFailure(t: Throwable) {
-        showProgressBar(false)
-        context?.showErrorDialog(t.localizedMessage)
     }
 }
