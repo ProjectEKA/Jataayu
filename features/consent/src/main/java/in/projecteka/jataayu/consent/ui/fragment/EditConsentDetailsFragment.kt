@@ -114,10 +114,10 @@ class EditConsentDetailsFragment : BaseFragment(), ItemClickCallback, CompoundBu
                 EditConsentDetailsVM.EXPIRY_DATE_DATEPICKER_ID -> {
                     DatePickerDialog(
                         consentAndIdPair.second,
-                        DateTimeUtils.getDate(consentPermission.dataExpiryAt)?.time ?: 0,
+                        DateTimeUtils.getDate(consentPermission.dataEraseAt)?.time ?: 0,
                         System.currentTimeMillis(), UNDEFINED_DATE, viewModel
                     )
-                        .show(fragmentManager!!, consentPermission.dataExpiryAt)
+                        .show(fragmentManager!!, consentPermission.dataEraseAt)
                 }
             }
         })

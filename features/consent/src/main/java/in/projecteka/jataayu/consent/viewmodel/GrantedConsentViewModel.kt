@@ -119,7 +119,7 @@ class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewM
         }
 
         val count = list?.count { consent ->
-            val dataExpired = DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt)
+            val dataExpired = DateTimeUtils.isDateExpired(consent.permission.dataEraseAt)
             when (filterItem) {
                 R.string.status_denied_consent_requests -> {
                     consent.status == DENIED

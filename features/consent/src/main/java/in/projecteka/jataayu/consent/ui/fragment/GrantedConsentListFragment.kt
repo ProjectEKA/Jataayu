@@ -178,8 +178,8 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            INDEX_ACTIVE -> filterRequests(viewModel.grantedConsentsList.value!!.filter { !isDateExpired(it.permission.dataExpiryAt) && it.status != RequestStatus.DENIED })
-            INDEX_EXPIRED -> filterRequests(viewModel.grantedConsentsList.value!!.filter { isDateExpired(it.permission.dataExpiryAt) && it.status != RequestStatus.DENIED})
+            INDEX_ACTIVE -> filterRequests(viewModel.grantedConsentsList.value!!.filter { !isDateExpired(it.permission.dataEraseAt) && it.status != RequestStatus.DENIED })
+            INDEX_EXPIRED -> filterRequests(viewModel.grantedConsentsList.value!!.filter { isDateExpired(it.permission.dataEraseAt) && it.status != RequestStatus.DENIED})
             INDEX_ALL -> filterRequests(viewModel.grantedConsentsList.value!!)
         }
     }
