@@ -5,13 +5,15 @@ import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
+import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
+import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
-import junit.framework.Assert.assertEquals
+import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -94,9 +96,17 @@ class RequestedConsentViewModelTest {
     }
 
     @Test
-    fun shouldFilterConsents() {
+    fun shouldFilterConsentsAndReturnOnlyDeniedAndRequestedList() {
         consentViewModel.filterConsents(consentsListResponse.requests)
-        assertEquals(dummyRequestedConsentsList(), consentViewModel.requestedConsentsList.value)
+        assertFalse(consentViewModel.requestedConsentsList.value!!.filter { it.status == RequestStatus.GRANTED }.count() > 0)
+    }
+
+    @Test
+    fun shouldReturnFilterAndSortedListByDescendingOrder() {
+        consentViewModel.filterConsents(consentsListResponse.requests)
+        val first =  consentViewModel.requestedConsentsList.value!!.first().getLastUpdated()
+        val second = consentViewModel.requestedConsentsList.value!![1].getLastUpdated()
+        assertTrue(first!!.after(second!!))
     }
 
     private fun dummyRequestedConsentsList(): List<Consent>? {
