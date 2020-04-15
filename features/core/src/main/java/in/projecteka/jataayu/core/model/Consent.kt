@@ -46,15 +46,15 @@ data class Consent(
     }
 
     fun getConsentExpiry(): String {
-        return DateTimeUtils.getFormattedDateTime(permission.dataExpiryAt)
+        return DateTimeUtils.getFormattedDateTime(permission.dataEraseAt)
     }
 
     fun getConsentExpiryDate(): String {
-        return DateTimeUtils.getFormattedDate(permission.dataExpiryAt)
+        return DateTimeUtils.getFormattedDate(permission.dataEraseAt)
     }
 
     fun getConsentExpiryTime(): String {
-        return DateTimeUtils.getFormattedTime(permission.dataExpiryAt)
+        return DateTimeUtils.getFormattedTime(permission.dataEraseAt)
     }
 
     fun updateFromDate(utcDate: String) {

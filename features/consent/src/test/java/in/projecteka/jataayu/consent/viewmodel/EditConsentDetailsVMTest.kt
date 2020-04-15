@@ -174,7 +174,7 @@ internal class EditConsentDetailsVMTest {
     fun `save enabled when changing time of expiry`() {
         editConsentDetailsVM.expiryTimeLabel.set("9 AM")
         val permission = mock(Permission::class.java)
-        `when`(permission.dataExpiryAt).thenReturn("2020-04-11T11:00:00.000Z")
+        `when`(permission.dataEraseAt).thenReturn("2020-04-11T11:00:00.000Z")
         `when`(modifiedConsent.permission).thenReturn(permission)
         `when`(modifiedConsent.getConsentExpiryTime()).thenReturn("11 AM")
         `when`(careContext.contextChecked).thenReturn(true)

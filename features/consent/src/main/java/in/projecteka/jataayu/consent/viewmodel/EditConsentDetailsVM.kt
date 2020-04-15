@@ -122,7 +122,7 @@ class EditConsentDetailsVM() : ViewModel(), DateTimeSelectionCallback {
                 checkEditValid()
             }
             EXPIRY_DATE_DATEPICKER_ID -> {
-                modifiedConsent.permission.dataExpiryAt = date.toUtc()
+                modifiedConsent.permission.dataEraseAt = date.toUtc()
                 expiryDateLabel.set(modifiedConsent.getConsentExpiryDate())
                 expiryTimeLabel.set(modifiedConsent.getConsentExpiryTime())
                 checkEditValid()
@@ -133,10 +133,10 @@ class EditConsentDetailsVM() : ViewModel(), DateTimeSelectionCallback {
     override fun onTimeSelected(timePair: Pair<Int, Int>) {
         checkEditValid()
         with(Calendar.getInstance()) {
-            time = DateTimeUtils.getDate(modifiedConsent.permission.dataExpiryAt)
+            time = DateTimeUtils.getDate(modifiedConsent.permission.dataEraseAt)
             set(Calendar.HOUR_OF_DAY, timePair.first)
             set(Calendar.MINUTE, timePair.second)
-            modifiedConsent.permission.dataExpiryAt = time.toUtc()
+            modifiedConsent.permission.dataEraseAt = time.toUtc()
             expiryTimeLabel.set(modifiedConsent.getConsentExpiryTime())
         }
     }

@@ -190,7 +190,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             when (consent.status) {
                 RequestStatus.DENIED -> R.string.denied_consent
                 RequestStatus.GRANTED -> R.string.granted_consent
-                RequestStatus.REQUESTED -> if (DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt))
+                RequestStatus.REQUESTED -> if (DateTimeUtils.isDateExpired(consent.permission.dataEraseAt))
                     R.string.expired_consent
                 else R.string.new_request
             }
@@ -199,7 +199,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     }
 
     private fun isExpiredOrGrantedOrDenied(): Boolean {
-        return (DateTimeUtils.isDateExpired(consent.permission.dataExpiryAt) || (consent.status == RequestStatus.DENIED))
+        return (DateTimeUtils.isDateExpired(consent.permission.dataEraseAt) || (consent.status == RequestStatus.DENIED))
     }
 
     @Subscribe(sticky = true)
