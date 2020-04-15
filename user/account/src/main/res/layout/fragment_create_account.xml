@@ -251,7 +251,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:padding="@dimen/content_margin_medium">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -261,7 +261,6 @@
                             android:layout_gravity="start"
                             android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
                             android:layout_weight=".7"
-                            android:hint="firstname middlename lastname"
                             android:background="@color/white"
                             android:cursorVisible="true"
                             android:digits="@string/alphabets_and_space_only"
@@ -276,13 +275,25 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    app:layout_constraintStart_toStartOf="@id/cv_first_name"
+                    app:layout_constraintTop_toBottomOf="@id/cv_first_name"
+                    app:layout_constraintEnd_toEndOf="@id/cv_first_name"
+                    android:text="@string/name_hint"
+                    android:id="@+id/lbl_first_name_hint"
+                    android:layout_marginTop="12dp"
+                    android:textSize="12sp"
+                    />
+
+                <TextView
                     android:id="@+id/lbl_gender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_small"
                     android:text="@string/gender"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cv_first_name" />
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_first_name_hint" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/cg_gender"
