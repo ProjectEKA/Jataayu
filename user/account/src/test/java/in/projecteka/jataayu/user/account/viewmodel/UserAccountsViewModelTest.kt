@@ -133,6 +133,20 @@ class UserAccountsViewModelTest {
         assertFalse(viewModel.isValid("Abcd4321", CreateAccountFragment.passwordCriteria))
     }
 
+    @Test
+    fun `test for spaces`(){
+        assertTrue(viewModel.isValid("Abcd@4321  ", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  Abcd@4321  ", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  Abcd@4321", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  A bcd@4321", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  Abcd@4 321", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  Abcd@ 4 321", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  A b cd@4321", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("Test @123", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("      @aA1", CreateAccountFragment.passwordCriteria))
+        assertFalse(viewModel.isValid("                ", CreateAccountFragment.passwordCriteria))
+    }
+
     private fun getLinkedAccountsData(): LinkedAccountsResponse? {
         return Gson().fromJson<LinkedAccountsResponse>(TestUtils.readFile("linked_accounts.json"))
     }

@@ -70,7 +70,7 @@ class CreateAccountFragment : BaseFragment(),
         (?=\S+$)          # no whitespace allowed in the entire string
         .{8,}             # anything, at least eight places though
         $                 # end-of-string*/
-        const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=])(?=\\S+\$).{8,}\$"
+        const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,}\$"
         const val DEFAULT_CHECKED_ID = -1
     }
 
