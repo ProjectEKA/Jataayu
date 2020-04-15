@@ -2,6 +2,7 @@
   {
     "status": "REQUESTED",
     "createdAt": "2020-01-23T06:26:41.503+0000",
+    "lastUpdated": "2020-04-10T10:50:59.981Z",
     "purpose": {
       "text": "Encounter",
       "code": "ENCOUNTER",
@@ -40,6 +41,7 @@
   {
     "status": "REQUESTED",
     "createdAt": "2020-01-23T07:44:18.472+0000",
+    "lastUpdated": "2020-04-14T10:50:59.981Z",
     "purpose": {
       "text": "Encounter",
       "code": "ENCOUNTER",
