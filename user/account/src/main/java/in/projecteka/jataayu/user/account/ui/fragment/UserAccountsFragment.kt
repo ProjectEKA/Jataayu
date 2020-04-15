@@ -17,6 +17,7 @@ import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBindi
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.get
 import `in`.projecteka.jataayu.util.sharedPref.setMobileIdentifier
+import `in`.projecteka.jataayu.util.sharedPref.setName
 import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -50,6 +51,8 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
                 activity?.setMobileIdentifier(identifier.value)
             }
         }
+        context?.setName(it.name)
+        binding.tvPatientName.text = it.name
     }
 
     companion object {

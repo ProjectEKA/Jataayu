@@ -9,6 +9,7 @@ private const val REGISTERED = "registered"
 private const val ACCOUNT_CREATED = "account_created"
 private const val PROVIDER_ADDED = "provider_added"
 private const val PIN_CREATED = "PIN_CREATED"
+private const val NAME = "NAME"
 const val MOBILE_NUMBER = "MOBILE_NUMBER"
 
 fun Context.putInt(key: String, value: Int) {
@@ -93,7 +94,13 @@ fun Context.setPinCreated(isCreated: Boolean) {
     putBoolean(PIN_CREATED, isCreated)
 }
 
+fun Context.setName(name: String) {
+    putString(NAME, name)
+}
+
 fun Context.getPinCreated(): Boolean = getBoolean(PIN_CREATED)
+
+fun Context.getName(): String = getString(NAME, "") ?: ""
 
 fun Context.setIsUserLoggedIn(isLoggedIn: Boolean) {
     putBoolean(LOGGED_IN, isLoggedIn)
