@@ -211,7 +211,6 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     public fun onUserVerified(messageEventType: MessageEventType) {
         if (messageEventType == MessageEventType.USER_VERIFIED) {
             grantConsent()
-            eventBusInstance.unregister(this)
         }
     }
 
