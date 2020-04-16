@@ -54,8 +54,6 @@ class RegistrationOtpFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
-        context?.setMobileIdentifier(parentVM.getIdentifierValue()!!)
-
         viewModel.otpMessageLbl.set(SpannableStringBuilder()
             .append(getString(R.string.otp_sent))
             .bold { append(" ${parentVM.getIdentifierValue()}")})
