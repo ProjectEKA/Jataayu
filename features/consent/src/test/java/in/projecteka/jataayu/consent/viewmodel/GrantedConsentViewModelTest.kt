@@ -69,7 +69,7 @@ class GrantedConsentViewModelTest {
     }
 
     @Test
-    fun shouldPopulateFilterItemsForGrantedConsents() {
+    fun `should Populate Filter Items For Granted Consents`() {
 
         `when`(resources.getString(R.string.status_all_granted_consents)).thenReturn("All Granted Consents (%d)")
         `when`(resources.getString(R.string.status_active_granted_consents)).thenReturn("Active granted consents (%d)")
@@ -97,13 +97,13 @@ class GrantedConsentViewModelTest {
 
 
     @Test
-    fun shouldFilterConsentsAndReturnOnlyGrantedRequestedList() {
+    fun `should Filter Consents And Return Only Granted RequestedList`() {
         consentViewModel.filterConsents(consentsListResponse.requests)
         assertFalse(consentViewModel.grantedConsentsList.value!!.filter { it.status == RequestStatus.REQUESTED || it.status == RequestStatus.DENIED }.count() > 0)
     }
 
     @Test
-    fun shouldReturnFilterAndSortedListByDescendingOrder() {
+    fun `should Filter And Sorted Requested Consent List By Descending Order`() {
         consentViewModel.filterConsents(consentsListResponse.requests)
         val first =  consentViewModel.requestedConsentsList.value!!.first().getLastUpdated()
         val second = consentViewModel.requestedConsentsList.value!![1].getLastUpdated()

@@ -9,10 +9,10 @@ enum class SortOrder { ASC, DESC }
 fun List<Consent>.getSortedConsentListByLastUpdatedDate(sortOrder: SortOrder = SortOrder.DESC): List<Consent> {
     return when(sortOrder) {
         SortOrder.ASC -> {
-            sortedBy { it.getLastUpdated() }
+            asSequence().sortedBy { it.getLastUpdated() }.toList()
         }
         SortOrder.DESC -> {
-            sortedByDescending { it.getLastUpdated() }
+            asSequence().sortedByDescending { it.getLastUpdated() }.toList()
         }
     }
 }

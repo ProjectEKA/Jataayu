@@ -31,7 +31,7 @@ internal class ConsentDataExtensionTest {
     }
 
     @Test
-    fun `should Sort Consent ListBy LastUpdatedDate In DescendingOrder`() {
+    fun `should Sort Consent List By LastUpdatedDate In DescendingOrder`() {
         val sortedList = consentsListResponse.requests.getSortedConsentListByLastUpdatedDate(SortOrder.DESC)
         val first = sortedList.first().getLastUpdated()
         val second = sortedList[1].getLastUpdated()

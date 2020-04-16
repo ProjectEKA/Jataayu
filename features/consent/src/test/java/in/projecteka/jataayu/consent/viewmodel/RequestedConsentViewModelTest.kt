@@ -69,7 +69,7 @@ class RequestedConsentViewModelTest {
     }
 
     @Test
-    fun shouldPopulateFilterItemsForRequestedConsents() {
+    fun `should Populate Filter Items For Requested Consents`() {
         `when`(resources.getString(R.string.status_active_requested_consents)).thenReturn("Active requested consents (%d)")
         `when`(resources.getString(R.string.status_expired_requested_consents)).thenReturn("Expired requested consents (%d)")
         `when`(resources.getString(R.string.status_denied_consent_requests)).thenReturn("Denied consent requests (%d)")
@@ -89,20 +89,20 @@ class RequestedConsentViewModelTest {
     }
 
     @Test
-    fun shouldFetchConsents() {
+    fun `should Fetch Consents`() {
         verify(repository).getConsents()
         verify(call).enqueue(any())
         assertEquals(Success(consentsListResponse), consentViewModel.consentListResponse.value)
     }
 
     @Test
-    fun shouldFilterConsentsAndReturnOnlyDeniedAndRequestedList() {
+    fun `should Filter Consents And Return Only Denied And RequestedList`() {
         consentViewModel.filterConsents(consentsListResponse.requests)
         assertFalse(consentViewModel.requestedConsentsList.value!!.filter { it.status == RequestStatus.GRANTED }.count() > 0)
     }
 
     @Test
-    fun shouldReturnFilterAndSortedListByDescendingOrder() {
+    fun `should Return Filter And Sorted List By Descending Order`() {
         consentViewModel.filterConsents(consentsListResponse.requests)
         val first =  consentViewModel.requestedConsentsList.value!!.first().getLastUpdated()
         val second = consentViewModel.requestedConsentsList.value!![1].getLastUpdated()
