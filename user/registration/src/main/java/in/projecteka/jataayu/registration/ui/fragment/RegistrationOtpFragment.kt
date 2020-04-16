@@ -75,7 +75,6 @@ class RegistrationOtpFragment : BaseFragment() {
                         else
                             it.error?.message
                     )
-                    context?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
                 }
             }
         })
