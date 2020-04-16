@@ -1,24 +1,16 @@
-package `in`.projecteka.jataayu.consent.helper
+package `in`.projecteka.jataayu.consent.extension
 
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
-import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentViewModel
-import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.util.TestUtils
 import com.google.gson.Gson
-import junit.framework.Assert
 import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
-import retrofit2.Callback
-import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
-internal class ConsentDataHelperTest {
+internal class ConsentDataExtensionTest {
 
     private lateinit var consentsListResponse: ConsentsListResponse
 
@@ -29,8 +21,8 @@ internal class ConsentDataHelperTest {
     }
 
     @Test
-    fun shouldSortConsentListByLastUpdatedDateInAscendingOrder() {
-        val sortedList = ConsentDataHelper.sortConsentListByLastUpdatedDate(consentsListResponse.requests, ConsentDataHelper.SortOrder.ASC)
+    fun `should Sort Consent List By LastUpdatedDate In AscendingOrder`() {
+        val sortedList = consentsListResponse.requests.getSortedConsentListByLastUpdatedDate(SortOrder.ASC)
         val first = sortedList.first().getLastUpdated()
         val second = sortedList[1].getLastUpdated()
         val last = sortedList.last().getLastUpdated()
@@ -38,8 +30,9 @@ internal class ConsentDataHelperTest {
         assertTrue(consentsListResponse.requests.count() == sortedList.count())
     }
 
-    fun shouldSortConsentListByLastUpdatedDateInDescendingOrder() {
-        val sortedList = ConsentDataHelper.sortConsentListByLastUpdatedDate(consentsListResponse.requests, ConsentDataHelper.SortOrder.DESC)
+    @Test
+    fun `should Sort Consent ListBy LastUpdatedDate In DescendingOrder`() {
+        val sortedList = consentsListResponse.requests.getSortedConsentListByLastUpdatedDate(SortOrder.DESC)
         val first = sortedList.first().getLastUpdated()
         val second = sortedList[1].getLastUpdated()
         val last = sortedList.last().getLastUpdated()

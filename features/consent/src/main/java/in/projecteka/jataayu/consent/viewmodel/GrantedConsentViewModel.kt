@@ -1,7 +1,7 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.R
-import `in`.projecteka.jataayu.consent.helper.ConsentDataHelper
+import `in`.projecteka.jataayu.consent.extension.grantedConsentList
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
@@ -163,19 +163,9 @@ class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewM
     }
 
     fun filterConsents(consentList: List<Consent>?) {
-        val filteredRequestedConsentList = consentList?.filter {
-            it.status == REQUESTED || it.status == DENIED
-        }
-        val filteredGrantedConsentsList = consentList?.filter {
-            it.status == GRANTED
-        }
-        if(filteredRequestedConsentList != null) {
-            requestedConsentsList.value = ConsentDataHelper.sortConsentListByLastUpdatedDate(filteredRequestedConsentList)
-        }
-        if(filteredGrantedConsentsList != null) {
-            grantedConsentsList.value = ConsentDataHelper.sortConsentListByLastUpdatedDate(filteredGrantedConsentsList)
-        }
 
+        requestedConsentsList.value = consentList?.grantedConsentList()
+        grantedConsentsList.value = consentList?.grantedConsentList()
     }
 
     fun revokeConsent(consentArtifactId: String, authToken: String) {

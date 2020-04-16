@@ -1,7 +1,7 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.R
-import `in`.projecteka.jataayu.consent.helper.ConsentDataHelper
+import `in`.projecteka.jataayu.consent.extension.requestedConsentList
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
@@ -137,15 +137,7 @@ class RequestedConsentViewModel(private val repository: ConsentRepository) : Vie
     }
 
     fun filterConsents(consentList: List<Consent>?) {
-        val filteredConsents = consentList?.filter {
-            it.status == REQUESTED || it.status == DENIED
-        }
-        if (filteredConsents != null) {
-            requestedConsentsList.value = ConsentDataHelper.sortConsentListByLastUpdatedDate(filteredConsents)
-        } else {
-            requestedConsentsList.value = filteredConsents
-        }
-
+        requestedConsentsList.value = consentList?.requestedConsentList()
     }
 
     fun getItems(grantedConsents: List<GrantedConsentDetailsResponse>, linkedAccounts: List<Links>?): Pair<List<IDataBindingModel>,Int> {
