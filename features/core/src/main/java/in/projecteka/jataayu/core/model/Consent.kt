@@ -9,6 +9,8 @@ import androidx.annotation.StringRes
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.google.gson.annotations.SerializedName
+import java.util.*
+import kotlin.collections.ArrayList
 
 data class Consent(
     @SerializedName("id", alternate = ["consentId"]) val id: String,
@@ -63,6 +65,10 @@ data class Consent(
 
     fun updateToDate(utcDate: String) {
         permission.dateRange.to = utcDate
+    }
+
+    fun getLastUpdated(): Date? {
+        return DateTimeUtils.getDateInUTCFormat(lastUpdated)
     }
 
     public override fun clone(): Consent {
