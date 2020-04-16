@@ -2,12 +2,14 @@ package `in`.projecteka.jataayu.registration.ui.fragment
 
 
 import `in`.projecteka.jataayu.network.utils.PartialFailure
+import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentOtpVerificationBinding
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationVerificationViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.sharedPref.setMobileIdentifier
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -52,6 +54,8 @@ class RegistrationOtpFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
+        context?.setMobileIdentifier(parentVM.getIdentifierValue()!!)
+
         viewModel.otpMessageLbl.set(SpannableStringBuilder()
             .append(getString(R.string.otp_sent))
             .bold { append(" ${parentVM.getIdentifierValue()}")})
@@ -67,11 +71,13 @@ class RegistrationOtpFragment : BaseFragment() {
             when (it) {
                 is PartialFailure -> {
                     viewModel.errorLbl.set(
-                        if (it.error?.code == ERROR_CODE_INVALID_OTP)
+                        if (it.error?.code == ERROR_CODE_INVALID_OTP) {
                             getString(R.string.invalid_otp)
+                        }
                         else
                             it.error?.message
                     )
+                    context?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
                 }
             }
         })
