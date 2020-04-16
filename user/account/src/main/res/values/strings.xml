@@ -8,7 +8,7 @@
     <string name="patient_details">Patient details</string>
     <string name="create_username">Create Username</string>
     <string name="create_password">Create Password</string>
-    <string name="name">Name</string>
+    <string name="full_name">Full name</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -21,4 +21,5 @@
     <string name="should_not_be_empty">Should not be empty</string>
     <string name="please_select_gender">Please select gender</string>
     <string name="registered_successfully">Registered Successfully</string>
+    <string name="name_hint">Can be your first name middle name last name</string>
 </resources>
