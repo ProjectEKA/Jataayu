@@ -126,7 +126,8 @@ class UserAccountsViewModelTest {
     @Test
     fun shouldReturnTrueIfPasswordIsValid() {
         assertTrue(viewModel.isValid("@Abcd432", CreateAccountFragment.passwordCriteria))
-        assertTrue(viewModel.isValid("Abcd123@%1!\"#\$%&'()*+,-./:;<=>?@", CreateAccountFragment.passwordCriteria))
+        //length is more than 30 characters
+        assertFalse(viewModel.isValid("Abcd123@%1!\"#\$%&'()*+,-./:;<=>?@", CreateAccountFragment.passwordCriteria))
         assertFalse(viewModel.isValid("Abcd@43", CreateAccountFragment.passwordCriteria))
         assertFalse(viewModel.isValid("Abcd@xyz", CreateAccountFragment.passwordCriteria))
         assertFalse(viewModel.isValid("1111@222", CreateAccountFragment.passwordCriteria))
