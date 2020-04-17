@@ -1,9 +1,7 @@
 package `in`.projecteka.jataayu.provider.ui.fragment
 
 import `in`.projecteka.featuresprovider.R
-import `in`.projecteka.jataayu.core.databinding.VerityOtpFragmentBinding
-import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
-import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
+import `in`.projecteka.featuresprovider.databinding.VerityOtpFragmentBinding
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
@@ -26,16 +24,8 @@ import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class VerifyOtpFragment : BaseFragment(),
-    OtpSubmissionClickHandler, OtpChangeHandler, ResponseCallback {
+    OtpSubmissionClickHandler, ResponseCallback {
     private lateinit var binding: VerityOtpFragmentBinding
-
-    override fun setButtonEnabled(isOtpEntered: Boolean) {
-        binding.isOtpEntered = isOtpEntered
-    }
-
-    override fun clearError() {
-        binding.errorMessage = ""
-    }
 
     private val eventBus = EventBus.getDefault()
 
@@ -60,11 +50,10 @@ class VerifyOtpFragment : BaseFragment(),
     }
 
     private fun initBindings() {
+        binding.viewModel = viewModel
         binding.selectedProviderName = viewModel.selectedProviderName
         binding.mobile = viewModel.linkAccountsResponse.value?.link?.meta?.communicationHint
         binding.clickHandler = this
-        binding.isOtpEntered = false
-        binding.otpChangeWatcher = OtpChangeWatcher(6, this)
     }
 
     override fun onVisible() {
@@ -97,8 +86,15 @@ class VerifyOtpFragment : BaseFragment(),
         showProgressBar(false)
 
         if (errorBody.error.code == ERROR_CODE_INVALID_OTP) {
-            binding.errorMessage = getString(R.string.invalid_otp)
-            binding.etOtp.text?.clear()
+            viewModel.otpText.set(null)
+
+            viewModel.errorLbl.set(
+                if (errorBody.error?.code == ERROR_CODE_INVALID_OTP) {
+                    getString(R.string.invalid_otp)
+                }
+                else
+                    errorBody.error?.message
+            )
         } else {
             binding.errorMessage = errorBody.error.message
         }
