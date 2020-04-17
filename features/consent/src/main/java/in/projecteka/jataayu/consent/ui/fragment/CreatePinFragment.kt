@@ -60,6 +60,8 @@ class CreatePinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpCh
         binding.isOtpEntered = true
     }
 
+    override fun clearError() {}
+
     override fun onDestroy() {
         super.onDestroy()
         activity?.setResult(Activity.RESULT_CANCELED)

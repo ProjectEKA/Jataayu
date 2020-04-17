@@ -119,6 +119,8 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
         binding.isOtpEntered = true
     }
 
+    override fun clearError() {}
+
     override fun <T> onSuccess(body: T?) {
         showProgressBar(false)
     }

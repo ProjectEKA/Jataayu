@@ -32,6 +32,11 @@ class VerifyOtpFragment : BaseFragment(),
     override fun setButtonEnabled(isOtpEntered: Boolean) {
         binding.isOtpEntered = isOtpEntered
     }
+
+    override fun clearError() {
+        binding.errorMessage = ""
+    }
+
     private val eventBus = EventBus.getDefault()
 
     companion object {
@@ -91,12 +96,12 @@ class VerifyOtpFragment : BaseFragment(),
     override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
 
-       binding.errorMessage = if (errorBody.error.code == ERROR_CODE_INVALID_OTP) {
-            getString(R.string.invalid_otp)
+        if (errorBody.error.code == ERROR_CODE_INVALID_OTP) {
+            binding.errorMessage = getString(R.string.invalid_otp)
+            binding.etOtp.text?.clear()
         } else {
-           errorBody.error.message
+            binding.errorMessage = errorBody.error.message
         }
-
     }
 
     override fun onFailure(t: Throwable) {

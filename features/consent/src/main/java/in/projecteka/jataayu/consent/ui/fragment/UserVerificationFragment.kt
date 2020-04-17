@@ -83,6 +83,8 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         binding.isOtpEntered = true
     }
 
+    override fun clearError() {}
+
     override fun <T> onSuccess(body: T?) {
         showProgressBar(false)
     }

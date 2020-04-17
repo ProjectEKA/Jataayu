@@ -6,6 +6,9 @@ import androidx.annotation.IntRange
 
 class OtpChangeWatcher(@IntRange(from = 0L, to = 6L) private val otpLength: Int, private val otpChangeListener: OtpChangeHandler) : TextWatcher {
     override fun afterTextChanged(s: Editable?) {
+        if (s?.length != 0) {
+            otpChangeListener.clearError()
+        }
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
