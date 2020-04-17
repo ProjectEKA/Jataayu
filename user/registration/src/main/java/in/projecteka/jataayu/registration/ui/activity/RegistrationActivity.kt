@@ -13,6 +13,7 @@ import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewMo
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel.Show
 import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
 import `in`.projecteka.jataayu.util.sharedPref.setIsUserRegistered
+import `in`.projecteka.jataayu.util.sharedPref.setMobileIdentifier
 import `in`.projecteka.jataayu.util.startAccountCreation
 import android.content.Intent
 import android.os.Bundle
@@ -65,6 +66,7 @@ class RegistrationActivity : BaseActivity() {
                     it.data?.temporaryToken?.let { token ->
                         setAuthToken(token)
                         setIsUserRegistered(true)
+                        setMobileIdentifier(viewModel.getIdentifierValue()!!)
                     }
                     viewModel.redirectToNext()
                 }

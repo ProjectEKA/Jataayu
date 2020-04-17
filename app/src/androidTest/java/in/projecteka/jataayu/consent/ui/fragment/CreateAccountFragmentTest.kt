@@ -60,19 +60,21 @@ class CreateAccountFragmentTest{
                 text("Show")
             }
 
-
             allOf {
                 id(R.id.lbl_patient_details)
                 text("Patient details")
             }
 
-
             allOf {
                 id(R.id.lbl_name)
-                text("Name")
+                text("Full name")
             }
 
             id(R.id.et_name)
+            allOf {
+                id(R.id.lbl_first_name_hint)
+                text("Can be your first name middle name last name")
+            }
 
             allOf {
                 id(R.id.lbl_gender)
