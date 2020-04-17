@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
+import `in`.projecteka.jataayu.core.BuildConfig
 import `in`.projecteka.jataayu.core.R
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
