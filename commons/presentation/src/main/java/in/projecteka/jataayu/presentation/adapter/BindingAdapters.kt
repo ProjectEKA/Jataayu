@@ -4,6 +4,8 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.EditText
+import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -39,6 +41,13 @@ object BindingAdapters {
     @JvmStatic
     fun onValueChanged(editText: EditText, textWatcher: TextWatcher) {
         editText.addTextChangedListener(textWatcher)
+    }
+
+    @JvmStatic
+    @BindingAdapter("resource_reference")
+    fun bindStringResourceIdToString(textView: TextView, @StringRes id: Int) {
+        val text = textView.context.getString(id)
+        textView.text = text
     }
 
 }

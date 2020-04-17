@@ -10,6 +10,7 @@ private const val ACTIVITY_PROVIDER = "in.projecteka.jataayu.provider.ui.Provide
 private const val ACTIVITY_ACCOUNT_CREATION = "in.projecteka.jataayu.user.account.ui.activity.AccountCreationActivity"
 private const val ACTIVITY_LOGIN = "in.projecteka.jataayu.registration.ui.activity.LoginActivity"
 private const val ACTIVITY_LAUNCHER = "in.projecteka.jataayu.ui.LauncherActivity"
+private const val ACTIVITY_DASHBOARD = "in.projecteka.jataayu.ui.dashboard.DashboardActivity"
 
 private fun defaultIntentDefinition(
     context: Context,
@@ -40,4 +41,8 @@ fun startLogin(context: Context, intentDefinition: IntentDefinition? = null) {
 
 fun startLauncher(context: Context, intentDefinition: IntentDefinition? = null) {
     context.startActivity(defaultIntentDefinition(context, ACTIVITY_LAUNCHER, intentDefinition))
+}
+
+fun startDashboard(context: Context, intentDefinition: IntentDefinition? = null) {
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_DASHBOARD, intentDefinition))
 }

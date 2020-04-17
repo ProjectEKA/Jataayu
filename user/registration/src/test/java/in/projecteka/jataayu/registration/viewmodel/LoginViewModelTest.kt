@@ -68,7 +68,7 @@ class LoginViewModelTest {
 
     @Test
     fun shouldCallRepositoryLogin() {
-        loginViewModel.login("username", "password@123")
+//        loginViewModel.login("username", "password@123")
         verify(repository).login(loginRequest)
         verify(call).enqueue(any())
     }

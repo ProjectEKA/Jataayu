@@ -93,16 +93,16 @@ class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewM
         return consentArtifactList
     }
 
-    fun denyConsent(requestId: String){
+    fun denyConsent(requestId: String) {
         consentDenyResponse.fetch(repository.denyConsent(requestId))
     }
 
     fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> =
         if (flow == ConsentFlow.GRANTED_CONSENTS) {
-            grantedConsentStatusList.map { getFormattedItem(resources,it, GRANTED) }
+            grantedConsentStatusList.map { getFormattedItem(resources, it, GRANTED) }
         } else {
             requestedConsentStatusList.map {
-                getFormattedItem(resources,it, REQUESTED)
+                getFormattedItem(resources, it, REQUESTED)
             }
         }
 
@@ -175,7 +175,8 @@ class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewM
         list.add(consentArtifactId)
         revokeConsentResponse.fetch(repository.revokeConsent(RevokeConsentRequest(list), authToken))
     }
-    fun getItems(grantedConsents: List<GrantedConsentDetailsResponse>, linkedAccounts: List<Links>?): Pair<List<IDataBindingModel>,Int> {
+
+    fun getItems(grantedConsents: List<GrantedConsentDetailsResponse>, linkedAccounts: List<Links>?): Pair<List<IDataBindingModel>, Int> {
         var count = 0
         val items = arrayListOf<IDataBindingModel>()
         for (grantedConsent in grantedConsents) {

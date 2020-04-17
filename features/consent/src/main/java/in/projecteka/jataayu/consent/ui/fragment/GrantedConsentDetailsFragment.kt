@@ -124,7 +124,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback{
     private fun initObservers() {
         viewModel.linkedAccountsResponse.observe(this, Observer<PayloadResource<LinkedAccountsResponse>> { payload ->
             when (payload) {
-                is Loading -> showProgressBar(payload.isLoading)
+//                is Loading -> showProgressBar(payload.isLoading)
                 is Success -> {
                     linkedAccounts = payload.data?.linkedPatient?.links
                     if (viewModel.grantedConsentDetailsResponse.value == null) {
@@ -142,7 +142,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback{
                     payload.data?.let { populateLinkedAccounts(it) }
                 }
                 is Loading -> {
-                    showProgressBar(payload.isLoading)
+//                    showProgressBar(payload.isLoading)
                 }
             }
         })

@@ -79,7 +79,7 @@ class VerifyOtpFragment : BaseFragment(),
 
     override fun onSubmitOtp(view: View) {
         UiUtils.hideKeyboard(activity!!)
-        showProgressBar(true)
+//        showProgressBar(true)
         viewModel.successfulLinkingResponse.observe(this, observer)
         val referenceNumber = viewModel.linkAccountsResponse.value?.link?.referenceNumber!!
         val otp = Otp(binding.etOtp.text.toString())
@@ -87,16 +87,16 @@ class VerifyOtpFragment : BaseFragment(),
     }
 
     override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
+//        showProgressBar(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-        showProgressBar(false)
+//        showProgressBar(false)
         context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
-        showProgressBar(false)
+//        showProgressBar(false)
         context?.showErrorDialog(t.localizedMessage)
     }
 }

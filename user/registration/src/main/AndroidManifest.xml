@@ -9,7 +9,8 @@
         </activity>
         <activity
             android:label="Login"
-            android:name=".LoginActivity">
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

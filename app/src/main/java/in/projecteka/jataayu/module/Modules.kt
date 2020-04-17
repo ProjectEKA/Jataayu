@@ -32,24 +32,6 @@ import org.koin.dsl.module
 import retrofit2.Converter
 import retrofit2.Retrofit
 
-val viewModelModule = module {
-    viewModel { ProviderSearchViewModel(get()) }
-    viewModel { RequestedConsentViewModel(get()) }
-    viewModel { GrantedConsentViewModel(get()) }
-    viewModel { ConsentViewModel(get()) }
-    viewModel { UserAccountsViewModel(get()) }
-    viewModel { UserVerificationViewModel(get()) }
-    viewModel { EditConsentDetailsVM() }
-
-    //Login
-    viewModel { LoginViewModel(get()) }
-
-    //Registrations
-    viewModel { RegistrationActivityViewModel(get()) }
-    viewModel { RegistrationFragmentViewModel() }
-    viewModel { RegistrationVerificationViewModel() }
-}
-
 val repositoryModule = module {
     factory { ProviderRepositoryImpl(get()) as ProviderRepository }
     factory { ConsentRepositoryImpl(get()) as ConsentRepository }

@@ -10,6 +10,7 @@ import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.presentation.databinding.BaseActivityBinding
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
@@ -25,7 +26,10 @@ import androidx.lifecycle.Observer
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
+class ConsentDetailsActivity : BaseActivity<BaseActivityBinding>(), ResponseCallback {
+
+    override fun layoutId(): Int = R.layout.base_activity
+
     private val viewModel: RequestedConsentViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,14 +46,14 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
     private fun handleIntent() {
         val appLinkData = intent.data
         if (appLinkData == null) {
-            addFragment(getDetailsFragment())
+            addFragment(getDetailsFragment(), R.id.fragment_container)
         } else {
             deepLinkConsent(appLinkData)
         }
     }
 
     private fun deepLinkConsent(appLinkData: Uri) {
-        showProgressBar(true, getString(R.string.loading_requests))
+//        showProgressBar(true, getString(R.string.loading_requests))
         val consentId = appLinkData.lastPathSegment
         if (consentId.isNullOrBlank()) {
             finish()
@@ -60,7 +64,7 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
                     is Success -> {
                         payload.data?.requests?.find { it.id == consentId }?.let {
                             EventBus.getDefault().postSticky(it)
-                            replaceFragment(RequestedConsentDetailsFragment())
+                            replaceFragment(RequestedConsentDetailsFragment(), R.id.fragment_container)
                         }
                     }
                 }
@@ -87,26 +91,26 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
     }
 
     fun editConsentDetails() {
-        addFragment(EditConsentDetailsFragment.newInstance())
+        addFragment(EditConsentDetailsFragment.newInstance(), R.id.fragment_container)
     }
 
     override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
+//        showProgressBar(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-        showProgressBar(false)
+//        showProgressBar(false)
         showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
-        showProgressBar(false)
+//        showProgressBar(false)
         showErrorDialog(t.localizedMessage)
     }
 
     fun validateUser() {
         if (getPinCreated()) {
-            addFragment(UserVerificationFragment.newInstance())
+            addFragment(UserVerificationFragment.newInstance(), R.id.fragment_container)
         } else {
             startActivityForResult(CreatePinActivity::class.java, 201)
         }

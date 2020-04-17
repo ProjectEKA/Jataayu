@@ -67,7 +67,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         if (viewModel.linkedAccountsResponse.value == null) {
             viewModel.linkedAccountsResponse.observe(this, Observer<PayloadResource<LinkedAccountsResponse>> {
                 when (it) {
-                    is Loading -> showProgressBar(it.isLoading)
+//                    is Loading -> showProgressBar(it.isLoading)
                     is Success -> {
                         linkedAccounts = it.data?.linkedPatient?.links
                         linkedAccounts?.forEach { link ->
@@ -82,9 +82,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         }
         viewModel.consentArtifactResponse.observe(this, Observer<PayloadResource<ConsentArtifactResponse>> {
             when (it) {
-                is Loading -> {
-                    showProgressBar(it.isLoading)
-                }
+//                is Loading -> { showProgressBar(it.isLoading) }
                 is Success -> {
                     if (it.data?.consents?.isNotEmpty() == true) {
                         showLongToast(getString(R.string.consent_request_granted))
@@ -96,7 +94,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         })
         viewModel.consentDenyResponse.observe(this, Observer<PayloadResource<Void>> {
             when (it) {
-                is Loading -> showProgressBar(it.isLoading, getString(R.string.denying_consent))
+//                is Loading -> showProgressBar(it.isLoading, getString(R.string.denying_consent))
                 is Success -> {
                     activity?.let {
                         eventBusInstance.post(MessageEventType.CONSENT_DENIED)
@@ -219,7 +217,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             if (it.isNotEmpty()) {
                 if (!eventBusInstance.isRegistered(this))
                     eventBusInstance.register(this)
-                showProgressBar(true)
+//                showProgressBar(true)
                 viewModel.grantConsent(
                     consent.id,
                     viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission),

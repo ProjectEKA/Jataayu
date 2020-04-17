@@ -79,15 +79,14 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
         arguments?.let { bundle ->
             bundle.getString(PIN)?.let { pin ->
                 if (confirmedPin == pin) {
-                    showProgressBar(true)
+//                    showProgressBar(true)
                     viewModel.createPinResponse.observe(this, Observer {
 
                         when (it) {
-                            is Loading -> showProgressBar(it.isLoading, getString(R.string.creating_pin))
+//                            is Loading -> showProgressBar(it.isLoading, getString(R.string.creating_pin))
                             is Success -> {
                                 activity?.let {
                                     it.setPinCreated(true)
-                                    showProgressBar(true)
                                     viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
                                         activity?.setConsentTempToken(userVerificationResponse.temporaryToken)
                                         EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
@@ -104,7 +103,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                             }
                         }
                     })
-                    showProgressBar(true)
+//                    showProgressBar(true)
                     viewModel.createPin(confirmedPin)
                 } else {
                     binding.lblInvalidPin.visibility = VISIBLE
@@ -120,16 +119,16 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
     }
 
     override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
+//        showProgressBar(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-        showProgressBar(false)
+//        showProgressBar(false)
         context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
-        showProgressBar(false)
+//        showProgressBar(false)
         context?.showErrorDialog(t.localizedMessage)
         activity?.setResult(Activity.RESULT_CANCELED)
         activity?.finish()

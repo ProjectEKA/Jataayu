@@ -91,7 +91,7 @@ class CreateAccountFragment : BaseFragment(),
     override fun createAccount(view: View) {
             if (binding.usernameErrorText.visibility == View.GONE && binding.passwordErrorText.visibility == View.GONE){
             if (validateFields()) {
-                showProgressBar(true)
+//                showProgressBar(true)
                 viewModel.createAccount(this, getCreateAccountRequest())
             }
         }
@@ -231,16 +231,16 @@ class CreateAccountFragment : BaseFragment(),
     }
 
     override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
+//        showProgressBar(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-        showProgressBar(false)
+//        showProgressBar(false)
         context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
-        showProgressBar(false)
+//        showProgressBar(false)
         context?.showErrorDialog(t.localizedMessage)
     }
 

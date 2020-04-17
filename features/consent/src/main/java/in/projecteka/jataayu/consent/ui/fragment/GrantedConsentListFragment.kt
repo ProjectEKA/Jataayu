@@ -72,7 +72,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
         viewModel.consentListResponse.observe(this, Observer {
             when (it) {
-                is Loading -> showProgressBar(it.isLoading, getString(R.string.loading_requests))
+//                is Loading -> showProgressBar(it.isLoading, getString(R.string.loading_requests))
                 is Success -> {
                     binding.hideRequestsList = it.data?.requests.isNullOrEmpty()
                     binding.hideFilter = true
@@ -99,17 +99,14 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
                         }
                         is Loading -> {
-                            showProgressBar(payload.isLoading)
+//                            showProgressBar(payload.isLoading)
                         }
                     }
                 })
 
             viewModel.revokeConsentResponse.observe(this, Observer<PayloadResource<Void>> {
                 when (it) {
-                    is Loading -> showProgressBar(
-                        it.isLoading,
-                        getString(R.string.revoking_consent)
-                    )
+//                    is Loading -> showProgressBar(it.isLoading, getString(R.string.revoking_consent))
                     is Success -> {
                         activity?.let {
                             EventBus.getDefault().post(MessageEventType.CONSENT_REVOKED)
@@ -148,7 +145,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
         binding.listener = this
         binding.hideRequestsList = true
         binding.hideFilter = true
-        showProgressBar(false)
+//        showProgressBar(false)
         initSpinner(0)
     }
 

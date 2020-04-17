@@ -1,7 +1,6 @@
 package `in`.projecteka.jataayu.presentation.ui.fragment
 
 import `in`.projecteka.jataayu.presentation.R
-import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import android.app.Dialog
 import android.os.Bundle
 import android.view.ViewGroup
@@ -25,18 +24,6 @@ open class BaseDialogFragment : DialogFragment() {
             val height = ViewGroup.LayoutParams.MATCH_PARENT
             dialog.window?.setLayout(width, height)
             dialog.window?.setWindowAnimations(R.style.AppTheme_Slide)
-        }
-    }
-
-    protected fun showProgressBar(shouldShow: Boolean) {
-        showProgressBar(shouldShow, "")
-    }
-
-    protected fun showProgressBar(shouldShow: Boolean, progressBarMessage: String) {
-        activity?.let{
-            if (it is BaseActivity) {
-                it.showProgressBar(shouldShow, progressBarMessage)
-            }
         }
     }
 }

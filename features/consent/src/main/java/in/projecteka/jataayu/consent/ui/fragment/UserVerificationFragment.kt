@@ -75,7 +75,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         binding.lblInvalidPin.visibility = View.GONE
         UiUtils.hideKeyboard(activity!!)
         val pin = binding.etPin.text.toString()
-        showProgressBar(true)
+//        showProgressBar(true)
         viewModel.verifyUser(pin, this)
     }
 
@@ -84,11 +84,11 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
     }
 
     override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
+//        showProgressBar(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-        showProgressBar(false)
+//        showProgressBar(false)
 
         when (errorBody.error.code) {
             ERROR_CODE_INVALID_PIN -> {
@@ -111,7 +111,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
     }
 
     override fun onFailure(t: Throwable) {
-        showProgressBar(false)
+//        showProgressBar(false)
         context?.showErrorDialog(t.localizedMessage)
     }
 }
