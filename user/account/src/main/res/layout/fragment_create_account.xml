@@ -181,6 +181,7 @@
                             android:drawablePadding="@dimen/content_margin_medium"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
+                            android:maxLength="30"
                             android:inputType="@{passwordInputType}"
                             android:singleLine="true"
                             android:textColor="@color/black"
