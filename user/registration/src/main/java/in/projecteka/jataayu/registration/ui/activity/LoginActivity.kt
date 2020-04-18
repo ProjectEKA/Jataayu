@@ -4,7 +4,6 @@ import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.Success
-import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
@@ -40,10 +39,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         })
 
         viewModel.loginResponse.observe(this, Observer {
+
             when (it) {
-                is Loading -> {
-//                    showProgressBar(it.isLoading, R.string.logging_in)
-                }
+                is Loading -> viewModel.showProgress(it.isLoading, R.string.logging_in)
                 is Success -> {
                     setAuthToken(viewModel.getAuthTokenWithTokenType(authToken = it.data?.accessToken, tokenType = it.data?.tokenType))
                     setIsUserLoggedIn(true)

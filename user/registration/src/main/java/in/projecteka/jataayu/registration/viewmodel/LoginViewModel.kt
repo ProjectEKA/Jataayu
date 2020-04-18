@@ -1,7 +1,9 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
+import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.registration.model.LoginRequest
@@ -14,6 +16,7 @@ import android.text.TextWatcher
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.Transformations
 
 class LoginViewModel(private val repository: AuthenticationRepository) : BaseViewModel(), TextWatcher {
 
@@ -31,6 +34,7 @@ class LoginViewModel(private val repository: AuthenticationRepository) : BaseVie
 
     val onClickRegisterEvent = SingleLiveEvent<Void>()
     val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
+
     val loginResponse = PayloadLiveData<CreateAccountResponse>()
 
     private fun visiblePasswordInputType(): Int {
@@ -62,15 +66,10 @@ class LoginViewModel(private val repository: AuthenticationRepository) : BaseVie
     }
 
     fun onLoginClicked() {
-        loginResponse.fetch(
-            repository.login(
-                LoginRequest(
-                    "${inputUsernameLbl.get()}${usernameProviderLbl.get()}" ?: "", inputPasswordLbl.get() ?: "",
-                    GRANT_TYPE_PASSWORD
-                )
-            )
-        )
+        loginResponse.fetch(repository.login("${inputUsernameLbl.get()}${usernameProviderLbl.get()}",
+                inputPasswordLbl.get() ?: "", GRANT_TYPE_PASSWORD))
     }
+
 
     fun getAuthTokenWithTokenType(authToken: String?, tokenType: String?): String =
         "${tokenType?.capitalize()} $authToken"
