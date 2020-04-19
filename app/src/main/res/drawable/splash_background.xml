@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item android:drawable="@color/white" />
+
+    <item
+        android:width="306dp"
+        android:height="100dp"
+        android:drawable="@drawable/jataayu_logo"
+        android:gravity="center" />
+
+</layer-list>

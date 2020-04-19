@@ -25,7 +25,7 @@
         <activity
             android:name=".ui.launcher.LauncherActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="in.projecteka.jataayu.home" />
                 <category android:name="android.intent.category.DEFAULT" />

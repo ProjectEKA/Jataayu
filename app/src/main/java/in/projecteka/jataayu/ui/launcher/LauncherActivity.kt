@@ -1,9 +1,6 @@
 package `in`.projecteka.jataayu.ui.launcher
 
-import `in`.projecteka.jataayu.R
-import `in`.projecteka.jataayu.databinding.ActivityLauncherBinding
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
-import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.sharedPref.*
 import `in`.projecteka.jataayu.util.startAccountCreation
@@ -11,11 +8,10 @@ import `in`.projecteka.jataayu.util.startDashboard
 import `in`.projecteka.jataayu.util.startLogin
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 
-class LauncherActivity : BaseActivity<ActivityLauncherBinding>() {
-
-    override fun layoutId(): Int = R.layout.activity_launcher
+class LauncherActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
