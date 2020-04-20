@@ -1,23 +1,18 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
-import `in`.projecteka.jataayu.core.BuildConfig
 import `in`.projecteka.jataayu.core.R
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.network.utils.*
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
-import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
-import `in`.projecteka.jataayu.util.extension.liveDataOf
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
-import java.util.regex.Pattern
 
 class UserAccountsViewModel(private val repository: UserAccountsRepository) : BaseViewModel() {
-    var createAccountResponse = liveDataOf<CreateAccountResponse>()
 
     val patientId = ObservableField<String>()
     val patientName = ObservableField<String>()
@@ -87,21 +82,4 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Ba
     private fun isCurrentlyFetching() =
         myProfileResponse.isLoading() || linkedAccountsResponse.isLoading()
 
-    fun createAccount(
-        responseCallback: ResponseCallback,
-        createAccountRequest: CreateAccountRequest
-    ) {
-        repository.createAccount(createAccountRequest)
-            .observeOn(createAccountResponse, responseCallback)
-    }
-
-    fun isValid(text: String, criteria: String): Boolean {
-        val pattern = Pattern.compile(criteria)
-        val matcher = pattern.matcher(text)
-        return matcher.matches()
-    }
-
-    fun getAuthTokenWithTokenType(response: CreateAccountResponse): String {
-        return (response.tokenType).capitalize() + CreateAccountFragment.SPACE + response.accessToken
-    }
 }

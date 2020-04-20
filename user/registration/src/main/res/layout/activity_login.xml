@@ -76,9 +76,9 @@
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:singleLine="true"
+                        android:text="@={viewModel.inputUsernameLbl}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:text="@={viewModel.inputUsernameLbl}"
                         app:onValueChanged="@{viewModel}" />
 
                     <TextView
@@ -88,9 +88,9 @@
                         android:layout_gravity="end"
                         android:drawablePadding="@dimen/content_margin_medium"
                         android:text="@={viewModel.usernameProviderLbl}"
-                        resource_reference="@{viewModel.usernameProviderLblId}"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_medium" />
+                        android:textSize="@dimen/text_size_medium"
+                        app:resource_reference="@{viewModel.usernameProviderLblId}" />
 
                 </LinearLayout>
 
@@ -136,8 +136,8 @@
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:inputType="@{viewModel.passwordInputType}"
-                        android:text="@={viewModel.inputPasswordLbl}"
                         android:singleLine="true"
+                        android:text="@={viewModel.inputPasswordLbl}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
                         app:onValueChanged="@{viewModel}" />
@@ -197,9 +197,9 @@
 
         <include
             android:id="@+id/progress_bar_layout"
-            app:showProgress="@{viewModel.showProgress}"
+            layout="@layout/progress_layout"
             app:message="@{viewModel.showProgressMessage}"
-            layout="@layout/progress_layout"/>
+            app:showProgress="@{viewModel.showProgress}" />
 
     </FrameLayout>
 </layout>
