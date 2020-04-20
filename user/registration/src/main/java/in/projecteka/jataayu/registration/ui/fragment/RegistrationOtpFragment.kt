@@ -2,23 +2,19 @@ package `in`.projecteka.jataayu.registration.ui.fragment
 
 
 import `in`.projecteka.jataayu.network.utils.PartialFailure
-import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentOtpVerificationBinding
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationVerificationViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.sharedPref.setMobileIdentifier
 import android.os.Bundle
-import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.bold
 import androidx.lifecycle.Observer
-import okhttp3.internal.format
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -68,6 +64,10 @@ class RegistrationOtpFragment : BaseFragment() {
         parentVM.verifyIdentifierResponseLiveData.observe(this, Observer {
             when (it) {
                 is PartialFailure -> {
+                    if (it.error?.code == ERROR_CODE_INVALID_OTP){
+                        viewModel.otpText.set(null)
+                    }
+
                     viewModel.errorLbl.set(
                         if (it.error?.code == ERROR_CODE_INVALID_OTP) {
                             getString(R.string.invalid_otp)

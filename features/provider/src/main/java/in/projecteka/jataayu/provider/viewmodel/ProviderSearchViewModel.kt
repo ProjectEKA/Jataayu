@@ -13,9 +13,13 @@ import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.extension.liveDataOf
+import android.text.Editable
+import android.text.TextWatcher
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 
-class ProviderSearchViewModel(private val providerRepository: ProviderRepository) : ViewModel() {
+class ProviderSearchViewModel(private val providerRepository: ProviderRepository) : ViewModel(), TextWatcher {
     val providers = liveDataOf<List<ProviderInfo>>()
     var providersList = emptyList<ProviderInfo>()
     val patientDiscoveryResponse = liveDataOf<PatientDiscoveryResponse>()
@@ -23,6 +27,14 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
     val successfulLinkingResponse = liveDataOf<SuccessfulLinkingResponse>()
 
     internal var selectedProviderName = String.EMPTY
+
+    val otpText = ObservableField<String>()
+    val errorLbl = ObservableField<String>()
+    val setEnableButton = ObservableBoolean()
+
+    companion object {
+        const val OTP_LENGTH = 6
+    }
 
     fun getProviders(query: String) {
         if (providersList.isEmpty()) providerRepository.getProviders(query).observeOn(providers)
@@ -69,6 +81,21 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
 
     fun makeAccountsSelected() {
         patientDiscoveryResponse.value?.patient?.careContexts!!.forEach { careContext -> careContext.contextChecked = true }
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        if (otpText.get()?.isNotEmpty() == true) {
+            errorLbl.set("")
+        }
+
+        setEnableButton.set(s?.length == OTP_LENGTH)
     }
 }
 

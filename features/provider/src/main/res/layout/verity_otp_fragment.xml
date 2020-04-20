@@ -22,16 +22,11 @@
             type="in.projecteka.jataayu.core.handler.OtpSubmissionClickHandler" />
 
         <variable
-            name="isOtpEntered"
-            type="Boolean" />
-
-        <variable
-            name="otpChangeWatcher"
-            type="in.projecteka.jataayu.core.handler.OtpChangeWatcher" />
-
-        <variable
             name="errorMessage"
             type="String" />
+        <variable
+            name="viewModel"
+            type="in.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -102,6 +97,7 @@
         <in.projecteka.jataayu.presentation.ui.view.OtpEditText
             android:id="@+id/et_otp"
             style="@style/Otp"
+            android:text="@={viewModel.otpText}"
             android:layout_width="300dp"
             android:layout_height="@dimen/edittext_height"
             android:layout_marginTop="@dimen/content_margin_extra_small"
@@ -110,10 +106,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lbl_enter_otp"
             app:layout_goneMarginTop="@dimen/content_margin_large"
-            app:onValueChanged="@{otpChangeWatcher}" />
+            app:onValueChanged="@{viewModel}"
+            />
 
         <TextView
-            android:text="@{errorMessage}"
+            android:text="@{viewModel.errorLbl}"
             tools:text="Invalid OTP entered. Please try again."
             style="@style/TextAppearance.ErrorMessage"
             app:layout_constraintLeft_toLeftOf="@+id/et_otp"
@@ -126,7 +123,7 @@
             style="@style/Button.Secondary"
             android:layout_height="@dimen/button_height"
             android:id="@+id/btn_continue"
-            android:enabled="@{isOtpEntered}"
+            android:enabled="@{viewModel.setEnableButton}"
             android:layout_width="wrap_content"
             android:onClick="@{clickHandler::onSubmitOtp}"
             android:text="@string/btn_continue"
