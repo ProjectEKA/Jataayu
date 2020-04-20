@@ -76,6 +76,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
             when (it) {
                 is Loading -> showProgressBar(it.isLoading, getString(R.string.loading_requests))
                 is Success -> {
+                    parentVM.showRefreshing(false)
                     binding.hideRequestsList = it.data?.requests.isNullOrEmpty()
                     binding.hideFilter = true
                     viewModel.filterConsents(it.data?.requests)
@@ -132,9 +133,8 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                     }
                 }
             })
-        parentVM.refresh.observe(viewLifecycleOwner, Observer{
+        parentVM.pullToRefreshEvent.observe(viewLifecycleOwner, Observer{
             if (it) {
-                parentVM.setIsRefreshing(false)
                 viewModel.getConsents()
             }
         })

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_consent.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -24,6 +25,9 @@ class ConsentHostFragment : BaseFragment() {
     private val eventBusInstance = EventBus.getDefault()
 
     private val viewModel: ConsentHostFragmentViewModel by sharedViewModel()
+
+    private lateinit var viewPager: ViewPager
+    private lateinit var tabs: TabLayout
 
     companion object {
         fun newInstance() = ConsentHostFragment()
@@ -57,20 +61,25 @@ class ConsentHostFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+        initialViewpagerSetup()
         initObservers()
-        viewModel.setUp()
+    }
+
+    private fun initialViewpagerSetup() {
+        viewPager = binding.viewPager
+        viewPager.adapter = ConsentPagerAdapter(context!!, childFragmentManager)
+        tabs = binding.tabs
+        tabs.setupWithViewPager(viewPager)
+        view_pager.addOnPageChangeListener(onPageChangeListener)
     }
 
     private fun initObservers() {
         viewModel.viewPagerState.observe(this, Observer {
             when (it) {
-                ConsentHostFragmentViewModel.Action.ADD_FRAGMENTS -> {
-                    val viewPager = binding.viewPager
-                    viewPager.adapter = ConsentPagerAdapter(context!!, childFragmentManager)
-                    val tabs = binding.tabs
-                    tabs.setupWithViewPager(viewPager)
-
-                    view_pager.addOnPageChangeListener(onPageChangeListener)
+                ConsentHostFragmentViewModel.Action.SELECT_CONSENTS_TAB -> {
+                    activity?.runOnUiThread {
+                        binding.viewPager.currentItem = 1
+                    }
                 }
             }
         })
@@ -79,9 +88,7 @@ class ConsentHostFragment : BaseFragment() {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onTabPositionReceived(messageEventType: MessageEventType) {
         if (messageEventType == MessageEventType.SELECT_CONSENTS_TAB) {
-            activity?.runOnUiThread {
-                binding.viewPager.currentItem = 1
-            }
+            viewModel.selectConsentsTab()
         }
         eventBusInstance.removeStickyEvent(MessageEventType::class.java)
     }

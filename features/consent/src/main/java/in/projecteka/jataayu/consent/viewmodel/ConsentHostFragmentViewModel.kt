@@ -9,25 +9,29 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 class ConsentHostFragmentViewModel() : ViewModel(), SwipeRefreshLayout.OnRefreshListener {
 
     //refreshDataEvent
-    val refresh = MutableLiveData<Boolean>()
+    val pullToRefreshEvent = MutableLiveData<Boolean>()
     val isRefreshing = ObservableBoolean(false)
 
     internal enum class Action {
-        ADD_FRAGMENTS
+        SELECT_CONSENTS_TAB
     }
 
     internal val viewPagerState = SingleLiveEvent<Action>()
 
     fun setUp(){
-        viewPagerState.value = Action.ADD_FRAGMENTS
+        viewPagerState.value = Action.SELECT_CONSENTS_TAB
     }
 
     override fun onRefresh() {
         isRefreshing.set(true)
-        refresh.value = true
+        pullToRefreshEvent.value = true
     }
 
-    fun setIsRefreshing(isRefresh: Boolean){
+    fun showRefreshing(isRefresh: Boolean){
         isRefreshing.set(isRefresh)
+    }
+
+    fun selectConsentsTab(){
+        viewPagerState.value = Action.SELECT_CONSENTS_TAB
     }
 }
