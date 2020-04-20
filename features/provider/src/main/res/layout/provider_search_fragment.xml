@@ -32,6 +32,9 @@
         <variable
             name="textWatcher"
             type="in.projecteka.jataayu.provider.domain.ProviderNameWatcher" />
+        <variable
+            name="viewModel"
+            type="in.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel" />
 
     </data>
 
@@ -292,6 +295,13 @@
                 android:text="@string/link_provider"
                 tools:text="@string/link_provider" />
         </FrameLayout>
+
+        <include
+            android:id="@+id/progress_bar_layout"
+            app:showProgress="@{viewModel.showProgress}"
+            app:message="@{viewModel.showProgressMessage}"
+            layout="@layout/progress_layout"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -7,6 +7,10 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="in.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel" />
+        
+        <variable
             name="clickHandler"
             type="in.projecteka.jataayu.user.account.listener.AccountCreationClickHandler" />
 
@@ -388,6 +392,12 @@
                 android:onClick="@{clickHandler::createAccount}"
                 android:text="@string/register" />
         </FrameLayout>
+
+        <include
+            android:id="@+id/progress_bar_layout"
+            app:showProgress="@{viewModel.showProgress}"
+            app:message="@{viewModel.showProgressMessage}"
+            layout="@layout/progress_layout"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

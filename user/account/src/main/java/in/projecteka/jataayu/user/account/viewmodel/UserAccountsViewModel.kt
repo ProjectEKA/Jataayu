@@ -4,6 +4,7 @@ import `in`.projecteka.jataayu.core.R
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.observeOn
+import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
@@ -11,7 +12,7 @@ import `in`.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
 import java.util.regex.Pattern
 
-class UserAccountsViewModel(private val repository: UserAccountsRepository) : ViewModel() {
+class UserAccountsViewModel(private val repository: UserAccountsRepository) : BaseViewModel() {
     var linkedAccountsResponse = liveDataOf<LinkedAccountsResponse>()
     var createAccountResponse = liveDataOf<CreateAccountResponse>()
     var myProfileResponse = liveDataOf<MyProfile>()

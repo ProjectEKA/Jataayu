@@ -78,6 +78,8 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     private fun initBindings() {
+
+        binding.viewModel = viewModel
         binding.clearButtonVisibility = GONE
         binding.inEditMode = true
         binding.selectedProviderName = viewModel.selectedProviderName
@@ -168,7 +170,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
             unverifiedIdentifiers.add(UnverifiedIdentifier(binding.etPatientId.text.toString(), UNVERIFIED_IDENTIFIER_MEDICAL_RECORD))
         }
         viewModel.getPatientAccounts(Request(Hip(selectedProvider.hip.id, selectedProvider.hip.name), unverifiedIdentifiers), this)
-//        showProgressBar(true, getString(R.string.looking_up_info))
+        viewModel.showProgress(true, R.string.looking_up_info)
         observePatients()
     }
 
@@ -176,16 +178,16 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         viewModel.patientDiscoveryResponse.observe(this, patientAccountsObserver)
 
     override fun <T> onSuccess(body: T?) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showErrorDialog(t.localizedMessage)
     }
 }

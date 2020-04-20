@@ -91,7 +91,7 @@ class CreateAccountFragment : BaseFragment(),
     override fun createAccount(view: View) {
             if (binding.usernameErrorText.visibility == View.GONE && binding.passwordErrorText.visibility == View.GONE){
             if (validateFields()) {
-//                showProgressBar(true)
+                viewModel.showProgress(true)
                 viewModel.createAccount(this, getCreateAccountRequest())
             }
         }
@@ -172,6 +172,7 @@ class CreateAccountFragment : BaseFragment(),
         initSpinner()
         initBindings()
         initObservers()
+        updateTitle()
     }
 
     private fun initObservers(){
@@ -210,6 +211,7 @@ class CreateAccountFragment : BaseFragment(),
     }
 
     private fun initBindings() {
+        binding.viewModel = viewModel
         binding.passwordInputType = getPasswordInputType()
         binding.clickHandler = this
         binding.userNameChangeWatcher = UsernameChangeWatcher(this)
@@ -225,22 +227,27 @@ class CreateAccountFragment : BaseFragment(),
         return InputType.TYPE_CLASS_TEXT + TYPE_TEXT_VARIATION_PASSWORD
     }
 
-    override fun onVisible() {
-        super.onVisible()
+    private fun updateTitle() {
         setTitle(R.string.create_account)
     }
 
+
+    override fun onVisible() {
+        super.onVisible()
+        updateTitle()
+    }
+
     override fun <T> onSuccess(body: T?) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showErrorDialog(t.localizedMessage)
     }
 

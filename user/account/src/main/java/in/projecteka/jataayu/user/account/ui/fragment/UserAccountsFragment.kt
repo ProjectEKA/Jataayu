@@ -75,7 +75,8 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
 
     private fun renderUi() {
         initObservers()
-//        showProgressBar(true)
+        binding.viewModel = viewModel
+        viewModel.showProgress(true)
         viewModel.getUserAccounts(this)
         viewModel.getMyProfile(this)
     }
@@ -106,20 +107,20 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
         iDataBindingModel: IDataBindingModel,
         itemViewBinding: ViewDataBinding
     ) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
     }
 
     override fun <T> onSuccess(body: T?) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showErrorDialog(t.localizedMessage)
     }
 
@@ -133,7 +134,7 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
     public fun onEvent(providerAddedEvent: ProviderAddedEvent) {
         when (providerAddedEvent) {
             ProviderAddedEvent.PROVIDER_ADDED -> {
-//                showProgressBar(true)
+                viewModel.showProgress(false)
                 viewModel.getUserAccounts(this)
             }
         }
