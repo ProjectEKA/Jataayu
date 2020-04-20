@@ -106,7 +106,7 @@ class UserAccountsViewModelTest {
                         LinkedCareContext(referenceNumber="131", display="National Cancer program"),
                         LinkedCareContext(referenceNumber="131", display="National Cancer program")),
                 childrenResourceId=2131427419, isExpanded=false))
-        assertEquals(list.count(), viewModel.getDisplayAccounts().count())
+        assertEquals(list.count(), viewModel.updateDisplayAccounts().count())
     }
 
     @Test

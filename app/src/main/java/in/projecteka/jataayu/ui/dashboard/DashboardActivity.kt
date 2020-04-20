@@ -20,7 +20,7 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
         initObservers()
     }
 
-    private fun bindViewpager(){
+    private fun bindViewpager() {
         with(binding.fragmentContainer) {
             adapter = this@DashboardActivity.dashboardPagerAdapter
             isUserInputEnabled = false

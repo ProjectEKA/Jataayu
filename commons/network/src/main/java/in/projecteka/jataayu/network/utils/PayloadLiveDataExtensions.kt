@@ -29,6 +29,13 @@ fun <T> PayloadLiveData<T>.partialFailure(error: Error?) {
     value = PartialFailure(error)
 }
 
+fun <T> PayloadLiveData<T>.isLoading(): Boolean {
+    val currentValue = value
+    return if (currentValue is Loading) {
+        currentValue.isLoading
+    } else false
+}
+
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
     value = Loading(true)
     call.enqueue(object : Callback<T> {
@@ -40,12 +47,12 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
             if (response.isSuccessful) {
                 success(response.body())
             } else {
-                response.errorBody()?.let{
-                    if(it.contentType()?.type == "application") {
+                response.errorBody()?.let {
+                    if (it.contentType()?.type == "application") {
                         val errorConverter: Converter<ResponseBody, ErrorResponse> =
                             get().koin.get()
                         partialFailure(errorConverter.convert(it)?.error)
-                    }else{
+                    } else {
                         failure(Exception("Something went wrong"))
                     }
                 } ?: failure(Exception("Unknown Error"))
