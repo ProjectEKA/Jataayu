@@ -43,6 +43,7 @@ object LibVersions {
     const val rxKotlin = "2.4.0"
     const val rxAndroid = "2.1.1"
     const val otpView = "2.1.0"
+    const val swipeRefresh = "1.0.0"
 }
 
 object Modules {
@@ -56,6 +57,7 @@ object Modules {
     const val core = ":features:core"
     const val account = ":user:account"
     const val registration = ":user:registration"
+
 }
 
 object Deps {
@@ -81,6 +83,7 @@ object Deps {
         const val espressoContrib = "androidx.test.espresso:espresso-contrib:${LibVersions.espresso}"
         const val dataBindingCompiler = "androidx.databinding:databinding-compiler:${LibVersions.androidStudio}"
         const val preferences = "androidx.preference:preference-ktx:${LibVersions.preferences}"
+        const val swipeRefresh = "androidx.swiperefreshlayout:swiperefreshlayout:${LibVersions.swipeRefresh}"
     }
 
     object Retrofit {

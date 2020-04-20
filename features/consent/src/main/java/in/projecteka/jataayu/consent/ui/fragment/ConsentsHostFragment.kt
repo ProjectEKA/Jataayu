@@ -2,23 +2,28 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.databinding.FragmentConsentHostBinding
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentPagerAdapter
+import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
 import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_consent.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ConsentHostFragment : BaseFragment() {
 
     private lateinit var binding: FragmentConsentHostBinding
 
     private val eventBusInstance = EventBus.getDefault()
+
+    private val viewModel: ConsentHostFragmentViewModel by sharedViewModel()
 
     companion object {
         fun newInstance() = ConsentHostFragment()
@@ -51,12 +56,24 @@ class ConsentHostFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewPager = binding.viewPager
-        viewPager.adapter = ConsentPagerAdapter(context!!, activity!!.supportFragmentManager)
-        val tabs = binding.tabs
-        tabs.setupWithViewPager(viewPager)
+        binding.viewModel = viewModel
+        initObservers()
+        viewModel.setUp()
+    }
 
-        view_pager.addOnPageChangeListener(onPageChangeListener)
+    private fun initObservers() {
+        viewModel.viewPagerState.observe(this, Observer {
+            when (it) {
+                ConsentHostFragmentViewModel.Action.ADD_FRAGMENTS -> {
+                    val viewPager = binding.viewPager
+                    viewPager.adapter = ConsentPagerAdapter(context!!, childFragmentManager)
+                    val tabs = binding.tabs
+                    tabs.setupWithViewPager(viewPager)
+
+                    view_pager.addOnPageChangeListener(onPageChangeListener)
+                }
+            }
+        })
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)

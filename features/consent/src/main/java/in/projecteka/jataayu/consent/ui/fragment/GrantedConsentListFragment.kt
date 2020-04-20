@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
+import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.MessageEventType
@@ -48,6 +49,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private lateinit var consentsListAdapter: ConsentsListAdapter
 
     private val viewModel: GrantedConsentViewModel by sharedViewModel()
+    private val parentVM: ConsentHostFragmentViewModel by sharedViewModel()
 
     companion object {
         fun newInstance() = GrantedFragment()
@@ -130,6 +132,12 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                     }
                 }
             })
+        parentVM.refresh.observe(viewLifecycleOwner, Observer{
+            if (it) {
+                parentVM.setIsRefreshing(false)
+                viewModel.getConsents()
+            }
+        })
     }
 
     private fun initSpinner(selectedPosition: Int) {
@@ -155,6 +163,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
+        viewModel.getConsents()
     }
 
     protected fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
@@ -218,12 +227,6 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                 EventBus.getDefault().register(this)
             }
         }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getConsents()
     }
 
     @Subscribe

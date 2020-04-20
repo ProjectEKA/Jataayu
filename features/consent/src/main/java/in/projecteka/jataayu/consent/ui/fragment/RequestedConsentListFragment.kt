@@ -5,6 +5,7 @@ import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
+import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.MessageEventType
@@ -45,6 +46,7 @@ class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, It
     private lateinit var consentsListAdapter: ConsentsListAdapter
 
     private val viewModel: RequestedConsentViewModel by sharedViewModel()
+    private val parentVM: ConsentHostFragmentViewModel by sharedViewModel()
 
     companion object {
         fun newInstance() = RequestedFragment()
@@ -80,6 +82,12 @@ class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, It
                 }
             }
         })
+        parentVM.refresh.observe(viewLifecycleOwner, Observer{
+            if (it) {
+                parentVM.setIsRefreshing(false)
+                viewModel.getConsents()
+            }
+        })
     }
 
     private fun initSpinner(selectedPosition: Int) {
@@ -107,6 +115,7 @@ class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, It
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
+        viewModel.getConsents()
     }
 
     protected fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
@@ -178,10 +187,5 @@ class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, It
 
     fun getConsentFlow(): ConsentFlow {
         return ConsentFlow.REQUESTED_CONSENTS
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getConsents()
     }
 }
