@@ -5,10 +5,8 @@ import `in`.projecteka.jataayu.core.databinding.VerityOtpFragmentBinding
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
-import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
-import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.model.Otp
@@ -18,14 +16,12 @@ import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.sharedPref.setProviderAdded
 import `in`.projecteka.jataayu.util.startLauncher
 import `in`.projecteka.jataayu.util.ui.UiUtils
-import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class VerifyOtpFragment : BaseFragment(),
@@ -35,10 +31,10 @@ class VerifyOtpFragment : BaseFragment(),
     override fun setButtonEnabled(isOtpEntered: Boolean) {
         binding.isOtpEntered = isOtpEntered
     }
-    private val eventBus = EventBus.getDefault()
 
     companion object {
         fun newInstance() = VerifyOtpFragment()
+        const val ERROR_CODE_INVALID_OTP = 1003
     }
 
     private val viewModel : ProviderSearchViewModel by sharedViewModel()
@@ -92,7 +88,13 @@ class VerifyOtpFragment : BaseFragment(),
 
     override fun onFailure(errorBody: ErrorResponse) {
 //        showProgressBar(false)
-        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
+
+       binding.errorMessage = if (errorBody.error.code == ERROR_CODE_INVALID_OTP) {
+            getString(R.string.invalid_otp)
+        } else {
+           errorBody.error.message
+        }
+
     }
 
     override fun onFailure(t: Throwable) {

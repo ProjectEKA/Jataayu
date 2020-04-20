@@ -123,7 +123,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="end"
                             android:drawablePadding="@dimen/content_margin_medium"
-                            android:text="@string/ncg"
+                            android:text="@string/cm_config_provider"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_medium" />
 
@@ -181,6 +181,7 @@
                             android:drawablePadding="@dimen/content_margin_medium"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
+                            android:maxLength="30"
                             android:inputType="@{passwordInputType}"
                             android:singleLine="true"
                             android:textColor="@color/black"

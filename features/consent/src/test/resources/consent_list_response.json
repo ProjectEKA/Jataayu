@@ -6,6 +6,7 @@
     {
       "status": "REQUESTED",
       "createdAt": "2020-01-23T06:26:41.503+0000",
+      "lastUpdated":"2020-04-14T12:50:34.206+0000",
       "purpose": {
         "text": "Encounter",
         "code": "ENCOUNTER",
@@ -44,6 +45,7 @@
     {
       "status": "REQUESTED",
       "createdAt": "2020-01-23T07:44:18.472+0000",
+      "lastUpdated":"2020-04-13T13:19:08.347+0000",
       "purpose": {
         "text": "Encounter",
         "code": "ENCOUNTER",
@@ -70,7 +72,7 @@
           "from": "2020-01-16T08:47:48.603+0000",
           "to": "2020-04-16T08:47:48.603+0000"
         },
-        "dataEraseAt": "2020-04-16T08:47:48.603+0000",
+        "dataEraseAt": "2028-04-16T08:47:48.603+0000",
         "frequency": {
           "unit": "HOUR",
           "value": 1,
@@ -82,6 +84,7 @@
     {
       "status": "GRANTED",
       "createdAt": "2020-01-23T07:53:26.136+0000",
+      "lastUpdated":"2020-04-12T13:17:28.097+0000",
       "purpose": {
         "text": "ENCOUNTER",
         "code": "Encounter",
@@ -120,6 +123,7 @@
     {
       "status": "GRANTED",
       "createdAt": "2020-01-23T07:39:35.669+0000",
+      "lastUpdated":"2020-04-11T13:30:25.103+0000",
       "purpose": {
         "text": "Encounter",
         "code": "ENCOUNTER",

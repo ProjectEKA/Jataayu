@@ -5,13 +5,15 @@ import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
+import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
+import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
-import junit.framework.Assert.assertEquals
+import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -67,7 +69,7 @@ class RequestedConsentViewModelTest {
     }
 
     @Test
-    fun shouldPopulateFilterItemsForRequestedConsents() {
+    fun `should Populate Filter Items For Requested Consents`() {
         `when`(resources.getString(R.string.status_active_requested_consents)).thenReturn("Active requested consents (%d)")
         `when`(resources.getString(R.string.status_expired_requested_consents)).thenReturn("Expired requested consents (%d)")
         `when`(resources.getString(R.string.status_denied_consent_requests)).thenReturn("Denied consent requests (%d)")
@@ -87,16 +89,24 @@ class RequestedConsentViewModelTest {
     }
 
     @Test
-    fun shouldFetchConsents() {
+    fun `should Fetch Consents`() {
         verify(repository).getConsents()
         verify(call).enqueue(any())
         assertEquals(Success(consentsListResponse), consentViewModel.consentListResponse.value)
     }
 
     @Test
-    fun shouldFilterConsents() {
+    fun `should Filter Consents And Return Only Denied And RequestedList`() {
         consentViewModel.filterConsents(consentsListResponse.requests)
-        assertEquals(dummyRequestedConsentsList(), consentViewModel.requestedConsentsList.value)
+        assertFalse(consentViewModel.requestedConsentsList.value!!.filter { it.status == RequestStatus.GRANTED }.count() > 0)
+    }
+
+    @Test
+    fun `should Return Filter And Sorted List By Descending Order`() {
+        consentViewModel.filterConsents(consentsListResponse.requests)
+        val first =  consentViewModel.requestedConsentsList.value!!.first().getLastUpdated()
+        val second = consentViewModel.requestedConsentsList.value!![1].getLastUpdated()
+        assertTrue(first!!.after(second!!))
     }
 
     private fun dummyRequestedConsentsList(): List<Consent>? {

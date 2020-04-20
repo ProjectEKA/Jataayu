@@ -126,11 +126,26 @@ class UserAccountsViewModelTest {
     @Test
     fun shouldReturnTrueIfPasswordIsValid() {
         assertTrue(viewModel.isValid("@Abcd432", CreateAccountFragment.passwordCriteria))
-        assertTrue(viewModel.isValid("Abcd123@%1!\"#\$%&'()*+,-./:;<=>?@", CreateAccountFragment.passwordCriteria))
+        //length is more than 30 characters
+        assertFalse(viewModel.isValid("Abcd123@%1!\"#\$%&'()*+,-./:;<=>?@", CreateAccountFragment.passwordCriteria))
         assertFalse(viewModel.isValid("Abcd@43", CreateAccountFragment.passwordCriteria))
         assertFalse(viewModel.isValid("Abcd@xyz", CreateAccountFragment.passwordCriteria))
         assertFalse(viewModel.isValid("1111@222", CreateAccountFragment.passwordCriteria))
         assertFalse(viewModel.isValid("Abcd4321", CreateAccountFragment.passwordCriteria))
+    }
+
+    @Test
+    fun `test for spaces`(){
+        assertTrue(viewModel.isValid("Abcd@4321  ", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  Abcd@4321  ", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  Abcd@4321", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  A bcd@4321", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  Abcd@4 321", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  Abcd@ 4 321", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("  A b cd@4321", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("Test @123", CreateAccountFragment.passwordCriteria))
+        assertTrue(viewModel.isValid("      @aA1", CreateAccountFragment.passwordCriteria))
+        assertFalse(viewModel.isValid("                ", CreateAccountFragment.passwordCriteria))
     }
 
     private fun getLinkedAccountsData(): LinkedAccountsResponse? {
