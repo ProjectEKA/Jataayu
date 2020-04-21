@@ -231,7 +231,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     @Subscribe
     fun onEventReceived(messageEventType: MessageEventType) {
-        if (messageEventType == MessageEventType.CONSENT_REVOKED) {
+        if (messageEventType == MessageEventType.CONSENT_REVOKED || messageEventType == MessageEventType.CONSENT_GRANTED) {
             viewModel.getConsents()
             unregisterEventBus()
         } else if (messageEventType == MessageEventType.USER_VERIFIED) {
