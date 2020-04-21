@@ -14,6 +14,7 @@ dependencies {
     api Deps.Koin.test
     api Deps.AndroidX.coreKtx
     api Deps.AndroidX.preferences
+    api Deps.AndroidX.swipeRefresh
     api Deps.AndroidX.coreTesting
     api Deps.AndroidX.espressoCore
     api Deps.AndroidX.espressoIntents
