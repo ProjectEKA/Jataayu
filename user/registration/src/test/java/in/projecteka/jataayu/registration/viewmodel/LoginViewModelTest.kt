@@ -50,9 +50,10 @@ class LoginViewModelTest {
         loginResponse = Gson()
             .fromJson(TestUtils.readFile("login_response.json"), CreateAccountResponse::class.java)
 
-        loginRequest = Gson().fromJson(TestUtils.readFile("login_request.json"), LoginRequest::class.java)
+        loginRequest =  Gson().fromJson(TestUtils.readFile("login_request.json"), LoginRequest::class.java)
 
-        `when`(repository.login(loginRequest)).thenReturn(call)
+
+        `when`(repository.login("username", "password@135", "password")).thenReturn(call)
         `when`(call.enqueue(any()))
             .then { invocation ->
                 val callback = invocation.arguments[0] as Callback<CreateAccountResponse>
@@ -68,8 +69,7 @@ class LoginViewModelTest {
 
     @Test
     fun shouldCallRepositoryLogin() {
-//        loginViewModel.login("username", "password@123")
-        verify(repository).login(loginRequest)
+        verify(repository).login("username", "password@135", "password")
         verify(call).enqueue(any())
     }
 }

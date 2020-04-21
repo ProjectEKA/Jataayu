@@ -53,7 +53,7 @@ class ConsentDetailsActivity : BaseActivity<BaseActivityBinding>(), ResponseCall
     }
 
     private fun deepLinkConsent(appLinkData: Uri) {
-//        showProgressBar(true, getString(R.string.loading_requests))
+        viewModel.showProgress(true, R.string.loading_requests)
         val consentId = appLinkData.lastPathSegment
         if (consentId.isNullOrBlank()) {
             finish()
@@ -95,16 +95,16 @@ class ConsentDetailsActivity : BaseActivity<BaseActivityBinding>(), ResponseCall
     }
 
     override fun <T> onSuccess(body: T?) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
         showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
         showErrorDialog(t.localizedMessage)
     }
 

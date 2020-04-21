@@ -53,7 +53,7 @@ class RegistrationActivity : BaseActivity<BaseActivityBinding>() {
                     viewModel.redirectToOtpScreen(it.data?.sessionId)
                 }
                 is Loading -> {
-//                    showProgressBar(it.isLoading, getString(R.string.sending_otp))
+                    viewModel.showProgress(it.isLoading, R.string.sending_otp)
                 }
                 is Failure -> {
                     showErrorDialog(it.error.localizedMessage)
@@ -74,7 +74,7 @@ class RegistrationActivity : BaseActivity<BaseActivityBinding>() {
                     viewModel.redirectToNext()
                 }
                 is Loading -> {
-//                    showProgressBar(it.isLoading, getString(R.string.sending_otp))
+                    viewModel.showProgress(it.isLoading, R.string.sending_otp)
                 }
                 is Failure -> {
                     showErrorDialog(it.error.localizedMessage)

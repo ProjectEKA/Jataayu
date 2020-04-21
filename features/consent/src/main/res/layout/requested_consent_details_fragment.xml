@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="in.projecteka.jataayu.presentation.BaseViewModel" />
+
+        <variable
             name="consent"
             type="in.projecteka.jataayu.core.model.Consent" />
 
@@ -288,6 +292,13 @@
                 android:onClick="@{clickHandler::onGrantConsent}"
                 android:text="@string/grant_request" />
         </LinearLayout>
+
+        <include
+            android:id="@+id/progress_bar_layout"
+            app:showProgress="@{viewModel.showProgress}"
+            app:message="@{viewModel.showProgressMessage}"
+            layout="@layout/progress_layout"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

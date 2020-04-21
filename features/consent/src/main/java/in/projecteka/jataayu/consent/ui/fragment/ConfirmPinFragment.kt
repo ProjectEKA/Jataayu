@@ -62,6 +62,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
     }
 
     private fun initBindings() {
+        binding.viewModel = viewModel
         binding.clickHandler = this
         binding.isOtpEntered = false
         binding.otpChangeWatcher = OtpChangeWatcher(4, this)
@@ -79,11 +80,11 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
         arguments?.let { bundle ->
             bundle.getString(PIN)?.let { pin ->
                 if (confirmedPin == pin) {
-//                    showProgressBar(true)
+                    viewModel.showProgress(true)
                     viewModel.createPinResponse.observe(this, Observer {
 
                         when (it) {
-//                            is Loading -> showProgressBar(it.isLoading, getString(R.string.creating_pin))
+                            is Loading -> viewModel.showProgress(it.isLoading, R.string.creating_pin)
                             is Success -> {
                                 activity?.let {
                                     it.setPinCreated(true)
@@ -103,7 +104,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                             }
                         }
                     })
-//                    showProgressBar(true)
+                    viewModel.showProgress(true)
                     viewModel.createPin(confirmedPin)
                 } else {
                     binding.lblInvalidPin.visibility = VISIBLE
@@ -119,16 +120,16 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
     }
 
     override fun <T> onSuccess(body: T?) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showErrorDialog(t.localizedMessage)
         activity?.setResult(Activity.RESULT_CANCELED)
         activity?.finish()

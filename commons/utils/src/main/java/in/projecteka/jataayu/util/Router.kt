@@ -9,7 +9,7 @@ private const val ACTIVITY_REGISTRATION = "in.projecteka.jataayu.registration.ui
 private const val ACTIVITY_PROVIDER = "in.projecteka.jataayu.provider.ui.ProviderActivity"
 private const val ACTIVITY_ACCOUNT_CREATION = "in.projecteka.jataayu.user.account.ui.activity.AccountCreationActivity"
 private const val ACTIVITY_LOGIN = "in.projecteka.jataayu.registration.ui.activity.LoginActivity"
-private const val ACTIVITY_LAUNCHER = "in.projecteka.jataayu.ui.LauncherActivity"
+private const val ACTIVITY_LAUNCHER = "in.projecteka.jataayu.ui.launcher.LauncherActivity"
 private const val ACTIVITY_DASHBOARD = "in.projecteka.jataayu.ui.dashboard.DashboardActivity"
 
 private fun defaultIntentDefinition(

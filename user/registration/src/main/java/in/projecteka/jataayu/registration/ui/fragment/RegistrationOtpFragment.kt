@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
 
+import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment

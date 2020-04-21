@@ -102,5 +102,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/continue_button_side_margin" />
+
+        <include
+            android:id="@+id/progress_bar_layout"
+            app:showProgress="@{viewModel.showProgress}"
+            app:message="@{viewModel.showProgressMessage}"
+            layout="@layout/progress_layout"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

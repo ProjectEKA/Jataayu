@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
+import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import android.text.Editable
@@ -8,7 +9,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 
-class RegistrationFragmentViewModel : ViewModel(), TextWatcher {
+class RegistrationFragmentViewModel : BaseViewModel(), TextWatcher {
 
     companion object {
         private const val INDIA_COUNTRY_CODE = "+91"

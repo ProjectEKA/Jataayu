@@ -16,6 +16,7 @@ import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsRe
 import `in`.projecteka.jataayu.core.model.grantedconsent.LinkedHip
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
+import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
@@ -23,7 +24,7 @@ import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class RequestedConsentViewModel(private val repository: ConsentRepository) : ViewModel() {
+class RequestedConsentViewModel(private val repository: ConsentRepository) : BaseViewModel() {
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()

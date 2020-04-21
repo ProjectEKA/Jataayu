@@ -66,16 +66,18 @@ class VerifyOtpFragment : BaseFragment(),
     }
 
     private val observer = Observer<SuccessfulLinkingResponse> {
-        activity?.finish()
-        context?.setProviderAdded(true)
-        startLauncher(activity!!){
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        activity?.run{
+            finish()
+            setProviderAdded(true)
+            startLauncher(this){
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
         }
     }
 
     override fun onSubmitOtp(view: View) {
         UiUtils.hideKeyboard(activity!!)
-//        showProgressBar(true)
+        viewModel.showProgress(true)
         viewModel.successfulLinkingResponse.observe(this, observer)
         val referenceNumber = viewModel.linkAccountsResponse.value?.link?.referenceNumber!!
         val otp = Otp(binding.etOtp.text.toString())
@@ -83,12 +85,11 @@ class VerifyOtpFragment : BaseFragment(),
     }
 
     override fun <T> onSuccess(body: T?) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-//        showProgressBar(false)
-
+        viewModel.showProgress(false)
        binding.errorMessage = if (errorBody.error.code == ERROR_CODE_INVALID_OTP) {
             getString(R.string.invalid_otp)
         } else {
@@ -98,7 +99,7 @@ class VerifyOtpFragment : BaseFragment(),
     }
 
     override fun onFailure(t: Throwable) {
-//        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showErrorDialog(t.localizedMessage)
     }
 }

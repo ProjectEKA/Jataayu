@@ -6,10 +6,11 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.network.utils.observeOn
+import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.ViewModel
 
-class UserVerificationViewModel(private val userVerificationRepository: UserVerificationRepository) : ViewModel() {
+class UserVerificationViewModel(private val userVerificationRepository: UserVerificationRepository) : BaseViewModel() {
     internal var createPinResponse = PayloadLiveData<Void>()
     internal var userVerificationResponse = liveDataOf<UserVerificationResponse>()
 
