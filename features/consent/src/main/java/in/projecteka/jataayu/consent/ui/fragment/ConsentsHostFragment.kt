@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.activity_consent.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -38,7 +37,7 @@ class ConsentHostFragment : BaseFragment() {
         }
 
         override fun onPageSelected(position: Int) {
-            view_pager.adapter?.notifyDataSetChanged()
+            binding.viewPager.adapter?.notifyDataSetChanged()
         }
 
         override fun onPageScrollStateChanged(state: Int) {
@@ -64,11 +63,11 @@ class ConsentHostFragment : BaseFragment() {
     private fun initialViewpagerSetup() {
         binding.viewPager.adapter = ConsentPagerAdapter(context!!, childFragmentManager)
         binding.tabs.setupWithViewPager(binding.viewPager)
-        view_pager.addOnPageChangeListener(onPageChangeListener)
+        binding.viewPager.addOnPageChangeListener(onPageChangeListener)
     }
 
     private fun initObservers() {
-        viewModel.viewPagerState.observe(this, Observer {
+        viewModel.redirectEvent.observe(this, Observer {
             when (it) {
                 ConsentHostFragmentViewModel.Action.SELECT_CONSENTS_TAB -> {
                     activity?.runOnUiThread {
