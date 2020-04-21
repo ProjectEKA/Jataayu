@@ -66,10 +66,12 @@ class VerifyOtpFragment : BaseFragment(),
     }
 
     private val observer = Observer<SuccessfulLinkingResponse> {
-        activity?.finish()
-        context?.setProviderAdded(true)
-        startLauncher(activity!!){
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        activity?.run{
+            finish()
+            setProviderAdded(true)
+            startLauncher(this){
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
         }
     }
 
