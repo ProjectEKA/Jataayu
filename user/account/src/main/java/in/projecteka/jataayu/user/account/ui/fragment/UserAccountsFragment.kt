@@ -107,7 +107,6 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
     public fun onEvent(providerAddedEvent: ProviderAddedEvent) {
         when (providerAddedEvent) {
             ProviderAddedEvent.PROVIDER_ADDED -> {
-//                showProgressBar(true)
                 viewModel.getUserAccounts()
             }
         }

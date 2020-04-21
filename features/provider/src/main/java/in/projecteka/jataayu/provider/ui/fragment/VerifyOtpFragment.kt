@@ -14,6 +14,7 @@ import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.sharedPref.setProviderAdded
+import `in`.projecteka.jataayu.util.startDashboard
 import `in`.projecteka.jataayu.util.startLauncher
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.content.Intent
@@ -69,7 +70,7 @@ class VerifyOtpFragment : BaseFragment(),
         activity?.run{
             finish()
             setProviderAdded(true)
-            startLauncher(this){
+            startDashboard(this){
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             }
         }
