@@ -1,13 +1,10 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
-import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
-import `in`.projecteka.jataayu.core.model.MyProfile
 import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
-import `in`.projecteka.jataayu.network.model.ErrorResponse
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.network.utils.Failure
+import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
-import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
@@ -15,7 +12,6 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
-import `in`.projecteka.jataayu.util.extension.get
 import `in`.projecteka.jataayu.util.sharedPref.setMobileIdentifier
 import `in`.projecteka.jataayu.util.sharedPref.setName
 import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
@@ -26,38 +22,19 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback {
+class UserAccountsFragment : BaseFragment(), ItemClickCallback {
     private lateinit var binding: FragmentUserAccountBinding
     private val viewModel: UserAccountsViewModel by viewModel()
     private var listItems: List<IDataBindingModel> = emptyList()
-    private var compositeDisposable = CompositeDisposable()
     private val eventBusInstance = EventBus.getDefault()
-
-    private val observer = Observer<LinkedAccountsResponse> {
-        binding.linkedPatient = it.linkedPatient
-        getUserAccounts()
-    }
-
-    private val profileObserver = Observer<MyProfile> {
-        context?.setPinCreated(it.hasTransactionPin)
-        it.verifiedIdentifiers.forEach { identifier ->
-            if (identifier.type == VERIFIED_IDENTIFIER_MOBILE) {
-                activity?.setMobileIdentifier(identifier.value)
-            }
-        }
-        context?.setName(it.name)
-        binding.tvPatientName.text = it.name
-    }
 
     companion object {
         fun newInstance() = UserAccountsFragment()
-        private val VERIFIED_IDENTIFIER_MOBILE = "MOBILE"
+        private const val VERIFIED_IDENTIFIER_MOBILE = "MOBILE"
     }
 
     override fun onCreateView(
@@ -70,36 +47,47 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
+        initObservers()
         renderUi()
     }
 
     private fun renderUi() {
-        initObservers()
-        binding.viewModel = viewModel
-        viewModel.showProgress(true)
-        viewModel.getUserAccounts(this)
-        viewModel.getMyProfile(this)
+        viewModel.fetchAll()
     }
 
     private fun initObservers() {
-        viewModel.linkedAccountsResponse.observe(this, observer)
-        viewModel.myProfileResponse.observe(this, profileObserver)
-    }
-
-    private fun getUserAccounts() {
-        compositeDisposable.add(Observable.just(viewModel)
-            .map { it.getDisplayAccounts() }
-            .get()
-            .subscribe { items ->
-                listItems = items
-                binding.rvUserAccounts.apply {
-                    layoutManager = LinearLayoutManager(context)
-                    @Suppress("UNCHECKED_CAST")
-                    (listItems as? List<IGroupDataBindingModel>)?.let {
-                        adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment, it)
-                    }
+        viewModel.updateProfile.observe(this, Observer {
+            context?.setPinCreated(it.hasTransactionPin)
+            it.verifiedIdentifiers.forEach { identifier ->
+                if (identifier.type == VERIFIED_IDENTIFIER_MOBILE) {
+                    activity?.setMobileIdentifier(identifier.value)
                 }
-            })
+            }
+            context?.setName(it.name)
+        })
+        viewModel.updateLinks.observe(this, Observer {
+            listItems = it
+            binding.rvUserAccounts.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment, it)
+            }
+        })
+        viewModel.userProfileResponse.observe(this, Observer {
+            when (it) {
+                is Failure -> {
+                    context?.showErrorDialog(it.error.localizedMessage)
+                }
+                is PartialFailure -> {
+                    context?.showAlertDialog(
+                        getString(R.string.failure), it.error?.message, getString(
+                            android
+                                .R.string.ok
+                        )
+                    )
+                }
+            }
+        })
     }
 
 
@@ -107,25 +95,10 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
         iDataBindingModel: IDataBindingModel,
         itemViewBinding: ViewDataBinding
     ) {
-        viewModel.showProgress(false)
-    }
-
-    override fun <T> onSuccess(body: T?) {
-        viewModel.showProgress(false)
-    }
-
-    override fun onFailure(errorBody: ErrorResponse) {
-        viewModel.showProgress(false)
-        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
-    }
-
-    override fun onFailure(t: Throwable) {
-        viewModel.showProgress(false)
-        context?.showErrorDialog(t.localizedMessage)
+        viewModel.showProgress(true)
     }
 
     override fun onDestroy() {
-        compositeDisposable.dispose()
         eventBusInstance.unregister(this)
         super.onDestroy()
     }
@@ -134,8 +107,8 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
     public fun onEvent(providerAddedEvent: ProviderAddedEvent) {
         when (providerAddedEvent) {
             ProviderAddedEvent.PROVIDER_ADDED -> {
-                viewModel.showProgress(false)
-                viewModel.getUserAccounts(this)
+//                showProgressBar(true)
+                viewModel.getUserAccounts()
             }
         }
     }

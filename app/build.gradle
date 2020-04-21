@@ -10,7 +10,6 @@ android {
     defaultConfig {
         minSdkVersion Config.minSdkVersion
         targetSdkVersion Config.compileSdkVersion
-
         testInstrumentationRunner "in.projecteka.jataayu.testUtil.JataayuJUnitRunner"
     }
 
@@ -19,6 +18,7 @@ android {
             debuggable true
             resValue 'string', 'app_name', 'Jataayu Debug'
             applicationIdSuffix '.debug'
+
         }
         qa {
             debuggable true

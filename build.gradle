@@ -43,6 +43,7 @@ subprojects {
                     targetSdkVersion Config.compileSdkVersion
 
                     testInstrumentationRunner "in.projecteka.jataayu.testUtil.JataayuJUnitRunner"
+                    resValue "string", "cm_config_provider", "@ncg"
                 }
 
                 compileOptions {

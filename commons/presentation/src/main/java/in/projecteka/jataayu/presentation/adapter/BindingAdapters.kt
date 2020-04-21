@@ -8,8 +8,10 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableBoolean
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
+import com.google.android.material.textfield.TextInputEditText
 
 object BindingAdapters {
 
@@ -44,10 +46,18 @@ object BindingAdapters {
     }
 
     @JvmStatic
-    @BindingAdapter("resource_reference")
+    @BindingAdapter("app:resource_reference")
     fun bindStringResourceIdToString(textView: TextView, @StringRes id: Int) {
         val text = textView.context.getString(id)
         textView.text = text
+    }
+
+    @JvmStatic
+    @BindingAdapter("toggle_error", "error_text", requireAll = true)
+    fun bindErrorToInput(editText: TextInputEditText, toggleError: Boolean, errorText: String) {
+        if (toggleError)
+            editText.error = errorText
+        else editText.error = null
     }
 
 }

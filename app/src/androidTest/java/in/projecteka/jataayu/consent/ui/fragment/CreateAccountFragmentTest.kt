@@ -47,7 +47,7 @@ class CreateAccountFragmentTest{
 
             allOf {
                 id(R.id.tv_provider_name)
-                text("@ncg")
+                text(R.string.cm_config_provider)
             }
 
             allOf {

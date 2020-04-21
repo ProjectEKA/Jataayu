@@ -15,10 +15,6 @@ class DashboardViewModel : BaseViewModel(), BottomNavigationView.OnNavigationIte
 
     internal val showFragmentEvent = SingleLiveEvent<Show>()
 
-    fun setup() {
-
-    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_accounts -> {
             showFragmentEvent.value = Show.USER_ACCOUNT

@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewMo
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationFragmentViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationVerificationViewModel
 import `in`.projecteka.jataayu.ui.dashboard.DashboardViewModel
+import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -16,7 +17,7 @@ val viewModelModule = module {
     viewModel { RequestedConsentViewModel(get()) }
     viewModel { GrantedConsentViewModel(get()) }
     viewModel { ConsentViewModel(get()) }
-    viewModel { UserAccountsViewModel(get()) }
+
     viewModel { UserVerificationViewModel(get()) }
     viewModel { EditConsentDetailsVM() }
 
@@ -30,4 +31,10 @@ val viewModelModule = module {
     viewModel { RegistrationActivityViewModel(get()) }
     viewModel { RegistrationFragmentViewModel() }
     viewModel { RegistrationVerificationViewModel() }
+
+    //User Account
+    viewModel { UserAccountsViewModel(get()) }
+
+    //Create Account
+    viewModel { CreateAccountViewModel(get()) }
 }
