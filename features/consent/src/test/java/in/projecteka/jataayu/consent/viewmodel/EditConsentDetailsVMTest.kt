@@ -76,7 +76,7 @@ internal class EditConsentDetailsVMTest {
     fun tearDown() {
         editConsentDetailsVM.onSaveClicked.removeObserver(onSaveClickedEventObserver)
         editConsentDetailsVM.onDatePickerClicked.removeObserver(onDateClickedEventObserver)
-        editConsentDetailsVM.onTimePickerClicked.observeForever(onTimePickerClickedObserver)
+        editConsentDetailsVM.onTimePickerClicked.removeObserver(onTimePickerClickedObserver)
 
     }
 

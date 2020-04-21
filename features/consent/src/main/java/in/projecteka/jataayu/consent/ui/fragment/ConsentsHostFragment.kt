@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_consent.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -25,9 +24,6 @@ class ConsentHostFragment : BaseFragment() {
     private val eventBusInstance = EventBus.getDefault()
 
     private val viewModel: ConsentHostFragmentViewModel by sharedViewModel()
-
-    private lateinit var viewPager: ViewPager
-    private lateinit var tabs: TabLayout
 
     companion object {
         fun newInstance() = ConsentHostFragment()
@@ -66,10 +62,8 @@ class ConsentHostFragment : BaseFragment() {
     }
 
     private fun initialViewpagerSetup() {
-        viewPager = binding.viewPager
-        viewPager.adapter = ConsentPagerAdapter(context!!, childFragmentManager)
-        tabs = binding.tabs
-        tabs.setupWithViewPager(viewPager)
+        binding.viewPager.adapter = ConsentPagerAdapter(context!!, childFragmentManager)
+        binding.tabs.setupWithViewPager(binding.viewPager)
         view_pager.addOnPageChangeListener(onPageChangeListener)
     }
 
