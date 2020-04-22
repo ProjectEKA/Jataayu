@@ -41,11 +41,10 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
     }
 
     private fun initToolbar() {
-        val toolbar = findViewById<Toolbar>(R.id.app_toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.appToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
+        binding.appToolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
     private fun initBindings() {
