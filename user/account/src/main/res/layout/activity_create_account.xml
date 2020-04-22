@@ -20,15 +20,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/included_toolbar"
-            layout="@layout/default_toolbar"
-            app:title="@{@string/create_account}" />
+        <androidx.appcompat.widget.Toolbar
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/app_toolbar"
+            android:layout_height="@dimen/toolbar_size"
+            android:layout_width="match_parent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:navigationIcon="?android:attr/homeAsUpIndicator"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title='@{@string/create_account}' />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/included_toolbar"
+            android:layout_below="@id/app_toolbar"
             android:background="@color/white"
             android:clipToPadding="false"
             android:paddingTop="@dimen/content_margin_36">
