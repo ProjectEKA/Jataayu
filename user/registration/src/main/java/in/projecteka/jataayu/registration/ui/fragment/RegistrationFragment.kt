@@ -5,7 +5,6 @@ import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentRegistrationBinding
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationFragmentViewModel
-import `in`.projecteka.jataayu.util.extension.setTitle
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,13 +25,15 @@ class RegistrationFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentRegistrationBinding.inflate(inflater)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-
+        val title = getString(R.string.register)
+        parentVM.appBarTitle.set(title)
         viewModel.onContinueClicked.observe(this, Observer {
             parentVM.requestVerification(it)
         })
@@ -40,6 +41,5 @@ class RegistrationFragment : BaseFragment() {
 
     override fun onVisible() {
         super.onVisible()
-        setTitle(R.string.register)
     }
 }

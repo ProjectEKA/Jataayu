@@ -20,6 +20,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatCheckedTextView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,10 +41,11 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
     }
 
     private fun initToolbar() {
-        setSupportActionBar(binding.includedToolbar.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.app_toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        binding.includedToolbar.toolbar?.setNavigationOnClickListener { onBackPressed() }
+        toolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
     private fun initBindings() {

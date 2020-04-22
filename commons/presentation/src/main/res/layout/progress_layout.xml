@@ -47,7 +47,7 @@
             android:layout_margin="@dimen/content_margin_extra_small"
             android:paddingLeft="@dimen/toolbar_size"
             android:paddingRight="@dimen/toolbar_size"
-            android:text="@{message}"
+            android:text='@{message, default=@string/default_progress_message}'
             android:textColor="@color/white" />
 
     </RelativeLayout>

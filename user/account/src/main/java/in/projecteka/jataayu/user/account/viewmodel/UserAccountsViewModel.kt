@@ -25,6 +25,7 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Ba
 
     val updateLinks = SingleLiveEvent<List<IGroupDataBindingModel>>()
     val updateProfile = SingleLiveEvent<MyProfile>()
+    val addProviderEvent = SingleLiveEvent<Void>()
 
     fun fetchAll() {
         userProfileResponse.addSource(getUserAccounts(), Observer {
@@ -81,5 +82,9 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Ba
 
     private fun isCurrentlyFetching() =
         myProfileResponse.isLoading() || linkedAccountsResponse.isLoading()
+
+    fun onClickAddProvider(){
+        addProviderEvent.call()
+    }
 
 }

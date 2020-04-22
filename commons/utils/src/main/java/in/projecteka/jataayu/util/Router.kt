@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.util
 
+import `in`.projecteka.jataayu.util.extension.startActivityForResult
 import android.content.Context
 import android.content.Intent
 
@@ -27,8 +28,12 @@ fun startRegistration(context: Context, intentDefinition: IntentDefinition? = nu
     })
 }
 
-fun startProvider(context: Context, intentDefinition: IntentDefinition? = null) {
-    context.startActivity(defaultIntentDefinition(context, ACTIVITY_PROVIDER, intentDefinition))
+fun startProvider(context: Context, resultCode: Int? = null, intentDefinition: IntentDefinition? = null) {
+    resultCode?.let {
+        context.startActivityForResult(context.classLoader.loadClass(ACTIVITY_REGISTRATION), it)
+    } ?: run {
+        context.startActivity(defaultIntentDefinition(context, ACTIVITY_PROVIDER, intentDefinition))
+    }
 }
 
 fun startAccountCreation(context: Context, intentDefinition: IntentDefinition? = null) {

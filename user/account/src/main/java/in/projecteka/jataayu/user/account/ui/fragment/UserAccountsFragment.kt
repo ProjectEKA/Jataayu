@@ -15,6 +15,7 @@ import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.sharedPref.setMobileIdentifier
 import `in`.projecteka.jataayu.util.sharedPref.setName
 import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
+import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -87,6 +88,9 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
                     )
                 }
             }
+        })
+        viewModel.addProviderEvent.observe(this, Observer {
+            startProvider(context!!)
         })
     }
 

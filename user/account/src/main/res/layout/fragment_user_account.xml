@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data >
+    <data>
+
         <variable
             name="viewModel"
             type="in.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel" />
-        <variable
-            name="linkedPatient"
-            type="in.projecteka.jataayu.core.model.LinkedPatient" />
+
     </data>
 
     <FrameLayout
@@ -84,12 +83,22 @@
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/fab_margin_bottom"
+                android:onClick="@{() -> viewModel.onClickAddProvider()}"
+                app:srcCompat="@drawable/ic_add" />
+
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="fill_vertical"
-                android:fadingEdgeLength="@dimen/content_margin_large"
                 android:layout_marginBottom="@dimen/toolbar_size"
+                android:fadingEdgeLength="@dimen/content_margin_large"
                 android:requiresFadingEdge="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -101,18 +110,18 @@
 
                     <TextView
                         android:id="@+id/my_linked_accounts"
+                        style="@style/TextAppearance.Title"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_marginTop="@dimen/content_margin_extra_small"
                         android:layout_marginBottom="@dimen/content_padding_large"
-                        style="@style/TextAppearance.Title"
                         android:text="@{@string/my_linked_accounts(viewModel.linksSize)}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:layout_width="match_parent"
                         android:id="@+id/rv_user_accounts"
+                        android:layout_width="match_parent"
                         android:layout_height="0dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/my_linked_accounts"
@@ -125,10 +134,10 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <include
-            tools:visibility="gone"
             android:id="@+id/progress_bar_layout"
-            app:showProgress="@{viewModel.showProgress}"
+            layout="@layout/progress_layout"
             app:message="@{viewModel.showProgressMessage}"
-            layout="@layout/progress_layout"/>
+            app:showProgress="@{viewModel.showProgress}"
+            tools:visibility="gone" />
     </FrameLayout>
 </layout>
