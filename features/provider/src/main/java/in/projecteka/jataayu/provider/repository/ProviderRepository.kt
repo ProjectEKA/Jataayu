@@ -14,9 +14,10 @@ interface ProviderRepository {
     fun getPatientAccounts(request: Request): Call<PatientDiscoveryResponse>
     fun linkPatientAccounts(patientDiscoveryResponse: PatientDiscoveryResponse): Call<LinkAccountsResponse>
     fun verifyOtp(referenceNumber: String, otp: Otp): Call<SuccessfulLinkingResponse>
+    fun getProviderBy(providerId: String): Call<ProviderInfo>
 }
 
-class ProviderRepositoryImpl(private val providerApi: ProviderApis) : ProviderRepository {
+ class ProviderRepositoryImpl(private val providerApi: ProviderApis) : ProviderRepository {
     override fun getProviders(name: String): Call<List<ProviderInfo>> {
         return providerApi.getProviders(name)
     }
@@ -31,5 +32,9 @@ class ProviderRepositoryImpl(private val providerApi: ProviderApis) : ProviderRe
 
     override fun verifyOtp(referenceNumber: String, otp: Otp): Call<SuccessfulLinkingResponse> {
         return providerApi.verifyOtp(referenceNumber, otp)
+    }
+
+    override fun getProviderBy(providerId: String): Call<ProviderInfo> {
+        return providerApi.getProvidersBy(providerId)
     }
 }

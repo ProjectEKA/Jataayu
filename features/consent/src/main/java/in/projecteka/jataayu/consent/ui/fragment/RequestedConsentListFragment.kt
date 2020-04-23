@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
@@ -62,8 +63,13 @@ class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, It
     }
 
     private fun initObservers() {
-        viewModel.requestedConsentsList.observe(this, Observer<List<Consent>?> {
-            it?.let { renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition) }
+        viewModel.requestedConsentsList.observe(this, Observer<List<Consent>?> { it ->
+            it?.let { consentList ->
+                val idList = consentList.map { consent -> consent.hiu.id }
+                ConsentDataProviderCacheManager.fetchHipInfo(idList,viewModel.getConsentRepository(), this) {
+                    renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)
+                }
+            }
         })
 
         viewModel.consentListResponse.observe(this, Observer {

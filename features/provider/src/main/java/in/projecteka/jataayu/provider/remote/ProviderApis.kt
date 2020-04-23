@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.provider.model.LinkAccountsResponse
 import `in`.projecteka.jataayu.provider.model.Otp
 import `in`.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
+import androidx.annotation.NonNull
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -21,4 +22,7 @@ interface ProviderApis {
 
     @POST("patients/link/{referenceNumber}")
     fun verifyOtp(@Path("referenceNumber") referenceNumber: String, @Body otp: Otp): Call<SuccessfulLinkingResponse>
+
+    @GET("providers/{provider-id}")
+    fun getProvidersBy(@NonNull @Path("provider-id") providerId: String): Call<ProviderInfo>
 }
