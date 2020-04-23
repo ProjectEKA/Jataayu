@@ -8,6 +8,7 @@ import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
+import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.MessageEventType
@@ -49,6 +50,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private lateinit var consentsListAdapter: ConsentsListAdapter
 
     private val viewModel: GrantedConsentViewModel by sharedViewModel()
+    private val parentVM: ConsentHostFragmentViewModel by sharedViewModel()
 
     companion object {
         fun newInstance() = GrantedFragment()
@@ -80,6 +82,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
             when (it) {
                 is Loading -> showProgressBar(it.isLoading, getString(R.string.loading_requests))
                 is Success -> {
+                    parentVM.showRefreshing(false)
                     binding.hideRequestsList = it.data?.requests.isNullOrEmpty()
                     binding.hideFilter = true
                     viewModel.filterConsents(it.data?.requests)
@@ -111,7 +114,6 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                     }
                 }
             })
-
         viewModel.revokeConsentResponse.observe(this, Observer<PayloadResource<Void>> {
             when (it) {
                 is Loading -> showProgressBar(
@@ -136,6 +138,12 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                         getString(android.R.string.ok)
                     )
                 }
+            }
+        })
+         
+         parentVM.pullToRefreshEvent.observe(viewLifecycleOwner, Observer{
+            if (it) {
+                viewModel.getConsents()
             }
         })
     }
@@ -163,6 +171,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
+        viewModel.getConsents()
     }
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
@@ -234,12 +243,6 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                 EventBus.getDefault().register(this)
             }
         }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getConsents()
     }
 
     @Subscribe

@@ -36,6 +36,7 @@ val viewModelModule = module {
     viewModel { RequestedConsentViewModel(get()) }
     viewModel { GrantedConsentViewModel(get()) }
     viewModel { ConsentViewModel(get()) }
+    viewModel { ConsentHostFragmentViewModel() }
     viewModel { UserAccountsViewModel(get()) }
     viewModel { UserVerificationViewModel(get()) }
     viewModel { EditConsentDetailsVM(get()) }

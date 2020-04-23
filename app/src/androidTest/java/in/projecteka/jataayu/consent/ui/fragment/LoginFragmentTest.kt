@@ -39,6 +39,11 @@ class LoginFragmentTest{
             }
 
             allOf {
+                id(tv_provider_name)
+                text(R.string.cm_config_provider)
+            }
+
+            allOf {
                 id(et_password)
                 text("")
             }
