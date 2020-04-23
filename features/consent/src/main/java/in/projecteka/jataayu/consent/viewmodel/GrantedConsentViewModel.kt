@@ -18,17 +18,17 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewModel() {
+class GrantedConsentViewModel(private val repository: ConsentRepository,
+                              private val credentialsRepository: CredentialsRepository) : ViewModel() {
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
-    val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()
-    val consentDenyResponse = PayloadLiveData<Void>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
     val revokeConsentResponse = PayloadLiveData<Void>()
 
@@ -59,43 +59,6 @@ class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewM
 
     fun getGrantedConsentDetails(requestId: String) {
         grantedConsentDetailsResponse.fetch(repository.getGrantedConsentDetails(requestId))
-    }
-
-    fun grantConsent(
-        requestId: String,
-        consentArtifacts: List<ConsentArtifact>,
-        authToken: String
-    ) =
-        consentArtifactResponse.fetch(repository.grantConsent(requestId, ConsentArtifactRequest((consentArtifacts)), authToken))
-
-
-    fun getConsentArtifact(
-        links: List<Links>,
-        hiTypeObjects: ArrayList<HiType>,
-        permission: Permission
-    ): List<ConsentArtifact> {
-
-        val consentArtifactList = ArrayList<ConsentArtifact>()
-        val hiTypes = hiTypeObjects.map { it.type }
-
-
-        links.forEach { link ->
-            val careReferences = ArrayList<CareReference>()
-            link.careContexts.forEach { careContext ->
-                if (careContext.contextChecked) careReferences.add(newCareReference(link, careContext))
-            }
-
-            if (careReferences.isNotEmpty()) {
-                consentArtifactList.add(
-                    ConsentArtifact(hiTypes, link.hip, careReferences, permission)
-                )
-            }
-        }
-        return consentArtifactList
-    }
-
-    fun denyConsent(requestId: String){
-        consentDenyResponse.fetch(repository.denyConsent(requestId))
     }
 
     fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> =
@@ -140,38 +103,16 @@ class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewM
         return String.format(resources.getString(filterItem), count)
     }
 
-    fun getItems(links: List<Links?>): List<IDataBindingModel> {
-        val items = arrayListOf<IDataBindingModel>()
-        links.filterNotNull().forEach { link ->
-            items.add(link.hip)
-            items.addAll(link.careContexts)
-        }
-        return items
-    }
-
-    private fun newCareReference(link: Links, it: CareContext) = CareReference(link.referenceNumber, it.referenceNumber)
-
-    fun checkSelectionInBackground(listOfBindingModels: List<IDataBindingModel>?): Pair<Boolean, Boolean> {
-        var selectableItemsCount = 0
-        var selectionCount = 0
-
-        listOfBindingModels?.filterIsInstance<CareContext>()?.run {
-            selectableItemsCount = count()
-            selectionCount = count { it.contextChecked }
-        }
-        return Pair(selectableItemsCount == selectionCount, selectionCount > 0)
-    }
-
     fun filterConsents(consentList: List<Consent>?) {
 
         requestedConsentsList.value = consentList?.grantedConsentList()
         grantedConsentsList.value = consentList?.grantedConsentList()
     }
 
-    fun revokeConsent(consentArtifactId: String, authToken: String) {
+    fun revokeConsent(consentArtifactId: String) {
         val list: ArrayList<String> = ArrayList()
         list.add(consentArtifactId)
-        revokeConsentResponse.fetch(repository.revokeConsent(RevokeConsentRequest(list), authToken))
+        revokeConsentResponse.fetch(repository.revokeConsent(RevokeConsentRequest(list), credentialsRepository.consentTemporaryToken))
     }
     fun getItems(grantedConsents: List<GrantedConsentDetailsResponse>, linkedAccounts: List<Links>?): Pair<List<IDataBindingModel>,Int> {
         var count = 0

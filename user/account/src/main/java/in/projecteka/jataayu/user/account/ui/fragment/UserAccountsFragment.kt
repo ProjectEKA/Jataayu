@@ -16,9 +16,6 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.get
-import `in`.projecteka.jataayu.util.sharedPref.setMobileIdentifier
-import `in`.projecteka.jataayu.util.sharedPref.setName
-import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -45,13 +42,13 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
     }
 
     private val profileObserver = Observer<MyProfile> {
-        context?.setPinCreated(it.hasTransactionPin)
+        viewModel.preferenceRepository.pinCreated = it.hasTransactionPin
         it.verifiedIdentifiers.forEach { identifier ->
             if (identifier.type == VERIFIED_IDENTIFIER_MOBILE) {
-                activity?.setMobileIdentifier(identifier.value)
+                viewModel.preferenceRepository.mobileIdentifier = identifier.value
             }
         }
-        context?.setName(it.name)
+        viewModel.preferenceRepository.name = it.name
         binding.tvPatientName.text = it.name
     }
 

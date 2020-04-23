@@ -19,7 +19,6 @@ import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.util.sharedPref.getConsentTempToken
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
 import android.content.Intent
 import android.os.Bundle
@@ -82,58 +81,58 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                     viewModel.filterConsents(it.data?.requests)
                 }
                 is PartialFailure -> {
-                    context?.showAlertDialog(getString(R.string.failure), it.error?.message,
-                        getString(android.R.string.ok))
+                    context?.showAlertDialog(
+                        getString(R.string.failure), it.error?.message,
+                        getString(android.R.string.ok)
+                    )
                 }
             }
         })
 
-            viewModel.grantedConsentDetailsResponse.observe(
-                this,
-                Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
-                    when (payload) {
-                        is Success -> {
-                            payload.data?.firstOrNull()?.consentDetail?.let {
-                                viewModel.revokeConsent(
-                                    it.id,
-                                    context?.getConsentTempToken()!!
-                                )
-                            }
-
-                        }
-                        is Loading -> {
-                            showProgressBar(payload.isLoading)
-                        }
-                    }
-                })
-
-            viewModel.revokeConsentResponse.observe(this, Observer<PayloadResource<Void>> {
-                when (it) {
-                    is Loading -> showProgressBar(
-                        it.isLoading,
-                        getString(R.string.revoking_consent)
-                    )
+        viewModel.grantedConsentDetailsResponse.observe(
+            this,
+            Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
+                when (payload) {
                     is Success -> {
-                        activity?.let {
-                            EventBus.getDefault().post(MessageEventType.CONSENT_REVOKED)
-                            viewModel.getConsents()
+                        payload.data?.firstOrNull()?.consentDetail?.let {
+                            viewModel.revokeConsent(
+                                it.id)
                         }
+
                     }
-                    is PartialFailure -> {
-                        context?.showAlertDialog(
-                            getString(R.string.failure), it.error?.message,
-                            getString(android.R.string.ok)
-                        )
-                    }
-                    is Failure -> {
-                        context?.showAlertDialog(
-                            getString(R.string.failure), it.error?.message,
-                            getString(android.R.string.ok)
-                        )
+                    is Loading -> {
+                        showProgressBar(payload.isLoading)
                     }
                 }
             })
-        parentVM.pullToRefreshEvent.observe(viewLifecycleOwner, Observer{
+
+        viewModel.revokeConsentResponse.observe(this, Observer<PayloadResource<Void>> {
+            when (it) {
+                is Loading -> showProgressBar(
+                    it.isLoading,
+                    getString(R.string.revoking_consent)
+                )
+                is Success -> {
+                    activity?.let {
+                        EventBus.getDefault().post(MessageEventType.CONSENT_REVOKED)
+                        viewModel.getConsents()
+                    }
+                }
+                is PartialFailure -> {
+                    context?.showAlertDialog(
+                        getString(R.string.failure), it.error?.message,
+                        getString(android.R.string.ok)
+                    )
+                }
+                is Failure -> {
+                    context?.showAlertDialog(
+                        getString(R.string.failure), it.error?.message,
+                        getString(android.R.string.ok)
+                    )
+                }
+            }
+        })
+        parentVM.pullToRefreshEvent.observe(viewLifecycleOwner, Observer {
             if (it) {
                 viewModel.getConsents()
             }
@@ -188,7 +187,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
             INDEX_ACTIVE -> filterRequests(viewModel.grantedConsentsList.value!!.filter { !isDateExpired(it.permission.dataEraseAt) && it.status != RequestStatus.DENIED })
-            INDEX_EXPIRED -> filterRequests(viewModel.grantedConsentsList.value!!.filter { isDateExpired(it.permission.dataEraseAt) && it.status != RequestStatus.DENIED})
+            INDEX_EXPIRED -> filterRequests(viewModel.grantedConsentsList.value!!.filter { isDateExpired(it.permission.dataEraseAt) && it.status != RequestStatus.DENIED })
             INDEX_ALL -> filterRequests(viewModel.grantedConsentsList.value!!)
         }
     }
@@ -199,7 +198,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     }
 
     private fun unregisterEventBus() {
-        if (EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
     }

@@ -15,8 +15,6 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.extension.startActivityForResult
-import `in`.projecteka.jataayu.util.sharedPref.getPinCreated
-import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -105,7 +103,7 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
     }
 
     fun validateUser() {
-        if (getPinCreated()) {
+        if (viewModel.preferenceRepository.pinCreated) {
             addFragment(UserVerificationFragment.newInstance())
         } else {
             startActivityForResult(CreatePinActivity::class.java, 201)
@@ -115,7 +113,7 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 201 && resultCode == Activity.RESULT_OK) {
-            setPinCreated(true)
+            viewModel.preferenceRepository.pinCreated = true
             EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
         }
     }

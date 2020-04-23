@@ -11,7 +11,6 @@ open class BaseDialogFragment : DialogFragment() {
     open fun onVisible() {}
     open fun onBackPressedCallback() {}
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.AppTheme_FullScreenDialog)

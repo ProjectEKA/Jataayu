@@ -8,6 +8,7 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCKOON_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.PROD_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.TEST_URL
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.sharedPref.*
 import android.content.DialogInterface
 import android.os.Bundle
@@ -20,6 +21,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.base_activity.*
 import org.greenrobot.eventbus.EventBus
+import org.koin.android.ext.android.getKoin
+import org.koin.core.context.GlobalContext.get
 
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -47,7 +50,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 setNetworkPref(selectedEnvironmentIndex!!, it)
             }
             etAuthToken.text?.toString()?.let {
-                setAuthToken(etAuthToken.text.toString())
+                getKoin().get<CredentialsRepository>().accessToken = etAuthToken.text.toString()
             }
         }
     }
@@ -68,7 +71,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
         networkPrefDialogBinding.apply {
             endpoint = getBaseUrl()
-            token = getAuthToken()
+            token = getKoin().get<CredentialsRepository>().accessToken
             rgEnvironmentOptions.check(rgEnvironmentOptions.getChildAt(getEndpointIndex()).id)
             selectedEnvironmentIndex = getEndpointIndex()
 

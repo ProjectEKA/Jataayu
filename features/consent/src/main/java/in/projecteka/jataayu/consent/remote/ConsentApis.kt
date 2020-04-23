@@ -17,10 +17,12 @@ interface ConsentApis {
     fun getLinkedAccounts(): Call<LinkedAccountsResponse>
 
     @POST("consent-requests/{request-id}/approve")
-    fun approveConsent(@Path("request-id") requestId: String, @Body approveConsentRequest: ConsentArtifactRequest, @Header("Authorization") authToken: String): Call<ConsentArtifactResponse>
+    fun approveConsent(@Path("request-id") requestId: String,
+                       @Body approveConsentRequest: ConsentArtifactRequest,
+                       @Header("Authorization") authToken: String?): Call<ConsentArtifactResponse>
 
     @POST("consents/revoke")
-    fun revokeConsent(@Body revokeConsentRequest: RevokeConsentRequest, @Header("Authorization") authToken: String): Call<Void>
+    fun revokeConsent(@Body revokeConsentRequest: RevokeConsentRequest, @Header("Authorization") authToken: String?): Call<Void>
 
     @GET("consent-requests/{request-id}/consent-artefacts")
     fun getGrantedConsentDetails(@Path("request-id") requestId: String): Call<List<GrantedConsentDetailsResponse>>

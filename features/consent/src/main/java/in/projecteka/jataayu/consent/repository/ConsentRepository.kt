@@ -11,15 +11,16 @@ import retrofit2.Call
 
 interface ConsentRepository {
     fun getConsents(): Call<ConsentsListResponse>
-    fun grantConsent(requestId: String, approveConsentRequest: ConsentArtifactRequest, authToken: String): Call<ConsentArtifactResponse>
+    fun grantConsent(requestId: String, approveConsentRequest: ConsentArtifactRequest, authToken: String?): Call<ConsentArtifactResponse>
     fun getLinkedAccounts(): Call<LinkedAccountsResponse>
-    fun revokeConsent(revokeConsentRequest: RevokeConsentRequest, authToken: String): Call<Void>
+    fun revokeConsent(revokeConsentRequest: RevokeConsentRequest, authToken: String?): Call<Void>
     fun getGrantedConsentDetails(requestId: String): Call<List<GrantedConsentDetailsResponse>>
     fun denyConsent(requestId: String): Call<Void>
 }
 
 class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentRepository {
-    override fun grantConsent(requestId: String, approveConsentRequest: ConsentArtifactRequest, authToken: String): Call<ConsentArtifactResponse> {
+    override fun grantConsent(requestId: String, approveConsentRequest: ConsentArtifactRequest, authToken: String?):
+            Call<ConsentArtifactResponse> {
         return consentApi.approveConsent(requestId, approveConsentRequest, authToken)
     }
 
@@ -30,7 +31,7 @@ class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentReposi
         return consentApi.getLinkedAccounts()
     }
 
-    override fun revokeConsent(revokeConsentRequest: RevokeConsentRequest, authToken: String): Call<Void> {
+    override fun revokeConsent(revokeConsentRequest: RevokeConsentRequest, authToken: String?): Call<Void> {
         return consentApi.revokeConsent(revokeConsentRequest, authToken)
     }
 

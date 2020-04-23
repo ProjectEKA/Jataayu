@@ -11,7 +11,6 @@ import `in`.projecteka.jataayu.provider.ui.ProviderActivity
 import `in`.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
 import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.extension.startActivity
-import `in`.projecteka.jataayu.util.sharedPref.*
 import `in`.projecteka.jataayu.util.startAccountCreation
 import `in`.projecteka.jataayu.util.startLogin
 import `in`.projecteka.jataayu.util.startProvider
@@ -24,11 +23,13 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_launcher.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class LauncherActivity : BaseActivity() {
@@ -37,15 +38,17 @@ class LauncherActivity : BaseActivity() {
     private lateinit var accountsFragment: UserAccountsFragment
     private lateinit var consentFragment: ConsentHostFragment
 
+    private val viewModel: LauncherViewModel by viewModel()
+
     override fun onStart() {
         super.onStart()
-        if(!eventBusInstance.isRegistered(this)){
+        if (!eventBusInstance.isRegistered(this)) {
             eventBusInstance.register(this)
         }
     }
 
     override fun onDestroy() {
-        if(eventBusInstance.isRegistered(this)){
+        if (eventBusInstance.isRegistered(this)) {
             eventBusInstance.unregister(this)
         }
         super.onDestroy()
@@ -61,17 +64,32 @@ class LauncherActivity : BaseActivity() {
         }
     }
 
-    enum class RequestCodes {
-        REGISTER, CREATE_ACCOUNT, ADD_PROVIDER, LOGIN
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(intent.action == UnauthorisedUserRedirectInterceptor.REDIRECT_ACTIVITY_ACTION){
-            resetCredentials()
+        if (intent.action == UnauthorisedUserRedirectInterceptor.REDIRECT_ACTIVITY_ACTION) {
+            viewModel.resetCredentials()
             showLongToast("Session expired, redirecting to Login...")
         }
-        redirectIfNeeded()
+        viewModel.redirectIfNeeded()
+        initObservers()
+    }
+
+    private fun initObservers(){
+        viewModel.startLogin.observe(this, Observer {
+            startLogin(this)
+            finish()
+        })
+        viewModel.startAccountFragments.observe(this, Observer {
+            loadAccountsFragment()
+        })
+        viewModel.startProvider.observe(this, Observer {
+            startProvider(this)
+            finish()
+        })
+        viewModel.startAccountCreation.observe(this, Observer {
+            startAccountCreation(this)
+            finish()
+        })
     }
 
     private fun initFragments() {
@@ -81,27 +99,6 @@ class LauncherActivity : BaseActivity() {
 
         getFragmentTransaction(ConsentHostFragment::class.java.name, consentFragment).hide(consentFragment).commit()
         getFragmentTransaction(UserAccountsFragment::class.java.name, accountsFragment).commit()
-    }
-
-    private fun redirectIfNeeded() {
-
-        when{
-            hasProviders() || isUserLoggedIn() -> {
-                loadAccountsFragment()
-            }
-            isAccountCreated() -> {
-                startProvider(this)
-                finish()
-            }
-            isUserRegistered() -> {
-                startAccountCreation(this)
-                finish()
-            }
-            else -> {
-                startLogin(this)
-                finish()
-            }
-        }
     }
 
     private fun loadAccountsFragment() {
@@ -156,7 +153,7 @@ class LauncherActivity : BaseActivity() {
     public fun onEvent(messageEventType: MessageEventType) {
         when (messageEventType) {
             MessageEventType.CONSENT_GRANTED -> {
-               showSnackbar(getString(R.string.consent_granted))
+                showSnackbar(getString(R.string.consent_granted))
                 eventBusInstance.post(MessageEventType.SELECT_CONSENTS_TAB)
             }
             MessageEventType.ACCOUNT_LINKED -> {
@@ -183,6 +180,7 @@ class LauncherActivity : BaseActivity() {
         snackbar.anchorView = bottom_navigation
         snackbar.show()
     }
+
     override fun showProgressBar(shouldShow: Boolean) {
         showProgressBar(shouldShow, "")
     }
@@ -200,12 +198,4 @@ class LauncherActivity : BaseActivity() {
         binding.progressBarMessage = message
     }
 
-   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        unloadKoinModules(listOf(networkModule))
-        loadKoinModules(listOf(networkModule))
-
-        if (resultCode == Activity.RESULT_OK && requestCode == LOGIN.ordinal)
-                loadAccountsFragment()
-        }*/
 }
