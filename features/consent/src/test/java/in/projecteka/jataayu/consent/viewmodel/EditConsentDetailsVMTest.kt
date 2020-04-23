@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
+import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
@@ -16,7 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 
 @RunWith(MockitoJUnitRunner::class)
-internal class EditConsentDetailsVMTest {
+class EditConsentDetailsVMTest {
 
     @Mock
     lateinit var consent: Consent
@@ -36,19 +37,23 @@ internal class EditConsentDetailsVMTest {
     lateinit var careContext: CareContext
 
     @Mock
+    private lateinit var repository: ConsentRepository
+
+    @Mock
     lateinit var hiType: HiType
 
     @Rule
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    val editConsentDetailsVM: EditConsentDetailsVM = EditConsentDetailsVM()
+    private lateinit var editConsentDetailsVM: EditConsentDetailsVM
 
     val careContexts = arrayListOf<CareContext>()
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        editConsentDetailsVM = EditConsentDetailsVM(repository)
         editConsentDetailsVM.originalConsent = consent
         careContexts.apply { add(careContext) }
 

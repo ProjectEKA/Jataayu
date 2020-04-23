@@ -1,7 +1,9 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.R
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.extension.grantedConsentList
+import `in`.projecteka.jataayu.consent.extension.requestedConsentList
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
@@ -35,6 +37,7 @@ class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewM
     val requestedConsentsList = MutableLiveData<List<Consent>>()
     val grantedConsentsList = MutableLiveData<List<Consent>>()
 
+
     private val grantedConsentStatusList = listOf(
         R.string.status_all_granted_consents,
         R.string.status_active_granted_consents,
@@ -61,6 +64,14 @@ class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewM
         grantedConsentDetailsResponse.fetch(repository.getGrantedConsentDetails(requestId))
     }
 
+    fun getConsentRepository(): ConsentRepository = repository
+
+    fun getHipInfoLiveData(providerId: String): PayloadLiveData<ProviderInfo> {
+        val liveData = PayloadLiveData<ProviderInfo>()
+        liveData.fetch(repository.getProviderBy(providerId))
+        return liveData
+    }
+
     fun grantConsent(
         requestId: String,
         consentArtifacts: List<ConsentArtifact>,
@@ -77,6 +88,7 @@ class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewM
 
         val consentArtifactList = ArrayList<ConsentArtifact>()
         val hiTypes = hiTypeObjects.map { it.type }
+
 
 
         links.forEach { link ->
@@ -164,7 +176,7 @@ class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewM
 
     fun filterConsents(consentList: List<Consent>?) {
 
-        requestedConsentsList.value = consentList?.grantedConsentList()
+        requestedConsentsList.value = consentList?.requestedConsentList()
         grantedConsentsList.value = consentList?.grantedConsentList()
     }
 
@@ -180,7 +192,9 @@ class GrantedConsentViewModel(private val repository: ConsentRepository) : ViewM
             val grantedAccountHipId = grantedConsent.consentDetail.hip?.id
             linkedAccounts?.forEach { link ->
                 if (grantedAccountHipId == link.hip.id) {
-                    val linkedHip = LinkedHip(link.hip.name, link.referenceNumber)
+                    // As per the requirement get the HIP name from ID
+                    val linkedHipName = ConsentDataProviderCacheManager.providerMap[grantedAccountHipId]?.hip?.name ?: ""
+                    val linkedHip = LinkedHip(linkedHipName, link.referenceNumber)
                     items.add(linkedHip)
                     count++
                     val careContextsList = arrayListOf<LinkedCareContext>()

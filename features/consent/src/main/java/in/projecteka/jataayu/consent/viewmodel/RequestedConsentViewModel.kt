@@ -54,6 +54,8 @@ class RequestedConsentViewModel(private val repository: ConsentRepository) : Vie
         grantedConsentDetailsResponse.fetch(repository.getGrantedConsentDetails(requestId))
     }
 
+    fun getConsentRepository(): ConsentRepository = repository
+
     fun grantConsent(
         requestId: String,
         consentArtifacts: List<ConsentArtifact>,
