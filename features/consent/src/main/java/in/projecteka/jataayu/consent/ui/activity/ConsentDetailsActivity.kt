@@ -3,9 +3,12 @@ package `in`.projecteka.jataayu.consent.ui.activity
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
-import `in`.projecteka.jataayu.consent.ui.fragment.*
-import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentViewModel
-import `in`.projecteka.jataayu.core.model.MessageEventType
+import `in`.projecteka.jataayu.consent.ui.fragment.EditConsentDetailsFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.GrantedConsentDetailsFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentDetailsFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentListFragment
+import `in`.projecteka.jataayu.consent.viewmodel.ConsentDetailsActivityViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentListViewModel
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
@@ -14,10 +17,6 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.util.extension.startActivityForResult
-import `in`.projecteka.jataayu.util.sharedPref.getPinCreated
-import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -26,12 +25,26 @@ import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
-    private val viewModel: RequestedConsentViewModel by viewModel()
+    private val viewModel: RequestedConsentListViewModel by viewModel()
+    private val detailsViewModel:   ConsentDetailsActivityViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        initObserver()
         handleIntent()
     }
+
+    /*private fun initObserver() {
+        detailsViewModel.consentEventType.observe(this, Observer {
+            *//*if (it == ConsentDetailsActivityViewModel.EVENT_TYPE.CONSENT_GRANTED){
+                this.setResult(501)
+                this.finish()
+            } else if (it == ConsentDetailsActivityViewModel.EVENT_TYPE.CONSENT_DENIED){
+                this.setResult(601)
+                this.finish()
+            }*//*
+        })
+    }*/
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -77,9 +90,9 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
     }
 
     private fun getFlowType(): Int {
-        if (intent.hasExtra(RequestedFragment.CONSENT_FLOW)) {
+        if (intent.hasExtra(RequestedConsentListFragment.CONSENT_FLOW)) {
             intent.extras?.getInt(
-                RequestedFragment.CONSENT_FLOW,
+                RequestedConsentListFragment.CONSENT_FLOW,
                 ConsentFlow.REQUESTED_CONSENTS.ordinal
             )?.let { return it }
         }
@@ -104,19 +117,16 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
         showErrorDialog(t.localizedMessage)
     }
 
-    fun validateUser() {
-        if (getPinCreated()) {
-            addFragment(UserVerificationFragment.newInstance())
-        } else {
-            startActivityForResult(CreatePinActivity::class.java, 201)
-        }
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 201 && resultCode == Activity.RESULT_OK) {
-            setPinCreated(true)
-            EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
+        if (resultCode == Activity.RESULT_OK){
+            if (requestCode == 201) {
+                setPinCreated(true)
+                detailsViewModel.consentEventType.value = ConsentDetailsActivityViewModel.EVENT_TYPE.USER_VERIFIED_FOR_GRAND
+            }  else if (requestCode == 301){
+                detailsViewModel.consentEventType.value = ConsentDetailsActivityViewModel.EVENT_TYPE.USER_VERIFIED_FOR_GRAND
+            }
         }
-    }
+    }*/
 }

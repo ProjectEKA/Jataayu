@@ -5,13 +5,12 @@ import `in`.projecteka.jataayu.consent.extension.requestedConsentList
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
-import `in`.projecteka.jataayu.core.model.*
+import `in`.projecteka.jataayu.core.model.Consent
+import `in`.projecteka.jataayu.core.model.LinkedCareContext
+import `in`.projecteka.jataayu.core.model.Links
+import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.core.model.RequestStatus.DENIED
 import `in`.projecteka.jataayu.core.model.RequestStatus.REQUESTED
-import `in`.projecteka.jataayu.core.model.approveconsent.CareReference
-import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifact
-import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
-import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.LinkedHip
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
@@ -23,14 +22,9 @@ import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class RequestedConsentViewModel(private val repository: ConsentRepository) : ViewModel() {
+class RequestedConsentListViewModel(private val repository: ConsentRepository) : ViewModel() {
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
-    val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
-    val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()
-    val consentDenyResponse = PayloadLiveData<Void>()
-    val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
-
     val requestedConsentsList = MutableLiveData<List<Consent>>()
 
     private val requestedConsentStatusList = listOf(
@@ -40,58 +34,13 @@ class RequestedConsentViewModel(private val repository: ConsentRepository) : Vie
         R.string.status_all_requested_consents
     )
 
+
+    fun getConsentRepository(): ConsentRepository = repository
+
     internal var selectedProviderName = String.EMPTY
 
     fun getConsents() =
         consentListResponse.fetch(repository.getConsents())
-
-
-    fun getLinkedAccounts() =
-        linkedAccountsResponse.fetch(repository.getLinkedAccounts())
-
-
-    fun getGrantedConsentDetails(requestId: String) {
-        grantedConsentDetailsResponse.fetch(repository.getGrantedConsentDetails(requestId))
-    }
-
-    fun getConsentRepository(): ConsentRepository = repository
-
-    fun grantConsent(
-        requestId: String,
-        consentArtifacts: List<ConsentArtifact>,
-        authToken: String
-    ) =
-        consentArtifactResponse.fetch(repository.grantConsent(requestId, ConsentArtifactRequest((consentArtifacts)), authToken))
-
-
-    fun getConsentArtifact(
-        links: List<Links>,
-        hiTypeObjects: ArrayList<HiType>,
-        permission: Permission
-    ): List<ConsentArtifact> {
-
-        val consentArtifactList = ArrayList<ConsentArtifact>()
-        val hiTypes: List<String> = hiTypeObjects.mapNotNull { if(it.isChecked) it.type else null }
-
-
-        links.forEach { link ->
-            val careReferences = ArrayList<CareReference>()
-            link.careContexts.forEach { careContext ->
-                if (careContext.contextChecked) careReferences.add(newCareReference(link, careContext))
-            }
-
-            if (careReferences.isNotEmpty()) {
-                consentArtifactList.add(
-                    ConsentArtifact(hiTypes, link.hip, careReferences, permission)
-                )
-            }
-        }
-        return consentArtifactList
-    }
-
-    fun denyConsent(requestId: String){
-        consentDenyResponse.fetch(repository.denyConsent(requestId))
-    }
 
     fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> =
         requestedConsentStatusList.map { getFormattedItem(resources,it, REQUESTED)  }
@@ -110,11 +59,9 @@ class RequestedConsentViewModel(private val repository: ConsentRepository) : Vie
                 R.string.status_denied_consent_requests -> {
                     consent.status == DENIED
                 }
-                R.string.status_active_granted_consents,
                 R.string.status_active_requested_consents -> {
                     if (consent.status != DENIED) !dataExpired else false
                 }
-                R.string.status_expired_granted_consents,
                 R.string.status_expired_requested_consents -> {
                     if (consent.status != DENIED) dataExpired else false
                 }
@@ -123,19 +70,6 @@ class RequestedConsentViewModel(private val repository: ConsentRepository) : Vie
         }
 
         return String.format(resources.getString(filterItem), count)
-    }
-
-    private fun newCareReference(link: Links, it: CareContext) = CareReference(link.referenceNumber, it.referenceNumber)
-
-    fun checkSelectionInBackground(listOfBindingModels: List<IDataBindingModel>?): Pair<Boolean, Boolean> {
-        var selectableItemsCount = 0
-        var selectionCount = 0
-
-        listOfBindingModels?.filterIsInstance<CareContext>()?.run {
-            selectableItemsCount = count()
-            selectionCount = count { it.contextChecked }
-        }
-        return Pair(selectableItemsCount == selectionCount, selectionCount > 0)
     }
 
     fun filterConsents(consentList: List<Consent>?) {

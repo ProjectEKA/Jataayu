@@ -16,6 +16,12 @@ class ConsentHostFragmentViewModel() : ViewModel(), SwipeRefreshLayout.OnRefresh
         SELECT_CONSENTS_TAB
     }
 
+    companion object {
+        const val REQUEST_CONSENT_DETAILS = 500
+        const val RESULT_CONSENT_GRANTED = 501
+        const val RESULT_DENY_CONSENT = 601
+    }
+
     internal val viewPagerState = SingleLiveEvent<Action>()
 
     fun setUp(){

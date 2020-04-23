@@ -6,7 +6,6 @@ import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
-import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
@@ -28,7 +27,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.get
 
 private const val PIN = "PIN"
@@ -90,9 +88,8 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                                     showProgressBar(true)
                                     viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
                                         activity?.setConsentTempToken(userVerificationResponse.temporaryToken)
-                                        EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
-                                        it.setResult(Activity.RESULT_OK)
-                                        it.finish()
+                                        activity?.setResult(Activity.RESULT_OK)
+                                        activity?.finish()
                                     })
                                     viewModel.verifyUser(pin, this)
 

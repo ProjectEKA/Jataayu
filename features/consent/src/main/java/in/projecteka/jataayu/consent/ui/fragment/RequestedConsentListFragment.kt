@@ -7,7 +7,10 @@ import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
-import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Companion.REQUEST_CONSENT_DETAILS
+import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Companion.RESULT_CONSENT_GRANTED
+import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Companion.RESULT_DENY_CONSENT
+import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentListViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.core.model.RequestStatus
@@ -41,16 +44,16 @@ private const val INDEX_EXPIRED = 1
 private const val INDEX_DENIED = 2
 private const val INDEX_ALL = 3
 
-class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, ItemClickCallback {
+class RequestedConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener, ItemClickCallback {
 
     protected lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var consentsListAdapter: ConsentsListAdapter
 
-    private val viewModel: RequestedConsentViewModel by sharedViewModel()
-    private val parentVM: ConsentHostFragmentViewModel by sharedViewModel()
+    private val viewModel: RequestedConsentListViewModel by sharedViewModel()
+    private val parentViewModel: ConsentHostFragmentViewModel by sharedViewModel()
 
     companion object {
-        fun newInstance() = RequestedFragment()
+        fun newInstance() = RequestedConsentListFragment()
         const val CONSENT_FLOW = "consent_flow"
     }
 
@@ -80,10 +83,10 @@ class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, It
                     showProgressBar(it.isLoading, getString(R.string.loading_requests))
                 }
                 is Success -> {
-                    parentVM.showRefreshing(false)
-                    binding.hideRequestsList = it.data?.requests.isNullOrEmpty()
-                    binding.hideFilter = binding.hideRequestsList
+                    parentViewModel.showRefreshing(false)
                     viewModel.filterConsents(it.data?.requests)
+                    binding.hideRequestsList = viewModel.requestedConsentsList.value.isNullOrEmpty()
+                    binding.hideFilter = binding.hideRequestsList
                 }
                 is PartialFailure -> {
                     context?.showAlertDialog(getString(R.string.failure), it.error?.message,
@@ -91,7 +94,7 @@ class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, It
                 }
             }
         })
-        parentVM.pullToRefreshEvent.observe(viewLifecycleOwner, Observer{
+        parentViewModel.pullToRefreshEvent.observe(viewLifecycleOwner, Observer{
             if (it) {
                 viewModel.getConsents()
             }
@@ -128,7 +131,7 @@ class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, It
 
     protected fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
         consentsListAdapter = ConsentsListAdapter(
-            this@RequestedFragment,
+            this@RequestedConsentListFragment,
             requests
         )
         rvConsents.apply {
@@ -161,10 +164,10 @@ class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, It
 
     @Subscribe
     fun onEventReceived(messageEventType: MessageEventType) {
-        if (messageEventType == MessageEventType.CONSENT_GRANTED || messageEventType == MessageEventType.CONSENT_DENIED) {
-            viewModel.getConsents()
-            unregisterEventBus()
-        }
+//        if (messageEventType == MessageEventType.CONSENT_GRANTED || messageEventType == MessageEventType.CONSENT_DENIED) {
+//            viewModel.getConsents()
+//            unregisterEventBus()
+//        }
     }
 
     private fun unregisterEventBus() {
@@ -180,7 +183,7 @@ class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, It
         if (iDataBindingModel is Consent) {
             val intent = Intent(context, ConsentDetailsActivity::class.java)
             intent.putExtra(CONSENT_FLOW, getConsentFlow().ordinal)
-            startActivity(intent)
+            this.startActivityForResult(intent, REQUEST_CONSENT_DETAILS)
             EventBus.getDefault().postSticky(iDataBindingModel)
 
             if (!EventBus.getDefault().isRegistered(this)) {
@@ -195,5 +198,14 @@ class RequestedFragment : BaseFragment(), AdapterView.OnItemSelectedListener, It
 
     fun getConsentFlow(): ConsentFlow {
         return ConsentFlow.REQUESTED_CONSENTS
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CONSENT_DETAILS) {
+            if(resultCode == RESULT_CONSENT_GRANTED || resultCode == RESULT_DENY_CONSENT){
+                parentViewModel.pullToRefreshEvent.value = true
+            }
+        }
     }
 }

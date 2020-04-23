@@ -12,7 +12,6 @@ import `in`.projecteka.jataayu.util.extension.fromJson
 import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
-import junit.framework.Assert
 import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -29,7 +28,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
-class GrantedConsentViewModelTest {
+class GrantedConsentListViewModelTest {
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
@@ -43,7 +42,7 @@ class GrantedConsentViewModelTest {
     @Mock
     private lateinit var call: Call<ConsentsListResponse>
 
-    private lateinit var consentViewModel: GrantedConsentViewModel
+    private lateinit var consentViewModel: GrantedConsentListViewModel
 
     private lateinit var consentsListResponse: ConsentsListResponse
 
@@ -52,7 +51,7 @@ class GrantedConsentViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        consentViewModel = GrantedConsentViewModel(repository)
+        consentViewModel = GrantedConsentListViewModel(repository)
 
         consentsListResponse = Gson()
             .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)

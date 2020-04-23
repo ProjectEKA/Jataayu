@@ -4,7 +4,9 @@ import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.RequestedConsentDetailsFragmentBinding
 import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
-import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentViewModel
+import `in`.projecteka.jataayu.consent.ui.activity.CreatePinActivity
+import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
+import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentDetailsViewModel
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
@@ -17,7 +19,11 @@ import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.sharedPref.getConsentTempToken
+import `in`.projecteka.jataayu.util.sharedPref.getPinCreated
+import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,17 +39,18 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     ConsentDetailsClickHandler {
 
-    protected lateinit var binding: RequestedConsentDetailsFragmentBinding
+    private lateinit var binding: RequestedConsentDetailsFragmentBinding
 
-    protected val viewModel: RequestedConsentViewModel by sharedViewModel()
+    private val viewModel: RequestedConsentDetailsViewModel by sharedViewModel()
+//    private val parentViewModel: ConsentDetailsActivityViewModel by sharedViewModel()
 
-    protected lateinit var consent: Consent
+    private lateinit var consent: Consent
 
-    protected var hiTypeObjects = ArrayList<HiType>()
+    private var hiTypeObjects = ArrayList<HiType>()
 
     private var linkedAccounts: List<Links>? = null
 
-    protected val eventBusInstance: EventBus = EventBus.getDefault()
+    private val eventBusInstance: EventBus = EventBus.getDefault()
 
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
@@ -89,8 +96,9 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 is Success -> {
                     if (it.data?.consents?.isNotEmpty() == true) {
                         showLongToast(getString(R.string.consent_request_granted))
-                        eventBusInstance.post(MessageEventType.CONSENT_GRANTED)
+                        activity?.setResult(501)
                         activity?.finish()
+//                        parentViewModel.consentEventType.value = ConsentDetailsActivityViewModel.EVENT_TYPE.CONSENT_GRANTED
                     }
                 }
             }
@@ -100,7 +108,11 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 is Loading -> showProgressBar(it.isLoading, getString(R.string.denying_consent))
                 is Success -> {
                     activity?.let {
-                        eventBusInstance.post(MessageEventType.CONSENT_DENIED)
+
+                        showLongToast(getString(R.string.consent_request_denied))
+//                        eventBusInstance.post(MessageEventType.CONSENT_DENIED)
+//                        parentViewModel.consentEventType.value = ConsentDetailsActivityViewModel.EVENT_TYPE.CONSENT_DENIED
+                        activity?.setResult(601)
                         activity?.finish()
                     }
                 }
@@ -118,6 +130,12 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 }
             }
         })
+
+        /*parentViewModel.consentEventType.observe(this, Observer {
+            if (it == ConsentDetailsActivityViewModel.EVENT_TYPE.USER_VERIFIED_FOR_GRAND){
+                grantConsent()
+            }
+        })*/
     }
 
     override fun onCreateView(
@@ -171,7 +189,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     }
 
     private fun startAuthenticator() {
-        (activity as ConsentDetailsActivity).validateUser()
+        validateUser()
     }
 
     private fun createHiTypesFromConsent() {
@@ -211,13 +229,6 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         this.consent = consent
     }
 
-    @Subscribe
-    public fun onUserVerified(messageEventType: MessageEventType) {
-        if (messageEventType == MessageEventType.USER_VERIFIED) {
-            grantConsent()
-        }
-    }
-
     private fun grantConsent() {
         linkedAccounts?.let {
             if (it.isNotEmpty()) {
@@ -229,6 +240,28 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                     viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission),
                     context?.getConsentTempToken()!!
                 )
+            }
+        }
+    }
+
+    fun validateUser() {
+        if (context?.getPinCreated()!!) {
+            val intent = Intent(context, PinVerificationActivity::class.java)
+            startActivityForResult(intent, 301)
+        } else {
+            val intent = Intent(context, CreatePinActivity::class.java)
+            startActivityForResult(intent, 201)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK){
+            if (requestCode == 201) {
+                activity?.setPinCreated(true)
+                grantConsent()
+            }  else if (requestCode == 301){
+                grantConsent()
             }
         }
     }

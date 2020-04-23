@@ -1,9 +1,9 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.GrantedConsentDetailsFragmentBinding
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
-import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentDetailsViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HiType
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
@@ -39,7 +39,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
 
     protected lateinit var binding: GrantedConsentDetailsFragmentBinding
 
-    protected val viewModel: GrantedConsentViewModel by sharedViewModel()
+    protected val viewModel: GrantedConsentDetailsViewModel by sharedViewModel()
 
     protected lateinit var consent: Consent
 
@@ -51,8 +51,6 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
     private var linkedAccounts: List<Links>? = null
     private lateinit var linkedAccountsAndCount: Pair<List<IDataBindingModel>, Int>
     private val compositeDisposable = CompositeDisposable()
-    private var hipInfoTasksCount = 0
-
 
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
