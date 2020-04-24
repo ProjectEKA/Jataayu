@@ -4,6 +4,7 @@ import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
 import `in`.projecteka.jataayu.consent.remote.ConsentApis
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
+import `in`.projecteka.jataayu.core.model.ProviderInfo
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
@@ -16,6 +17,8 @@ interface ConsentRepository {
     fun revokeConsent(revokeConsentRequest: RevokeConsentRequest, authToken: String?): Call<Void>
     fun getGrantedConsentDetails(requestId: String): Call<List<GrantedConsentDetailsResponse>>
     fun denyConsent(requestId: String): Call<Void>
+    fun getProviderBy(providerId: String): Call<ProviderInfo>
+
 }
 
 class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentRepository {
@@ -41,5 +44,9 @@ class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentReposi
 
     override fun denyConsent(requestId: String): Call<Void> {
         return consentApi.denyConsent(requestId)
+    }
+
+    override fun getProviderBy(providerId: String): Call<ProviderInfo> {
+        return consentApi.getProvidersBy(providerId)
     }
 }

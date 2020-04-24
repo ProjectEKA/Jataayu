@@ -3,6 +3,7 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.callback.DeleteConsentCallback
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
@@ -68,7 +69,12 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun initObservers() {
 
         viewModel.grantedConsentsList.observe(this, Observer<List<Consent>?> {
-            it?.let { renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition) }
+            it?.let {
+                val hiuIds = it.map { consent -> consent.hiu.id }
+                ConsentDataProviderCacheManager.fetchHipInfo(hiuIds, viewModel.getConsentRepository(),this) {
+                    renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition)
+                }
+            }
         })
 
         viewModel.consentListResponse.observe(this, Observer {
@@ -165,7 +171,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
         viewModel.getConsents()
     }
 
-    protected fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
+    private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
         consentsListAdapter = ConsentsListAdapter(
             this@GrantedFragment,
             requests, this@GrantedFragment

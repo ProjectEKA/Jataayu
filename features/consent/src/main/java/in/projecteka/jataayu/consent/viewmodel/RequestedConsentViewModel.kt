@@ -12,11 +12,8 @@ import `in`.projecteka.jataayu.core.model.approveconsent.CareReference
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifact
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
-import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
-import `in`.projecteka.jataayu.core.model.grantedconsent.LinkedHip
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
-import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
@@ -52,6 +49,8 @@ class RequestedConsentViewModel(private val repository: ConsentRepository,
     fun getLinkedAccounts() =
         linkedAccountsResponse.fetch(repository.getLinkedAccounts())
 
+
+    fun getConsentRepository(): ConsentRepository = repository
 
     fun grantConsent(
         requestId: String,

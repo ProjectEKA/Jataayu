@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.FragmentConsentDetailsEditBinding
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.viewmodel.EditConsentDetailsVM
 import `in`.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
 import `in`.projecteka.jataayu.core.model.CareContext
@@ -33,7 +34,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class EditConsentDetailsFragment : BaseFragment(), ItemClickCallback, CompoundButton.OnCheckedChangeListener {
+class EditConsentDetailsFragment() : BaseFragment(), ItemClickCallback, CompoundButton.OnCheckedChangeListener {
 
     private lateinit var binding: FragmentConsentDetailsEditBinding
 
@@ -65,18 +66,26 @@ class EditConsentDetailsFragment : BaseFragment(), ItemClickCallback, CompoundBu
     private fun initObservers() {
 
         viewModel.onAddLinksEvent.observe(this, androidx.lifecycle.Observer { links ->
-            val linkDataModels = arrayListOf<IDataBindingModel>()
-            links.forEach { link ->
-                linkDataModels.add(link.hip)
-                linkDataModels.addAll(link.careContexts)
-            }
-            listItems = linkDataModels
-            genericRecyclerViewAdapter = GenericRecyclerViewAdapter(listItems, this)
-            rvLinkedAccounts.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = genericRecyclerViewAdapter
-                val dividerItemDecorator = DividerItemDecorator(ContextCompat.getDrawable(context!!, R.color.transparent)!!)
-                addItemDecoration(dividerItemDecorator)
+
+           var idList = links.map { it.hip.id } + listOf(viewModel.modifiedConsent.hiu.id)
+            ConsentDataProviderCacheManager.fetchHipInfo(idList, viewModel.getConsentRepository(), this) {
+                val providerMap = ConsentDataProviderCacheManager.providerMap
+                val linkDataModels = arrayListOf<IDataBindingModel>()
+                links.forEach { link ->
+                    var hipName = providerMap[link.hip.id]?.hip?.name ?: ""
+                    link.hip.name = hipName
+                    linkDataModels.add(link.hip)
+                    linkDataModels.addAll(link.careContexts)
+                }
+                viewModel.modifiedConsent.hiu.name = providerMap[viewModel.modifiedConsent.hiu.id]?.hip?.name ?: ""
+                listItems = linkDataModels
+                genericRecyclerViewAdapter = GenericRecyclerViewAdapter(listItems, this)
+                rvLinkedAccounts.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = genericRecyclerViewAdapter
+                    val dividerItemDecorator = DividerItemDecorator(ContextCompat.getDrawable(context!!, R.color.transparent)!!)
+                    addItemDecoration(dividerItemDecorator)
+                }
             }
         })
 

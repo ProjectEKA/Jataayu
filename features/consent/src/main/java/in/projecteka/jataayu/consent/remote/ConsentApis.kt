@@ -3,9 +3,11 @@ package `in`.projecteka.jataayu.consent.remote
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
+import `in`.projecteka.jataayu.core.model.ProviderInfo
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
+import androidx.annotation.NonNull
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -29,4 +31,8 @@ interface ConsentApis {
 
     @POST("consent-requests/{request-id}/deny")
     fun denyConsent(@Path("request-id") requestId: String): Call<Void>
+
+    @Headers("Cache-Control: max-age=300")
+    @GET("providers/{provider-id}")
+    fun getProvidersBy(@NonNull @Path("provider-id") providerId: String): Call<ProviderInfo>
 }

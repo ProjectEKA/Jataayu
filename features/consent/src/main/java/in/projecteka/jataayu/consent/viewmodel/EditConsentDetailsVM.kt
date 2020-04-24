@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
+import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HiType
 import `in`.projecteka.jataayu.core.model.Links
@@ -14,7 +15,7 @@ import androidx.lifecycle.ViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class EditConsentDetailsVM() : ViewModel(), DateTimeSelectionCallback {
+class EditConsentDetailsVM(private val repository: ConsentRepository) : ViewModel(), DateTimeSelectionCallback {
 
     companion object {
         const val FROM_DATE_DATEPICKER_ID = 0
@@ -108,6 +109,8 @@ class EditConsentDetailsVM() : ViewModel(), DateTimeSelectionCallback {
         allProvidersChecked.set(selectableItemsCount == selectionCount)
         saveEnabled.set(selectionCount > 0)
     }
+
+    fun getConsentRepository(): ConsentRepository = repository
 
     override fun onDateSelected(datePickerId: Int, date: Date) {
         when (datePickerId) {

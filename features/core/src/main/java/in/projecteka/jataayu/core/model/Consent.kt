@@ -10,7 +10,6 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.google.gson.annotations.SerializedName
 import java.util.*
-import kotlin.collections.ArrayList
 
 data class Consent(
     @SerializedName("id", alternate = ["consentId"]) val id: String,
@@ -18,7 +17,7 @@ data class Consent(
     @SerializedName("purpose") val purpose: Purpose,
     @SerializedName("patient") val patient: PatientId,
     @SerializedName("hip") val hip: Hip?,
-    @SerializedName("hiu") val hiu: HiuRequester,
+    @SerializedName("hiu") var hiu: HiuRequester,
     @SerializedName("requester") val requester: Requester,
     @SerializedName("hiTypes") val hiTypes: ArrayList<String>,
     @SerializedName("permission") @Bindable val permission: Permission,

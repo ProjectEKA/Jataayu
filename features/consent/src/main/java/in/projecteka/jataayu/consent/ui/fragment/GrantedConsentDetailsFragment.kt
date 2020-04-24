@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.GrantedConsentDetailsFragmentBinding
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HiType
@@ -34,7 +35,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback{
+class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
 
     protected lateinit var binding: GrantedConsentDetailsFragmentBinding
 
@@ -50,6 +51,8 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback{
     private var linkedAccounts: List<Links>? = null
     private lateinit var linkedAccountsAndCount: Pair<List<IDataBindingModel>, Int>
     private val compositeDisposable = CompositeDisposable()
+    private var hipInfoTasksCount = 0
+
 
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
@@ -69,10 +72,10 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback{
         return binding.root
     }
 
-    protected fun renderUi() {
+    private fun bindUI(consent: Consent) {
 
         with(binding) {
-            this.consent = this@GrantedConsentDetailsFragment.consent
+            this.consent = consent
             requestExpired = true
             cgRequestInfoTypes.removeAllViews()
         }
@@ -122,33 +125,45 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback{
     }
 
     private fun initObservers() {
-        viewModel.linkedAccountsResponse.observe(this, Observer<PayloadResource<LinkedAccountsResponse>> { payload ->
-            when (payload) {
-                is Loading -> showProgressBar(payload.isLoading)
-                is Success -> {
-                    linkedAccounts = payload.data?.linkedPatient?.links
-                    if (viewModel.grantedConsentDetailsResponse.value == null) {
-                        viewModel.getGrantedConsentDetails(consentId)
+
+        viewModel.linkedAccountsResponse.observe(
+            this,
+            Observer<PayloadResource<LinkedAccountsResponse>> { payload ->
+                when (payload) {
+                    is Loading -> showProgressBar(payload.isLoading)
+                    is Success -> {
+                        linkedAccounts = payload.data?.linkedPatient?.links
+                        linkedAccounts?.map { it.hip.id }.let { ids ->
+                            this.getHIPInfo(ids!!) {
+                                viewModel.grantedConsentDetailsResponse.value?.let {
+                                    when(it) {
+                                        is Success -> it.data?.let { result -> onConsentDetailsResponseSuccess(result) }
+                                        else -> {}
+                                    }
+                                } ?: kotlin.run {
+                                    viewModel.getGrantedConsentDetails(consentId)
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        })
+            })
 
-        viewModel.grantedConsentDetailsResponse.observe(this, Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
-            when (payload) {
-                is Success -> {
-                    payload.data?.firstOrNull()?.consentDetail?.let { this.consent = it }
-                    renderUi()
-                    payload.data?.let { populateLinkedAccounts(it) }
+        viewModel.grantedConsentDetailsResponse.observe(
+            this,
+            Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
+                when (payload) {
+                    is Success -> {
+                        payload.data?.let { onConsentDetailsResponseSuccess(it) }
+                    }
+                    is Loading -> {
+                        showProgressBar(payload.isLoading)
+                    }
                 }
-                is Loading -> {
-                    showProgressBar(payload.isLoading)
-                }
-            }
-        })
-
+            })
     }
 
+    // Build adapter data and populate
     private fun populateLinkedAccounts(grantedConsents: List<GrantedConsentDetailsResponse>) {
         compositeDisposable.add(io.reactivex.Observable.just(viewModel)
             .map { it.getItems(grantedConsents, linkedAccounts) }
@@ -156,18 +171,49 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback{
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 linkedAccountsAndCount = it
-                genericRecyclerViewAdapter = GenericRecyclerViewAdapter(linkedAccountsAndCount.first, this)
+                genericRecyclerViewAdapter =
+                    GenericRecyclerViewAdapter(linkedAccountsAndCount.first, this)
                 rvLinkedAccounts.apply {
                     layoutManager = LinearLayoutManager(context)
                     adapter = genericRecyclerViewAdapter
-                    val dividerItemDecorator = DividerItemDecorator(ContextCompat.getDrawable(context!!, R.color.transparent)!!)
+                    val dividerItemDecorator = DividerItemDecorator(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.color.transparent
+                        )!!
+                    )
                     addItemDecoration(dividerItemDecorator)
                 }
 
                 binding.tvProviders.text =
-                    String.format(context!!.getString(R.string.all_linked_providers_with_count), linkedAccountsAndCount.second)
+                    String.format(
+                        context!!.getString(R.string.all_linked_providers_with_count),
+                        linkedAccountsAndCount.second
+                    )
             })
     }
+
+    private fun onConsentDetailsResponseSuccess(result: List<GrantedConsentDetailsResponse>) {
+
+        result.firstOrNull()?.consentDetail?.let {
+            ConsentDataProviderCacheManager.providerMap[it.hiu.id]?.let { providerInfo ->
+                this.consent = it
+                this.consent.hiu.name = providerInfo.hip.name
+                bindUI(this.consent)
+                populateLinkedAccounts(result)
+            } ?: kotlin.run {
+                getHIPInfo(listOf(it.hiu.id)) {
+                    onConsentDetailsResponseSuccess(result)
+                }
+            }
+        }
+    }
+
+    private fun getHIPInfo(providerIds: List<String>, completion: () -> Unit) {
+
+        ConsentDataProviderCacheManager.fetchHipInfo(providerIds, viewModel.getConsentRepository(),this, completion)
+    }
+
 
     @Subscribe(sticky = true)
     public fun onConsentIdReceived(consentId: String) {
