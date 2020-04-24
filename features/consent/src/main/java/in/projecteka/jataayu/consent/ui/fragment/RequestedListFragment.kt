@@ -130,7 +130,6 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         viewModel.getConsents()
-        showSnackbar("show snackbar")
     }
 
     protected fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
@@ -175,10 +174,6 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
             intent.putExtra(CONSENT_FLOW, getConsentFlow().ordinal)
             this.startActivityForResult(intent, REQUEST_CONSENT_DETAILS)
             EventBus.getDefault().postSticky(iDataBindingModel)
-
-            if (!EventBus.getDefault().isRegistered(this)) {
-                EventBus.getDefault().register(this)
-            }
         }
     }
 
@@ -197,13 +192,5 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
                 parentViewModel.pullToRefreshEvent.value = true
             }
         }
-    }
-
-    private fun showSnackbar(message: String) {
-        val spannableString = SpannableString(message)
-
-        spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        val snackbar = Snackbar.make(host_container, spannableString, 2000)
-        snackbar.show()
     }
 }
