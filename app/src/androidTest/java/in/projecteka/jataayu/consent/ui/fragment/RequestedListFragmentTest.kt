@@ -26,7 +26,7 @@ import br.com.concretesolutions.kappuccino.actions.ClickActions.click as KClick
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-public class RequestedConsentListFragmentTest {
+public class RequestedListFragmentTest {
     @get:Rule
     var activityRule: IntentsTestRule<TestsOnlyActivity> =
         IntentsTestRule(TestsOnlyActivity::class.java, true, true)

@@ -1,8 +1,8 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
@@ -12,7 +12,6 @@ import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Co
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Companion.RESULT_DENY_CONSENT
 import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentListViewModel
 import `in`.projecteka.jataayu.core.model.Consent
-import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
@@ -24,7 +23,11 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,9 +37,9 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.consent_request_fragment.*
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 private const val INDEX_ACTIVE = 0
@@ -44,7 +47,7 @@ private const val INDEX_EXPIRED = 1
 private const val INDEX_DENIED = 2
 private const val INDEX_ALL = 3
 
-class RequestedConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener, ItemClickCallback {
+class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener, ItemClickCallback {
 
     protected lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var consentsListAdapter: ConsentsListAdapter
@@ -53,7 +56,7 @@ class RequestedConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedL
     private val parentViewModel: ConsentHostFragmentViewModel by sharedViewModel()
 
     companion object {
-        fun newInstance() = RequestedConsentListFragment()
+        fun newInstance() = RequestedListFragment()
         const val CONSENT_FLOW = "consent_flow"
     }
 
@@ -127,11 +130,12 @@ class RequestedConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedL
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         viewModel.getConsents()
+        showSnackbar("show snackbar")
     }
 
     protected fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
         consentsListAdapter = ConsentsListAdapter(
-            this@RequestedConsentListFragment,
+            this@RequestedListFragment,
             requests
         )
         rvConsents.apply {
@@ -160,20 +164,6 @@ class RequestedConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedL
 
     private fun filterRequests(requests: List<Consent>) {
         (rvConsents.adapter as ConsentsListAdapter).updateData(requests)
-    }
-
-    @Subscribe
-    fun onEventReceived(messageEventType: MessageEventType) {
-//        if (messageEventType == MessageEventType.CONSENT_GRANTED || messageEventType == MessageEventType.CONSENT_DENIED) {
-//            viewModel.getConsents()
-//            unregisterEventBus()
-//        }
-    }
-
-    private fun unregisterEventBus() {
-        if (EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().unregister(this)
-        }
     }
 
     override fun onItemClick(
@@ -207,5 +197,13 @@ class RequestedConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedL
                 parentViewModel.pullToRefreshEvent.value = true
             }
         }
+    }
+
+    private fun showSnackbar(message: String) {
+        val spannableString = SpannableString(message)
+
+        spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val snackbar = Snackbar.make(host_container, spannableString, 2000)
+        snackbar.show()
     }
 }

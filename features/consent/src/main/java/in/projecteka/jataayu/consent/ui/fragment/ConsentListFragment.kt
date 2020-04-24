@@ -11,7 +11,6 @@ import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentListViewModel
 import `in`.projecteka.jataayu.core.model.Consent
-import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.*
@@ -45,7 +44,7 @@ private const val INDEX_ACTIVE = 0
 private const val INDEX_EXPIRED = 1
 private const val INDEX_ALL = 2
 
-class GrantedConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
+class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     DeleteConsentCallback, ItemClickCallback {
     private lateinit var consentToRevoke: Consent
 
@@ -56,7 +55,7 @@ class GrantedConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedLis
     private val parentViewModel: ConsentHostFragmentViewModel by sharedViewModel()
 
     companion object {
-        fun newInstance() = GrantedConsentListFragment()
+        fun newInstance() = ConsentListFragment()
         const val CONSENT_FLOW = "consent_flow"
     }
 
@@ -175,8 +174,8 @@ class GrantedConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedLis
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
         consentsListAdapter = ConsentsListAdapter(
-            this@GrantedConsentListFragment,
-            requests, this@GrantedConsentListFragment
+            this@ConsentListFragment,
+            requests, this@ConsentListFragment
         )
         rvConsents.apply {
             layoutManager = LinearLayoutManager(context)

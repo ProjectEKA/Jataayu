@@ -10,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.activity_consent.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -27,23 +25,6 @@ class ConsentHostFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = ConsentHostFragment()
-    }
-
-    private val onPageChangeListener = object : ViewPager.OnPageChangeListener {
-        override fun onPageScrolled(
-            position: Int,
-            positionOffset: Float,
-            positionOffsetPixels: Int
-        ) {
-        }
-
-        override fun onPageSelected(position: Int) {
-            view_pager.adapter?.notifyDataSetChanged()
-        }
-
-        override fun onPageScrollStateChanged(state: Int) {
-        }
-
     }
 
     override fun onCreateView(
@@ -64,7 +45,6 @@ class ConsentHostFragment : BaseFragment() {
     private fun initialViewpagerSetup() {
         binding.viewPager.adapter = ConsentPagerAdapter(context!!, childFragmentManager)
         binding.tabs.setupWithViewPager(binding.viewPager)
-        view_pager.addOnPageChangeListener(onPageChangeListener)
     }
 
     private fun initObservers() {

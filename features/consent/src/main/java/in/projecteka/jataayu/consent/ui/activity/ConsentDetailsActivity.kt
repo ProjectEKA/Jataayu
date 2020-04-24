@@ -6,7 +6,7 @@ import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.ui.fragment.EditConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.GrantedConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentDetailsFragment
-import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentListFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.RequestedListFragment
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentDetailsActivityViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentListViewModel
 import `in`.projecteka.jataayu.network.model.ErrorResponse
@@ -90,9 +90,9 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
     }
 
     private fun getFlowType(): Int {
-        if (intent.hasExtra(RequestedConsentListFragment.CONSENT_FLOW)) {
+        if (intent.hasExtra(RequestedListFragment.CONSENT_FLOW)) {
             intent.extras?.getInt(
-                RequestedConsentListFragment.CONSENT_FLOW,
+                RequestedListFragment.CONSENT_FLOW,
                 ConsentFlow.REQUESTED_CONSENTS.ordinal
             )?.let { return it }
         }

@@ -18,7 +18,7 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-public class GrantedConsentListFragmentTest {
+public class ConsentListFragmentTest {
     @get:Rule
     var activityRule: IntentsTestRule<TestsOnlyActivity> =
         IntentsTestRule(TestsOnlyActivity::class.java, true, true)
@@ -32,7 +32,7 @@ public class GrantedConsentListFragmentTest {
         webServer.start(8080)
         webServer.dispatcher = MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
 
-        val requestListFragment = GrantedConsentListFragment()
+        val requestListFragment = ConsentListFragment()
         activityRule.activity.addFragment(requestListFragment)
     }
 
