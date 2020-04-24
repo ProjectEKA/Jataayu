@@ -16,10 +16,11 @@ class ConsentHostFragmentViewModel() : ViewModel(), SwipeRefreshLayout.OnRefresh
         SELECT_CONSENTS_TAB
     }
 
-    internal val viewPagerState = SingleLiveEvent<Action>()
+    internal val redirectEvent = SingleLiveEvent<Action>()
 
     fun setUp(){
-        viewPagerState.value = Action.SELECT_CONSENTS_TAB
+        pullToRefreshEvent.value = false
+        selectConsentsTab()
     }
 
     override fun onRefresh() {
@@ -32,6 +33,6 @@ class ConsentHostFragmentViewModel() : ViewModel(), SwipeRefreshLayout.OnRefresh
     }
 
     fun selectConsentsTab(){
-        viewPagerState.value = Action.SELECT_CONSENTS_TAB
+        redirectEvent.value = Action.SELECT_CONSENTS_TAB
     }
 }
