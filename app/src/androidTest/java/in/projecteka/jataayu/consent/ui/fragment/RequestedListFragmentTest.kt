@@ -40,7 +40,7 @@ public class RequestedListFragmentTest {
         webServer.start(8080)
         webServer.dispatcher = MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
 
-        val requestListFragment = RequestedFragment()
+        val requestListFragment = RequestedListFragment()
         activityRule.activity.addFragment(requestListFragment)
     }
 
