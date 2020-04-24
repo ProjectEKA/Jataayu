@@ -51,6 +51,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
     private var linkedAccounts: List<Links>? = null
     private lateinit var linkedAccountsAndCount: Pair<List<IDataBindingModel>, Int>
     private val compositeDisposable = CompositeDisposable()
+    private val consentDataProviderCacheManager = ConsentDataProviderCacheManager()
 
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
@@ -194,9 +195,9 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
     private fun onConsentDetailsResponseSuccess(result: List<GrantedConsentDetailsResponse>) {
 
         result.firstOrNull()?.consentDetail?.let {
-            ConsentDataProviderCacheManager.providerMap[it.hiu.id]?.let { providerInfo ->
+            consentDataProviderCacheManager.getProviderBy(it.hiu.id)?.let { provider ->
                 this.consent = it
-                this.consent.hiu.name = providerInfo.hip.name
+                this.consent.hiu.name = provider.name
                 bindUI(this.consent)
                 populateLinkedAccounts(result)
             } ?: kotlin.run {
@@ -209,7 +210,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
 
     private fun getHIPInfo(providerIds: List<String>, completion: () -> Unit) {
 
-        ConsentDataProviderCacheManager.fetchHipInfo(providerIds, viewModel.getConsentRepository(),this, completion)
+        consentDataProviderCacheManager.fetchHipInfo(providerIds, viewModel.getConsentRepository(),this, completion)
     }
 
 

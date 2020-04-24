@@ -1,8 +1,8 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.RequestedConsentDetailsFragmentBinding
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.CreatePinActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
@@ -43,6 +43,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
 
     private val viewModel: RequestedConsentDetailsViewModel by sharedViewModel()
 //    private val parentViewModel: ConsentDetailsActivityViewModel by sharedViewModel()
+    private val consentDataProviderCacheManager = ConsentDataProviderCacheManager()
 
     private lateinit var consent: Consent
 
@@ -214,8 +215,8 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 else R.string.new_request
             }
         )
-        ConsentDataProviderCacheManager.fetchHipInfo(listOf(consent.hiu.id), viewModel.getConsentRepository(), this) {
-            consent.hiu.name = ConsentDataProviderCacheManager.providerMap[consent.hiu.id]?.hip?.name ?: ""
+        consentDataProviderCacheManager.fetchHipInfo(listOf(consent.hiu.id), viewModel.getConsentRepository(), this) {
+            consent.hiu.name = consentDataProviderCacheManager.getProviderBy(consent.hiu.id)?.name ?: ""
             renderUi()
         }
     }

@@ -18,6 +18,7 @@ class GrantedConsentDetailsViewModel(private val repository: ConsentRepository) 
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
     internal var selectedProviderName = String.EMPTY
+    private val consentDataProviderCacheManager = ConsentDataProviderCacheManager()
 
     fun getLinkedAccounts() =
         linkedAccountsResponse.fetch(repository.getLinkedAccounts())
@@ -37,7 +38,7 @@ class GrantedConsentDetailsViewModel(private val repository: ConsentRepository) 
             linkedAccounts?.forEach { link ->
                 if (grantedAccountHipId == link.hip.id) {
                     // As per the requirement get the HIP name from ID
-                    val linkedHipName = ConsentDataProviderCacheManager.providerMap[grantedAccountHipId]?.hip?.name ?: ""
+                    val linkedHipName = consentDataProviderCacheManager.getProviderBy(grantedAccountHipId)?.name ?: ""
                     val linkedHip = LinkedHip(linkedHipName, link.referenceNumber)
                     items.add(linkedHip)
                     count++

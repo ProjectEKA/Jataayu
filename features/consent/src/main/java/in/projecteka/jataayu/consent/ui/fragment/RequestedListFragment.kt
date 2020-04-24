@@ -23,11 +23,7 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +33,6 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.consent_request_fragment.*
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -51,6 +46,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     protected lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var consentsListAdapter: ConsentsListAdapter
+    private val consentDataProviderCacheManager = ConsentDataProviderCacheManager()
 
     private val viewModel: RequestedConsentListViewModel by sharedViewModel()
     private val parentViewModel: ConsentHostFragmentViewModel by sharedViewModel()
@@ -74,7 +70,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         viewModel.requestedConsentsList.observe(this, Observer<List<Consent>?> { it ->
             it?.let { consentList ->
                 val idList = consentList.map { consent -> consent.hiu.id }
-                ConsentDataProviderCacheManager.fetchHipInfo(idList,viewModel.getConsentRepository(), this) {
+                consentDataProviderCacheManager.fetchHipInfo(idList,viewModel.getConsentRepository(), this) {
                     renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)
                 }
             }

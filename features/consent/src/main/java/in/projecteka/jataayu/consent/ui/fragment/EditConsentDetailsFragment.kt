@@ -1,8 +1,8 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.FragmentConsentDetailsEditBinding
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.viewmodel.EditConsentDetailsVM
 import `in`.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
 import `in`.projecteka.jataayu.core.model.CareContext
@@ -43,6 +43,7 @@ class EditConsentDetailsFragment() : BaseFragment(), ItemClickCallback, Compound
 
     private lateinit var listItems: List<IDataBindingModel>
     private lateinit var genericRecyclerViewAdapter: GenericRecyclerViewAdapter
+    private lateinit var consentDataProviderCacheManager: ConsentDataProviderCacheManager
 
     companion object {
         fun newInstance() = EditConsentDetailsFragment()
@@ -60,6 +61,7 @@ class EditConsentDetailsFragment() : BaseFragment(), ItemClickCallback, Compound
         super.onViewCreated(view, savedInstanceState)
         viewModel.setup(eventBusInstance.getStickyEvent(Consent::class.java))
         binding.viewModel = viewModel
+        consentDataProviderCacheManager = ConsentDataProviderCacheManager()
         initObservers()
     }
 
@@ -68,16 +70,14 @@ class EditConsentDetailsFragment() : BaseFragment(), ItemClickCallback, Compound
         viewModel.onAddLinksEvent.observe(this, androidx.lifecycle.Observer { links ->
 
            var idList = links.map { it.hip.id } + listOf(viewModel.modifiedConsent.hiu.id)
-            ConsentDataProviderCacheManager.fetchHipInfo(idList, viewModel.getConsentRepository(), this) {
-                val providerMap = ConsentDataProviderCacheManager.providerMap
+            consentDataProviderCacheManager.fetchHipInfo(idList, viewModel.getConsentRepository(), this) {
                 val linkDataModels = arrayListOf<IDataBindingModel>()
                 links.forEach { link ->
-                    var hipName = providerMap[link.hip.id]?.hip?.name ?: ""
-                    link.hip.name = hipName
+                    link.hip.name = consentDataProviderCacheManager.getProviderBy(link.hip.id)?.name ?: ""
                     linkDataModels.add(link.hip)
                     linkDataModels.addAll(link.careContexts)
                 }
-                viewModel.modifiedConsent.hiu.name = providerMap[viewModel.modifiedConsent.hiu.id]?.hip?.name ?: ""
+                viewModel.modifiedConsent.hiu.name = consentDataProviderCacheManager.getProviderBy(viewModel.modifiedConsent.hiu.id)?.name ?: ""
                 listItems = linkDataModels
                 genericRecyclerViewAdapter = GenericRecyclerViewAdapter(listItems, this)
                 rvLinkedAccounts.apply {

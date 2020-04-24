@@ -1,9 +1,9 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.callback.DeleteConsentCallback
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
@@ -50,6 +50,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     private lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var consentsListAdapter: ConsentsListAdapter
+    private lateinit var consentDataProviderCacheManager: ConsentDataProviderCacheManager
 
     private val viewModel: GrantedConsentListViewModel by sharedViewModel()
     private val parentViewModel: ConsentHostFragmentViewModel by sharedViewModel()
@@ -64,7 +65,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
         savedInstanceState: Bundle?
     ): View {
         binding = ConsentRequestFragmentBinding.inflate(inflater)
-
         initBindings()
         return binding.root
     }
@@ -74,7 +74,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
         viewModel.grantedConsentsList.observe(this, Observer<List<Consent>?> {
             it?.let {
                 val hiuIds = it.map { consent -> consent.hiu.id }
-                ConsentDataProviderCacheManager.fetchHipInfo(hiuIds, viewModel.getConsentRepository(),this) {
+                consentDataProviderCacheManager.fetchHipInfo(hiuIds, viewModel.getConsentRepository(),this) {
                     renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition)
                 }
             }
@@ -168,6 +168,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        consentDataProviderCacheManager = ConsentDataProviderCacheManager()
         initObservers()
         viewModel.getConsents()
     }
