@@ -48,7 +48,7 @@ class ConsentHostFragment : BaseFragment() {
     }
 
     private fun initObservers() {
-        viewModel.viewPagerState.observe(this, Observer {
+        viewModel.redirectEvent.observe(this, Observer {
             when (it) {
                 ConsentHostFragmentViewModel.Action.SELECT_CONSENTS_TAB -> {
                     activity?.runOnUiThread {
