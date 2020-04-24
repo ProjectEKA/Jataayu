@@ -104,8 +104,8 @@ class GrantedConsentListViewModelTest {
     @Test
     fun `should Filter And Sorted Requested Consent List By Descending Order`() {
         consentViewModel.filterConsents(consentsListResponse.requests)
-        val first =  consentViewModel.requestedConsentsList.value!!.first().getLastUpdated()
-        val second = consentViewModel.requestedConsentsList.value!![1].getLastUpdated()
+        val first =  consentViewModel.grantedConsentsList.value!!.first().getLastUpdated()
+        val second = consentViewModel.grantedConsentsList.value!![1].getLastUpdated()
         assertTrue(first!!.after(second!!))
     }
 
