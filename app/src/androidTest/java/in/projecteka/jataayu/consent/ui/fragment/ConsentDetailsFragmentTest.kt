@@ -44,7 +44,7 @@ class ConsentDetailsFragmentTest{
 
         webServer.dispatcher =
             MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
-        Thread.sleep(4000)
+        Thread.sleep(5000)
 
         readConsentAndLaunchFragment("consent_requested.json")
         activityRule.activity.addFragment(RequestedConsentDetailsFragment())
