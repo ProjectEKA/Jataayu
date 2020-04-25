@@ -61,4 +61,7 @@
     <string name="revoking_consent">Revoking consent&#8230;</string>
     <string name="title_deny_consent">Deny consent?</string>
     <string name="msg_deny_consent">Are you sure you want to deny this consent request?</string>
+    <string name="consent_granted">Consent Granted Successfully</string>
+    <string name="consent_denied">Consent Denied Successfully</string>
+    <string name="consent_revoked">Consent Revoked Successfully</string>
 </resources>

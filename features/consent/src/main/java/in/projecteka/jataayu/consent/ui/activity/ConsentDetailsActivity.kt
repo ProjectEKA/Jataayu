@@ -7,8 +7,7 @@ import `in`.projecteka.jataayu.consent.ui.fragment.EditConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.GrantedConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.RequestedListFragment
-import `in`.projecteka.jataayu.consent.viewmodel.ConsentDetailsActivityViewModel
-import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentListViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.RequestedListViewModel
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
@@ -25,26 +24,12 @@ import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
-    private val viewModel: RequestedConsentListViewModel by viewModel()
-    private val detailsViewModel:   ConsentDetailsActivityViewModel by viewModel()
+    private val viewModel: RequestedListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        initObserver()
         handleIntent()
     }
-
-    /*private fun initObserver() {
-        detailsViewModel.consentEventType.observe(this, Observer {
-            *//*if (it == ConsentDetailsActivityViewModel.EVENT_TYPE.CONSENT_GRANTED){
-                this.setResult(501)
-                this.finish()
-            } else if (it == ConsentDetailsActivityViewModel.EVENT_TYPE.CONSENT_DENIED){
-                this.setResult(601)
-                this.finish()
-            }*//*
-        })
-    }*/
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
@@ -116,17 +101,4 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
         showProgressBar(false)
         showErrorDialog(t.localizedMessage)
     }
-
-
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK){
-            if (requestCode == 201) {
-                setPinCreated(true)
-                detailsViewModel.consentEventType.value = ConsentDetailsActivityViewModel.EVENT_TYPE.USER_VERIFIED_FOR_GRAND
-            }  else if (requestCode == 301){
-                detailsViewModel.consentEventType.value = ConsentDetailsActivityViewModel.EVENT_TYPE.USER_VERIFIED_FOR_GRAND
-            }
-        }
-    }*/
 }

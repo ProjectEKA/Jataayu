@@ -6,23 +6,18 @@ import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
-import `in`.projecteka.jataayu.core.model.LinkedCareContext
-import `in`.projecteka.jataayu.core.model.Links
 import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.core.model.RequestStatus.DENIED
 import `in`.projecteka.jataayu.core.model.RequestStatus.REQUESTED
-import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
-import `in`.projecteka.jataayu.core.model.grantedconsent.LinkedHip
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
-import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class RequestedConsentListViewModel(private val repository: ConsentRepository) : ViewModel() {
+class RequestedListViewModel(private val repository: ConsentRepository) : ViewModel() {
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
     val requestedConsentsList = MutableLiveData<List<Consent>>()
@@ -74,33 +69,6 @@ class RequestedConsentListViewModel(private val repository: ConsentRepository) :
 
     fun filterConsents(consentList: List<Consent>?) {
         requestedConsentsList.value = consentList?.requestedConsentList()
-    }
-
-    fun getItems(grantedConsents: List<GrantedConsentDetailsResponse>, linkedAccounts: List<Links>?): Pair<List<IDataBindingModel>,Int> {
-        var count = 0
-        val items = arrayListOf<IDataBindingModel>()
-        for (grantedConsent in grantedConsents) {
-            val grantedAccountHipId = grantedConsent.consentDetail.hip?.id
-            linkedAccounts?.forEach { link ->
-                if (grantedAccountHipId == link.hip.id) {
-                    val linkedHip = LinkedHip(link.hip.name, link.referenceNumber)
-                    items.add(linkedHip)
-                    count++
-                    val careContextsList = arrayListOf<LinkedCareContext>()
-                    link.careContexts.forEach { careContextsList.add(LinkedCareContext(it.referenceNumber, it.display)) }
-                    (careContextsList).forEach { linkedAccountCareContext ->
-                        (grantedConsent.consentDetail.careContexts)?.forEach { grantedAccountCareContext ->
-                            grantedAccountCareContext.careContextReference.toString()
-                            if (linkedAccountCareContext.referenceNumber == grantedAccountCareContext.careContextReference) {
-                                items.add(linkedAccountCareContext)
-                                return@forEach
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return Pair(items, count)
     }
 }
 

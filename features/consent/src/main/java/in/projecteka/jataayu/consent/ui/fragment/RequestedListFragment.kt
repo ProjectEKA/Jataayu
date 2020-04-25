@@ -1,6 +1,5 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
@@ -8,9 +7,7 @@ import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Companion.REQUEST_CONSENT_DETAILS
-import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Companion.RESULT_CONSENT_GRANTED
-import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Companion.RESULT_DENY_CONSENT
-import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentListViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.RequestedListViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.network.utils.Loading
@@ -22,12 +19,9 @@ import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
+import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +31,6 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.consent_request_fragment.*
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -52,7 +45,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     protected lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var consentsListAdapter: ConsentsListAdapter
 
-    private val viewModel: RequestedConsentListViewModel by sharedViewModel()
+    private val viewModel: RequestedListViewModel by sharedViewModel()
     private val parentViewModel: ConsentHostFragmentViewModel by sharedViewModel()
 
     companion object {
@@ -73,10 +66,11 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     private fun initObservers() {
         viewModel.requestedConsentsList.observe(this, Observer<List<Consent>?> { it ->
             it?.let { consentList ->
-                val idList = consentList.map { consent -> consent.hiu.id }
+                /*val idList = consentList.map { consent -> consent.hiu.id }
                 ConsentDataProviderCacheManager.fetchHipInfo(idList,viewModel.getConsentRepository(), this) {
                     renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)
-                }
+                }*/
+                renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)
             }
         })
 
@@ -187,10 +181,16 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CONSENT_DETAILS) {
-            if(resultCode == RESULT_CONSENT_GRANTED || resultCode == RESULT_DENY_CONSENT){
-                parentViewModel.pullToRefreshEvent.value = true
+        if (requestCode == REQUEST_CONSENT_DETAILS && resultCode == Activity.RESULT_OK) {
+            data?.let {
+                val eventType = data.getStringExtra(ConsentHostFragmentViewModel.KEY_CONSENT_EVENT_TYPE)
+                if (eventType == ConsentHostFragmentViewModel.KEY_EVENT_GRANT) {
+                    parentViewModel.showToastEvent.value = getString(R.string.consent_granted)
+                } else if (eventType == ConsentHostFragmentViewModel.KEY_EVENT_DENY) {
+                    parentViewModel.showToastEvent.value =getString(R.string.consent_denied)
+                }
             }
+            parentViewModel.pullToRefreshEvent.value = true
         }
     }
 }

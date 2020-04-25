@@ -1,8 +1,8 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.RequestedConsentDetailsFragmentBinding
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.CreatePinActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
@@ -17,7 +17,6 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.sharedPref.getConsentTempToken
 import `in`.projecteka.jataayu.util.sharedPref.getPinCreated
 import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
@@ -35,6 +34,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+
 
 class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     ConsentDetailsClickHandler {
@@ -60,6 +60,9 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
 
     companion object {
         fun newInstance() = RequestedConsentDetailsFragment()
+        const val KEY_CONSENT_EVENT_TYPE = "consent_event_type"
+        const val KEY_EVENT_GRANT = "grant"
+        const val KEY_EVENT_DENY = "deny"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,10 +98,10 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 }
                 is Success -> {
                     if (it.data?.consents?.isNotEmpty() == true) {
-                        showLongToast(getString(R.string.consent_request_granted))
-                        activity?.setResult(501)
+                        val intent = Intent()
+                        intent.putExtra(KEY_CONSENT_EVENT_TYPE, KEY_EVENT_GRANT)
+                        activity?.setResult(Activity.RESULT_OK, intent)
                         activity?.finish()
-//                        parentViewModel.consentEventType.value = ConsentDetailsActivityViewModel.EVENT_TYPE.CONSENT_GRANTED
                     }
                 }
             }
@@ -108,11 +111,9 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 is Loading -> showProgressBar(it.isLoading, getString(R.string.denying_consent))
                 is Success -> {
                     activity?.let {
-
-                        showLongToast(getString(R.string.consent_request_denied))
-//                        eventBusInstance.post(MessageEventType.CONSENT_DENIED)
-//                        parentViewModel.consentEventType.value = ConsentDetailsActivityViewModel.EVENT_TYPE.CONSENT_DENIED
-                        activity?.setResult(601)
+                        val intent = Intent()
+                        intent.putExtra(KEY_CONSENT_EVENT_TYPE, KEY_EVENT_DENY)
+                        activity?.setResult(Activity.RESULT_OK, intent)
                         activity?.finish()
                     }
                 }
@@ -130,12 +131,6 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 }
             }
         })
-
-        /*parentViewModel.consentEventType.observe(this, Observer {
-            if (it == ConsentDetailsActivityViewModel.EVENT_TYPE.USER_VERIFIED_FOR_GRAND){
-                grantConsent()
-            }
-        })*/
     }
 
     override fun onCreateView(

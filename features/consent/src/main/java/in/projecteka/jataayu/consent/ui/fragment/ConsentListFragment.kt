@@ -1,9 +1,9 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.callback.DeleteConsentCallback
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
@@ -19,7 +19,6 @@ import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.util.extension.showShortToast
 import `in`.projecteka.jataayu.util.sharedPref.getConsentTempToken
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
 import android.R.layout
@@ -57,6 +56,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     companion object {
         fun newInstance() = ConsentListFragment()
         const val CONSENT_FLOW = "consent_flow"
+        const val REQUEST_CODE_PIN_VERIFICATION = 701
     }
 
     override fun onCreateView(
@@ -120,7 +120,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                 is Success -> {
                     activity?.let {
                     parentViewModel.pullToRefreshEvent.value = true
-                    showShortToast("Consent revoked")
+                    parentViewModel.showToastEvent.value = getString(R.string.consent_revoked)
                     }
                 }
                 is PartialFailure -> {
@@ -215,7 +215,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     override fun askForConsentPin(iDataBindingModel: IDataBindingModel) {
         consentToRevoke = (iDataBindingModel as Consent)
         val intent = Intent(context, PinVerificationActivity::class.java)
-        startActivityForResult(intent, 701)
+        startActivityForResult(intent, REQUEST_CODE_PIN_VERIFICATION)
     }
 
     override fun onItemClick(
@@ -232,7 +232,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 701) {
+        if (requestCode == REQUEST_CODE_PIN_VERIFICATION) {
             if (resultCode == Activity.RESULT_OK) {
                 viewModel.getGrantedConsentDetails(consentToRevoke.id)
             }
