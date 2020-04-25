@@ -1,6 +1,5 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.RequestedConsentDetailsFragmentBinding
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
@@ -43,7 +42,6 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
 
     private val viewModel: RequestedConsentDetailsViewModel by sharedViewModel()
 //    private val parentViewModel: ConsentDetailsActivityViewModel by sharedViewModel()
-    private val consentDataProviderCacheManager = ConsentDataProviderCacheManager()
 
     private lateinit var consent: Consent
 
@@ -80,8 +78,8 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                     is Success -> {
                         linkedAccounts = it.data?.linkedPatient?.links
                         linkedAccounts?.forEach { link ->
-                            link?.careContexts?.forEach {
-                                it.contextChecked = true
+                            link.careContexts.forEach { careContext ->
+                                careContext.contextChecked = true
                             }
                         }
                     }
@@ -215,8 +213,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 else R.string.new_request
             }
         )
-        consentDataProviderCacheManager.fetchHipInfo(listOf(consent.hiu.id), viewModel.getConsentRepository(), this) {
-            consent.hiu.name = consentDataProviderCacheManager.getProviderBy(consent.hiu.id)?.name ?: ""
+        getNameOf(consent.hiu) {
             renderUi()
         }
     }
@@ -265,5 +262,15 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 grantConsent()
             }
         }
+    }
+
+    private fun getNameOf(hiu: HipHiuIdentifiable, completion: () -> Unit) {
+        val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(listOf(hiu))
+        hipHiuNameResponse.observe(this, Observer {
+            if(it.status) {
+                consent.hiu.name = it.nameMap[consent.hiu.getId()] ?: ""
+            }
+            completion()
+        })
     }
 }

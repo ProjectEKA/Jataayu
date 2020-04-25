@@ -1,6 +1,5 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.callback.DeleteConsentCallback
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
@@ -11,6 +10,7 @@ import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentListViewModel
 import `in`.projecteka.jataayu.core.model.Consent
+import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.*
@@ -50,7 +50,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     private lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var consentsListAdapter: ConsentsListAdapter
-    private lateinit var consentDataProviderCacheManager: ConsentDataProviderCacheManager
 
     private val viewModel: GrantedConsentListViewModel by sharedViewModel()
     private val parentViewModel: ConsentHostFragmentViewModel by sharedViewModel()
@@ -70,13 +69,11 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     }
 
     private fun initObservers() {
-
+        
         viewModel.grantedConsentsList.observe(this, Observer<List<Consent>?> {
             it?.let {
-                val hiuIds = it.map { consent -> consent.hiu.id }
-                consentDataProviderCacheManager.fetchHipInfo(hiuIds, viewModel.getConsentRepository(),this) {
-                    renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition)
-                }
+                val hiuList = it.map { consent -> consent.hiu }
+                getNamesOf(hiuList)
             }
         })
 
@@ -168,7 +165,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        consentDataProviderCacheManager = ConsentDataProviderCacheManager()
         initObservers()
         viewModel.getConsents()
     }
@@ -211,6 +207,18 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     private fun filterRequests(requests: List<Consent>) {
         (rvConsents.adapter as ConsentsListAdapter).updateData(requests)
+    }
+
+    private fun getNamesOf(hiuList: List<HipHiuIdentifiable>) {
+        val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(hiuList)
+        hipHiuNameResponse.observe(this, Observer {
+            viewModel.grantedConsentsList.value?.let { consentList ->
+                if(it.status) {
+                    consentList.forEach { consent -> consent.hiu.name = it.nameMap[consent.hiu.getId()] ?: "" }
+                    renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)
+                }
+            }
+        })
     }
 
     override fun askForConsentPin(iDataBindingModel: IDataBindingModel) {

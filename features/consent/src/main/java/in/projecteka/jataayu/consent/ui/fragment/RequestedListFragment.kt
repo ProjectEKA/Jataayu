@@ -1,6 +1,5 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
@@ -12,6 +11,7 @@ import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Co
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Companion.RESULT_DENY_CONSENT
 import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentListViewModel
 import `in`.projecteka.jataayu.core.model.Consent
+import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
@@ -46,7 +46,6 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     protected lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var consentsListAdapter: ConsentsListAdapter
-    private val consentDataProviderCacheManager = ConsentDataProviderCacheManager()
 
     private val viewModel: RequestedConsentListViewModel by sharedViewModel()
     private val parentViewModel: ConsentHostFragmentViewModel by sharedViewModel()
@@ -61,7 +60,6 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         savedInstanceState: Bundle?
     ): View {
         binding = ConsentRequestFragmentBinding.inflate(inflater)
-
         initBindings()
         return binding.root
     }
@@ -69,10 +67,8 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     private fun initObservers() {
         viewModel.requestedConsentsList.observe(this, Observer<List<Consent>?> { it ->
             it?.let { consentList ->
-                val idList = consentList.map { consent -> consent.hiu.id }
-                consentDataProviderCacheManager.fetchHipInfo(idList,viewModel.getConsentRepository(), this) {
-                    renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)
-                }
+                val hiuList = consentList.map { consent -> consent.hiu }
+                getNamesOf(hiuList)
             }
         })
 
@@ -122,6 +118,18 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         initSpinner(0)
     }
 
+    private fun getNamesOf(hiuList: List<HipHiuIdentifiable>) {
+        val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(hiuList)
+        hipHiuNameResponse.observe(this, Observer {
+            viewModel.requestedConsentsList.value?.let { consentList ->
+                if(it.status) {
+                    consentList.forEach { consent -> consent.hiu.name = it.nameMap[consent.hiu.getId()] ?: "" }
+                    renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)
+                }
+            }
+        })
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
@@ -142,10 +150,9 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         sp_request_filter.setSelection(INDEX_ACTIVE)
     }
 
-
     override fun onNothingSelected(parent: AdapterView<*>?) {
-
     }
+
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
@@ -155,7 +162,6 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
             INDEX_ALL -> filterRequests(getConsentList())
         }
     }
-
 
     private fun filterRequests(requests: List<Consent>) {
         (rvConsents.adapter as ConsentsListAdapter).updateData(requests)

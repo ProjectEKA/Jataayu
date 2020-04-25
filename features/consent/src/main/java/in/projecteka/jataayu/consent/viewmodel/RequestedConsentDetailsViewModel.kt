@@ -9,6 +9,7 @@ import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.util.extension.EMPTY
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 
 class RequestedConsentDetailsViewModel(private val repository: ConsentRepository) : ViewModel() {
@@ -21,8 +22,6 @@ class RequestedConsentDetailsViewModel(private val repository: ConsentRepository
 
     fun getLinkedAccounts() =
         linkedAccountsResponse.fetch(repository.getLinkedAccounts())
-
-    fun getConsentRepository(): ConsentRepository = repository
 
     fun grantConsent(
         requestId: String,
@@ -59,6 +58,10 @@ class RequestedConsentDetailsViewModel(private val repository: ConsentRepository
 
     fun denyConsent(requestId: String){
         consentDenyResponse.fetch(repository.denyConsent(requestId))
+    }
+
+    fun fetchHipHiuNamesOf(idList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
+        return repository.getProviderBy(idList)
     }
 
     private fun newCareReference(link: Links, it: CareContext) = CareReference(link.referenceNumber, it.referenceNumber)

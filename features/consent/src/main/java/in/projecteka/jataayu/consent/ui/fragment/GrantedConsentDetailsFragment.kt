@@ -1,13 +1,9 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.GrantedConsentDetailsFragmentBinding
 import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentDetailsViewModel
-import `in`.projecteka.jataayu.core.model.Consent
-import `in`.projecteka.jataayu.core.model.HiType
-import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
-import `in`.projecteka.jataayu.core.model.Links
+import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadResource
@@ -51,7 +47,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
     private var linkedAccounts: List<Links>? = null
     private lateinit var linkedAccountsAndCount: Pair<List<IDataBindingModel>, Int>
     private val compositeDisposable = CompositeDisposable()
-    private val consentDataProviderCacheManager = ConsentDataProviderCacheManager()
+    private var linkedAccountHipResponse = HipHiuNameResponse(false, hashMapOf())
 
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
@@ -132,11 +128,12 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
                     is Loading -> showProgressBar(payload.isLoading)
                     is Success -> {
                         linkedAccounts = payload.data?.linkedPatient?.links
-                        linkedAccounts?.map { it.hip.id }.let { ids ->
-                            this.getHIPInfo(ids!!) {
-                                viewModel.grantedConsentDetailsResponse.value?.let {
-                                    when(it) {
-                                        is Success -> it.data?.let { result -> onConsentDetailsResponseSuccess(result) }
+                        linkedAccounts?.map { it.hip }?.let { ids ->
+                            this.getHIPHiuNamesOf(ids) {
+                                linkedAccountHipResponse = it
+                                viewModel.grantedConsentDetailsResponse.value?.let { response ->
+                                    when(response) {
+                                        is Success -> response.data?.let { result -> onConsentDetailsResponseSuccess(result,it) }
                                         else -> {}
                                     }
                                 } ?: kotlin.run {
@@ -153,7 +150,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
             Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
                 when (payload) {
                     is Success -> {
-                        payload.data?.let { onConsentDetailsResponseSuccess(it) }
+                        payload.data?.let { onConsentDetailsResponseSuccess(it, null) }
                     }
                     is Loading -> {
                         showProgressBar(payload.isLoading)
@@ -165,7 +162,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
     // Build adapter data and populate
     private fun populateLinkedAccounts(grantedConsents: List<GrantedConsentDetailsResponse>) {
         compositeDisposable.add(io.reactivex.Observable.just(viewModel)
-            .map { it.getItems(grantedConsents, linkedAccounts) }
+            .map { it.getItems(grantedConsents, linkedAccounts, linkedAccountHipResponse) }
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -192,25 +189,28 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
             })
     }
 
-    private fun onConsentDetailsResponseSuccess(result: List<GrantedConsentDetailsResponse>) {
+    private fun onConsentDetailsResponseSuccess(result: List<GrantedConsentDetailsResponse>, hipHiuNameResponse: HipHiuNameResponse?) {
 
-        result.firstOrNull()?.consentDetail?.let {
-            consentDataProviderCacheManager.getProviderBy(it.hiu.id)?.let { provider ->
-                this.consent = it
-                this.consent.hiu.name = provider.name
+        result.firstOrNull()?.consentDetail?.let { consent ->
+            hipHiuNameResponse?.nameMap?.let { it[consent.hiu.getId()]}?.let { name ->
+                this.consent = consent
+                this.consent.hiu.name = name
                 bindUI(this.consent)
                 populateLinkedAccounts(result)
             } ?: kotlin.run {
-                getHIPInfo(listOf(it.hiu.id)) {
-                    onConsentDetailsResponseSuccess(result)
+                getHIPHiuNamesOf(listOf(consent.hiu)) { hipHiuNameResponse ->
+                    onConsentDetailsResponseSuccess(result, hipHiuNameResponse)
                 }
             }
         }
     }
 
-    private fun getHIPInfo(providerIds: List<String>, completion: () -> Unit) {
+    private fun getHIPHiuNamesOf(list: List<HipHiuIdentifiable>, completion: (HipHiuNameResponse) -> Unit) {
 
-        consentDataProviderCacheManager.fetchHipInfo(providerIds, viewModel.getConsentRepository(),this, completion)
+        val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(list)
+        hipHiuNameResponse.observe(this, Observer {
+            completion(it)
+        })
     }
 
 

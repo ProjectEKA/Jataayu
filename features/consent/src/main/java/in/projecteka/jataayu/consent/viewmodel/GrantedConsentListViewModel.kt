@@ -7,6 +7,8 @@ import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
+import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
+import `in`.projecteka.jataayu.core.model.HipHiuNameResponse
 import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.core.model.RequestStatus.DENIED
 import `in`.projecteka.jataayu.core.model.RequestStatus.GRANTED
@@ -16,6 +18,7 @@ import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -42,7 +45,6 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository) : V
         grantedConsentDetailsResponse.fetch(repository.getGrantedConsentDetails(requestId))
     }
 
-    fun getConsentRepository(): ConsentRepository = repository
 
     fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> =
         grantedConsentStatusList.map { getFormattedItem(resources,it, GRANTED) }
@@ -79,6 +81,10 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository) : V
         val list: ArrayList<String> = ArrayList()
         list.add(consentArtifactId)
         revokeConsentResponse.fetch(repository.revokeConsent(RevokeConsentRequest(list), authToken))
+    }
+
+    fun fetchHipHiuNamesOf(idList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
+        return repository.getProviderBy(idList)
     }
 }
 

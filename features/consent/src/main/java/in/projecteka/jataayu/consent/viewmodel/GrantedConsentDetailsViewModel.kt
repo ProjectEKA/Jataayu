@@ -1,16 +1,14 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
-import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
-import `in`.projecteka.jataayu.core.model.LinkedCareContext
-import `in`.projecteka.jataayu.core.model.Links
+import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.LinkedHip
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 
 class GrantedConsentDetailsViewModel(private val repository: ConsentRepository) : ViewModel() {
@@ -18,27 +16,24 @@ class GrantedConsentDetailsViewModel(private val repository: ConsentRepository) 
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
     internal var selectedProviderName = String.EMPTY
-    private val consentDataProviderCacheManager = ConsentDataProviderCacheManager()
 
     fun getLinkedAccounts() =
         linkedAccountsResponse.fetch(repository.getLinkedAccounts())
-
-    fun getConsentRepository(): ConsentRepository = repository
 
     fun getGrantedConsentDetails(requestId: String) {
         grantedConsentDetailsResponse.fetch(repository.getGrantedConsentDetails(requestId))
     }
 
 
-    fun getItems(grantedConsents: List<GrantedConsentDetailsResponse>, linkedAccounts: List<Links>?): Pair<List<IDataBindingModel>,Int> {
+    fun getItems(grantedConsents: List<GrantedConsentDetailsResponse>, linkedAccounts: List<Links>?, response: HipHiuNameResponse): Pair<List<IDataBindingModel>,Int> {
         var count = 0
         val items = arrayListOf<IDataBindingModel>()
         for (grantedConsent in grantedConsents) {
-            val grantedAccountHipId = grantedConsent.consentDetail.hip?.id
+            val grantedAccountHipId = grantedConsent.consentDetail.hip?.getId()
             linkedAccounts?.forEach { link ->
-                if (grantedAccountHipId == link.hip.id) {
+                if (grantedAccountHipId == link.hip.getId()) {
                     // As per the requirement get the HIP name from ID
-                    val linkedHipName = consentDataProviderCacheManager.getProviderBy(grantedAccountHipId)?.name ?: ""
+                    val linkedHipName = response.nameMap[grantedAccountHipId] ?: ""
                     val linkedHip = LinkedHip(linkedHipName, link.referenceNumber)
                     items.add(linkedHip)
                     count++
@@ -57,6 +52,10 @@ class GrantedConsentDetailsViewModel(private val repository: ConsentRepository) 
             }
         }
         return Pair(items, count)
+    }
+
+    fun fetchHipHiuNamesOf(list: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
+        return repository.getProviderBy(list)
     }
 }
 

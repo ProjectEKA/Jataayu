@@ -6,4 +6,9 @@ data class Hiu (
 
 	@SerializedName("name") val name : String,
 	@SerializedName("organization") val organization : ProviderInfo
-)
+): HipHiuIdentifiable {
+
+	override fun getId(): String {
+		return organization.hip.getId()
+	}
+}

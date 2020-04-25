@@ -1,12 +1,13 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.FragmentConsentDetailsEditBinding
 import `in`.projecteka.jataayu.consent.viewmodel.EditConsentDetailsVM
 import `in`.projecteka.jataayu.core.databinding.PatientAccountResultItemBinding
 import `in`.projecteka.jataayu.core.model.CareContext
 import `in`.projecteka.jataayu.core.model.Consent
+import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
+import `in`.projecteka.jataayu.core.model.HipHiuNameResponse
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
 import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
@@ -43,7 +44,6 @@ class EditConsentDetailsFragment() : BaseFragment(), ItemClickCallback, Compound
 
     private lateinit var listItems: List<IDataBindingModel>
     private lateinit var genericRecyclerViewAdapter: GenericRecyclerViewAdapter
-    private lateinit var consentDataProviderCacheManager: ConsentDataProviderCacheManager
 
     companion object {
         fun newInstance() = EditConsentDetailsFragment()
@@ -61,7 +61,6 @@ class EditConsentDetailsFragment() : BaseFragment(), ItemClickCallback, Compound
         super.onViewCreated(view, savedInstanceState)
         viewModel.setup(eventBusInstance.getStickyEvent(Consent::class.java))
         binding.viewModel = viewModel
-        consentDataProviderCacheManager = ConsentDataProviderCacheManager()
         initObservers()
     }
 
@@ -69,15 +68,15 @@ class EditConsentDetailsFragment() : BaseFragment(), ItemClickCallback, Compound
 
         viewModel.onAddLinksEvent.observe(this, androidx.lifecycle.Observer { links ->
 
-           var idList = links.map { it.hip.id } + listOf(viewModel.modifiedConsent.hiu.id)
-            consentDataProviderCacheManager.fetchHipInfo(idList, viewModel.getConsentRepository(), this) {
+           val list = links.map { it.hip } + listOf(viewModel.modifiedConsent.hiu)
+               getHIPHiuNamesOf(list) {
                 val linkDataModels = arrayListOf<IDataBindingModel>()
                 links.forEach { link ->
-                    link.hip.name = consentDataProviderCacheManager.getProviderBy(link.hip.id)?.name ?: ""
+                    link.hip.name = it.nameMap[link.hip.getId()] ?: ""
                     linkDataModels.add(link.hip)
                     linkDataModels.addAll(link.careContexts)
                 }
-                viewModel.modifiedConsent.hiu.name = consentDataProviderCacheManager.getProviderBy(viewModel.modifiedConsent.hiu.id)?.name ?: ""
+                viewModel.modifiedConsent.hiu.name = it.nameMap[viewModel.modifiedConsent.hiu.getId()] ?: ""
                 listItems = linkDataModels
                 genericRecyclerViewAdapter = GenericRecyclerViewAdapter(listItems, this)
                 rvLinkedAccounts.apply {
@@ -137,6 +136,14 @@ class EditConsentDetailsFragment() : BaseFragment(), ItemClickCallback, Compound
             activity?.onBackPressed()
         })
 
+    }
+
+    private fun getHIPHiuNamesOf(list: List<HipHiuIdentifiable>, completion: (HipHiuNameResponse) -> Unit) {
+
+        val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(list)
+        hipHiuNameResponse.observe(this, Observer {
+            completion(it)
+        })
     }
 
     private fun newChip(description: String, isChecked: Boolean) = Chip(context).apply {
