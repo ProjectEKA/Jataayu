@@ -4,25 +4,31 @@ import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.MyProfile
+import `in`.projecteka.jataayu.network.utils.PayloadLiveData
+import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.user.account.remote.UserAccountApis
 import retrofit2.Call
 
 interface UserAccountsRepository {
-    fun getUserAccounts() : Call<LinkedAccountsResponse>
+    fun getUserAccounts(): PayloadLiveData<LinkedAccountsResponse>
     fun createAccount(createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse>
-    fun getMyProfile(): Call<MyProfile>
+    fun getMyProfile(): PayloadLiveData<MyProfile>
 }
 
-class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis): UserAccountsRepository {
-    override fun getUserAccounts(): Call<LinkedAccountsResponse> {
-        return userAccountApis.getUserAccounts()
+class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) : UserAccountsRepository {
+    override fun getUserAccounts(): PayloadLiveData<LinkedAccountsResponse> {
+        val liveData = PayloadLiveData<LinkedAccountsResponse>()
+        liveData.fetch(userAccountApis.getUserAccounts())
+        return liveData
     }
 
     override fun createAccount(createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse> {
         return userAccountApis.createAccount(createAccountRequest)
     }
 
-    override fun getMyProfile(): Call<MyProfile> {
-        return userAccountApis.getMyProfile()
+    override fun getMyProfile(): PayloadLiveData<MyProfile> {
+        val liveData = PayloadLiveData<MyProfile>()
+        liveData.fetch(userAccountApis.getMyProfile())
+        return liveData
     }
 }

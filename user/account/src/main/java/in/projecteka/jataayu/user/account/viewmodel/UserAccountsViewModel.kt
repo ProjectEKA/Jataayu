@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MediatorLiveData
@@ -17,26 +18,32 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Ba
     val patientId = ObservableField<String>()
     val patientName = ObservableField<String>()
     val linksSize = ObservableInt()
-    private var linkedPatientModel: LinkedPatient? = null
 
-    val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
-    val myProfileResponse = PayloadLiveData<MyProfile>()
     val userProfileResponse = MediatorLiveData<PayloadResource<*>>()
 
     val updateLinks = SingleLiveEvent<List<IGroupDataBindingModel>>()
     val updateProfile = SingleLiveEvent<MyProfile>()
     val addProviderEvent = SingleLiveEvent<Void>()
 
+    val userAccountLoading = ObservableBoolean()
+    val myProfileLoading = ObservableBoolean()
+
     fun fetchAll() {
         userProfileResponse.addSource(getUserAccounts(), Observer {
             when (it) {
-                is Loading -> showProgress(isCurrentlyFetching())
+                is Loading -> {
+                    userAccountLoading.set(it.isLoading)
+                    isCurrentlyFetching()
+                }
                 is Success -> updatePatient(it.data?.linkedPatient)
             }
         })
         userProfileResponse.addSource(getMyProfile(), Observer {
             when (it) {
-                is Loading -> showProgress(isCurrentlyFetching())
+                is Loading -> {
+                    myProfileLoading.set(it.isLoading)
+                    isCurrentlyFetching()
+                }
                 is Success -> {
                     patientName.set(it.data?.name)
                     updateProfile.value = it.data
@@ -47,20 +54,15 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Ba
 
     private fun updatePatient(linkedPatient: LinkedPatient?) {
         linkedPatient?.run {
-            linkedPatientModel = this
             patientId.set(id)
-            patientName.set(getFullName())
             appBarTitle.set(id)
             updateDisplayAccounts(links)
         }
     }
 
-    fun getUserAccounts() =
-        linkedAccountsResponse.fetch(repository.getUserAccounts())
+    fun getUserAccounts() = repository.getUserAccounts()
 
-
-    fun getMyProfile() =
-        myProfileResponse.fetch(repository.getMyProfile())
+    fun getMyProfile() = repository.getMyProfile()
 
 
     fun updateDisplayAccounts(links: List<Links>?) {
@@ -80,10 +82,11 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Ba
         }
     }
 
-    private fun isCurrentlyFetching() =
-        myProfileResponse.isLoading() || linkedAccountsResponse.isLoading()
+    private fun isCurrentlyFetching() {
+        showProgress(userAccountLoading.get() && myProfileLoading.get())
+    }
 
-    fun onClickAddProvider(){
+    fun onClickAddProvider() {
         addProviderEvent.call()
     }
 
