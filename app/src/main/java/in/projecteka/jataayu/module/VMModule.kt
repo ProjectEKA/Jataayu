@@ -13,19 +13,9 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel { ProviderSearchViewModel(get()) }
-    viewModel { RequestedConsentViewModel(get()) }
-    viewModel { GrantedConsentViewModel(get()) }
-    viewModel { ConsentViewModel(get()) }
-
-    viewModel { UserVerificationViewModel(get()) }
-    viewModel { EditConsentDetailsVM() }
 
     //Dashboard
     viewModel { DashboardViewModel() }
-
-    //Login
-    viewModel { LoginViewModel(get()) }
 
     //Registrations
     viewModel { RegistrationActivityViewModel(get()) }
@@ -37,4 +27,21 @@ val viewModelModule = module {
 
     //Create Account
     viewModel { CreateAccountViewModel(get()) }
+
+    //Login
+    viewModel { LoginViewModel(get()) }
+
+    //Consent
+    viewModel { ConsentHostFragmentViewModel() }
+    viewModel { RequestedConsentViewModel(get()) }
+    viewModel { GrantedConsentViewModel(get()) }
+    viewModel { ConsentViewModel(get()) }
+    viewModel { EditConsentDetailsVM(get()) }
+
+    //Provider Search
+    viewModel { ProviderSearchViewModel(get()) }
+
+    //User Verification
+    viewModel { UserVerificationViewModel(get()) }
+
 }

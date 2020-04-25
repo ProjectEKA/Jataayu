@@ -88,8 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
-                android:layout_marginEnd="@dimen/fab_margin"
-                android:layout_marginBottom="@dimen/fab_margin_bottom"
+                android:layout_margin="@dimen/fab_margin"
                 android:onClick="@{() -> viewModel.onClickAddProvider()}"
                 app:srcCompat="@drawable/ic_add" />
 

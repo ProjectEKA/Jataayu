@@ -4,6 +4,8 @@ import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -60,6 +62,26 @@ fun Context.showLongToast(text: CharSequence) = Toast.makeText(this, text, Toast
 fun Fragment.showLongToast(text: CharSequence) = context?.showLongToast(text)
 fun Context.showShortToast(text: CharSequence) =
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+val Context.isConnected: Boolean
+    get() {
+        val connectivityManager = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        return if (capabilities != null) {
+            when {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                    true
+                }
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                    true
+                }
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
+                    true
+                } else -> false
+            }
+        } else {
+            false
+        }
+    }
 
 fun Fragment.showShortToast(text: CharSequence) = context?.showShortToast(text)
 

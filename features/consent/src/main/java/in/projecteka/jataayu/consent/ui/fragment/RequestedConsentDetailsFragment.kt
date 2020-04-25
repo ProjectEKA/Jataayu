@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.RequestedConsentDetailsFragmentBinding
+import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentViewModel
 import `in`.projecteka.jataayu.core.model.*
@@ -194,7 +195,10 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 else R.string.new_request
             }
         )
-        renderUi()
+        ConsentDataProviderCacheManager.fetchHipInfo(listOf(consent.hiu.id), viewModel.getConsentRepository(), this) {
+            consent.hiu.name = ConsentDataProviderCacheManager.providerMap[consent.hiu.id]?.hip?.name ?: ""
+            renderUi()
+        }
     }
 
     private fun isExpiredOrGrantedOrDenied(): Boolean {

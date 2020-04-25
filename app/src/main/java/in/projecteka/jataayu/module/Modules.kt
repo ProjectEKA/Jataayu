@@ -8,7 +8,6 @@ import `in`.projecteka.jataayu.consent.repository.UserVerificationRepository
 import `in`.projecteka.jataayu.consent.repository.UserVerificationRepositoryImpl
 import `in`.projecteka.jataayu.consent.viewmodel.*
 import `in`.projecteka.jataayu.network.BuildConfig
-import `in`.projecteka.jataayu.consent.viewmodel.*
 import `in`.projecteka.jataayu.network.createNetworkClient
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.provider.remote.ProviderApis

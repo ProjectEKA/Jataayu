@@ -13,6 +13,7 @@ import android.app.Application
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -80,6 +81,7 @@ private fun httpClient(debug: Boolean, context: Context, authToken: String): OkH
         addBaseUrlChanger(clientBuilder, context)
     }
     addInvalidSessionRedirectInterceptor(context, context.getBaseUrl(), clientBuilder)
+    addResponseCacheInterceptor(clientBuilder, context)
     return clientBuilder.build()
 }
 
@@ -97,6 +99,15 @@ private fun addRequestResponseLogger(
 
 private fun addInvalidSessionRedirectInterceptor(context: Context, baseUrl: String, clientBuilder: OkHttpClient.Builder) {
     clientBuilder.addInterceptor(UnauthorisedUserRedirectInterceptor(context, baseUrl))
+}
+
+private fun addResponseCacheInterceptor(
+    clientBuilder: OkHttpClient.Builder,
+    context: Context
+) {
+    val cacheSize = (5 * 1024 * 1024).toLong()
+    val myCache = Cache(context.cacheDir, cacheSize)
+    clientBuilder.cache(myCache)
 }
 
 private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient, gson: Gson): Retrofit {

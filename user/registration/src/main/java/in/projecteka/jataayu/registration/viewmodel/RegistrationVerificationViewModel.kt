@@ -22,12 +22,15 @@ class RegistrationVerificationViewModel : BaseViewModel(), TextWatcher {
 
     val onClickVerifyEvent = SingleLiveEvent<String>()
 
-    override fun afterTextChanged(s: Editable?) {}
+    override fun afterTextChanged(s: Editable?) {
+        if (otpText.get()?.isNotEmpty() == true) {
+            errorLbl.set("")
+        }
+    }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        errorLbl.set("")
         submitEnabled.set(s?.length == OTP_LENGTH)
     }
 

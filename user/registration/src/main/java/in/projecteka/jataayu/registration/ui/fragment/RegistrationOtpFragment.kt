@@ -63,6 +63,10 @@ class RegistrationOtpFragment : BaseFragment() {
         parentVM.verifyIdentifierResponseLiveData.observe(this, Observer {
             when (it) {
                 is PartialFailure -> {
+                    if (it.error?.code == ERROR_CODE_INVALID_OTP){
+                        viewModel.otpText.set(null)
+                    }
+
                     viewModel.errorLbl.set(
                         if (it.error?.code == ERROR_CODE_INVALID_OTP) {
                             getString(R.string.invalid_otp)
