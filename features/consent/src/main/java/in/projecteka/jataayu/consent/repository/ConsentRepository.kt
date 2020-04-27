@@ -53,13 +53,14 @@ class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentReposi
 
     override fun getProviderBy(providerIdList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
         val idList = providerIdList.toSet().map { it.getId() }
-        return getData(idList)
+        return getProviderData(idList)
     }
 
-    private var liveDataCount = 0
-    private fun getData(idList: List<String>): MediatorLiveData<HipHiuNameResponse> {
+    private var providerLiveDataCount = 0
 
-        liveDataCount = idList.count()
+    private fun getProviderData(idList: List<String>): MediatorLiveData<HipHiuNameResponse> {
+
+        providerLiveDataCount += idList.count()
         var nameResponseMap = HashMap<String, String>()
         val mediatorLiveData = MediatorLiveData<HipHiuNameResponse>()
         idList.forEach { id ->
@@ -70,15 +71,15 @@ class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentReposi
                     is Success ->  {
                         response.data?.hip?.let {  nameResponseMap[it.getId()] = it.name }
                         mediatorLiveData.removeSource(liveData)
-                        liveDataCount -=1
+                        providerLiveDataCount -=1
                     }
                     is Loading -> {}
                     else  -> {
                         mediatorLiveData.removeSource(liveData)
-                        liveDataCount -=1
+                        providerLiveDataCount -=1
                     }
                 }
-                if (liveDataCount == 0) {
+                if (providerLiveDataCount == 0) {
                     val hipHiuNameResponse = HipHiuNameResponse(true, nameResponseMap)
                     mediatorLiveData.postValue(hipHiuNameResponse)
                 }
