@@ -42,7 +42,7 @@ class ConsentListViewModelTest {
     @Mock
     private lateinit var call: Call<ConsentsListResponse>
 
-    private lateinit var consentViewModel: ConsentListViewModel
+    private lateinit var consentViewModel: GrantedConsentListViewModel
 
     private lateinit var consentsListResponse: ConsentsListResponse
 
@@ -51,7 +51,7 @@ class ConsentListViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        consentViewModel = ConsentListViewModel(repository)
+        consentViewModel = GrantedConsentListViewModel(repository)
 
         consentsListResponse = Gson()
             .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)
