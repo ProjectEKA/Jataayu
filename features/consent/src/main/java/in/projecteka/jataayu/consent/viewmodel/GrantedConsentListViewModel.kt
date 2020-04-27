@@ -10,7 +10,6 @@ import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.HipHiuNameResponse
 import `in`.projecteka.jataayu.core.model.RequestStatus
-import `in`.projecteka.jataayu.core.model.RequestStatus.DENIED
 import `in`.projecteka.jataayu.core.model.RequestStatus.GRANTED
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
@@ -61,10 +60,10 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository) : V
             val dataExpired = DateTimeUtils.isDateExpired(consent.permission.dataEraseAt)
             when (filterItem) {
                 R.string.status_active_granted_consents -> {
-                    if (consent.status != DENIED) !dataExpired else false
+                    !dataExpired
                 }
                 R.string.status_expired_granted_consents -> {
-                    if (consent.status != DENIED) dataExpired else false
+                    dataExpired
                 }
                 else -> true
             }

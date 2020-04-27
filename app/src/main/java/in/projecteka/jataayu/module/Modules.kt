@@ -33,7 +33,7 @@ import retrofit2.Retrofit
 
 val viewModelModule = module {
     viewModel { ProviderSearchViewModel(get()) }
-    viewModel { RequestedConsentListViewModel(get()) }
+    viewModel { RequestedListViewModel(get()) }
     viewModel { GrantedConsentListViewModel(get()) }
     viewModel { ConsentHostFragmentViewModel() }
     viewModel { UserAccountsViewModel(get()) }

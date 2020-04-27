@@ -28,7 +28,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
-class GrantedConsentListViewModelTest {
+class ConsentListViewModelTest {
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
@@ -42,7 +42,7 @@ class GrantedConsentListViewModelTest {
     @Mock
     private lateinit var call: Call<ConsentsListResponse>
 
-    private lateinit var consentViewModel: GrantedConsentListViewModel
+    private lateinit var consentViewModel: ConsentListViewModel
 
     private lateinit var consentsListResponse: ConsentsListResponse
 
@@ -51,7 +51,7 @@ class GrantedConsentListViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        consentViewModel = GrantedConsentListViewModel(repository)
+        consentViewModel = ConsentListViewModel(repository)
 
         consentsListResponse = Gson()
             .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)

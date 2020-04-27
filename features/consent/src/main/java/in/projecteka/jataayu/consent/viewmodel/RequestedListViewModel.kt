@@ -20,7 +20,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class RequestedConsentListViewModel(private val repository: ConsentRepository) : ViewModel() {
+class RequestedListViewModel(private val repository: ConsentRepository) : ViewModel() {
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
     val requestedConsentsList = MutableLiveData<List<Consent>>()
@@ -48,7 +48,6 @@ class RequestedConsentListViewModel(private val repository: ConsentRepository) :
         requestStatus: RequestStatus
     ): String {
         val list = requestedConsentsList.value
-
 
         val count = list?.count { consent ->
             val dataExpired = DateTimeUtils.isDateExpired(consent.permission.dataEraseAt)

@@ -7,9 +7,7 @@ import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Companion.REQUEST_CONSENT_DETAILS
-import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Companion.RESULT_CONSENT_GRANTED
-import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Companion.RESULT_DENY_CONSENT
-import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentListViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.RequestedListViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.RequestStatus
@@ -22,6 +20,7 @@ import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -47,7 +46,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     protected lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var consentsListAdapter: ConsentsListAdapter
 
-    private val viewModel: RequestedConsentListViewModel by sharedViewModel()
+    private val viewModel: RequestedListViewModel by sharedViewModel()
     private val parentViewModel: ConsentHostFragmentViewModel by sharedViewModel()
 
     companion object {
@@ -150,9 +149,10 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         sp_request_filter.setSelection(INDEX_ACTIVE)
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-    }
 
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
@@ -189,10 +189,16 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CONSENT_DETAILS) {
-            if(resultCode == RESULT_CONSENT_GRANTED || resultCode == RESULT_DENY_CONSENT){
-                parentViewModel.pullToRefreshEvent.value = true
+        if (requestCode == REQUEST_CONSENT_DETAILS && resultCode == Activity.RESULT_OK) {
+            data?.let {
+                val eventType = data.getStringExtra(ConsentHostFragmentViewModel.KEY_CONSENT_EVENT_TYPE)
+                if (eventType == ConsentHostFragmentViewModel.KEY_EVENT_GRANT) {
+                    parentViewModel.showToastEvent.value = getString(R.string.consent_granted)
+                } else if (eventType == ConsentHostFragmentViewModel.KEY_EVENT_DENY) {
+                    parentViewModel.showToastEvent.value =getString(R.string.consent_denied)
+                }
             }
+            parentViewModel.pullToRefreshEvent.value = true
         }
     }
 }
