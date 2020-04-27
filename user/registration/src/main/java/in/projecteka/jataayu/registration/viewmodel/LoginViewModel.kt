@@ -1,15 +1,15 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
-import `in`.projecteka.jataayu.registration.model.LoginRequest
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -18,7 +18,11 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Transformations
 
-class LoginViewModel(private val repository: AuthenticationRepository) : BaseViewModel(), TextWatcher {
+class LoginViewModel(
+    private val repository: AuthenticationRepository,
+    val preferenceRepository: PreferenceRepository,
+    val credentialsRepository: CredentialsRepository
+) : BaseViewModel(), TextWatcher {
 
     companion object {
         private const val GRANT_TYPE_PASSWORD = "password"
@@ -65,14 +69,21 @@ class LoginViewModel(private val repository: AuthenticationRepository) : BaseVie
         onClickRegisterEvent.call()
     }
 
-    fun onLoginClicked() {
-        loginResponse.fetch(repository.login("${inputUsernameLbl.get()}${usernameProviderLbl.get()}",
-                inputPasswordLbl.get() ?: "", GRANT_TYPE_PASSWORD))
+    fun onLoginClicked() = Transformations.map(
+        loginResponse.fetch(
+            repository.login(
+                "${inputUsernameLbl.get()}${usernameProviderLbl.get()}",
+                inputPasswordLbl.get() ?: "", GRANT_TYPE_PASSWORD
+            )
+        )
+    ) {
+        when (it) {
+            is Success -> {
+                credentialsRepository.accessToken = "${it.data?.tokenType?.capitalize()} ${it.data?.accessToken}"
+                preferenceRepository.isUserLoggedIn = true
+            }
+        }
     }
-
-
-    fun getAuthTokenWithTokenType(authToken: String?, tokenType: String?): String =
-        "${tokenType?.capitalize()} $authToken"
 
 
     override fun afterTextChanged(s: Editable?) {

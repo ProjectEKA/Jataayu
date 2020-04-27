@@ -22,17 +22,24 @@ import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 
 @RunWith(MockitoJUnitRunner::class)
 class UserVerificationViewModelTest {
+
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
     @Mock
     private lateinit var userVerificationRepository: UserVerificationRepository
 
     @Mock
-    private lateinit var call : Call<UserVerificationResponse>
+    private lateinit var credRepo: CredentialsRepository
 
     @Mock
-    private lateinit var responseCallback: ResponseCallback
+    private lateinit var call: Call<UserVerificationResponse>
+
+    private lateinit var userVerificationViewModel: UserVerificationViewModel
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
@@ -40,6 +47,8 @@ class UserVerificationViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        userVerificationViewModel = UserVerificationViewModel(userVerificationRepository, credRepo)
+
     }
 
     @Test
@@ -51,9 +60,8 @@ class UserVerificationViewModelTest {
                 val callback = invocation.arguments[0] as Callback<UserVerificationResponse>
                 callback.onResponse(call, Response.success(mockResponse))
             }
-        UserVerificationViewModel(userVerificationRepository).verifyUser("1234", responseCallback)
+        userVerificationViewModel.verifyUser("1234")
         Mockito.verify(userVerificationRepository, times(1)).verifyUser("1234")
-        Mockito.verify(responseCallback).onSuccess(any(UserVerificationResponse::class.java))
     }
 
     @After

@@ -21,7 +21,6 @@ import `in`.projecteka.jataayu.provider.ui.adapter.ProviderSearchAdapter
 import `in`.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandler
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.sharedPref.getMobileIdentifier
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
@@ -85,7 +84,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         binding.selectedProviderName = viewModel.selectedProviderName
         binding.clickHandler = this
         binding.textWatcher = ProviderNameWatcher(this, 1)
-        binding.mobile = context?.getMobileIdentifier()
+        binding.mobile = viewModel.preferenceRepository.mobileIdentifier
     }
 
     private fun renderSearchUi() {

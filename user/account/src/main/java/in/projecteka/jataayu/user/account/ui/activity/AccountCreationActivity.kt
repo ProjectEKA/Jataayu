@@ -11,8 +11,7 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ActivityCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
 import `in`.projecteka.jataayu.util.extension.showLongToast
-import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
-import `in`.projecteka.jataayu.util.sharedPref.setUserAccountCreated
+
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import android.text.Editable
@@ -73,8 +72,8 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
                 when (it) {
                     is Loading -> viewModel.showProgress(it.isLoading)
                     is Success -> {
-                        setAuthToken(viewModel.getAuthTokenWithTokenType(it.data))
-                        setUserAccountCreated(true)
+                        viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
+                        viewModel.preferenceRepository.isUserAccountCreated = true
                         showLongToast(getString(R.string.registered_successfully))
                         startProvider(this)
                         finish()

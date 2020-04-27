@@ -12,9 +12,7 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
-import `in`.projecteka.jataayu.util.sharedPref.setMobileIdentifier
-import `in`.projecteka.jataayu.util.sharedPref.setName
-import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
+import `in`.projecteka.jataayu.util.extension.get
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -59,13 +57,12 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
 
     private fun initObservers() {
         viewModel.updateProfile.observe(this, Observer {
-            context?.setPinCreated(it.hasTransactionPin)
+            viewModel.preferenceRepository.pinCreated = it.hasTransactionPin
             it.verifiedIdentifiers.forEach { identifier ->
                 if (identifier.type == VERIFIED_IDENTIFIER_MOBILE) {
-                    activity?.setMobileIdentifier(identifier.value)
+                    viewModel.preferenceRepository.mobileIdentifier = identifier.value
                 }
             }
-            context?.setName(it.name)
         })
         viewModel.updateLinks.observe(this, Observer {
             listItems = it

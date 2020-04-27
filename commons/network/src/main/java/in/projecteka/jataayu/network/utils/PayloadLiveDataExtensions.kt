@@ -2,13 +2,14 @@ package `in`.projecteka.jataayu.network.utils
 
 import `in`.projecteka.jataayu.network.model.Error
 import `in`.projecteka.jataayu.network.model.ErrorResponse
+import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import okhttp3.ResponseBody
 import org.koin.core.context.GlobalContext.get
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Converter
 import retrofit2.Response
-
 
 fun <T> PayloadLiveData<T>.success(data: T?) {
     loading(false)
@@ -37,7 +38,6 @@ fun <T> PayloadLiveData<T>.isLoading(): Boolean {
 }
 
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
-    value = Loading(true)
     call.enqueue(object : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {
             failure(t)
@@ -59,6 +59,8 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
 
             }
         }
-    })
+    }).also {
+        loading(true)
+    }
     return this
 }

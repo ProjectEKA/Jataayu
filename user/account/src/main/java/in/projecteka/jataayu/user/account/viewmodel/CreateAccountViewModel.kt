@@ -8,6 +8,8 @@ import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import android.text.InputType
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -16,7 +18,9 @@ import com.google.android.material.chip.ChipGroup
 import java.util.*
 import java.util.regex.Pattern
 
-class CreateAccountViewModel(private val repository: UserAccountsRepository) : BaseViewModel(), ChipGroup.OnCheckedChangeListener {
+class CreateAccountViewModel(private val repository: UserAccountsRepository,
+                             val preferenceRepository: PreferenceRepository,
+                             val credentialsRepository: CredentialsRepository) : BaseViewModel(), ChipGroup.OnCheckedChangeListener {
 
     companion object {
 

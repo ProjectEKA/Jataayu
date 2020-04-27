@@ -9,8 +9,6 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ActivityLoginBinding
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
-import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
-import `in`.projecteka.jataayu.util.sharedPref.setIsUserLoggedIn
 import `in`.projecteka.jataayu.util.startDashboard
 import `in`.projecteka.jataayu.util.startRegistration
 import android.os.Bundle
@@ -43,8 +41,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             when (it) {
                 is Loading -> viewModel.showProgress(it.isLoading, R.string.logging_in)
                 is Success -> {
-                    setAuthToken(viewModel.getAuthTokenWithTokenType(authToken = it.data?.accessToken, tokenType = it.data?.tokenType))
-                    setIsUserLoggedIn(true)
                     finish()
                     startDashboard(this)
 

@@ -1,41 +1,51 @@
 package `in`.projecteka.jataayu.ui.launcher
 
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
+import `in`.projecteka.jataayu.ui.LauncherViewModel
 import `in`.projecteka.jataayu.util.extension.showLongToast
-import `in`.projecteka.jataayu.util.sharedPref.*
 import `in`.projecteka.jataayu.util.startAccountCreation
 import `in`.projecteka.jataayu.util.startDashboard
 import `in`.projecteka.jataayu.util.startLogin
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class LauncherActivity : AppCompatActivity() {
 
+    private val viewModel: LauncherViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (intent.action == UnauthorisedUserRedirectInterceptor.REDIRECT_ACTIVITY_ACTION) {
-            resetCredentials()
+            viewModel.resetCredentials()
             showLongToast("Session expired, redirecting to Login...")
         }
-        redirect()
+        viewModel.redirectIfNeeded()
+        initObservers()
     }
 
-    private fun redirect() {
-        when {
-            hasProviders() || isUserLoggedIn() ->
-                startDashboard(this)
-            isAccountCreated() ->
-                startProvider(this)
-            isUserRegistered() ->
-                startAccountCreation(this)
-            else -> startLogin(this)
-        }
-        finish()
+    private fun initObservers() {
+        viewModel.startLogin.observe(this, Observer {
+            startLogin(this)
+            finish()
+        })
+        viewModel.startDashboard.observe(this, Observer {
+            startDashboard(this)
+            finish()
+        })
+        viewModel.startProvider.observe(this, Observer {
+            startProvider(this)
+            finish()
+        })
+        viewModel.startAccountCreation.observe(this, Observer {
+            startAccountCreation(this)
+            finish()
+        })
     }
 
-    //user should not be allowed back during redirect.
     override fun onBackPressed() {
 //        super.onBackPressed()
     }

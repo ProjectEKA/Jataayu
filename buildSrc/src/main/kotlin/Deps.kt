@@ -44,6 +44,7 @@ object LibVersions {
     const val rxAndroid = "2.1.1"
     const val otpView = "2.1.0"
     const val swipeRefresh = "1.0.0"
+    const val security = "1.0.0-rc01"
 }
 
 object Modules {
@@ -74,6 +75,7 @@ object Deps {
         const val coreKtx = "androidx.core:core-ktx:${LibVersions.coreKtx}"
         const val lifecyle = "androidx.lifecycle:lifecycle-extensions:${LibVersions.androidXLifecycle}"
         const val lifecyleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${LibVersions.androidXLifecycle}"
+        const val security = "androidx.security:security-crypto:${LibVersions.security}"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:${LibVersions.constraintLayout}"
         const val test = "androidx.test.ext:junit:${LibVersions.androidX}"
         const val fragmentTesting = "androidx.fragment:fragment-testing:${LibVersions.androidXFragmentTesting}"

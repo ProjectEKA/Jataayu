@@ -6,6 +6,8 @@ import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import junit.framework.Assert
@@ -31,6 +33,12 @@ class UserAccountsViewModelTest {
     @Mock
     private lateinit var repository: UserAccountsRepository
 
+    @Mock
+    private lateinit var preferenceRepository: PreferenceRepository
+
+    @Mock
+    private lateinit var credentialsRepository: CredentialsRepository
+
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
 
@@ -48,7 +56,7 @@ class UserAccountsViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        viewModel = UserAccountsViewModel(repository)
+        viewModel = UserAccountsViewModel(repository,preferenceRepository,credentialsRepository)
     }
 
     @After

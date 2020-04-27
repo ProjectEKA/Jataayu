@@ -16,7 +16,6 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.showLongToast
-import `in`.projecteka.jataayu.util.sharedPref.getConsentTempToken
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -225,9 +224,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 viewModel.showProgress(true)
                 viewModel.grantConsent(
                     consent.id,
-                    viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission),
-                    context?.getConsentTempToken()!!
-                )
+                    viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission))
             }
         }
     }

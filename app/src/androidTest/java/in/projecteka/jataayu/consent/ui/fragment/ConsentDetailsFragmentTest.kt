@@ -21,7 +21,7 @@ import org.junit.runner.RunWith
 
 
 
-@LargeTest
+/*@LargeTest
 @RunWith(AndroidJUnit4::class)
 class ConsentDetailsFragmentTest{
 
@@ -139,6 +139,5 @@ class ConsentDetailsFragmentTest{
     fun tearDown(){
         webServer.shutdown()
     }
-
-
-}
+    }
+ */

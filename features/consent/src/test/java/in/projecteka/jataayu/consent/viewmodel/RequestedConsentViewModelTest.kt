@@ -6,22 +6,26 @@ import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.RequestStatus
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
-import `in`.projecteka.jataayu.util.ui.DateTimeUtils
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import junit.framework.Assert.*
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
@@ -38,10 +42,19 @@ class RequestedConsentViewModelTest {
     private lateinit var repository: ConsentRepository
 
     @Mock
+    private lateinit var preferenceRepo: PreferenceRepository
+
+    @Mock
+    private lateinit var credentialsRepo: CredentialsRepository
+
+    @Mock
     private lateinit var resources: Resources
 
     @Mock
     private lateinit var call: Call<ConsentsListResponse>
+
+    @Mock
+    private lateinit var consentsFetchObserver: Observer<PayloadResource<ConsentsListResponse>>
 
     private lateinit var consentViewModel: RequestedConsentViewModel
 
@@ -52,7 +65,7 @@ class RequestedConsentViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        consentViewModel = RequestedConsentViewModel(repository)
+        consentViewModel = RequestedConsentViewModel(repository, preferenceRepo, credentialsRepo)
 
         consentsListResponse = Gson()
             .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)
@@ -64,8 +77,15 @@ class RequestedConsentViewModelTest {
                 callback.onResponse(call, Response.success(consentsListResponse))
             }
 
+        consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
+
         consentViewModel.getConsents()
         consentViewModel.filterConsents(consentsListResponse.requests)
+    }
+
+    @After
+    fun tearDown() {
+        consentViewModel.consentListResponse.removeObserver(consentsFetchObserver)
     }
 
     @Test
@@ -90,9 +110,11 @@ class RequestedConsentViewModelTest {
 
     @Test
     fun `should Fetch Consents`() {
-        verify(repository).getConsents()
-        verify(call).enqueue(any())
-        assertEquals(Success(consentsListResponse), consentViewModel.consentListResponse.value)
+
+        verify(consentsFetchObserver, times(1)).onChanged(Loading(true))
+        verify(consentsFetchObserver, times(1)).onChanged(Loading(false))
+        verify(consentsFetchObserver, times(1)).onChanged(Success(consentsListResponse))
+
     }
 
     @Test
@@ -104,7 +126,7 @@ class RequestedConsentViewModelTest {
     @Test
     fun `should Return Filter And Sorted List By Descending Order`() {
         consentViewModel.filterConsents(consentsListResponse.requests)
-        val first =  consentViewModel.requestedConsentsList.value!!.first().getLastUpdated()
+        val first = consentViewModel.requestedConsentsList.value!!.first().getLastUpdated()
         val second = consentViewModel.requestedConsentsList.value!![1].getLastUpdated()
         assertTrue(first!!.after(second!!))
     }
