@@ -8,14 +8,15 @@ import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
-import `in`.projecteka.jataayu.network.model.ErrorResponse
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.network.utils.Failure
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PartialFailure
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.sharedPref.setConsentTempToken
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.content.Intent
 import android.os.Bundle
@@ -24,10 +25,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import org.greenrobot.eventbus.EventBus
-import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpChangeHandler, ResponseCallback {
+class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpChangeHandler {
     private lateinit var binding: UserVerificationFragmentBinding
 
     companion object {
@@ -36,7 +37,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         private const val ERROR_CODE_TOKEN_INVALID = 1017
     }
 
-    private var viewModel = UserVerificationViewModel(get())
+    private val viewModel: UserVerificationViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,9 +55,38 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
 
     private fun initObservers() {
         viewModel.userVerificationResponse.observe(this, Observer { it ->
-            context?.setConsentTempToken(it.temporaryToken)
-            EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
-            activity?.finish()
+            when (it) {
+                is Loading -> showProgressBar(true)
+                is Success -> {
+                    viewModel.credentialsRepository.consentTemporaryToken = it.data?.temporaryToken
+                    EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
+                    activity?.finish()
+                }
+                is PartialFailure -> {
+                    when (it.error?.code) {
+                        ERROR_CODE_INVALID_PIN -> {
+                            context?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
+                            binding.lblInvalidPin.visibility = View.VISIBLE
+                            binding.etPin.setText("")
+                            binding.etPin.wobble()
+                        }
+                        ERROR_CODE_TOKEN_INVALID -> {
+                            startActivity(Intent().apply {
+                                action = UnauthorisedUserRedirectInterceptor.REDIRECT_ACTIVITY_ACTION
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            })
+                        }
+                        else -> {
+                            context?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
+                        }
+                    }
+                }
+                is Failure -> {
+                    context?.showErrorDialog(it.error.localizedMessage)
+                }
+            }
+
         })
     }
 
@@ -76,42 +106,10 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         UiUtils.hideKeyboard(activity!!)
         val pin = binding.etPin.text.toString()
         showProgressBar(true)
-        viewModel.verifyUser(pin, this)
+        viewModel.verifyUser(pin)
     }
 
     override fun setButtonEnabled(isOtpEntered: Boolean) {
         binding.isOtpEntered = true
-    }
-
-    override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
-    }
-
-    override fun onFailure(errorBody: ErrorResponse) {
-        showProgressBar(false)
-
-        when (errorBody.error.code) {
-            ERROR_CODE_INVALID_PIN -> {
-                context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
-                binding.lblInvalidPin.visibility = View.VISIBLE
-                binding.etPin.setText("")
-                binding.etPin.wobble()
-            }
-            ERROR_CODE_TOKEN_INVALID -> {
-                startActivity(Intent().apply {
-                    action = UnauthorisedUserRedirectInterceptor.REDIRECT_ACTIVITY_ACTION
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK
-                })
-            }
-            else -> {
-                context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
-            }
-        }
-    }
-
-    override fun onFailure(t: Throwable) {
-        showProgressBar(false)
-        context?.showErrorDialog(t.localizedMessage)
     }
 }

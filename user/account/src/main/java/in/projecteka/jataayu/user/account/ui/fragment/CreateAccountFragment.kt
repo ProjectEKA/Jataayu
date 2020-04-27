@@ -18,13 +18,7 @@ import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.show
 import `in`.projecteka.jataayu.util.extension.showLongToast
-import `in`.projecteka.jataayu.util.extension.toUtc
-import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
-import `in`.projecteka.jataayu.util.sharedPref.setUserAccountCreated
-import `in`.projecteka.jataayu.util.ui.DateTimeUtils
-import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
 import `in`.projecteka.jataayu.util.startProvider
-import android.app.Activity
 import android.os.Bundle
 import android.text.InputType
 import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
@@ -177,8 +171,8 @@ class CreateAccountFragment : BaseFragment(),
     private fun initObservers(){
         viewModel.createAccountResponse.observe(this,
             Observer<CreateAccountResponse> {
-                context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
-                activity?.setUserAccountCreated(true)
+                viewModel.credentialRepository.accessToken = viewModel.getAuthTokenWithTokenType(it)
+                viewModel.preferenceRepository.isUserAccountCreated = true
                 showLongToast(getString(R.string.registered_successfully))
                 startProvider(activity!!)
                 activity?.finish()

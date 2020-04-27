@@ -6,6 +6,8 @@ import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.util.TestUtils
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
 import org.junit.Before
@@ -32,6 +34,12 @@ class LoginViewModelTest {
     private lateinit var repository: AuthenticationRepository
 
     @Mock
+    private lateinit var preferenceRepository: PreferenceRepository
+
+    @Mock
+    private lateinit var credentialsRepository: CredentialsRepository
+
+    @Mock
     private lateinit var call: Call<CreateAccountResponse>
 
     private lateinit var loginViewModel: LoginViewModel
@@ -45,7 +53,7 @@ class LoginViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        loginViewModel = LoginViewModel(repository)
+        loginViewModel = LoginViewModel(repository,preferenceRepository,credentialsRepository)
 
         loginResponse = Gson()
             .fromJson(TestUtils.readFile("login_response.json"), CreateAccountResponse::class.java)

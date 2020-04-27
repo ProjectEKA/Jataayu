@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu
 
 import `in`.projecteka.jataayu.module.networkModule
+import `in`.projecteka.jataayu.module.preferenceModule
 import `in`.projecteka.jataayu.module.repositoryModule
 import `in`.projecteka.jataayu.module.viewModelModule
 import android.app.Application
@@ -21,7 +22,7 @@ open class JataayuApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@JataayuApp)
-            loadKoinModules(listOf(viewModelModule, repositoryModule, networkModule))
+            loadKoinModules(listOf(preferenceModule, networkModule, repositoryModule,viewModelModule))
         }
     }
 }

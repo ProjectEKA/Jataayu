@@ -8,7 +8,7 @@ dependencies {
     api Deps.AndroidX.appcompat
     api Deps.Testing.Helpers.gson
     api Deps.GreenRobot.eventBus
-
+    api Deps.AndroidX.security
 
     api Deps.Testing.mockito
 
