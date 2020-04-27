@@ -146,7 +146,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
             addItemDecoration(DividerItemDecorator(getDrawable(context!!, R.color.transparent)!!))
         }
         initSpinner(selectedSpinnerPosition)
-        sp_request_filter.setSelection(INDEX_ACTIVE)
+        sp_request_filter.setSelection(selectedSpinnerPosition)
     }
 
 
@@ -158,13 +158,16 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         when (position) {
             INDEX_ACTIVE -> filterRequests(getConsentList().filter { !isDateExpired(it.permission.dataEraseAt) && it.status != RequestStatus.DENIED })
             INDEX_EXPIRED -> filterRequests(getConsentList().filter { isDateExpired(it.permission.dataEraseAt) && it.status != RequestStatus.DENIED})
-            INDEX_DENIED -> filterRequests(getConsentList().filter { it.status.equals(RequestStatus.DENIED) })
+            INDEX_DENIED -> filterRequests(getConsentList().filter { it.status == RequestStatus.DENIED })
             INDEX_ALL -> filterRequests(getConsentList())
         }
     }
 
     private fun filterRequests(requests: List<Consent>) {
-        (rvConsents.adapter as ConsentsListAdapter).updateData(requests)
+        rvConsents.adapter = ConsentsListAdapter(
+            this@RequestedListFragment,
+            requests
+        )
     }
 
     override fun onItemClick(
@@ -201,4 +204,5 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
             parentViewModel.pullToRefreshEvent.value = true
         }
     }
+
 }

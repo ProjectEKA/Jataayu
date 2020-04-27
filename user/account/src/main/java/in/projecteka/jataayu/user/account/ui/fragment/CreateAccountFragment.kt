@@ -17,14 +17,9 @@ import `in`.projecteka.jataayu.user.account.listener.UsernameChangeWatcher
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.show
-import `in`.projecteka.jataayu.util.extension.showLongToast
-import `in`.projecteka.jataayu.util.extension.toUtc
 import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
 import `in`.projecteka.jataayu.util.sharedPref.setUserAccountCreated
-import `in`.projecteka.jataayu.util.ui.DateTimeUtils
-import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
 import `in`.projecteka.jataayu.util.startProvider
-import android.app.Activity
 import android.os.Bundle
 import android.text.InputType
 import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
@@ -72,6 +67,7 @@ class CreateAccountFragment : BaseFragment(),
         $                 # end-of-string*/
         const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
         const val DEFAULT_CHECKED_ID = -1
+        const val KEY_ACCOUNT_CREATED = "account_created"
     }
 
     override fun showOrHidePassword(view: View) {
@@ -179,8 +175,9 @@ class CreateAccountFragment : BaseFragment(),
             Observer<CreateAccountResponse> {
                 context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
                 activity?.setUserAccountCreated(true)
-                showLongToast(getString(R.string.registered_successfully))
-                startProvider(activity!!)
+                startProvider(activity!!) {
+                    putExtra(KEY_ACCOUNT_CREATED, true)
+                }
                 activity?.finish()
             })
     }

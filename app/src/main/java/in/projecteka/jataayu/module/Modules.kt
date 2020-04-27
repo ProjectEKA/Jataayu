@@ -13,6 +13,7 @@ import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.provider.remote.ProviderApis
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.provider.repository.ProviderRepositoryImpl
+import `in`.projecteka.jataayu.provider.viewmodel.ProviderActivityViewModel
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.registration.remote.AuthenticationApis
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
@@ -43,6 +44,7 @@ val viewModelModule = module {
     viewModel { PinVerificationViewModel() }
     viewModel { GrantedConsentDetailsViewModel(get()) }
     viewModel { RequestedConsentDetailsViewModel(get()) }
+    viewModel { ProviderActivityViewModel() }
 
     //Login
     viewModel { LoginViewModel(get()) }

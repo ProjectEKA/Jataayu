@@ -19,12 +19,17 @@ import `in`.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.projecteka.jataayu.provider.ui.ProviderActivity
 import `in`.projecteka.jataayu.provider.ui.adapter.ProviderSearchAdapter
 import `in`.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandler
+import `in`.projecteka.jataayu.provider.viewmodel.ProviderActivityViewModel
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.sharedPref.getMobileIdentifier
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -33,6 +38,8 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.provider_search_fragment.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCallback,
@@ -45,6 +52,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
 
     }
     private val viewModel: ProviderSearchViewModel by sharedViewModel()
+    private val parentVM: ProviderActivityViewModel by sharedViewModel()
     private lateinit var lastQuery: String
     private lateinit var selectedProvider : ProviderInfo
     private lateinit var providersList: ProviderSearchAdapter
@@ -105,7 +113,21 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeProviders()
+        parentVM.showSnackbarevent.observe(this, Observer{
+            if (it) {
+                showSnackbar(getString(R.string.registered_successfully))
+            }
+        })
         setTitle(R.string.link_provider)
+    }
+
+    private fun showSnackbar(message: String) {
+        val spannableString = SpannableString(message)
+
+        spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val snackbar = Snackbar.make(provider_container, spannableString, 2000)
+        snackbar.anchorView = btn_search
+        snackbar.show()
     }
 
     override fun onItemClick(
