@@ -1,10 +1,12 @@
 package `in`.projecteka.jataayu.ui
 
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.lifecycle.ViewModel
 
-class LauncherViewModel(private val preferenceRepository: PreferenceRepository) : ViewModel() {
+class LauncherViewModel(private val preferenceRepository: PreferenceRepository,
+                        private val credentialsRepository: CredentialsRepository) : ViewModel() {
 
     val startLogin = SingleLiveEvent<Void>()
     val startAccountFragments = SingleLiveEvent<Void>()
@@ -30,7 +32,8 @@ class LauncherViewModel(private val preferenceRepository: PreferenceRepository) 
     }
 
     fun resetCredentials() {
-        preferenceRepository.resetCredentials()
+        preferenceRepository.resetPreferences()
+        credentialsRepository.reset()
     }
 
 }

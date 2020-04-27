@@ -48,7 +48,7 @@ val viewModelModule = module {
     viewModel { EditConsentDetailsVM(get()) }
 
     //Launcher
-    viewModel { LauncherViewModel(get()) }
+    viewModel { LauncherViewModel(get(), get()) }
 
     //Login
     viewModel { LoginViewModel(get(), get(), get()) }

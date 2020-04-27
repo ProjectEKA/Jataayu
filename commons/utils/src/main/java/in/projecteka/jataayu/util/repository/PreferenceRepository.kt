@@ -19,7 +19,7 @@ interface PreferenceRepository {
 
     var hasProviders: Boolean
 
-    fun resetCredentials()
+    fun resetPreferences()
 }
 
 class PreferenceRepositoryImpl(private val sharedPreferences: SharedPreferences) :
@@ -63,7 +63,7 @@ class PreferenceRepositoryImpl(private val sharedPreferences: SharedPreferences)
         get() = sharedPreferences.getString(MOBILE_NUMBER, null)
         set(value) = sharedPreferences.edit { putString(MOBILE_NUMBER, value) }
 
-    override fun resetCredentials() {
+    override fun resetPreferences() {
         pinCreated = false
         name = null
         isUserLoggedIn = false
