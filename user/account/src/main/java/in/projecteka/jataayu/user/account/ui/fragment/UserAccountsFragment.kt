@@ -1,8 +1,6 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
-import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
-import `in`.projecteka.jataayu.core.model.MyProfile
-import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
+import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapter
@@ -16,6 +14,7 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.get
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.sharedPref.setMobileIdentifier
 import `in`.projecteka.jataayu.util.sharedPref.setName
 import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
@@ -41,7 +40,8 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
 
     private val observer = Observer<LinkedAccountsResponse> {
         binding.linkedPatient = it.linkedPatient
-        getUserAccounts()
+        val hipList = it.linkedPatient.links.map { links -> links.hip }
+        getNamesOfHiuList(hipList)
     }
 
     private val profileObserver = Observer<MyProfile> {
@@ -85,9 +85,9 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
         viewModel.myProfileResponse.observe(this, profileObserver)
     }
 
-    private fun getUserAccounts() {
+    private fun getUserAccounts(hipHiuNameResponse: HipHiuNameResponse) {
         compositeDisposable.add(Observable.just(viewModel)
-            .map { it.getDisplayAccounts() }
+            .map { it.getDisplayAccounts(hipHiuNameResponse) }
             .get()
             .subscribe { items ->
                 listItems = items
@@ -95,10 +95,25 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
                     layoutManager = LinearLayoutManager(context)
                     @Suppress("UNCHECKED_CAST")
                     (listItems as? List<IGroupDataBindingModel>)?.let {
-                        adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment, it)
+                        adapter = ExpandableRecyclerViewAdapter(
+                            this@UserAccountsFragment,
+                            this@UserAccountsFragment,
+                            it
+                        )
                     }
                 }
             })
+    }
+
+    private fun getNamesOfHiuList(hiuList: List<HipHiuIdentifiable>) {
+        val hipHiuNameResponse = viewModel.fetchHipHiuNamesOfHiuList(hiuList)
+        hipHiuNameResponse.observe(viewLifecycleOwner, Observer {
+            if (it.status) {
+                getUserAccounts(hipHiuNameResponse = it)
+            } else {
+                context?.showLongToast(getString(R.string.something_went_wrong))
+            }
+        })
     }
 
 
@@ -115,7 +130,11 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
 
     override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
-        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
+        context?.showAlertDialog(
+            getString(R.string.failure),
+            errorBody.error.message,
+            getString(android.R.string.ok)
+        )
     }
 
     override fun onFailure(t: Throwable) {

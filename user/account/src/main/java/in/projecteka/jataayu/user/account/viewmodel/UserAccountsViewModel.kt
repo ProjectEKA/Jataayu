@@ -1,6 +1,5 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
-import `in`.projecteka.jataayu.core.BuildConfig
 import `in`.projecteka.jataayu.core.R
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
@@ -9,6 +8,7 @@ import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
 import `in`.projecteka.jataayu.util.extension.liveDataOf
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import java.util.regex.Pattern
 
@@ -25,13 +25,13 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Vi
         repository.getMyProfile().observeOn(myProfileResponse, responseCallback)
     }
 
-    fun getDisplayAccounts(): List<IGroupDataBindingModel> {
+    fun getDisplayAccounts(hipHiuNameResponse: HipHiuNameResponse): List<IGroupDataBindingModel> {
         val items = arrayListOf<IGroupDataBindingModel>()
         linkedAccountsResponse.value?.linkedPatient?.links?.let {
             val links = linkedAccountsResponse.value?.linkedPatient?.links!!
             for (link in links) {
                 val careContextsList = arrayListOf<LinkedCareContext>()
-                link?.careContexts?.forEach {
+                link?.careContexts.forEach {
                     careContextsList.add(
                         LinkedCareContext(
                             it.referenceNumber,
@@ -39,9 +39,10 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Vi
                         )
                     )
                 }
+                val hipName = hipHiuNameResponse.nameMap[link.hip.getId()] ?: ""
                 items.add(
                     LinkedAccount(
-                        link?.hip!!.name,
+                        hipName,
                         link.referenceNumber,
                         link.display,
                         careContextsList,
@@ -70,5 +71,9 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository) : Vi
 
     fun getAuthTokenWithTokenType(response: CreateAccountResponse): String {
         return (response.tokenType).capitalize() + CreateAccountFragment.SPACE + response.accessToken
+    }
+
+    fun fetchHipHiuNamesOfHiuList(idList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
+        return repository.getProviderByIDList(idList)
     }
 }
