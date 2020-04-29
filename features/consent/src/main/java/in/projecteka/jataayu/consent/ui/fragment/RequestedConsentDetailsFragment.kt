@@ -16,6 +16,7 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
 import android.content.Intent

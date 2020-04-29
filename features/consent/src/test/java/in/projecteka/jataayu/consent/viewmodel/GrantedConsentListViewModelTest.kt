@@ -51,7 +51,6 @@ class ConsentListViewModelTest {
     @Mock
     private lateinit var call: Call<ConsentsListResponse>
 
-//    private lateinit var consentViewModel: GrantedConsentListViewModel
     @Mock
     private lateinit var consentsFetchObserver: Observer<PayloadResource<ConsentsListResponse>>
 
@@ -64,7 +63,6 @@ class ConsentListViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-//        consentViewModel = GrantedConsentListViewModel(repository)
         consentViewModel = GrantedConsentListViewModel(repository,credentialRepo)
 
         consentsListResponse = Gson()
@@ -102,8 +100,8 @@ class ConsentListViewModelTest {
     private fun dummyGrantedFilterList(): ArrayList<String> {
         val list = ArrayList<String>(3)
         list.add("All Granted Consents (2)")
-        list.add("Active granted consents (1)")
-        list.add("Expired granted consents (1)")
+        list.add("Active granted consents (2)")
+        list.add("Expired granted consents (0)")
         return list
     }
 

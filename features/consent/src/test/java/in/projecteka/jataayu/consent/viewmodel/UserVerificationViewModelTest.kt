@@ -34,10 +34,10 @@ class UserVerificationViewModelTest {
     private lateinit var userVerificationRepository: UserVerificationRepository
 
     @Mock
-    private lateinit var preferenceRepository: PreferenceRepository
+    private lateinit var credRepo: CredentialsRepository
 
     @Mock
-    private lateinit var credRepo: CredentialsRepository
+    private lateinit var preferenceRepository: PreferenceRepository
 
     @Mock
     private lateinit var call: Call<UserVerificationResponse>

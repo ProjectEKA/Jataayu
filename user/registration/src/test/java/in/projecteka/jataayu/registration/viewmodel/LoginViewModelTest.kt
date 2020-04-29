@@ -5,9 +5,9 @@ import `in`.projecteka.jataayu.registration.model.LoginRequest
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.util.TestUtils
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
 import org.junit.Before

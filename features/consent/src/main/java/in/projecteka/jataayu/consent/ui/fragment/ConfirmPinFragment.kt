@@ -121,7 +121,6 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
         arguments?.let { bundle ->
             bundle.getString(PIN)?.let { pin ->
                 if (confirmedPin == pin) {
-                    showProgressBar(true)
                     viewModel.createPin(confirmedPin)
                 } else {
                     binding.lblInvalidPin.visibility = VISIBLE

@@ -17,6 +17,7 @@ import `in`.projecteka.jataayu.user.account.listener.UsernameChangeWatcher
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.show
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import android.text.InputType
