@@ -66,6 +66,7 @@ class CreateAccountFragment : BaseFragment(),
         $                 # end-of-string*/
         const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
         const val DEFAULT_CHECKED_ID = -1
+        const val KEY_ACCOUNT_CREATED = "account_created"
     }
 
     override fun showOrHidePassword(view: View) {
@@ -173,8 +174,9 @@ class CreateAccountFragment : BaseFragment(),
             Observer<CreateAccountResponse> {
                 viewModel.credentialRepository.accessToken = viewModel.getAuthTokenWithTokenType(it)
                 viewModel.preferenceRepository.isUserAccountCreated = true
-                showLongToast(getString(R.string.registered_successfully))
-                startProvider(activity!!)
+                startProvider(activity!!) {
+                    putExtra(KEY_ACCOUNT_CREATED, true)
+                }
                 activity?.finish()
             })
     }

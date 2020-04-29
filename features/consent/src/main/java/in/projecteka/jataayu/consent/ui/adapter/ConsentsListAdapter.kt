@@ -1,7 +1,6 @@
 package `in`.projecteka.jataayu.consent.ui.adapter
 
 import `in`.projecteka.jataayu.consent.callback.DeleteConsentCallback
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.core.databinding.ConsentItemBinding
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.presentation.adapter.GenericRecyclerViewAdapter
@@ -34,13 +33,6 @@ class ConsentsListAdapter(
                 false
             )
         return ConsentRecyclerViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        val currentConsent = requests[position]
-        val providerInfo = ConsentDataProviderCacheManager.providerMap[requests[position].hiu.id]
-        currentConsent.hiu.name = providerInfo?.hip?.name ?: ""
-        holder.bind(currentConsent)
     }
 
     inner class ConsentRecyclerViewHolder(

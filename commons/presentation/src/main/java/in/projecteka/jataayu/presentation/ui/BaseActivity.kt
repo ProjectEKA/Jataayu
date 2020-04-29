@@ -8,6 +8,9 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCKOON_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.PROD_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.TEST_URL
+import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
+import `in`.projecteka.jataayu.util.sharedPref.getEndpointIndex
+import `in`.projecteka.jataayu.util.sharedPref.setNetworkPref
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.sharedPref.*
 import android.content.DialogInterface

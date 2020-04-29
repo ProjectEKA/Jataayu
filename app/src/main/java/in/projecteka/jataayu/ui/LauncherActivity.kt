@@ -2,8 +2,6 @@ package `in`.projecteka.jataayu.ui
 
 import `in`.projecteka.jataayu.R
 import `in`.projecteka.jataayu.consent.ui.fragment.ConsentHostFragment
-import `in`.projecteka.jataayu.core.model.MessageEventType
-import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.databinding.ActivityLauncherBinding
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
@@ -27,11 +25,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_launcher.*
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
-
 class LauncherActivity : BaseActivity() {
     private lateinit var binding: ActivityLauncherBinding
     private lateinit var active: Fragment
@@ -39,20 +33,6 @@ class LauncherActivity : BaseActivity() {
     private lateinit var consentFragment: ConsentHostFragment
 
     private val viewModel: LauncherViewModel by viewModel()
-
-    override fun onStart() {
-        super.onStart()
-        if (!eventBusInstance.isRegistered(this)) {
-            eventBusInstance.register(this)
-        }
-    }
-
-    override fun onDestroy() {
-        if (eventBusInstance.isRegistered(this)) {
-            eventBusInstance.unregister(this)
-        }
-        super.onDestroy()
-    }
 
     private val stateChangeListener = object : View.OnAttachStateChangeListener {
         override fun onViewDetachedFromWindow(v: View?) {
@@ -66,6 +46,7 @@ class LauncherActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (intent.action == UnauthorisedUserRedirectInterceptor.REDIRECT_ACTIVITY_ACTION) {
             viewModel.resetCredentials()
             showLongToast("Session expired, redirecting to Login...")
@@ -147,29 +128,6 @@ class LauncherActivity : BaseActivity() {
         fab.hide()
         supportFragmentManager.beginTransaction().hide(active).show(consentFragment).commit();
         active = consentFragment
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public fun onEvent(messageEventType: MessageEventType) {
-        when (messageEventType) {
-            MessageEventType.CONSENT_GRANTED -> {
-                showSnackbar(getString(R.string.consent_granted))
-                eventBusInstance.post(MessageEventType.SELECT_CONSENTS_TAB)
-            }
-            MessageEventType.ACCOUNT_LINKED -> {
-                showSnackbar(getString(R.string.account_linked_successfully))
-                eventBusInstance.post(ProviderAddedEvent.PROVIDER_ADDED)
-            }
-            MessageEventType.ACCOUNT_CREATED -> {
-                showLongToast(getString(R.string.registered_successfully))
-            }
-            MessageEventType.CONSENT_DENIED -> {
-                showSnackbar(getString(R.string.consent_denied))
-            }
-            MessageEventType.CONSENT_REVOKED -> {
-                showSnackbar(getString(R.string.consent_revoked))
-            }
-        }
     }
 
     private fun showSnackbar(message: String) {

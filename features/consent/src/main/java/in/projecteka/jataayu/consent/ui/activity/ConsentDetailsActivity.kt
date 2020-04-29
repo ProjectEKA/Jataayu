@@ -3,9 +3,11 @@ package `in`.projecteka.jataayu.consent.ui.activity
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
-import `in`.projecteka.jataayu.consent.ui.fragment.*
-import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentViewModel
-import `in`.projecteka.jataayu.core.model.MessageEventType
+import `in`.projecteka.jataayu.consent.ui.fragment.EditConsentDetailsFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.GrantedConsentDetailsFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentDetailsFragment
+import `in`.projecteka.jataayu.consent.ui.fragment.RequestedListFragment
+import `in`.projecteka.jataayu.consent.viewmodel.RequestedListViewModel
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
@@ -14,8 +16,6 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.util.extension.startActivityForResult
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -24,7 +24,7 @@ import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
-    private val viewModel: RequestedConsentViewModel by viewModel()
+    private val viewModel: RequestedListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,9 +75,9 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
     }
 
     private fun getFlowType(): Int {
-        if (intent.hasExtra(RequestedFragment.CONSENT_FLOW)) {
+        if (intent.hasExtra(RequestedListFragment.CONSENT_FLOW)) {
             intent.extras?.getInt(
-                RequestedFragment.CONSENT_FLOW,
+                RequestedListFragment.CONSENT_FLOW,
                 ConsentFlow.REQUESTED_CONSENTS.ordinal
             )?.let { return it }
         }
@@ -100,21 +100,5 @@ class ConsentDetailsActivity : BaseActivity(), ResponseCallback {
     override fun onFailure(t: Throwable) {
         showProgressBar(false)
         showErrorDialog(t.localizedMessage)
-    }
-
-    fun validateUser() {
-        if (viewModel.preferenceRepository.pinCreated) {
-            addFragment(UserVerificationFragment.newInstance())
-        } else {
-            startActivityForResult(CreatePinActivity::class.java, 201)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 201 && resultCode == Activity.RESULT_OK) {
-            viewModel.preferenceRepository.pinCreated = true
-            EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
-        }
     }
 }

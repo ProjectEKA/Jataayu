@@ -13,6 +13,7 @@ import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.provider.remote.ProviderApis
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.provider.repository.ProviderRepositoryImpl
+import `in`.projecteka.jataayu.provider.viewmodel.ProviderActivityViewModel
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.registration.remote.AuthenticationApis
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
@@ -39,13 +40,16 @@ import retrofit2.Retrofit
 
 val viewModelModule = module {
     viewModel { ProviderSearchViewModel(get(), get()) }
-    viewModel { RequestedConsentViewModel(get(), get(), get()) }
-    viewModel { GrantedConsentViewModel(get(), get()) }
-    viewModel { ConsentViewModel(get()) }
+    viewModel { RequestedListViewModel(get()) }
+    viewModel { GrantedConsentListViewModel(get(), get()) }
     viewModel { ConsentHostFragmentViewModel() }
     viewModel { UserAccountsViewModel(get(), get(), get()) }
-    viewModel { UserVerificationViewModel(get(), get()) }
+    viewModel { UserVerificationViewModel(get(), get(), get()) }
     viewModel { EditConsentDetailsVM(get()) }
+    viewModel { PinVerificationViewModel() }
+    viewModel { GrantedConsentDetailsViewModel(get()) }
+    viewModel { RequestedConsentDetailsViewModel(get(), get(), get()) }
+    viewModel { ProviderActivityViewModel() }
 
     //Launcher
     viewModel { LauncherViewModel(get(), get()) }
