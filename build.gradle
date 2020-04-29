@@ -67,14 +67,16 @@ subprojects {
                         minifyEnabled false
                     }
                     qa {
-                        minifyEnabled true
-                        debuggable true
+                        //fix app routing on minification
+                        debuggable false
+                        minifyEnabled false
                         signingConfig = signingConfigs.release
                     }
                     release {
+                        //fix app routing on minification
                         testCoverageEnabled false
-                        minifyEnabled true
-                        debuggable true
+                        debuggable false
+                        minifyEnabled false
                         signingConfig = signingConfigs.release
                     }
                 }

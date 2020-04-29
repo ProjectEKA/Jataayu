@@ -14,8 +14,8 @@
         tools:replace="android:name, android:label, android:theme">
 
         <activity-alias
-            android:name=".LauncherActivity"
-            android:targetActivity=".ui.LauncherActivity">
+            android:name="in.projecteka.jataayu.LauncherActivity"
+            android:targetActivity="in.projecteka.jataayu.ui.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -23,7 +23,7 @@
         </activity-alias>
 
         <activity
-            android:name=".ui.LauncherActivity"
+            android:name="in.projecteka.jataayu.ui.LauncherActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
