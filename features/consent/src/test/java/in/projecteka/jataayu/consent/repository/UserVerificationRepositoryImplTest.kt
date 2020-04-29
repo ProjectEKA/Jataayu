@@ -24,7 +24,7 @@ class UserVerificationRepositoryImplTest {
     fun shouldCallUserVerificationApi() {
         val pin = "1234"
         UserVerificationRepositoryImpl(userVerificationApis).verifyUser(pin)
-        Mockito.verify(userVerificationApis).getUserVerificationResponse(pin)
+        Mockito.verify(userVerificationApis).getUserVerificationResponse(mapOf("pin" to pin))
     }
 
     @After

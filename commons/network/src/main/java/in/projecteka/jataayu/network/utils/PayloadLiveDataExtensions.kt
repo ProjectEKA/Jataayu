@@ -2,8 +2,6 @@ package `in`.projecteka.jataayu.network.utils
 
 import `in`.projecteka.jataayu.network.model.Error
 import `in`.projecteka.jataayu.network.model.ErrorResponse
-import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
 import okhttp3.ResponseBody
 import org.koin.core.context.GlobalContext.get
 import retrofit2.Call
@@ -47,16 +45,19 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
             if (response.isSuccessful) {
                 success(response.body())
             } else {
-                response.errorBody()?.let {
-                    if (it.contentType()?.type == "application") {
-                        val errorConverter: Converter<ResponseBody, ErrorResponse> =
-                            get().koin.get()
-                        partialFailure(errorConverter.convert(it)?.error)
-                    } else {
-                        failure(Exception("Something went wrong"))
-                    }
-                } ?: failure(Exception("Unknown Error"))
-
+                try {
+                    response.errorBody()?.let {
+                        if (it.contentType()?.type == "application") {
+                            val errorConverter: Converter<ResponseBody, ErrorResponse> =
+                                get().koin.get()
+                            partialFailure(errorConverter.convert(it)?.error)
+                        } else {
+                            failure(Exception("Something went wrong"))
+                        }
+                    } ?: failure(Exception("Unknown Error"))
+                } catch (e: java.lang.Exception){
+                    failure(e)
+                }
             }
         }
     }).also {
