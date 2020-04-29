@@ -16,9 +16,7 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.sharedPref.getConsentTempToken
-import `in`.projecteka.jataayu.util.sharedPref.getPinCreated
-import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
 import android.content.Intent
@@ -41,7 +39,6 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     private lateinit var binding: RequestedConsentDetailsFragmentBinding
 
     private val viewModel: RequestedConsentDetailsViewModel by sharedViewModel()
-//    private val parentViewModel: ConsentDetailsActivityViewModel by sharedViewModel()
 
     private lateinit var consent: Consent
 
@@ -230,15 +227,13 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 showProgressBar(true)
                 viewModel.grantConsent(
                     consent.id,
-                    viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission),
-                    context?.getConsentTempToken()!!
-                )
+                    viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission))
             }
         }
     }
 
-    fun validateUser() {
-        if (context?.getPinCreated()!!) {
+    private fun validateUser() {
+        if (viewModel.preferenceRepository.pinCreated) {
             val intent = Intent(context, PinVerificationActivity::class.java)
             startActivityForResult(intent, 301)
         } else {
@@ -251,7 +246,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK){
             if (requestCode == 201) {
-                activity?.setPinCreated(true)
+                viewModel.preferenceRepository.pinCreated = true
                 grantConsent()
             }  else if (requestCode == 301){
                 grantConsent()

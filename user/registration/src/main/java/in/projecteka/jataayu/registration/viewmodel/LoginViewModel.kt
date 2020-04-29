@@ -8,10 +8,14 @@ import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.registration.model.LoginRequest
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.ui.fragment.LoginFragment
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 
-class LoginViewModel(private val repository: AuthenticationRepository): ViewModel(), ItemClickCallback {
+class LoginViewModel(private val repository: AuthenticationRepository,
+                     val preferenceRepository: PreferenceRepository,
+                     val credentialsRepository: CredentialsRepository): ViewModel(), ItemClickCallback {
 
     companion object {
         const val GRANT_TYPE_PASSWORD = "password"

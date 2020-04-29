@@ -9,10 +9,14 @@ import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
 import `in`.projecteka.jataayu.util.extension.liveDataOf
 import androidx.lifecycle.MediatorLiveData
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.lifecycle.ViewModel
 import java.util.regex.Pattern
 
-class UserAccountsViewModel(private val repository: UserAccountsRepository) : ViewModel() {
+class UserAccountsViewModel(private val repository: UserAccountsRepository,
+                            val preferenceRepository: PreferenceRepository,
+                            val credentialRepository: CredentialsRepository) : ViewModel() {
     var linkedAccountsResponse = liveDataOf<LinkedAccountsResponse>()
     var createAccountResponse = liveDataOf<CreateAccountResponse>()
     var myProfileResponse = liveDataOf<MyProfile>()

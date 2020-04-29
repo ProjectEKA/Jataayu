@@ -15,13 +15,15 @@ import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsRe
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.util.extension.EMPTY
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class GrantedConsentListViewModel(private val repository: ConsentRepository) : ViewModel() {
+class GrantedConsentListViewModel(private val repository: ConsentRepository,
+                                  private val credentialsRepository: CredentialsRepository) : ViewModel() {
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
@@ -76,10 +78,10 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository) : V
         grantedConsentsList.value = consentList?.grantedConsentList()
     }
 
-    fun revokeConsent(consentArtifactId: String, authToken: String) {
+    fun revokeConsent(consentArtifactId: String) {
         val list: ArrayList<String> = ArrayList()
         list.add(consentArtifactId)
-        revokeConsentResponse.fetch(repository.revokeConsent(RevokeConsentRequest(list), authToken))
+        revokeConsentResponse.fetch(repository.revokeConsent(RevokeConsentRequest(list), credentialsRepository.consentTemporaryToken))
     }
 
     fun fetchHipHiuNamesOf(idList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {

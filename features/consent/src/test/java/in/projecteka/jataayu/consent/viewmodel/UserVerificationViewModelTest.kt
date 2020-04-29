@@ -2,8 +2,9 @@ package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.repository.UserVerificationRepository
 import `in`.projecteka.jataayu.core.model.UserVerificationResponse
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.util.extension.fromJson
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import org.junit.After
@@ -25,14 +26,23 @@ import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
 class UserVerificationViewModelTest {
+
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
     @Mock
     private lateinit var userVerificationRepository: UserVerificationRepository
 
     @Mock
-    private lateinit var call : Call<UserVerificationResponse>
+    private lateinit var credRepo: CredentialsRepository
 
     @Mock
-    private lateinit var responseCallback: ResponseCallback
+    private lateinit var preferenceRepository: PreferenceRepository
+
+    @Mock
+    private lateinit var call: Call<UserVerificationResponse>
+
+    private lateinit var userVerificationViewModel: UserVerificationViewModel
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
@@ -40,6 +50,8 @@ class UserVerificationViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        userVerificationViewModel = UserVerificationViewModel(userVerificationRepository, credRepo, preferenceRepository)
+
     }
 
     @Test
@@ -51,9 +63,8 @@ class UserVerificationViewModelTest {
                 val callback = invocation.arguments[0] as Callback<UserVerificationResponse>
                 callback.onResponse(call, Response.success(mockResponse))
             }
-        UserVerificationViewModel(userVerificationRepository).verifyUser("1234", responseCallback)
+        userVerificationViewModel.verifyUser("1234")
         Mockito.verify(userVerificationRepository, times(1)).verifyUser("1234")
-        Mockito.verify(responseCallback).onSuccess(any(UserVerificationResponse::class.java))
     }
 
     @After

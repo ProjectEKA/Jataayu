@@ -7,7 +7,7 @@ import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.CONNECT_
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCK_WEB_SERVER_TEST_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.READ_TIMEOUT
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.WRITE_TIMEOUT
-import `in`.projecteka.jataayu.util.sharedPref.getAuthToken
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
 import android.app.Application
 import android.content.Context
@@ -27,14 +27,14 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-fun createNetworkClient(context: Application, debug: Boolean = false) =
-    retrofitClient(getBaseUrl(context), httpClient(debug, context, context.getAuthToken()), gson())
+fun createNetworkClient(context: Application, credentialsRepository: CredentialsRepository,debug: Boolean = false) =
+    retrofitClient(getBaseUrl(context), httpClient(debug, context,credentialsRepository), gson())
 
 private fun getBaseUrl(context: Application): String {
     return if (isTestingMode(context)) MOCK_WEB_SERVER_TEST_URL else context.getBaseUrl()
 }
 
-private fun httpClient(debug: Boolean, context: Context, authToken: String): OkHttpClient {
+private fun httpClient(debug: Boolean, context: Context, credentialsRepository: CredentialsRepository): OkHttpClient {
 
     val httpLoggingInterceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
     // Create a trust manager that does not validate certificate chains
@@ -74,7 +74,7 @@ private fun httpClient(debug: Boolean, context: Context, authToken: String): OkH
     clientBuilder.connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
         .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-    clientBuilder.addInterceptor(RequestInterceptor(context))
+    clientBuilder.addInterceptor(RequestInterceptor(credentialsRepository))
 
     if (debug && !isTestingMode(context)) {
         addRequestResponseLogger(httpLoggingInterceptor, clientBuilder)

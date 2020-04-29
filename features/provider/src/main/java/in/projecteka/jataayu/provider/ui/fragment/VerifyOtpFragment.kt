@@ -11,7 +11,6 @@ import `in`.projecteka.jataayu.provider.model.Otp
 import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.sharedPref.setProviderAdded
 import `in`.projecteka.jataayu.util.startLauncher
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.content.Intent
@@ -47,6 +46,8 @@ class VerifyOtpFragment : BaseFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBindings()
+        viewModel.successfulLinkingResponse.observe(this, observer)
+
     }
 
     private fun initBindings() {
@@ -63,7 +64,7 @@ class VerifyOtpFragment : BaseFragment(),
 
     private val observer = Observer<SuccessfulLinkingResponse> {
         activity?.finish()
-        context?.setProviderAdded(true)
+        viewModel.preferenceRepository.hasProviders = true
         startLauncher(activity!!){
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -72,7 +73,6 @@ class VerifyOtpFragment : BaseFragment(),
     override fun onSubmitOtp(view: View) {
         UiUtils.hideKeyboard(activity!!)
         showProgressBar(true)
-        viewModel.successfulLinkingResponse.observe(this, observer)
         val referenceNumber = viewModel.linkAccountsResponse.value?.link?.referenceNumber!!
         val otp = Otp(binding.etOtp.text.toString())
         viewModel.verifyOtp(referenceNumber, otp, this)

@@ -17,8 +17,7 @@ import `in`.projecteka.jataayu.user.account.listener.UsernameChangeWatcher
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.show
-import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
-import `in`.projecteka.jataayu.util.sharedPref.setUserAccountCreated
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import android.text.InputType
@@ -173,8 +172,8 @@ class CreateAccountFragment : BaseFragment(),
     private fun initObservers(){
         viewModel.createAccountResponse.observe(this,
             Observer<CreateAccountResponse> {
-                context?.setAuthToken(viewModel.getAuthTokenWithTokenType(it))
-                activity?.setUserAccountCreated(true)
+                viewModel.credentialRepository.accessToken = viewModel.getAuthTokenWithTokenType(it)
+                viewModel.preferenceRepository.isUserAccountCreated = true
                 startProvider(activity!!) {
                     putExtra(KEY_ACCOUNT_CREATED, true)
                 }

@@ -9,10 +9,14 @@ import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.util.extension.EMPTY
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 
-class RequestedConsentDetailsViewModel(private val repository: ConsentRepository) : ViewModel() {
+class RequestedConsentDetailsViewModel(private val repository: ConsentRepository,
+                                       val preferenceRepository: PreferenceRepository,
+                                       private val credentialsRepository: CredentialsRepository) : ViewModel() {
 
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
     val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()
@@ -25,10 +29,9 @@ class RequestedConsentDetailsViewModel(private val repository: ConsentRepository
 
     fun grantConsent(
         requestId: String,
-        consentArtifacts: List<ConsentArtifact>,
-        authToken: String
+        consentArtifacts: List<ConsentArtifact>
     ) =
-        consentArtifactResponse.fetch(repository.grantConsent(requestId, ConsentArtifactRequest((consentArtifacts)), authToken))
+        consentArtifactResponse.fetch(repository.grantConsent(requestId, ConsentArtifactRequest((consentArtifacts)), credentialsRepository.consentTemporaryToken))
 
 
     fun getConsentArtifact(

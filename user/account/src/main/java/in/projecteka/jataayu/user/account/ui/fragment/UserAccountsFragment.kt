@@ -45,13 +45,13 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
     }
 
     private val profileObserver = Observer<MyProfile> {
-        context?.setPinCreated(it.hasTransactionPin)
+        viewModel.preferenceRepository.pinCreated = it.hasTransactionPin
         it.verifiedIdentifiers.forEach { identifier ->
             if (identifier.type == VERIFIED_IDENTIFIER_MOBILE) {
-                activity?.setMobileIdentifier(identifier.value)
+                viewModel.preferenceRepository.mobileIdentifier = identifier.value
             }
         }
-        context?.setName(it.name)
+        viewModel.preferenceRepository.name = it.name
         binding.tvPatientName.text = it.name
     }
 

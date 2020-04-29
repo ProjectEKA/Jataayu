@@ -7,7 +7,7 @@ import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import androidx.annotation.IdRes
 
 data class LinkedAccount(
-    val providerName: String,
+    val providerName: String?,
     val patientReferenceId: String?,
     val patientName: String?,
     override val childrenViewModels: List<IDataBindingModel>?,

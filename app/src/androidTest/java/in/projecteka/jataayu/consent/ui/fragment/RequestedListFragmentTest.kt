@@ -102,6 +102,7 @@ public class RequestedListFragmentTest {
     }
 
     private fun verifyRequestsRendered(expectedCount: Int) {
+        Thread.sleep(10000)
         recyclerView(R.id.rvConsents) {
             sizeIs(expectedCount)
             atPosition(0) {
