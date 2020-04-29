@@ -17,7 +17,7 @@ class CredentialsRepositoryImpl(private val sharedPreferences: SharedPreferences
     companion object {
         private const val AUTH_TOKEN = "AUTH_TOKEN"
         private const val CONSENT_TEMP_TOKEN = "CONSENT_TEMP_TOKEN"
-        private const val REFRESH_TOKEN = "CONSENT_TEMP_TOKEN"
+        private const val REFRESH_TOKEN = "REFRESH_TOKEN"
     }
 
 
