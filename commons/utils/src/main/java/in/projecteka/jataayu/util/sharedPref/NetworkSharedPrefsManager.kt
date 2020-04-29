@@ -7,10 +7,6 @@ import androidx.core.content.edit
 const val NETWORK_PREF = "NETWORK_PREF_FILE"
 private const val ENVIRONMENT = "ENVIRONMENT"
 private const val NETWORK_HOST = "NETWORK_PREF_HOST"
-private const val AUTH_TOKEN = "AUTH_TOKEN"
-private const val CONSENT_TEMP_TOKEN = "CONSENT_TEMP_TOKEN"
-private const val CONSENT_CREATION_PIN_API_INTEGRATION = "CONSENT_CREATION_PIN_API_INTEGRATION"
-private const val HAS_TRANSACTION_PIN = "HAS_TRANSACTION_PIN"
 
 fun Context.setNetworkPref(environmentIndex: Int, endpoint: String) {
     val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
@@ -20,17 +16,6 @@ fun Context.setNetworkPref(environmentIndex: Int, endpoint: String) {
     }
 }
 
-fun Context.setAuthToken(authToken: String) {
-    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-    sharedPreferences.edit(true) { putString(AUTH_TOKEN, authToken) }
-
-}
-
-fun Context.getAuthToken(): String {
-    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-    return sharedPreferences.getString(AUTH_TOKEN, "") ?: ""
-}
-
 fun Context.getBaseUrl(): String {
     return getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
         .getString(NETWORK_HOST, PROD_URL) ?: PROD_URL
@@ -38,23 +23,4 @@ fun Context.getBaseUrl(): String {
 
 fun Context.getEndpointIndex(): Int {
     return getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE).getInt(ENVIRONMENT, 0)
-}
-
-fun Context.setConsentTempToken(tempToken: String) {
-    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-    sharedPreferences.edit { putString(CONSENT_TEMP_TOKEN, tempToken) }
-}
-
-fun Context.getConsentTempToken(): String {
-    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-    return sharedPreferences.getString(CONSENT_TEMP_TOKEN, "") ?: ""
-}
-fun Context.setConsentPinStatus(status: Boolean) {
-    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-    sharedPreferences.edit { putBoolean(HAS_TRANSACTION_PIN, status) }
-}
-
-fun Context.getConsentPinStatus(): Boolean {
-    val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)
-    return sharedPreferences.getBoolean(HAS_TRANSACTION_PIN, false) ?: false
 }

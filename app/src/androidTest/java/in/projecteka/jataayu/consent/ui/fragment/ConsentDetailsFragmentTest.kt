@@ -20,7 +20,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 
-
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class ConsentDetailsFragmentTest{
@@ -75,6 +74,7 @@ class ConsentDetailsFragmentTest{
 
     @Test
     fun shouldRenderConsentDetails(){
+        Thread.sleep(3000)
         displayed {
             id(R.id.tv_requester_name)
             text("Dr. Lakshmi")
@@ -102,7 +102,7 @@ class ConsentDetailsFragmentTest{
 
         displayed {
             id(R.id.tv_expiry)
-            text("05 PM, 30 Jan, 3020")
+            text("05 PM, 30 Jan, 2030")
         }
 
         displayed {
@@ -139,6 +139,4 @@ class ConsentDetailsFragmentTest{
     fun tearDown(){
         webServer.shutdown()
     }
-
-
-}
+    }

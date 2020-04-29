@@ -19,7 +19,6 @@ import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.util.sharedPref.getConsentTempToken
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
 import android.R.layout
 import android.R.string
@@ -99,7 +98,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                 when (payload) {
                     is Success -> {
                         payload.data?.firstOrNull()?.consentDetail?.let {
-                            viewModel.revokeConsent(it.id, context?.getConsentTempToken()!!)
+                            viewModel.revokeConsent(it.id)
                         }
                     }
 
@@ -108,6 +107,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                     }
                 }
             })
+
         viewModel.revokeConsentResponse.observe(this, Observer<PayloadResource<Void>> {
             when (it) {
                 is Loading -> showProgressBar(
@@ -190,16 +190,8 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            INDEX_ACTIVE -> filterRequests(viewModel.grantedConsentsList.value!!.filter {
-                !isDateExpired(
-                    it.permission.dataEraseAt
-                ) && it.status != RequestStatus.DENIED
-            })
-            INDEX_EXPIRED -> filterRequests(viewModel.grantedConsentsList.value!!.filter {
-                isDateExpired(
-                    it.permission.dataEraseAt
-                ) && it.status != RequestStatus.DENIED
-            })
+            INDEX_ACTIVE -> filterRequests(viewModel.grantedConsentsList.value!!.filter { !isDateExpired(it.permission.dataEraseAt) && it.status != RequestStatus.DENIED })
+            INDEX_EXPIRED -> filterRequests(viewModel.grantedConsentsList.value!!.filter { isDateExpired(it.permission.dataEraseAt) && it.status != RequestStatus.DENIED })
             INDEX_ALL -> filterRequests(viewModel.grantedConsentsList.value!!)
         }
     }

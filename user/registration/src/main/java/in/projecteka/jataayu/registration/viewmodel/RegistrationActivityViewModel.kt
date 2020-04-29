@@ -8,9 +8,15 @@ import `in`.projecteka.jataayu.registration.model.VerifyIdentifierRequest
 import `in`.projecteka.jataayu.registration.model.VerifyIdentifierResponse
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.lifecycle.ViewModel
 
-class RegistrationActivityViewModel(val authentiationRepo: AuthenticationRepository) : ViewModel() {
+class RegistrationActivityViewModel(
+    val authentiationRepo: AuthenticationRepository,
+    val preferenceRepository: PreferenceRepository,
+    val credentialsRepository: CredentialsRepository
+) : ViewModel() {
 
     internal enum class Show {
         REGISTRATION,
@@ -39,9 +45,11 @@ class RegistrationActivityViewModel(val authentiationRepo: AuthenticationReposit
     }
 
     fun verifyRequest(otp: String) {
-        sessionId?.let {
-            verifyIdentifierResponseLiveData.fetch(authentiationRepo.verifyIdentifier(VerifyIdentifierRequest(sessionId = it, value = otp)))
-        }
+        verifyIdentifierResponseLiveData.fetch(
+            authentiationRepo.verifyIdentifier(
+                VerifyIdentifierRequest(sessionId = sessionId, value = otp)
+            )
+        )
     }
 
     fun redirectToRegistrationScreen() {

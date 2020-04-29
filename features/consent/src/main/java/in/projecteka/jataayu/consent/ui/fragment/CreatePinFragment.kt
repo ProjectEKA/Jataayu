@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class CreatePinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpChangeHandler {
@@ -23,7 +24,7 @@ class CreatePinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpCh
         fun newInstance() = CreatePinFragment()
     }
 
-    private var viewModel = UserVerificationViewModel(get())
+    private val viewModel : UserVerificationViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

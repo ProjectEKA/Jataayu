@@ -9,6 +9,8 @@ import `in`.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import junit.framework.Assert
@@ -34,6 +36,9 @@ class ProviderSearchViewModelTest {
     @Mock
     private lateinit var repository: ProviderRepository
 
+    @Mock
+    private lateinit var preferenceRepository: PreferenceRepository
+
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
 
@@ -51,7 +56,7 @@ class ProviderSearchViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        viewModel = ProviderSearchViewModel(repository)
+        viewModel = ProviderSearchViewModel(repository,preferenceRepository)
     }
 
     @After

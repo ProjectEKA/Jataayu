@@ -6,18 +6,15 @@ import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
-import `in`.projecteka.jataayu.network.model.ErrorResponse
+import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.sharedPref.setConsentTempToken
-import `in`.projecteka.jataayu.util.sharedPref.setPinCreated
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
@@ -27,11 +24,11 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val PIN = "PIN"
 
-class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpChangeHandler, ResponseCallback {
+class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpChangeHandler {
     private lateinit var binding: ConfirmPinFragmentBinding
 
     companion object {
@@ -44,7 +41,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
         }
     }
 
-    private var viewModel = UserVerificationViewModel(get())
+    private val viewModel: UserVerificationViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +49,53 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
     ): View? {
         binding = ConfirmPinFragmentBinding.inflate(inflater)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initObservers()
+    }
+
+    private fun initObservers() {
+        viewModel.createPinResponse.observe(this, Observer {
+
+            when (it) {
+                is Loading -> showProgressBar(it.isLoading, getString(R.string.creating_pin))
+                is Success -> {
+                    activity?.let {
+                        viewModel.preferenceRepository.pinCreated = true
+                        showProgressBar(true)
+                        viewModel.verifyUser(binding.etPin.text.toString())
+                    }
+                }
+                is PartialFailure -> {
+                    context?.showAlertDialog(getString(R.string.failure), it.error?.message,
+                        getString(android.R.string.ok))
+                }
+            }
+        })
+
+        viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
+            when (userVerificationResponse) {
+                is Loading -> showProgressBar(userVerificationResponse.isLoading, getString(R.string.verifying_pin))
+                is Success -> {
+                    viewModel.credentialsRepository.consentTemporaryToken = userVerificationResponse.data?.temporaryToken
+                    activity?.setResult(Activity.RESULT_OK)
+                    activity?.finish()
+                }
+                is PartialFailure -> {
+                    context?.showAlertDialog(
+                        getString(R.string.failure), userVerificationResponse.error?.message,
+                        getString(android.R.string.ok)
+                    )
+                }
+                is Failure -> {
+                    context?.showErrorDialog(userVerificationResponse.error.localizedMessage)
+                    activity?.setResult(Activity.RESULT_CANCELED)
+                    activity?.finish()
+                }
+            }
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -78,30 +122,6 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
             bundle.getString(PIN)?.let { pin ->
                 if (confirmedPin == pin) {
                     showProgressBar(true)
-                    viewModel.createPinResponse.observe(this, Observer {
-
-                        when (it) {
-                            is Loading -> showProgressBar(it.isLoading, getString(R.string.creating_pin))
-                            is Success -> {
-                                activity?.let {
-                                    it.setPinCreated(true)
-                                    showProgressBar(true)
-                                    viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
-                                        activity?.setConsentTempToken(userVerificationResponse.temporaryToken)
-                                        activity?.setResult(Activity.RESULT_OK)
-                                        activity?.finish()
-                                    })
-                                    viewModel.verifyUser(pin, this)
-
-                                }
-                            }
-                            is PartialFailure -> {
-                                context?.showAlertDialog(getString(R.string.failure), it.error?.message,
-                                    getString(android.R.string.ok))
-                            }
-                        }
-                    })
-                    showProgressBar(true)
                     viewModel.createPin(confirmedPin)
                 } else {
                     binding.lblInvalidPin.visibility = VISIBLE
@@ -114,22 +134,5 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
 
     override fun setButtonEnabled(isOtpEntered: Boolean) {
         binding.isOtpEntered = true
-    }
-
-    override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
-    }
-
-    override fun onFailure(errorBody: ErrorResponse) {
-        showProgressBar(false)
-        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
-    }
-
-    override fun onFailure(t: Throwable) {
-        showProgressBar(false)
-        context?.showErrorDialog(t.localizedMessage)
-        activity?.setResult(Activity.RESULT_CANCELED)
-        activity?.finish()
-
     }
 }

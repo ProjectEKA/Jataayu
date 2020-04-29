@@ -6,19 +6,25 @@ import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.RequestStatus
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import junit.framework.Assert.*
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
@@ -37,10 +43,17 @@ class ConsentListViewModelTest {
     private lateinit var repository: ConsentRepository
 
     @Mock
+    private lateinit var credentialRepo: CredentialsRepository
+
+    @Mock
     private lateinit var resources: Resources
 
     @Mock
     private lateinit var call: Call<ConsentsListResponse>
+
+//    private lateinit var consentViewModel: GrantedConsentListViewModel
+    @Mock
+    private lateinit var consentsFetchObserver: Observer<PayloadResource<ConsentsListResponse>>
 
     private lateinit var consentViewModel: GrantedConsentListViewModel
 
@@ -51,7 +64,8 @@ class ConsentListViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        consentViewModel = GrantedConsentListViewModel(repository)
+//        consentViewModel = GrantedConsentListViewModel(repository)
+        consentViewModel = GrantedConsentListViewModel(repository,credentialRepo)
 
         consentsListResponse = Gson()
             .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)
@@ -63,8 +77,15 @@ class ConsentListViewModelTest {
                 callback.onResponse(call, Response.success(consentsListResponse))
             }
 
+        consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
+
         consentViewModel.getConsents()
         consentViewModel.filterConsents(consentsListResponse.requests)
+    }
+
+    @After
+    fun tearDown() {
+        consentViewModel.consentListResponse.removeObserver(consentsFetchObserver)
     }
 
     @Test
@@ -88,10 +109,12 @@ class ConsentListViewModelTest {
 
 
     @Test
-    fun shouldFetchConsents() {
-        verify(repository).getConsents()
-        verify(call).enqueue(any())
-        assertEquals(Success(consentsListResponse), consentViewModel.consentListResponse.value)
+    fun `should Fetch Consents`() {
+
+        verify(consentsFetchObserver, Mockito.times(1)).onChanged(Loading(true))
+        verify(consentsFetchObserver, Mockito.times(1)).onChanged(Loading(false))
+        verify(consentsFetchObserver, Mockito.times(1)).onChanged(Success(consentsListResponse))
+
     }
 
 

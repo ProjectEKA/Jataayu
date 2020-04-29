@@ -13,8 +13,6 @@ import `in`.projecteka.jataayu.registration.listener.LoginValuesWatcher
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentLoginBinding
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
-import `in`.projecteka.jataayu.util.sharedPref.setAuthToken
-import `in`.projecteka.jataayu.util.sharedPref.setIsUserLoggedIn
 import `in`.projecteka.jataayu.util.startLauncher
 import `in`.projecteka.jataayu.util.startRegistration
 import android.os.Bundle
@@ -47,8 +45,6 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
 
     override fun onRegisterClick(view: View) {
         startRegistration(activity!!, null)
-//        activity?.setResult(Activity.RESULT_FIRST_USER)
-//        activity?.finish()
     }
 
     override fun onLoginClick(view: View) {
@@ -98,8 +94,11 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
             when (it) {
                 is Loading -> showProgressBar(it.isLoading, getString(R.string.logging_in))
                 is Success -> {
-                    activity?.setAuthToken(viewModel.getAuthTokenWithTokenType(authToken = it.data?.accessToken, tokenType = it.data?.tokenType))
-                    activity?.setIsUserLoggedIn(true)
+                    val tokenType = it.data?.tokenType
+                    viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(authToken = it.data?.accessToken,
+                        tokenType =
+                    tokenType)
+                    viewModel.preferenceRepository.isUserLoggedIn = true
                     activity?.finish()
                     startLauncher(activity!!)
 

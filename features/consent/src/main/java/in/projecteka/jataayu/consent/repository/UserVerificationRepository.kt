@@ -11,10 +11,10 @@ interface UserVerificationRepository {
 
 class UserVerificationRepositoryImpl(private val userVerificationApis: UserVerificationApis) : UserVerificationRepository {
     override fun createPin(pin: String): Call<Void> {
-        return userVerificationApis.getCreatePinResponse(pin)
+        return userVerificationApis.getCreatePinResponse(mapOf("pin" to pin))   
     }
 
     override fun verifyUser(pin: String): Call<UserVerificationResponse> {
-        return userVerificationApis.getUserVerificationResponse(pin)
+        return userVerificationApis.getUserVerificationResponse(mapOf("pin" to pin))
     }
 }
