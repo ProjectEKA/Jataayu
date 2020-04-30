@@ -3,6 +3,7 @@ package `in`.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
+import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.showAlertDialog
@@ -10,14 +11,10 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentCreateAccountBinding
-import `in`.projecteka.jataayu.user.account.listener.AccountCreationClickHandler
-import `in`.projecteka.jataayu.user.account.listener.CredentialsInputListener
-import `in`.projecteka.jataayu.user.account.listener.PasswordChangeWatcher
-import `in`.projecteka.jataayu.user.account.listener.UsernameChangeWatcher
+import `in`.projecteka.jataayu.user.account.listener.*
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.show
-import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import android.text.InputType
@@ -51,6 +48,7 @@ class CreateAccountFragment : BaseFragment(),
 
     private var isCriteriaMatch: Boolean = true
     private var selectedYob: Int? = null
+    private var ayushmanId: String? = null
     companion object {
         fun newInstance() = CreateAccountFragment()
         const val SPACE = " "
@@ -67,6 +65,8 @@ class CreateAccountFragment : BaseFragment(),
         const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
         const val DEFAULT_CHECKED_ID = -1
         const val KEY_ACCOUNT_CREATED = "account_created"
+        const val TYPE_AYUSHMAN_BHARAT_ID = "ABPMJAYID"
+        const val ayushmanIdCriteria =  "^P([A-Z][0-9])*.{8}$"
     }
 
     override fun showOrHidePassword(view: View) {
@@ -92,8 +92,14 @@ class CreateAccountFragment : BaseFragment(),
         }
     }
     private fun getCreateAccountRequest(): CreateAccountRequest {
+        var unverifiedIdentifiers: List<UnverifiedIdentifier>?= null
+        if (!ayushmanId.isNullOrEmpty()){
+            unverifiedIdentifiers = listOf(UnverifiedIdentifier(ayushmanId!!, TYPE_AYUSHMAN_BHARAT_ID))
+        }
+
         return CreateAccountRequest(getUsername(), et_password?.text.toString(),
-            et_name?.text.toString(), getGender(), selectedYob)
+            et_name?.text.toString(), getGender(), selectedYob, unverifiedIdentifiers
+        )
     }
     private fun getProviderName(): String {
         return binding.tvProviderName.text.toString()
@@ -142,6 +148,11 @@ class CreateAccountFragment : BaseFragment(),
         editTextDisposable(password, passwordCriteria, binding.passwordErrorText)?.let { disposables.add(it) }
     }
 
+    override fun onAyushmanIdEdit(ayushmanId: String) {
+        this.ayushmanId = ayushmanId
+        editTextDisposable(ayushmanId, ayushmanIdCriteria, binding.ayushmanErrorText)?.let { disposables.add(it) }
+    }
+
     private fun editTextDisposable(text: String, criteria: String, errorText: TextView): Disposable? {
         return Observable.just(text)
             .map { viewModel.isValid(text, criteria) }
@@ -152,7 +163,6 @@ class CreateAccountFragment : BaseFragment(),
                 isCriteriaMatch = it
             }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -211,6 +221,7 @@ class CreateAccountFragment : BaseFragment(),
         binding.userNameChangeWatcher = UsernameChangeWatcher(this)
         binding.passwordChangeWatcher = PasswordChangeWatcher(this)
         binding.listener = this
+        binding.ayushmanIdChangeWatcher = AyushmanIdChangeWatcher((this))
     }
 
     private fun getVisiblePasswordInputType(): Int {
