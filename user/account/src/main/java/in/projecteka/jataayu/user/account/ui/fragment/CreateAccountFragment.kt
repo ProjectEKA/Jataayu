@@ -94,7 +94,10 @@ class CreateAccountFragment : BaseFragment(),
     private fun getCreateAccountRequest(): CreateAccountRequest {
         var unverifiedIdentifiers: List<UnverifiedIdentifier>?= null
         if (!ayushmanId.isNullOrEmpty()){
-            unverifiedIdentifiers = listOf(UnverifiedIdentifier(ayushmanId!!, TYPE_AYUSHMAN_BHARAT_ID))
+            if (!(binding.ayushmanErrorText.visibility == View.VISIBLE)) {
+                unverifiedIdentifiers =
+                    listOf(UnverifiedIdentifier(ayushmanId!!, TYPE_AYUSHMAN_BHARAT_ID))
+            }
         }
 
         return CreateAccountRequest(getUsername(), et_password?.text.toString(),
