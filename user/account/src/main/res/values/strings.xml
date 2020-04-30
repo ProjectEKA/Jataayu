@@ -22,6 +22,4 @@
     <string name="please_select_gender">Please select gender</string>
     <string name="registered_successfully">Registered Successfully</string>
     <string name="name_hint">Can be your first name middle name last name</string>
-    <string name="action_profile">Profile</string>
-    <string name="action_logout">Logout</string>
 </resources>

@@ -2,7 +2,9 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.R
 import `in`.projecteka.jataayu.core.model.*
-import `in`.projecteka.jataayu.network.utils.*
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PayloadResource
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
@@ -31,8 +33,6 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
 
     val userAccountLoading = ObservableBoolean()
     val myProfileLoading = ObservableBoolean()
-    val logoutResponse = PayloadLiveData<Void>()
-
 
     fun fetchAll() {
         userProfileResponse.addSource(getUserAccounts(), Observer {
@@ -69,19 +69,6 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
     fun getUserAccounts() = repository.getUserAccounts()
 
     fun getMyProfile() = repository.getMyProfile()
-
-    fun logout() {
-        credentialRepository.refreshToken?.let {
-            logoutResponse.fetch(repository.logout(it))
-        } ?: kotlin.run {
-            clearSharedPreferences()
-        }
-    }
-
-    fun clearSharedPreferences() {
-        preferenceRepository.resetPreferences()
-        credentialRepository.reset()
-    }
 
 
     fun updateDisplayAccounts(links: List<Links>?) {

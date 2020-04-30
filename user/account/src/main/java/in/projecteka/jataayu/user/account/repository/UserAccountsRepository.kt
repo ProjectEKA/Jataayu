@@ -13,7 +13,6 @@ interface UserAccountsRepository {
     fun getUserAccounts(): PayloadLiveData<LinkedAccountsResponse>
     fun createAccount(createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse>
     fun getMyProfile(): PayloadLiveData<MyProfile>
-    fun logout(refreshToken: String): Call<Void>
 }
 
 class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) : UserAccountsRepository {
@@ -31,9 +30,5 @@ class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) :
         val liveData = PayloadLiveData<MyProfile>()
         liveData.fetch(userAccountApis.getMyProfile())
         return liveData
-    }
-
-    override fun logout(refreshToken: String): Call<Void> {
-        return userAccountApis.logout(mapOf("refreshToken" to refreshToken))
     }
 }
