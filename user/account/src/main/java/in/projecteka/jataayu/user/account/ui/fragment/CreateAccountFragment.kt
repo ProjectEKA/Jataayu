@@ -137,7 +137,11 @@ class CreateAccountFragment : BaseFragment(),
         if (binding.cgGender.checkedChipId == DEFAULT_CHECKED_ID){
             binding.tvErrGender.show(true)
             valid = false
-        } else {
+        }
+        if (binding.ayushmanErrorText.visibility == View.VISIBLE && (!ayushmanId.isNullOrEmpty())){
+            valid = false
+        }
+        else {
             binding.tvErrGender.show(false)
         }
         return valid
