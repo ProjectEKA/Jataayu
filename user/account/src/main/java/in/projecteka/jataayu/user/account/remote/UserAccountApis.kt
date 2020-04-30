@@ -18,7 +18,4 @@ interface UserAccountApis {
 
     @GET("patients/me")
     fun getMyProfile(): Call<MyProfile>
-
-    @POST("logout")
-    fun logout(@Body body: Map<String, String>): Call<Void>
 }
