@@ -7,5 +7,6 @@ data class CreateAccountRequest(
     @SerializedName("password") val password: String,
     @SerializedName("name") val name: String,
     @SerializedName("gender") val gender: String,
-    @SerializedName("yearOfBirth") val yearOfBirth: Int?
+    @SerializedName("yearOfBirth") val yearOfBirth: Int?,
+    @SerializedName("unverifiedIdentifiers") val unverifiedIdentifiers: List<UnverifiedIdentifier>?
 )
