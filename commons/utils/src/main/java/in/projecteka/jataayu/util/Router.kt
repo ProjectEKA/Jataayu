@@ -21,9 +21,7 @@ private fun defaultIntentDefinition(
     }
 
 fun startRegistration(context: Context, intentDefinition: IntentDefinition? = null) {
-    context.startActivity(Intent(context, context.classLoader.loadClass(ACTIVITY_REGISTRATION)).apply {
-        intentDefinition?.let { it(this) }
-    })
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_REGISTRATION, intentDefinition))
 }
 
 fun startProvider(context: Context, intentDefinition: IntentDefinition? = null) {

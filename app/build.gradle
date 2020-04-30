@@ -15,22 +15,14 @@ android {
 
     buildTypes {
         debug {
-            debuggable true
             resValue 'string', 'app_name', 'Jataayu Debug'
             applicationIdSuffix '.debug'
-
         }
         qa {
-            debuggable true
-            shrinkResources true
-            minifyEnabled true
             applicationIdSuffix '.qa'
             resValue 'string', 'app_name', 'Jataayu QA'
         }
         release {
-            debuggable false
-            shrinkResources true
-            minifyEnabled true
             resValue 'string', 'app_name', 'Jataayu'
         }
     }
