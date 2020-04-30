@@ -41,6 +41,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             when (it) {
                 is Loading -> viewModel.showProgress(it.isLoading, R.string.logging_in)
                 is Success -> {
+                    viewModel.onLoginSuccess(it.data!!)
                     finish()
                     startDashboard(this)
 

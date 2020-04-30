@@ -3,6 +3,7 @@ package `in`.projecteka.jataayu.user.account.ui.fragment
 import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.PartialFailure
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
@@ -12,15 +13,15 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
-import `in`.projecteka.jataayu.util.extension.get
+import `in`.projecteka.jataayu.util.startLauncher
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_user_account.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,12 +42,17 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentUserAccountBinding.inflate(layoutInflater)
+        (activity as AppCompatActivity).apply {
+            setSupportActionBar(binding.toolbar)
+            setHasOptionsMenu(true)
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+        setHasOptionsMenu(true)
         initObservers()
         renderUi()
     }
@@ -89,6 +95,16 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
         viewModel.addProviderEvent.observe(this, Observer {
             startProvider(context!!)
         })
+
+        viewModel.logoutResponse.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                is Success -> {
+                    viewModel.showProgress(false)
+                    viewModel.clearSharedPreferences()
+                    startLauncher(context!!)
+                }
+            }
+        })
     }
 
 
@@ -97,6 +113,23 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
         itemViewBinding: ViewDataBinding
     ) {
         viewModel.showProgress(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_dashboard, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.action_profile -> false
+            R.id.action_logout ->  {
+                viewModel.showProgress(true)
+                viewModel.logout()
+                return false
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onDestroy() {

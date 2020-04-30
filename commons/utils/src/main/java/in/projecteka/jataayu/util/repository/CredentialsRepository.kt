@@ -6,6 +6,7 @@ import androidx.core.content.edit
 interface CredentialsRepository {
     var accessToken: String?
     var consentTemporaryToken: String?
+    var refreshToken: String?
 
     fun reset()
 }
@@ -16,6 +17,7 @@ class CredentialsRepositoryImpl(private val sharedPreferences: SharedPreferences
     companion object {
         private const val AUTH_TOKEN = "AUTH_TOKEN"
         private const val CONSENT_TEMP_TOKEN = "CONSENT_TEMP_TOKEN"
+        private const val REFRESH_TOKEN = "REFRESH_TOKEN"
     }
 
 
@@ -27,8 +29,13 @@ class CredentialsRepositoryImpl(private val sharedPreferences: SharedPreferences
         set(value) = sharedPreferences.edit { putString(CONSENT_TEMP_TOKEN, value) }
         get() = sharedPreferences.getString(CONSENT_TEMP_TOKEN, null)
 
+    override var refreshToken: String?
+        set(value) = sharedPreferences.edit { putString(REFRESH_TOKEN, value) }
+        get() = sharedPreferences.getString(REFRESH_TOKEN, null)
+
     override fun reset() {
         accessToken = null
         consentTemporaryToken = null
+        refreshToken = null
     }
 }

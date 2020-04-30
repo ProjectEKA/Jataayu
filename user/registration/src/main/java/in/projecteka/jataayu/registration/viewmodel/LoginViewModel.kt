@@ -79,10 +79,15 @@ class LoginViewModel(
     ) {
         when (it) {
             is Success -> {
-                credentialsRepository.accessToken = "${it.data?.tokenType?.capitalize()} ${it.data?.accessToken}"
-                preferenceRepository.isUserLoggedIn = true
+                onLoginSuccess(it.data!!)
             }
         }
+    }
+
+    fun onLoginSuccess(response: CreateAccountResponse) {
+        credentialsRepository.accessToken = "${response.tokenType.capitalize()} ${response.accessToken}"
+        credentialsRepository.refreshToken = response.refreshToken
+        preferenceRepository.isUserLoggedIn = true
     }
 
 
