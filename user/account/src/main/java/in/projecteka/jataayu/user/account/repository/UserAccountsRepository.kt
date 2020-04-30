@@ -11,6 +11,7 @@ interface UserAccountsRepository {
     fun getUserAccounts() : Call<LinkedAccountsResponse>
     fun createAccount(createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse>
     fun getMyProfile(): Call<MyProfile>
+    fun logout(refreshToken: String): Call<Void>
 }
 
 class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis): UserAccountsRepository {
@@ -24,5 +25,9 @@ class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis): 
 
     override fun getMyProfile(): Call<MyProfile> {
         return userAccountApis.getMyProfile()
+    }
+
+    override fun logout(refreshToken: String): Call<Void> {
+        return userAccountApis.logout(mapOf("refreshToken" to refreshToken))
     }
 }
