@@ -143,6 +143,19 @@ class UserAccountsViewModelTest {
     }
 
     @Test
+    fun shouldReturnTrueIfAyushmanIdIsValid() {
+        assertTrue(viewModel.isValid("PAYUSh123", CreateAccountFragment.ayushmanIdCriteria))
+        assertTrue(viewModel.isValid("Payush123", CreateAccountFragment.ayushmanIdCriteria))
+        assertTrue(viewModel.isValid("P123456ID", CreateAccountFragment.ayushmanIdCriteria))
+    }
+
+    @Test
+    fun shouldReturnFalseIfAyushmanIdIsNotValid() {
+        assertFalse(viewModel.isValid("pAYUSh123", CreateAccountFragment.ayushmanIdCriteria))
+        assertFalse(viewModel.isValid("PID", CreateAccountFragment.ayushmanIdCriteria))
+    }
+
+    @Test
     fun `test for spaces`(){
         assertTrue(viewModel.isValid("Abcd@4321  ", CreateAccountFragment.passwordCriteria))
         assertTrue(viewModel.isValid("  Abcd@4321  ", CreateAccountFragment.passwordCriteria))
