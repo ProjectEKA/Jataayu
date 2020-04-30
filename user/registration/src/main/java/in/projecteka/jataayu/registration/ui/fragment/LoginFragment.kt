@@ -99,6 +99,7 @@ class LoginFragment : BaseDialogFragment(), LoginClickHandler, LoginEnableListen
                         tokenType =
                     tokenType)
                     viewModel.preferenceRepository.isUserLoggedIn = true
+                    viewModel.credentialsRepository.refreshToken = it.data?.refreshToken
                     activity?.finish()
                     startLauncher(activity!!)
 

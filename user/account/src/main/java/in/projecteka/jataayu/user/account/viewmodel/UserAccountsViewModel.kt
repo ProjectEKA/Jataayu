@@ -2,8 +2,7 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.R
 import `in`.projecteka.jataayu.core.model.*
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
-import `in`.projecteka.jataayu.network.utils.observeOn
+import `in`.projecteka.jataayu.network.utils.*
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
@@ -19,6 +18,7 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
     var linkedAccountsResponse = liveDataOf<LinkedAccountsResponse>()
     var createAccountResponse = liveDataOf<CreateAccountResponse>()
     var myProfileResponse = liveDataOf<MyProfile>()
+    val logoutResponse = PayloadLiveData<Void>()
 
     fun getUserAccounts(responseCallback: ResponseCallback) {
         repository.getUserAccounts().observeOn(linkedAccountsResponse, responseCallback)
@@ -63,6 +63,19 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
     ) {
         repository.createAccount(createAccountRequest)
             .observeOn(createAccountResponse, responseCallback)
+    }
+
+    fun logout() {
+        credentialRepository.refreshToken?.let {
+            logoutResponse.fetch(repository.logout(it))
+        } ?: kotlin.run {
+            logoutResponse.partialFailure(null)
+        }
+    }
+
+    fun clearSharedPreferences() {
+        preferenceRepository.resetPreferences()
+        credentialRepository.reset()
     }
 
     fun isValid(text: String, criteria: String): Boolean {

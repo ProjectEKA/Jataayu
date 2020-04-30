@@ -4,7 +4,9 @@ import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.MyProfile
 import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.network.model.ErrorResponse
+import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
@@ -16,10 +18,10 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.get
+import `in`.projecteka.jataayu.util.startLauncher
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -62,6 +64,10 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentUserAccountBinding.inflate(layoutInflater)
+        (activity as AppCompatActivity).apply {
+            setSupportActionBar(binding.toolbar)
+            setHasOptionsMenu(true)
+        }
         return binding.root
     }
 
@@ -70,11 +76,43 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
         renderUi()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_dashboard, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_profile -> false
+            R.id.action_logout -> {
+                viewModel.logout()
+                return false
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun renderUi() {
         initObservers()
         showProgressBar(true)
         viewModel.getUserAccounts(this)
         viewModel.getMyProfile(this)
+        viewModel.logoutResponse.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Loading -> {
+                    showProgressBar(true)
+                }
+                is Success -> {
+                    showProgressBar(false)
+                    viewModel.clearSharedPreferences()
+                    startLauncher(context!!)
+                }
+                else -> {
+                    viewModel.clearSharedPreferences()
+                    startLauncher(context!!)
+                }
+            }
+        })
     }
 
     private fun initObservers() {
@@ -92,7 +130,11 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
                     layoutManager = LinearLayoutManager(context)
                     @Suppress("UNCHECKED_CAST")
                     (listItems as? List<IGroupDataBindingModel>)?.let {
-                        adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment, it)
+                        adapter = ExpandableRecyclerViewAdapter(
+                            this@UserAccountsFragment,
+                            this@UserAccountsFragment,
+                            it
+                        )
                     }
                 }
             })
@@ -112,7 +154,11 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback, ResponseCallback
 
     override fun onFailure(errorBody: ErrorResponse) {
         showProgressBar(false)
-        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
+        context?.showAlertDialog(
+            getString(R.string.failure),
+            errorBody.error.message,
+            getString(android.R.string.ok)
+        )
     }
 
     override fun onFailure(t: Throwable) {
