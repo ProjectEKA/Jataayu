@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="viewModel"
+            type="in.projecteka.jataayu.presentation.BaseViewModel" />
+        <variable
             name="noNewConsentsMessage"
             type="String" />
 
@@ -73,6 +76,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:toggledVisibility="@{!hideRequestsList}"
             tools:listitem="@layout/consent_item" />
+
+        <include
+            android:id="@+id/progress_bar_layout"
+            app:showProgress="@{viewModel.showProgress}"
+            app:message="@{viewModel.showProgressMessage}"
+            layout="@layout/progress_layout"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

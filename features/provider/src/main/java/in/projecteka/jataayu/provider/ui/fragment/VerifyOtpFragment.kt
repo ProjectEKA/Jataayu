@@ -11,7 +11,7 @@ import `in`.projecteka.jataayu.provider.model.Otp
 import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
-import `in`.projecteka.jataayu.util.startLauncher
+import `in`.projecteka.jataayu.util.startDashboard
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.content.Intent
 import android.os.Bundle
@@ -19,14 +19,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class VerifyOtpFragment : BaseFragment(),
     OtpSubmissionClickHandler, ResponseCallback {
     private lateinit var binding: VerityOtpFragmentBinding
-
-    private val eventBus = EventBus.getDefault()
 
     companion object {
         fun newInstance() = VerifyOtpFragment()
@@ -65,25 +62,25 @@ class VerifyOtpFragment : BaseFragment(),
     private val observer = Observer<SuccessfulLinkingResponse> {
         activity?.finish()
         viewModel.preferenceRepository.hasProviders = true
-        startLauncher(activity!!){
+        startDashboard(activity!!){
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
     }
 
     override fun onSubmitOtp(view: View) {
         UiUtils.hideKeyboard(activity!!)
-        showProgressBar(true)
+        viewModel.showProgress(true)
         val referenceNumber = viewModel.linkAccountsResponse.value?.link?.referenceNumber!!
         val otp = Otp(binding.etOtp.text.toString())
         viewModel.verifyOtp(referenceNumber, otp, this)
     }
 
     override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
+        viewModel.showProgress(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-        showProgressBar(false)
+        viewModel.showProgress(false)
 
         if (errorBody.error.code == ERROR_CODE_INVALID_OTP) {
             viewModel.otpText.set(null)
@@ -101,7 +98,7 @@ class VerifyOtpFragment : BaseFragment(),
     }
 
     override fun onFailure(t: Throwable) {
-        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showErrorDialog(t.localizedMessage)
     }
 }

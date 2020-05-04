@@ -28,6 +28,13 @@ fun <T> PayloadLiveData<T>.partialFailure(error: Error?) {
     value = PartialFailure(error)
 }
 
+fun <T> PayloadLiveData<T>.isLoading(): Boolean {
+    val currentValue = value
+    return if (currentValue is Loading) {
+        currentValue.isLoading
+    } else false
+}
+
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
     call.enqueue(object : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {

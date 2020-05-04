@@ -78,7 +78,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
         viewModel.consentListResponse.observe(this, Observer {
             when (it) {
-                is Loading -> showProgressBar(it.isLoading, getString(R.string.loading_requests))
+                is Loading -> viewModel.showProgress(it.isLoading, R.string.loading_requests)
                 is Success -> {
                     parentViewModel.showRefreshing(false)
                     viewModel.filterConsents(it.data?.requests)
@@ -103,16 +103,15 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                     }
 
                     is Loading -> {
-                        showProgressBar(payload.isLoading)
+                        viewModel.showProgress(payload.isLoading)
                     }
                 }
             })
 
         viewModel.revokeConsentResponse.observe(this, Observer<PayloadResource<Void>> {
             when (it) {
-                is Loading -> showProgressBar(
-                    it.isLoading,
-                    getString(R.string.revoking_consent)
+                is Loading -> viewModel.showProgress(
+                    it.isLoading, R.string.revoking_consent
                 )
                 is Success -> {
                     activity?.let {
@@ -155,11 +154,11 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     }
 
     private fun initBindings() {
+        binding.viewModel = viewModel
         binding.noNewConsentsMessage = getString(R.string.no_granted_consents)
         binding.listener = this
         binding.hideRequestsList = true
         binding.hideFilter = true
-        showProgressBar(false)
         initSpinner(0)
     }
 
@@ -200,7 +199,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun filterRequests(requests: List<Consent>) {
         (rvConsents.adapter as ConsentsListAdapter).updateData(requests)
     }
-
     private fun getNamesOf(hiuList: List<HipHiuIdentifiable>) {
         val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(hiuList)
         hipHiuNameResponse.observe(this, Observer {

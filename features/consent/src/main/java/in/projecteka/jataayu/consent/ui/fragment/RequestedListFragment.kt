@@ -73,9 +73,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
         viewModel.consentListResponse.observe(this, Observer {
             when (it) {
-                is Loading -> {
-                    showProgressBar(it.isLoading, getString(R.string.loading_requests))
-                }
+                is Loading -> viewModel.showProgress(it.isLoading, R.string.loading_requests)
                 is Success -> {
                     parentViewModel.showRefreshing(false)
                     viewModel.filterConsents(it.data?.requests)
@@ -109,11 +107,12 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     }
 
     private fun initBindings() {
+        binding.viewModel = viewModel
         binding.noNewConsentsMessage = getString(R.string.no_new_consent_requests)
         binding.listener = this
         binding.hideRequestsList = true
         binding.hideFilter =  binding.hideRequestsList
-        showProgressBar(false)
+        viewModel.showProgress(false)
         initSpinner(0)
     }
 

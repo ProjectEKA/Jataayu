@@ -46,7 +46,7 @@ class ConsentDetailsFragmentTest{
         Thread.sleep(5000)
 
         readConsentAndLaunchFragment("consent_requested.json")
-        activityRule.activity.addFragment(RequestedConsentDetailsFragment())
+        activityRule.activity.addFragment(RequestedConsentDetailsFragment(), R.id.fragment_container)
     }
 
     private fun readConsentAndLaunchFragment(fileName: String) {
@@ -120,7 +120,7 @@ class ConsentDetailsFragmentTest{
     fun shouldNotShowButtonsForExpiredConsent(){
 
         readConsentAndLaunchFragment("consent_expired.json")
-        activityRule.activity.replaceFragment(RequestedConsentDetailsFragment())
+        activityRule.activity.replaceFragment(RequestedConsentDetailsFragment(), R.id.fragment_container)
 
         notDisplayed { id(R.id.btn_edit)
         text("Edit")}

@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
+import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,7 +8,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 
-class RegistrationVerificationViewModel : ViewModel(), TextWatcher {
+class RegistrationVerificationViewModel : BaseViewModel(), TextWatcher {
 
     companion object {
         const val OTP_LENGTH = 6

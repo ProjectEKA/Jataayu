@@ -27,7 +27,7 @@ class RegistrationFragmentTest{
     @Before
     @Throws(Exception::class)
     fun setup() {
-        activityRule.activity.addFragment(RegistrationFragment())
+        activityRule.activity.addFragment(RegistrationFragment(), R.id.fragment_container)
     }
 
     @Test

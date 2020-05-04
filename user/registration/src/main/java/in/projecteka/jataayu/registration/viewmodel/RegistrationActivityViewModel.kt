@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.registration.viewmodel
 
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
+import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
 import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
 import `in`.projecteka.jataayu.registration.model.VerifyIdentifierRequest
@@ -16,7 +17,7 @@ class RegistrationActivityViewModel(
     val authentiationRepo: AuthenticationRepository,
     val preferenceRepository: PreferenceRepository,
     val credentialsRepository: CredentialsRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     internal enum class Show {
         REGISTRATION,

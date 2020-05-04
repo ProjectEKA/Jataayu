@@ -7,7 +7,6 @@ import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentOtpVerificationBinding
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationVerificationViewModel
-import `in`.projecteka.jataayu.util.extension.setTitle
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
@@ -43,16 +42,16 @@ class RegistrationOtpFragment : BaseFragment() {
 
     override fun onVisible() {
         super.onVisible()
-        setTitle(R.string.verification)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
+        parentVM.appBarTitle.set(getString(R.string.verification))
 
         viewModel.otpMessageLbl.set(SpannableStringBuilder()
             .append(getString(R.string.otp_sent))
-            .bold { append(" ${parentVM.getIdentifierValue()}")})
+            .bold { append(" ${parentVM.getIdentifierValue()}") })
 
         initObservers()
     }
@@ -71,8 +70,7 @@ class RegistrationOtpFragment : BaseFragment() {
                     viewModel.errorLbl.set(
                         if (it.error?.code == ERROR_CODE_INVALID_OTP) {
                             getString(R.string.invalid_otp)
-                        }
-                        else
+                        } else
                             it.error?.message
                     )
                 }

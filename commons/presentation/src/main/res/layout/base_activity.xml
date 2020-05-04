@@ -12,6 +12,10 @@
         <variable
             name="progressBarMessage"
             type="String" />
+
+        <variable
+            name="title"
+            type="String" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,16 +23,10 @@
         android:orientation="vertical"
         tools:ignore="MissingDefaultResource">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_size"
-            android:elevation="@dimen/cardview_default_elevation"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="?android:attr/homeAsUpIndicator"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        <include
+            android:id="@+id/base_toolbar"
+            layout="@layout/default_toolbar"
+            app:title="@{title}"/>
 
         <FrameLayout
             android:id="@+id/fragment_container"
@@ -36,8 +34,8 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:context=".ui.fragment.BaseActivity"/>
+            app:layout_constraintTop_toBottomOf="@id/base_toolbar"
+            />
 
         <RelativeLayout
             android:id="@+id/progressbar_container"

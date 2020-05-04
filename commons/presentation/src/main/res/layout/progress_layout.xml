@@ -4,12 +4,12 @@
     <data>
 
         <variable
-            name="progressBarVisibility"
+            name="showProgress"
             type="Boolean" />
 
         <variable
-            name="progressBarMessage"
-            type="String" />
+            name="message"
+            type="Integer" />
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +26,7 @@
         android:focusableInTouchMode="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:toggledVisibility="@{progressBarVisibility}"
+        app:toggledVisibility="@{showProgress}"
         tools:ignore="MissingDefaultResource">
 
         <ProgressBar
@@ -44,9 +44,10 @@
             android:layout_below="@id/progress_bar"
             android:layout_centerInParent="true"
             android:gravity="center"
+            android:layout_margin="@dimen/content_margin_extra_small"
             android:paddingLeft="@dimen/toolbar_size"
             android:paddingRight="@dimen/toolbar_size"
-            android:text="@{progressBarMessage, default=``}"
+            android:text='@{message, default=@string/default_progress_message}'
             android:textColor="@color/white" />
 
     </RelativeLayout>

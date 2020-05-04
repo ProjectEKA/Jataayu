@@ -58,7 +58,7 @@ class EditConsentDetailsFragmentTest {
         sendLinkedAccountsAndHiTypesEvent(true)
 
         val editConsentDetailsFragment = EditConsentDetailsFragment()
-        activityRule.activity.addFragment(editConsentDetailsFragment)
+        activityRule.activity.addFragment(editConsentDetailsFragment, R.id.fragment_container)
     }
 
     private fun sendLinkedAccountsAndHiTypesEvent(selectAllAccounts: Boolean) {

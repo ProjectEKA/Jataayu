@@ -14,16 +14,16 @@ import `in`.projecteka.jataayu.core.model.RequestStatus.GRANTED
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
+import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 
 class GrantedConsentListViewModel(private val repository: ConsentRepository,
-                                  private val credentialsRepository: CredentialsRepository) : ViewModel() {
+                                  private val credentialsRepository: CredentialsRepository) : BaseViewModel() {
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()

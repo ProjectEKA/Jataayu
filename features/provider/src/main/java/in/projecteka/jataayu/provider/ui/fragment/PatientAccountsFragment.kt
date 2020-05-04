@@ -56,6 +56,7 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
     }
 
     private fun initBindings() {
+        binding.viewModel = viewModel
         binding.selectedProviderName = viewModel.selectedProviderName
         val patient = viewModel.patientDiscoveryResponse.value?.patient
         binding.name = patient?.display
@@ -93,7 +94,7 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
     }
 
     override fun onLinkAccountsClick(view: View) {
-        showProgressBar(true)
+        viewModel.showProgress(true)
         observeLinkAccountsResponse()
         viewModel.linkPatientAccounts((genericRecyclerViewAdapter.listOfBindingModels as List<CareContext>), this)
     }
@@ -107,16 +108,16 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
     }
 
     override fun <T> onSuccess(body: T?) {
-        showProgressBar(false)
+        viewModel.showProgress(false)
     }
 
     override fun onFailure(errorBody: ErrorResponse) {
-        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
     }
 
     override fun onFailure(t: Throwable) {
-        showProgressBar(false)
+        viewModel.showProgress(false)
         context?.showErrorDialog(t.localizedMessage)
     }
 }

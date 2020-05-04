@@ -16,6 +16,9 @@
         <variable
             name="requestExpired"
             type="Boolean" />
+        <variable
+            name="viewModel"
+            type="in.projecteka.jataayu.consent.viewmodel.GrantedConsentDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -216,6 +219,12 @@
                     tools:listitem="@layout/patient_account_result_item" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+        <include
+            android:id="@+id/progress_bar_layout"
+            app:showProgress="@{viewModel.showProgress}"
+            app:message="@{viewModel.showProgressMessage}"
+            layout="@layout/progress_layout"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

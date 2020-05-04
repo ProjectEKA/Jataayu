@@ -1,42 +1,46 @@
 package `in`.projecteka.jataayu.presentation.ui
 
 import `in`.projecteka.jataayu.presentation.BuildConfig
-import `in`.projecteka.jataayu.presentation.R
-import `in`.projecteka.jataayu.presentation.databinding.BaseActivityBinding
 import `in`.projecteka.jataayu.presentation.databinding.NetworkPrefDialogBinding
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCKOON_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.PROD_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.TEST_URL
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
 import `in`.projecteka.jataayu.util.sharedPref.getEndpointIndex
 import `in`.projecteka.jataayu.util.sharedPref.setNetworkPref
-import `in`.projecteka.jataayu.util.repository.CredentialsRepository
-import `in`.projecteka.jataayu.util.sharedPref.*
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.widget.RadioButton
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.base_activity.*
 import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.getKoin
-import org.koin.core.context.GlobalContext.get
 
 
-abstract class BaseActivity : AppCompatActivity() {
-    private lateinit var binding: BaseActivityBinding
+abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
+
     private lateinit var networkPrefDialogBinding: NetworkPrefDialogBinding
     protected val eventBusInstance = EventBus.getDefault()
+    lateinit var binding: T
+
+    @LayoutRes
+    abstract fun layoutId(): Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.base_activity)
-        setSupportActionBar(toolbar)
+        binding = DataBindingUtil.setContentView(this, layoutId())
+        addBackStackWatcher()
+    }
+
+    private fun addBackStackWatcher() {
         supportFragmentManager.apply {
             addOnBackStackChangedListener {
                 if (fragments.isNotEmpty()) fragments.last {
@@ -47,7 +51,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    private val okListener = DialogInterface.OnClickListener { _, _ ->
+    private val networkDialogOkListener = DialogInterface.OnClickListener { _, _ ->
         networkPrefDialogBinding.apply {
             etEndpoint.text?.toString()?.let {
                 setNetworkPref(selectedEnvironmentIndex!!, it)
@@ -72,7 +76,7 @@ abstract class BaseActivity : AppCompatActivity() {
         val alertDialogBuilder = AlertDialog.Builder(this)
         networkPrefDialogBinding = NetworkPrefDialogBinding.inflate(layoutInflater)
 
-        networkPrefDialogBinding.apply {
+        networkPrefDialogBinding.run {
             endpoint = getBaseUrl()
             token = getKoin().get<CredentialsRepository>().accessToken
             rgEnvironmentOptions.check(rgEnvironmentOptions.getChildAt(getEndpointIndex()).id)
@@ -88,7 +92,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
         alertDialogBuilder.apply {
             setCancelable(false).setTitle("Network settings")
-                .setCancelable(false).setPositiveButton(getString(android.R.string.ok), okListener)
+                .setCancelable(false).setPositiveButton(getString(android.R.string.ok), networkDialogOkListener)
                 .setNegativeButton(getString(android.R.string.cancel)) { dialog, _ -> dialog.cancel() }
             setView(networkPrefDialogBinding.root)
             show()
@@ -103,46 +107,47 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    open fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
-            .addToBackStack(fragment.javaClass.name).commit()
+    open fun replaceFragment(fragment: Fragment, containerId: Int) {
+        supportFragmentManager.beginTransaction()
+            .replace(containerId, fragment)
+            .addToBackStack(fragment.javaClass.name)
+            .commit()
     }
 
-    open fun addFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).addToBackStack(fragment.javaClass.name)
+    open fun addFragment(fragment: Fragment, containerId: Int) {
+        supportFragmentManager.beginTransaction()
+            .add(containerId, fragment)
+            .addToBackStack(fragment.javaClass.name)
             .commit()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) onBackPressed()
+        when(item.itemId){
+            android.R.id.home -> onBackPressed()
+        }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
-        if (!isProgressBarShowing()) {
-            super.onBackPressed()
-            if (supportFragmentManager.backStackEntryCount == 0) finish()
-        }
+//        if (!isProgressBarShowing()) {
+        super.onBackPressed()
+        if (supportFragmentManager.backStackEntryCount == 0) finish()
+//        }
     }
 
-    open fun setProgressBarVisibilityValue(shouldShow: Boolean) {
-        binding.progressBarVisibility = shouldShow
-    }
-
-    open fun setProgressBarMessage(message: String) {
-        binding.progressBarMessage = message
-    }
-
-    open fun showProgressBar(shouldShow: Boolean) {
-        showProgressBar(shouldShow, "")
-    }
-
-    open fun showProgressBar(shouldShow: Boolean, message: String) {
-        setProgressBarVisibilityValue(shouldShow)
-        setProgressBarMessage(message)
-    }
-
-    private fun isProgressBarShowing(): Boolean {
-        return binding.progressBarVisibility == true
-    }
+//    fun showProgressBar(shouldShow: Boolean, @StringRes messageId: Int) {
+//        baseViewModel()?.showProgress?.set(shouldShow)
+//        baseViewModel()?.showProgressMessage?.set(messageId)
+//    }
+//
+//    fun showProgressBar(shouldShow: Boolean, messageId: String) {
+//        baseViewModel()?.showProgress?.set(shouldShow)
+////        baseViewModel()?.showProgressMessage?.set(messageId)
+//    }
+//    fun showProgressBar(shouldShow: Boolean) {
+//        baseViewModel()?.showProgress?.set(shouldShow)
+////        baseViewModel()?.showProgressMessage?.set(messageId)
+//    }
+//
+//    private fun isProgressBarShowing(): Boolean = baseViewModel()?.showProgress?.get() ?: false
 }
