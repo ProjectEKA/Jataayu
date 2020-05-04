@@ -10,7 +10,6 @@ import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ActivityCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
-import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import android.text.Editable
@@ -64,6 +63,10 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
 
         binding.etName.addTextChangedListener { text ->
             viewModel.validateName()
+        }
+
+        binding.etAyushmanBharatId.addTextChangedListener{text ->
+            viewModel.validateAyushmanId()
         }
 
     }

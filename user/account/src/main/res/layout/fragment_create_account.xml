@@ -432,6 +432,7 @@
                     android:layout_marginTop="@dimen/content_margin_extra_extra_small"
                     android:text="@string/ayushman_validation_hint"
                     android:visibility="gone"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cv_ayushman_bharat_id" />

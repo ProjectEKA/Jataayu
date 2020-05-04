@@ -12,6 +12,6 @@ class AyushmanIdChangeWatcher(private val credentialsInputListener: CredentialsI
 
     override fun onTextChanged(ayushmanId: CharSequence?, start: Int, before: Int, count: Int) {
         ayushmanId.toString().capitalize()
-        credentialsInputListener.onAyushmanIdEdit(ayushmanId.toString().capitalize())
+        credentialsInputListener.onAyushmanIdEdit(ayushmanId.toString().toUpperCase())
     }
 }
