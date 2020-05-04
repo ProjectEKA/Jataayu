@@ -37,6 +37,8 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
 
     val userAccountLoading = ObservableBoolean()
     val myProfileLoading = ObservableBoolean()
+    var userAccountsResponse: LinkedAccountsResponse? = null
+    private set
 
     fun fetchAll() {
         userProfileResponse.addSource(getUserAccounts(), Observer {
@@ -45,7 +47,10 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
                     userAccountLoading.set(it.isLoading)
                     isCurrentlyFetching()
                 }
-                is Success -> updatePatient(it.data?.linkedPatient)
+                is Success -> {
+                    userAccountsResponse = it.data
+                    updatePatient(it.data?.linkedPatient)
+                }
             }
         })
         userProfileResponse.addSource(getMyProfile(), Observer {
