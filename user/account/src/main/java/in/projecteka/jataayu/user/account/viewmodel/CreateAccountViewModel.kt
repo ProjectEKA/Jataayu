@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
+import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
@@ -35,7 +36,8 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
         .{8,}             # anything, at least eight places though
         $                 # end-of-string*/
         private const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
-        const val ayushmanIdCriteria =  "^P([A-Z][0-9])*.{8}$"
+        const val ayushmanIdCriteria =  "^[P|p]([A-Z][0-9])*.{8}$"
+        const val TYPE_AYUSHMAN_BHARAT_ID = "ABPMJAYID"
         private const val DEFAULT_CHECKED_ID = -1
     }
 
@@ -100,7 +102,7 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
         var isValid = listOfEvents.all { it == true }
 
         inputAyushmanIdLbl.get()?.let {
-            if (inputAyushmanIdLbl.get()?.isNotEmpty() == true) {
+            if (inputAyushmanIdLbl.get()?.isNotEmpty() == true && showErrorAyushmanId.get()) {
                 isValid = false
             }
         }
@@ -110,12 +112,21 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
     }
 
     fun createAccount() {
+
+        var unverifiedIdentifiers: List<UnverifiedIdentifier>?= null
+        if (!inputAyushmanIdLbl.get().isNullOrEmpty()){
+            if (!showErrorAyushmanId.get()) {
+                unverifiedIdentifiers =
+                    listOf(UnverifiedIdentifier(inputAyushmanIdLbl.get().toString().toUpperCase(), TYPE_AYUSHMAN_BHARAT_ID))
+            }
+        }
+
         val createAccountRequest = CreateAccountRequest(
             userName = "${inputUsernameLbl.get()}${usernameProviderLbl.get()}" ,
             password = inputPasswordLbl.get() ?: "",
             name = inputFullName.get() ?: "",
             gender = getGender(),
-            yearOfBirth = selectedYoB, unverifiedIdentifiers = null)
+            yearOfBirth = selectedYoB, unverifiedIdentifiers = unverifiedIdentifiers)
         createAccountResponse.fetch(repository.createAccount(createAccountRequest))
     }
 
