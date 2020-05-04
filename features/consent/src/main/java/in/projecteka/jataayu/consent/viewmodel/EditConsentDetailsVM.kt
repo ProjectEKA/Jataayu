@@ -1,9 +1,7 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
-import `in`.projecteka.jataayu.core.model.Consent
-import `in`.projecteka.jataayu.core.model.HiType
-import `in`.projecteka.jataayu.core.model.Links
+import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
 import `in`.projecteka.jataayu.presentation.callback.DateTimeSelectionCallback
 import `in`.projecteka.jataayu.util.extension.toUtc
@@ -11,6 +9,7 @@ import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import java.util.*
 import kotlin.collections.ArrayList
@@ -142,5 +141,9 @@ class EditConsentDetailsVM(private val repository: ConsentRepository) : ViewMode
             modifiedConsent.permission.dataEraseAt = time.toUtc()
             expiryTimeLabel.set(modifiedConsent.getConsentExpiryTime())
         }
+    }
+
+    fun fetchHipHiuNamesOf(list: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
+        return repository.getProviderBy(list)
     }
 }

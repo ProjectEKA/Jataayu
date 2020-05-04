@@ -1,6 +1,10 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
+import `in`.projecteka.jataayu.network.model.ErrorResponse
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.ResponseCallback
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapter
@@ -14,10 +18,10 @@ import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBindi
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.get
 import `in`.projecteka.jataayu.util.startProvider
+import `in`.projecteka.jataayu.util.startLauncher
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +45,10 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentUserAccountBinding.inflate(layoutInflater)
+        (activity as AppCompatActivity).apply {
+            setSupportActionBar(binding.toolbar)
+            setHasOptionsMenu(true)
+        }
         return binding.root
     }
 
@@ -49,6 +57,22 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
         binding.viewModel = viewModel
         initObservers()
         renderUi()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_dashboard, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_profile -> false
+            R.id.action_logout -> {
+                viewModel.logout()
+                return false
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun renderUi() {
@@ -68,8 +92,8 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
             listItems = it
             binding.rvUserAccounts.apply {
                 layoutManager = LinearLayoutManager(context)
-                adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment, it)
-            }
+                adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment, it
+            )}
         })
         viewModel.userProfileResponse.observe(this, Observer {
             when (it) {

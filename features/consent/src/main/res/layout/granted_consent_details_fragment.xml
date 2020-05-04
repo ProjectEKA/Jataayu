@@ -18,7 +18,7 @@
             type="Boolean" />
         <variable
             name="viewModel"
-            type="in.projecteka.jataayu.consent.viewmodel.GrantedConsentViewModel" />
+            type="in.projecteka.jataayu.consent.viewmodel.GrantedConsentDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

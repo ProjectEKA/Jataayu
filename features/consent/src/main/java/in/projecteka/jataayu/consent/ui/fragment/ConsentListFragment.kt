@@ -3,15 +3,14 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.callback.DeleteConsentCallback
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
-import `in`.projecteka.jataayu.consent.Cache.ConsentDataProviderCacheManager
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
-import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentListViewModel
 import `in`.projecteka.jataayu.core.model.Consent
-import `in`.projecteka.jataayu.core.model.MessageEventType
+import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.*
@@ -21,6 +20,9 @@ import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils.Companion.isDateExpired
+import android.R.layout
+import android.R.string
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -34,26 +36,26 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.consent_request_fragment.*
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 private const val INDEX_ACTIVE = 0
 private const val INDEX_EXPIRED = 1
 private const val INDEX_ALL = 2
 
-class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
+class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     DeleteConsentCallback, ItemClickCallback {
     private lateinit var consentToRevoke: Consent
 
-    protected lateinit var binding: ConsentRequestFragmentBinding
+    private lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var consentsListAdapter: ConsentsListAdapter
 
-    private val viewModel: GrantedConsentViewModel by sharedViewModel()
-    private val parentVM: ConsentHostFragmentViewModel by sharedViewModel()
+    private val viewModel: GrantedConsentListViewModel by sharedViewModel()
+    private val parentViewModel: ConsentHostFragmentViewModel by sharedViewModel()
 
     companion object {
-        fun newInstance() = GrantedFragment()
+        fun newInstance() = ConsentListFragment()
         const val CONSENT_FLOW = "consent_flow"
+        const val REQUEST_CODE_PIN_VERIFICATION = 701
     }
 
     override fun onCreateView(
@@ -61,19 +63,16 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
         savedInstanceState: Bundle?
     ): View {
         binding = ConsentRequestFragmentBinding.inflate(inflater)
-
         initBindings()
         return binding.root
     }
 
     private fun initObservers() {
-
+        
         viewModel.grantedConsentsList.observe(this, Observer<List<Consent>?> {
             it?.let {
-                val hiuIds = it.map { consent -> consent.hiu.id }
-                ConsentDataProviderCacheManager.fetchHipInfo(hiuIds, viewModel.getConsentRepository(),this) {
-                    renderConsentRequests(it, binding.spRequestFilter.selectedItemPosition)
-                }
+                val hiuList = it.map { consent -> consent.hiu }
+                getNamesOf(hiuList)
             }
         })
 
@@ -81,16 +80,14 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
             when (it) {
                 is Loading -> viewModel.showProgress(it.isLoading, R.string.loading_requests)
                 is Success -> {
-                    parentVM.showRefreshing(false)
-                    binding.hideRequestsList = it.data?.requests.isNullOrEmpty()
-                    binding.hideFilter = true
+                    parentViewModel.showRefreshing(false)
                     viewModel.filterConsents(it.data?.requests)
+                    binding.hideRequestsList = viewModel.grantedConsentsList.value.isNullOrEmpty()
+                    binding.hideFilter = true
                 }
                 is PartialFailure -> {
-                    context?.showAlertDialog(
-                        getString(R.string.failure), it.error?.message,
-                        getString(android.R.string.ok)
-                    )
+                    context?.showAlertDialog(getString(R.string.failure), it.error?.message,
+                        getString(string.ok))
                 }
             }
         })
@@ -101,11 +98,10 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                 when (payload) {
                     is Success -> {
                         payload.data?.firstOrNull()?.consentDetail?.let {
-                            viewModel.revokeConsent(
-                                it.id)
+                            viewModel.revokeConsent(it.id)
                         }
-
                     }
+
                     is Loading -> {
                         viewModel.showProgress(payload.isLoading)
                     }
@@ -119,25 +115,27 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                 )
                 is Success -> {
                     activity?.let {
-                        EventBus.getDefault().post(MessageEventType.CONSENT_REVOKED)
-                        viewModel.getConsents()
+                    parentViewModel.pullToRefreshEvent.value = true
+                    parentViewModel.showToastEvent.value = getString(R.string.consent_revoked)
                     }
                 }
                 is PartialFailure -> {
                     context?.showAlertDialog(
                         getString(R.string.failure), it.error?.message,
-                        getString(android.R.string.ok)
+                        getString(string.ok)
                     )
                 }
                 is Failure -> {
                     context?.showAlertDialog(
                         getString(R.string.failure), it.error?.message,
-                        getString(android.R.string.ok)
+                        getString(string.ok)
                     )
                 }
+
             }
         })
-        parentVM.pullToRefreshEvent.observe(viewLifecycleOwner, Observer {
+
+        parentViewModel.pullToRefreshEvent.observe(viewLifecycleOwner, Observer{
             if (it) {
                 viewModel.getConsents()
             }
@@ -147,7 +145,7 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun initSpinner(selectedPosition: Int) {
         val arrayAdapter = ArrayAdapter<String>(
             context!!,
-            android.R.layout.simple_dropdown_item_1line, android.R.id.text1,
+            layout.simple_dropdown_item_1line, android.R.id.text1,
             viewModel.populateFilterItems(resources, ConsentFlow.GRANTED_CONSENTS)
         )
         binding.spRequestFilter.adapter = arrayAdapter
@@ -172,8 +170,8 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
         consentsListAdapter = ConsentsListAdapter(
-            this@GrantedFragment,
-            requests, this@GrantedFragment
+            this@ConsentListFragment,
+            requests, this@ConsentListFragment
         )
         rvConsents.apply {
             layoutManager = LinearLayoutManager(context)
@@ -201,20 +199,22 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun filterRequests(requests: List<Consent>) {
         (rvConsents.adapter as ConsentsListAdapter).updateData(requests)
     }
-
-    private fun unregisterEventBus() {
-        if (EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().unregister(this)
-        }
+    private fun getNamesOf(hiuList: List<HipHiuIdentifiable>) {
+        val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(hiuList)
+        hipHiuNameResponse.observe(this, Observer {
+            viewModel.grantedConsentsList.value?.let { consentList ->
+                if(it.status) {
+                    consentList.forEach { consent -> consent.hiu.name = it.nameMap[consent.hiu.getId()] ?: "" }
+                    renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)
+                }
+            }
+        })
     }
 
     override fun askForConsentPin(iDataBindingModel: IDataBindingModel) {
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
         consentToRevoke = (iDataBindingModel as Consent)
         val intent = Intent(context, PinVerificationActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_CODE_PIN_VERIFICATION)
     }
 
     override fun onItemClick(
@@ -226,21 +226,15 @@ class GrantedFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
             intent.putExtra(CONSENT_FLOW, ConsentFlow.GRANTED_CONSENTS.ordinal)
             startActivity(intent)
             EventBus.getDefault().postSticky(iDataBindingModel.id)
-
-            if (!EventBus.getDefault().isRegistered(this)) {
-                EventBus.getDefault().register(this)
             }
         }
-    }
 
-    @Subscribe
-    fun onEventReceived(messageEventType: MessageEventType) {
-        if (messageEventType == MessageEventType.CONSENT_REVOKED) {
-            viewModel.getConsents()
-            unregisterEventBus()
-        } else if (messageEventType == MessageEventType.USER_VERIFIED) {
-            viewModel.getGrantedConsentDetails(consentToRevoke.id)
-            unregisterEventBus()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_PIN_VERIFICATION) {
+            if (resultCode == Activity.RESULT_OK) {
+                viewModel.getGrantedConsentDetails(consentToRevoke.id)
+            }
         }
     }
 }

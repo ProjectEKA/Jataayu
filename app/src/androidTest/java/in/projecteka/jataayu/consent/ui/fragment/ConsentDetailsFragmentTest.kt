@@ -20,8 +20,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 
-
-/*@LargeTest
+@LargeTest
 @RunWith(AndroidJUnit4::class)
 class ConsentDetailsFragmentTest{
 
@@ -44,10 +43,10 @@ class ConsentDetailsFragmentTest{
 
         webServer.dispatcher =
             MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
-        Thread.sleep(4000)
+        Thread.sleep(5000)
 
         readConsentAndLaunchFragment("consent_requested.json")
-        activityRule.activity.addFragment(RequestedConsentDetailsFragment())
+        activityRule.activity.addFragment(RequestedConsentDetailsFragment(), R.id.fragment_container)
     }
 
     private fun readConsentAndLaunchFragment(fileName: String) {
@@ -75,6 +74,7 @@ class ConsentDetailsFragmentTest{
 
     @Test
     fun shouldRenderConsentDetails(){
+        Thread.sleep(3000)
         displayed {
             id(R.id.tv_requester_name)
             text("Dr. Lakshmi")
@@ -102,7 +102,7 @@ class ConsentDetailsFragmentTest{
 
         displayed {
             id(R.id.tv_expiry)
-            text("05 PM, 30 Jan, 3020")
+            text("05 PM, 30 Jan, 2030")
         }
 
         displayed {
@@ -120,7 +120,7 @@ class ConsentDetailsFragmentTest{
     fun shouldNotShowButtonsForExpiredConsent(){
 
         readConsentAndLaunchFragment("consent_expired.json")
-        activityRule.activity.replaceFragment(RequestedConsentDetailsFragment())
+        activityRule.activity.replaceFragment(RequestedConsentDetailsFragment(), R.id.fragment_container)
 
         notDisplayed { id(R.id.btn_edit)
         text("Edit")}
@@ -140,4 +140,3 @@ class ConsentDetailsFragmentTest{
         webServer.shutdown()
     }
     }
- */

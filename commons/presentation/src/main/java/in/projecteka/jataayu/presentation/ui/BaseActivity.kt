@@ -7,7 +7,9 @@ import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCKOON_
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.PROD_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.TEST_URL
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
-import `in`.projecteka.jataayu.util.sharedPref.*
+import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
+import `in`.projecteka.jataayu.util.sharedPref.getEndpointIndex
+import `in`.projecteka.jataayu.util.sharedPref.setNetworkPref
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.KeyEvent
@@ -21,7 +23,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.getKoin
-import org.koin.core.context.GlobalContext.get
 
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {

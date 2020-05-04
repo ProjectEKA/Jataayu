@@ -6,9 +6,12 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 
 class UserVerificationViewModel(private val userVerificationRepository: UserVerificationRepository,
-                                val credentialsRepository: CredentialsRepository) : BaseViewModel
+                                val credentialsRepository: CredentialsRepository,
+                                val preferenceRepository: PreferenceRepository
+) : BaseViewModel
     () {
     internal var createPinResponse = PayloadLiveData<Void>()
     internal var userVerificationResponse = PayloadLiveData<UserVerificationResponse>()

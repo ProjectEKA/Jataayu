@@ -11,7 +11,6 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ActivityCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
 import `in`.projecteka.jataayu.util.extension.showLongToast
-
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import android.text.Editable
@@ -19,7 +18,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatCheckedTextView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,6 +28,10 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
     private val viewModel: CreateAccountViewModel by viewModel()
 
     override fun layoutId(): Int = R.layout.activity_create_account
+
+    companion object {
+        const val KEY_ACCOUNT_CREATED = "account_created"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,8 +76,10 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
                     is Success -> {
                         viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
                         viewModel.preferenceRepository.isUserAccountCreated = true
-                        showLongToast(getString(R.string.registered_successfully))
-                        startProvider(this)
+                        startProvider(this) {
+                            putExtra(KEY_ACCOUNT_CREATED, true)
+                        }
+
                         finish()
                     }
                     is PartialFailure ->

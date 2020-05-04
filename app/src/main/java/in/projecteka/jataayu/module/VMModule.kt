@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.module
 
 import `in`.projecteka.jataayu.consent.viewmodel.*
+import `in`.projecteka.jataayu.provider.viewmodel.ProviderActivityViewModel
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel
@@ -36,15 +37,17 @@ val viewModelModule = module {
 
     //Consent
     viewModel { ConsentHostFragmentViewModel() }
-    viewModel { RequestedConsentViewModel(get(), get(), get()) }
-    viewModel { GrantedConsentViewModel(get(), get()) }
-    viewModel { ConsentViewModel(get()) }
     viewModel { EditConsentDetailsVM(get()) }
+    viewModel { RequestedListViewModel(get()) }
+    viewModel { GrantedConsentListViewModel(get(), get()) }
+    viewModel { RequestedConsentDetailsViewModel(get(), get(), get()) }
+    viewModel { GrantedConsentDetailsViewModel(get()) }
 
     //Provider Search
     viewModel { ProviderSearchViewModel(get(), get()) }
+    viewModel { ProviderActivityViewModel() }
 
     //User Verification
-    viewModel { UserVerificationViewModel(get(), get()) }
+    viewModel { UserVerificationViewModel(get(), get(), get()) }
 
 }

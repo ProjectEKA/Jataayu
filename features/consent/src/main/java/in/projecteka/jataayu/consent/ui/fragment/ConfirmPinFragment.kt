@@ -6,7 +6,6 @@ import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
-import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
@@ -25,7 +24,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val PIN = "PIN"
@@ -60,6 +58,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
 
     private fun initObservers() {
         viewModel.createPinResponse.observe(this, Observer {
+
             when (it) {
                 is Loading -> viewModel.showProgress(it.isLoading, R.string.creating_pin)
                 is Success -> {
@@ -74,19 +73,17 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                     }
                 }
                 is PartialFailure -> {
-                    context?.showAlertDialog(
-                        getString(R.string.failure), it.error?.message,
-                        getString(android.R.string.ok)
-                    )
+                    context?.showAlertDialog(getString(R.string.failure), it.error?.message,
+                        getString(android.R.string.ok))
                 }
             }
         })
+
         viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
             when (userVerificationResponse) {
                 is Loading -> viewModel.showProgress(userVerificationResponse.isLoading, R.string.verifying_pin)
                 is Success -> {
                     viewModel.credentialsRepository.consentTemporaryToken = userVerificationResponse.data?.temporaryToken
-                    EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
                     activity?.setResult(Activity.RESULT_OK)
                     activity?.finish()
                 }
@@ -102,7 +99,6 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                     activity?.finish()
                 }
             }
-
         })
     }
 

@@ -20,6 +20,9 @@
     <string name="account_details">Account details</string>
     <string name="should_not_be_empty">Should not be empty</string>
     <string name="please_select_gender">Please select gender</string>
-    <string name="registered_successfully">Registered Successfully</string>
     <string name="name_hint">Can be your first name middle name last name</string>
+    <string name="action_profile">Profile</string>
+    <string name="action_logout">Logout</string>
+    <string name="ayushman_bharat_id">Ayushman Bharat ID (optional)</string>
+    <string name="ayushman_validation_hint">Should be 9 characters long\nShould start with P</string>
 </resources>

@@ -23,7 +23,7 @@ public class ConsentHostFragmentTest {
     @Before
     @Throws(Exception::class)
     fun setup() {
-        activityRule.activity.addFragment(consentHostFragment)
+        activityRule.activity.addFragment(consentHostFragment, R.id.fragment_container)
     }
 
     @Test

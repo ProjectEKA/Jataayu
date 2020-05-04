@@ -8,8 +8,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class ConsentHostFragmentViewModel() : ViewModel(), SwipeRefreshLayout.OnRefreshListener {
 
-    //refreshDataEvent
     val pullToRefreshEvent = MutableLiveData<Boolean>()
+    val showToastEvent = MutableLiveData<String>()
     val isRefreshing = ObservableBoolean(false)
 
     internal enum class Action {
@@ -17,6 +17,14 @@ class ConsentHostFragmentViewModel() : ViewModel(), SwipeRefreshLayout.OnRefresh
     }
 
     internal val redirectEvent = SingleLiveEvent<Action>()
+    companion object {
+        const val REQUEST_CONSENT_DETAILS = 500
+        const val KEY_CONSENT_EVENT_TYPE = "consent_event_type"
+        const val KEY_EVENT_GRANT = "grant"
+        const val KEY_EVENT_DENY = "deny"
+    }
+
+    internal val viewPagerState = SingleLiveEvent<Action>()
 
     fun setUp(){
         pullToRefreshEvent.value = false

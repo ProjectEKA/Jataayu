@@ -16,7 +16,6 @@ import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
-import junit.framework.Assert
 import junit.framework.Assert.*
 import org.junit.After
 import org.junit.Before
@@ -35,7 +34,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
-class GrantedConsentViewModelTest {
+class ConsentListViewModelTest {
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
@@ -55,7 +54,7 @@ class GrantedConsentViewModelTest {
     @Mock
     private lateinit var consentsFetchObserver: Observer<PayloadResource<ConsentsListResponse>>
 
-    private lateinit var consentViewModel: GrantedConsentViewModel
+    private lateinit var consentViewModel: GrantedConsentListViewModel
 
     private lateinit var consentsListResponse: ConsentsListResponse
 
@@ -64,7 +63,7 @@ class GrantedConsentViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        consentViewModel = GrantedConsentViewModel(repository,credentialRepo)
+        consentViewModel = GrantedConsentListViewModel(repository,credentialRepo)
 
         consentsListResponse = Gson()
             .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)
@@ -101,8 +100,8 @@ class GrantedConsentViewModelTest {
     private fun dummyGrantedFilterList(): ArrayList<String> {
         val list = ArrayList<String>(3)
         list.add("All Granted Consents (2)")
-        list.add("Active granted consents (1)")
-        list.add("Expired granted consents (1)")
+        list.add("Active granted consents (2)")
+        list.add("Expired granted consents (0)")
         return list
     }
 
@@ -126,8 +125,8 @@ class GrantedConsentViewModelTest {
     @Test
     fun `should Filter And Sorted Requested Consent List By Descending Order`() {
         consentViewModel.filterConsents(consentsListResponse.requests)
-        val first =  consentViewModel.requestedConsentsList.value!!.first().getLastUpdated()
-        val second = consentViewModel.requestedConsentsList.value!![1].getLastUpdated()
+        val first =  consentViewModel.grantedConsentsList.value!!.first().getLastUpdated()
+        val second = consentViewModel.grantedConsentsList.value!![1].getLastUpdated()
         assertTrue(first!!.after(second!!))
     }
 

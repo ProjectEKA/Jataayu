@@ -32,7 +32,7 @@ interface ConsentApis {
     @POST("consent-requests/{request-id}/deny")
     fun denyConsent(@Path("request-id") requestId: String): Call<Void>
 
-    @Headers("Cache-Control: max-age=300")
+    @Headers("Cache-Control: max-age=86400")
     @GET("providers/{provider-id}")
     fun getProvidersBy(@NonNull @Path("provider-id") providerId: String): Call<ProviderInfo>
 }

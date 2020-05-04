@@ -15,4 +15,5 @@
     <string name="username">Username</string>
     <string name="show">Show</string>
     <string name="hide">Hide</string>
+    <string name="registered_successfully">Registered Successfully</string>
 </resources>

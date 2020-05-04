@@ -106,8 +106,7 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
             password = inputPasswordLbl.get() ?: "",
             name = inputFullName.get() ?: "",
             gender = getGender(),
-            yearOfBirth = selectedYoB
-        )
+            yearOfBirth = selectedYoB, unverifiedIdentifiers = null)
         createAccountResponse.fetch(repository.createAccount(createAccountRequest))
     }
 

@@ -42,6 +42,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 is Loading -> viewModel.showProgress(it.isLoading, R.string.logging_in)
                 is Success -> {
                     finish()
+                    viewModel.credentialsRepository.accessToken = "${it.data?.tokenType?.capitalize()} ${it.data?.accessToken}"
+                    viewModel.preferenceRepository.isUserLoggedIn = true
                     startDashboard(this)
 
                 }

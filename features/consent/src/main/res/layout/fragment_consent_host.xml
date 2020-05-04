@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/host_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.activity.ConsentActivity">

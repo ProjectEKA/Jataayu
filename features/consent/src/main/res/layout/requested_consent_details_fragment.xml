@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="in.projecteka.jataayu.presentation.BaseViewModel" />
+            type="in.projecteka.jataayu.consent.viewmodel.RequestedConsentDetailsViewModel" />
 
         <variable
             name="consent"

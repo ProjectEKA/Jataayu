@@ -2,11 +2,11 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.UserVerificationFragmentBinding
+import `in`.projecteka.jataayu.consent.viewmodel.PinVerificationViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
-import `in`.projecteka.jataayu.core.model.MessageEventType
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
@@ -18,18 +18,22 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.ui.UiUtils
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpChangeHandler {
     private lateinit var binding: UserVerificationFragmentBinding
+
+    private val parentViewModel: PinVerificationViewModel by sharedViewModel()
 
     companion object {
         fun newInstance() = UserVerificationFragment()
@@ -59,13 +63,12 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
                 is Loading -> viewModel.showProgress(true)
                 is Success -> {
                     viewModel.credentialsRepository.consentTemporaryToken = it.data?.temporaryToken
-                    EventBus.getDefault().post(MessageEventType.USER_VERIFIED)
+                    activity?.setResult(Activity.RESULT_OK)
                     activity?.finish()
                 }
                 is PartialFailure -> {
                     when (it.error?.code) {
                         ERROR_CODE_INVALID_PIN -> {
-                            context?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
                             binding.lblInvalidPin.visibility = View.VISIBLE
                             binding.etPin.setText("")
                             binding.etPin.wobble()
@@ -86,7 +89,6 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
                     context?.showErrorDialog(it.error.localizedMessage)
                 }
             }
-
         })
     }
 

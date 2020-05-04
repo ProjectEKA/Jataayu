@@ -2,7 +2,6 @@ package `in`.projecteka.jataayu.registration.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
-import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
@@ -16,7 +15,6 @@ import android.text.TextWatcher
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
-import androidx.lifecycle.Transformations
 
 class LoginViewModel(
     private val repository: AuthenticationRepository,
@@ -69,22 +67,12 @@ class LoginViewModel(
         onClickRegisterEvent.call()
     }
 
-    fun onLoginClicked() = Transformations.map(
-        loginResponse.fetch(
+    fun onLoginClicked() = loginResponse.fetch(
             repository.login(
                 "${inputUsernameLbl.get()}${usernameProviderLbl.get()}",
                 inputPasswordLbl.get() ?: "", GRANT_TYPE_PASSWORD
             )
         )
-    ) {
-        when (it) {
-            is Success -> {
-                credentialsRepository.accessToken = "${it.data?.tokenType?.capitalize()} ${it.data?.accessToken}"
-                preferenceRepository.isUserLoggedIn = true
-            }
-        }
-    }
-
 
     override fun afterTextChanged(s: Editable?) {
     }
