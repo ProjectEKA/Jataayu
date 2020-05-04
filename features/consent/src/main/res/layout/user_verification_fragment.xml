@@ -15,6 +15,9 @@
         <variable
             name="otpChangeWatcher"
             type="in.projecteka.jataayu.core.handler.OtpChangeWatcher" />
+        <variable
+            name="viewModel"
+            type="in.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,6 +79,13 @@
             app:layout_constraintVertical_bias="0.05">
 
         </com.google.android.material.button.MaterialButton>
+
+        <include
+            android:id="@+id/progress_bar_layout"
+            app:showProgress="@{viewModel.showProgress}"
+            app:message="@{viewModel.showProgressMessage}"
+            layout="@layout/progress_layout"/>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

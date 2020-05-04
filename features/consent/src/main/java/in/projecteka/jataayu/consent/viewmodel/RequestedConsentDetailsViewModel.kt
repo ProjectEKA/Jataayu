@@ -8,15 +8,15 @@ import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
+import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
 
 class RequestedConsentDetailsViewModel(private val repository: ConsentRepository,
                                        val preferenceRepository: PreferenceRepository,
-                                       private val credentialsRepository: CredentialsRepository) : ViewModel() {
+                                       private val credentialsRepository: CredentialsRepository) : BaseViewModel() {
 
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
     val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()

@@ -38,7 +38,7 @@ class ProviderSearchFragmentTest {
         webServer.dispatcher = MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
 
         val searchFragment = ProviderSearchFragment()
-        activityRule.activity.addFragment(searchFragment)
+        activityRule.activity.addFragment(searchFragment, R.id.fragment_container)
     }
 
     @After

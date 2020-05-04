@@ -6,21 +6,21 @@
 
     <data>
 
-        <variable
-            name="clickHandler"
-            type="in.projecteka.jataayu.user.account.listener.AccountCreationClickHandler" />
+<!--        <variable-->
+<!--            name="clickHandler"-->
+<!--            type="in.projecteka.jataayu.user.account.listener.AccountCreationClickHandler" />-->
 
         <variable
             name="passwordInputType"
             type="Integer" />
 
-        <variable
+       <!-- <variable
             name="userNameChangeWatcher"
             type="in.projecteka.jataayu.user.account.listener.UsernameChangeWatcher" />
 
         <variable
             name="passwordChangeWatcher"
-            type="in.projecteka.jataayu.user.account.listener.PasswordChangeWatcher" />
+            type="in.projecteka.jataayu.user.account.listener.PasswordChangeWatcher" />-->
         <variable
             name="listener"
             type="android.widget.AdapterView.OnItemSelectedListener" />
@@ -117,8 +117,8 @@
                             android:focusableInTouchMode="true"
                             android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_medium"
-                            app:onValueChanged="@{userNameChangeWatcher}" />
+                            android:textSize="@dimen/text_size_medium"/>
+<!--                            app:onValueChanged="@{userNameChangeWatcher}" />-->
 
                         <TextView
                             android:id="@+id/tv_provider_name"
@@ -188,8 +188,8 @@
                             android:inputType="@{passwordInputType}"
                             android:singleLine="true"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_medium"
-                            app:onValueChanged="@{passwordChangeWatcher}" />
+                            android:textSize="@dimen/text_size_medium"/>
+<!--                            app:onValueChanged="@{passwordChangeWatcher}" />-->
 
                         <Button
                             android:id="@+id/btn_show_hide_password"
@@ -200,11 +200,15 @@
                             android:drawablePadding="@dimen/content_margin_medium"
                             android:focusable="true"
                             android:gravity="end"
-                            android:onClick="@{clickHandler::showOrHidePassword}"
                             android:text="Show"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_size_medium" />
+<!--                            android:onClick="@{clickHandler::showOrHidePassword}"-->
+<!--                            android:text="Show"-->
+<!--                            android:textAllCaps="false"-->
+<!--                            android:textColor="@color/colorPrimary"-->
+<!--                            android:textSize="@dimen/text_size_medium" />-->
 
                     </LinearLayout>
 
@@ -428,6 +432,7 @@
                     android:layout_marginTop="@dimen/content_margin_extra_extra_small"
                     android:text="@string/ayushman_validation_hint"
                     android:visibility="gone"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cv_ayushman_bharat_id" />
@@ -448,8 +453,9 @@
                 android:id="@+id/btn_register"
                 style="@style/Button"
                 android:layout_width="match_parent"
-                android:onClick="@{clickHandler::createAccount}"
                 android:text="@string/register" />
+<!--                android:onClick="@{clickHandler::createAccount}"-->
+<!--                android:text="@string/register" />-->
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

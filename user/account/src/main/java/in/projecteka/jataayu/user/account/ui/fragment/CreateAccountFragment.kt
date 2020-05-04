@@ -37,6 +37,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
 
+/*
 class CreateAccountFragment : BaseFragment(),
     AccountCreationClickHandler, CredentialsInputListener, ResponseCallback, AdapterView.OnItemSelectedListener {
 
@@ -54,14 +55,16 @@ class CreateAccountFragment : BaseFragment(),
         const val SPACE = " "
         const val YOB = "yyyy"
         const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
-        /*^                 # start-of-string
+        */
+/*^                 # start-of-string
         (?=.*[0-9])       # a digit must occur at least once
         (?=.*[a-z])       # a lower case letter must occur at least once
         (?=.*[A-Z])       # an upper case letter must occur at least once
         (?=.*[@#$%^&+=])  # a special character must occur at least once
         (?=\S+$)          # no whitespace allowed in the entire string
         .{8,}             # anything, at least eight places though
-        $                 # end-of-string*/
+        $                 # end-of-string*//*
+
         const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
         const val DEFAULT_CHECKED_ID = -1
         const val KEY_ACCOUNT_CREATED = "account_created"
@@ -266,4 +269,4 @@ class CreateAccountFragment : BaseFragment(),
             selectedYob = (view as AppCompatCheckedTextView).text.toString().toInt()
         }
     }
-}
+}*/

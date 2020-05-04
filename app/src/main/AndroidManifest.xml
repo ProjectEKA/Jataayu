@@ -14,8 +14,8 @@
         tools:replace="android:name, android:label, android:theme">
 
         <activity-alias
-            android:name="in.projecteka.jataayu.LauncherActivity"
-            android:targetActivity="in.projecteka.jataayu.ui.LauncherActivity">
+            android:name=".LauncherActivity"
+            android:targetActivity=".ui.launcher.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -23,14 +23,18 @@
         </activity-alias>
 
         <activity
-            android:name="in.projecteka.jataayu.ui.LauncherActivity"
+            android:name=".ui.launcher.LauncherActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="in.projecteka.jataayu.home" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.dashboard.DashboardActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

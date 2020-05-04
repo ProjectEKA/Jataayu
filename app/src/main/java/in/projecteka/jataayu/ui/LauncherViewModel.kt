@@ -9,7 +9,7 @@ class LauncherViewModel(private val preferenceRepository: PreferenceRepository,
                         private val credentialsRepository: CredentialsRepository) : ViewModel() {
 
     val startLogin = SingleLiveEvent<Void>()
-    val startAccountFragments = SingleLiveEvent<Void>()
+    val startDashboard = SingleLiveEvent<Void>()
     val startProvider = SingleLiveEvent<Void>()
     val startAccountCreation = SingleLiveEvent<Void>()
 
@@ -17,7 +17,7 @@ class LauncherViewModel(private val preferenceRepository: PreferenceRepository,
 
         when {
             preferenceRepository.hasProviders || preferenceRepository.isUserLoggedIn -> {
-                startAccountFragments.call()
+                startDashboard.call()
             }
             preferenceRepository.isUserAccountCreated -> {
                 startProvider.call()

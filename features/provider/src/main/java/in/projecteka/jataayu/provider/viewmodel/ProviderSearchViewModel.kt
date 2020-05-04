@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.core.model.ProviderInfo
 import `in`.projecteka.jataayu.core.model.Request
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.observeOn
+import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.provider.model.LinkAccountsResponse
 import `in`.projecteka.jataayu.provider.model.Otp
 import `in`.projecteka.jataayu.provider.model.PatientDiscoveryResponse
@@ -21,7 +22,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 
 class ProviderSearchViewModel(private val providerRepository: ProviderRepository,
-                              val preferenceRepository: PreferenceRepository) : ViewModel(), TextWatcher {
+                              val preferenceRepository: PreferenceRepository) : BaseViewModel(), TextWatcher {
     val providers = liveDataOf<List<ProviderInfo>>()
     var providersList = emptyList<ProviderInfo>()
     val patientDiscoveryResponse = liveDataOf<PatientDiscoveryResponse>()

@@ -112,6 +112,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
         if (!eventBusInstance.isRegistered(this))
             eventBusInstance.register(this)
 
+        binding.viewModel = viewModel
         initObservers()
 
         if (viewModel.linkedAccountsResponse.value == null) {
@@ -125,7 +126,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
             this,
             Observer<PayloadResource<LinkedAccountsResponse>> { payload ->
                 when (payload) {
-                    is Loading -> showProgressBar(payload.isLoading)
+                    is Loading -> viewModel.showProgress(payload.isLoading)
                     is Success -> {
                         linkedAccounts = payload.data?.linkedPatient?.links
                         linkedAccounts?.map { it.hip }?.let { ids ->
@@ -153,13 +154,12 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
                         payload.data?.let { onConsentDetailsResponseSuccess(it, null) }
                     }
                     is Loading -> {
-                        showProgressBar(payload.isLoading)
+                        viewModel.showProgress(payload.isLoading)
                     }
                 }
             })
     }
 
-    // Build adapter data and populate
     private fun populateLinkedAccounts(grantedConsents: List<GrantedConsentDetailsResponse>) {
         compositeDisposable.add(io.reactivex.Observable.just(viewModel)
             .map { it.getItems(grantedConsents, linkedAccounts, linkedAccountHipResponse) }

@@ -60,12 +60,16 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
         viewModel.createPinResponse.observe(this, Observer {
 
             when (it) {
-                is Loading -> showProgressBar(it.isLoading, getString(R.string.creating_pin))
+                is Loading -> viewModel.showProgress(it.isLoading, R.string.creating_pin)
                 is Success -> {
                     activity?.let {
-                        viewModel.preferenceRepository.pinCreated = true
-                        showProgressBar(true)
-                        viewModel.verifyUser(binding.etPin.text.toString())
+                        arguments?.let { bundle ->
+                            bundle.getString(PIN)?.let { pin ->
+                                if (binding.etPin.text.toString() == pin) {
+                                    viewModel.verifyUser(binding.etPin.text.toString())
+                                }
+                            }
+                        }
                     }
                 }
                 is PartialFailure -> {
@@ -77,7 +81,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
 
         viewModel.userVerificationResponse.observe(this, Observer { userVerificationResponse ->
             when (userVerificationResponse) {
-                is Loading -> showProgressBar(userVerificationResponse.isLoading, getString(R.string.verifying_pin))
+                is Loading -> viewModel.showProgress(userVerificationResponse.isLoading, R.string.verifying_pin)
                 is Success -> {
                     viewModel.credentialsRepository.consentTemporaryToken = userVerificationResponse.data?.temporaryToken
                     activity?.setResult(Activity.RESULT_OK)
@@ -104,6 +108,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
     }
 
     private fun initBindings() {
+        binding.viewModel = viewModel
         binding.clickHandler = this
         binding.isOtpEntered = false
         binding.otpChangeWatcher = OtpChangeWatcher(4, this)

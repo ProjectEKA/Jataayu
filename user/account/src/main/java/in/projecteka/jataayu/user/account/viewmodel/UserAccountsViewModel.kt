@@ -2,67 +2,110 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.R
 import `in`.projecteka.jataayu.core.model.*
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
-import `in`.projecteka.jataayu.network.utils.observeOn
+import `in`.projecteka.jataayu.network.utils.*
+import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
-import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
 import `in`.projecteka.jataayu.util.extension.liveDataOf
+import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
-import androidx.lifecycle.ViewModel
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
 import java.util.regex.Pattern
 
 class UserAccountsViewModel(private val repository: UserAccountsRepository,
                             val preferenceRepository: PreferenceRepository,
-                            val credentialRepository: CredentialsRepository) : ViewModel() {
+                            val credentialRepository: CredentialsRepository) : BaseViewModel() {
     var linkedAccountsResponse = liveDataOf<LinkedAccountsResponse>()
     var createAccountResponse = liveDataOf<CreateAccountResponse>()
     var myProfileResponse = liveDataOf<MyProfile>()
+    val logoutResponse = PayloadLiveData<Void>()
 
-    fun getUserAccounts(responseCallback: ResponseCallback) {
-        repository.getUserAccounts().observeOn(linkedAccountsResponse, responseCallback)
-    }
+    val patientId = ObservableField<String>()
+    val patientName = ObservableField<String>()
+    val linksSize = ObservableInt()
 
-    fun getMyProfile(responseCallback: ResponseCallback){
-        repository.getMyProfile().observeOn(myProfileResponse, responseCallback)
-    }
+    val userProfileResponse = MediatorLiveData<PayloadResource<*>>()
 
-    fun getDisplayAccounts(): List<IGroupDataBindingModel> {
-        val items = arrayListOf<IGroupDataBindingModel>()
-        linkedAccountsResponse.value?.linkedPatient?.links?.let {
-            val links = linkedAccountsResponse.value?.linkedPatient?.links!!
-            for (link in links) {
-                val careContextsList = arrayListOf<LinkedCareContext>()
-                link?.careContexts?.forEach {
-                    careContextsList.add(
-                        LinkedCareContext(
-                            it.referenceNumber,
-                            it.display
-                        )
-                    )
+    val updateLinks = SingleLiveEvent<List<IGroupDataBindingModel>>()
+    val updateProfile = SingleLiveEvent<MyProfile>()
+    val addProviderEvent = SingleLiveEvent<Void>()
+
+    val userAccountLoading = ObservableBoolean()
+    val myProfileLoading = ObservableBoolean()
+
+    fun fetchAll() {
+        userProfileResponse.addSource(getUserAccounts(), Observer {
+            when (it) {
+                is Loading -> {
+                    userAccountLoading.set(it.isLoading)
+                    isCurrentlyFetching()
                 }
-                items.add(
-                    LinkedAccount(
-                        link?.hip!!.name,
-                        link.referenceNumber,
-                        link.display,
-                        careContextsList,
-                        R.id.childItemsList,
-                        false
-                    )
-                )
+                is Success -> updatePatient(it.data?.linkedPatient)
             }
-        }
-        return items
+        })
+        userProfileResponse.addSource(getMyProfile(), Observer {
+            when (it) {
+                is Loading -> {
+                    myProfileLoading.set(it.isLoading)
+                    isCurrentlyFetching()
+                }
+                is Success -> {
+                    patientName.set(it.data?.name)
+                    updateProfile.value = it.data
+                }
+            }
+        })
     }
 
-    fun createAccount(
-        responseCallback: ResponseCallback,
-        createAccountRequest: CreateAccountRequest
-    ) {
-        repository.createAccount(createAccountRequest)
-            .observeOn(createAccountResponse, responseCallback)
+    private fun updatePatient(linkedPatient: LinkedPatient?) {
+        linkedPatient?.run {
+            patientId.set(id)
+            appBarTitle.set(id)
+            updateDisplayAccounts(links)
+        }
+    }
+
+    fun getUserAccounts() = repository.getUserAccounts()
+
+    fun getMyProfile() = repository.getMyProfile()
+
+
+    fun updateDisplayAccounts(links: List<Links>?) {
+        updateLinks.value = links?.map { link ->
+            LinkedAccount(
+                link.hip.name,
+                link.referenceNumber,
+                link.display,
+                link.careContexts.map { careContext ->
+                    LinkedCareContext(careContext.referenceNumber, careContext.display)
+                },
+                R.id.childItemsList,
+                false
+            )
+        }.also {
+            linksSize.set(it?.size ?: 0)
+        }
+    }
+
+    private fun isCurrentlyFetching() {
+        showProgress(userAccountLoading.get() && myProfileLoading.get())
+    }
+    fun logout() {
+        credentialRepository.refreshToken?.let {
+            logoutResponse.fetch(repository.logout(it))
+        } ?: kotlin.run {
+            logoutResponse.partialFailure(null)
+        }
+    }
+
+    fun clearSharedPreferences() {
+        preferenceRepository.resetPreferences()
+        credentialRepository.reset()
     }
 
     fun isValid(text: String, criteria: String): Boolean {
@@ -71,7 +114,8 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
         return matcher.matches()
     }
 
-    fun getAuthTokenWithTokenType(response: CreateAccountResponse): String {
-        return (response.tokenType).capitalize() + CreateAccountFragment.SPACE + response.accessToken
+    fun onClickAddProvider() {
+        addProviderEvent.call()
     }
+
 }

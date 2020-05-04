@@ -3,116 +3,140 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data >
+    <data>
+
         <variable
-            name="linkedPatient"
-            type="in.projecteka.jataayu.core.model.LinkedPatient" />
+            name="viewModel"
+            type="in.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel" />
+
     </data>
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/main_content"
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/main_content"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
-            android:fitsSystemWindows="true"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/toolbar_layout"
-                style="@style/Toolbar"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_bar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/app_bar_height"
                 android:fitsSystemWindows="true"
-                android:minHeight="@dimen/collapsed_toolbar_size"
-                app:collapsedTitleGravity="center_horizontal"
-                app:collapsedTitleTextAppearance="@style/Toolbar"
-                app:contentScrim="@color/colorPrimary"
-                app:expandedTitleGravity="center_horizontal"
-                app:expandedTitleTextAppearance="@style/Toolbar"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:statusBarScrim="@color/colorPrimary"
-                app:title="@{linkedPatient.id}"
-                app:titleEnabled="true"
-                app:toolbarId="@+id/toolbar">
+                android:theme="@style/AppTheme.AppBarOverlay">
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/toolbar_layout"
+                    style="@style/Toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_marginTop="-17dp"
-                    android:foregroundGravity="top"
-                    android:paddingBottom="@dimen/content_padding_medium"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    android:minHeight="@dimen/collapsed_toolbar_size"
+                    app:collapsedTitleGravity="center_horizontal"
+                    app:collapsedTitleTextAppearance="@style/Toolbar"
+                    app:contentScrim="@color/colorPrimary"
+                    app:expandedTitleGravity="center_horizontal"
+                    app:expandedTitleTextAppearance="@style/Toolbar"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:statusBarScrim="@color/colorPrimary"
+                    app:title="@{viewModel.appBarTitle}"
+                    app:titleEnabled="true"
+                    app:toolbarId="@+id/toolbar">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginTop="@dimen/collapsed_toolbar_size">
-
-                    <TextView
-                        android:id="@+id/tv_patient_name"
-                        style="@style/TextAppearance.ListItemSubHeader"
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="top|center_horizontal"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_large"
-                        app:layout_collapseMode="parallax" />
+                        android:layout_height="?attr/actionBarSize"
+                        android:foregroundGravity="top"
+                        app:layout_collapseMode="pin"
+                        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="@dimen/content_margin_large"
-                        android:background="@drawable/ic_user"
-                        android:foreground="?android:attr/selectableItemBackground" />
-                </RelativeLayout>
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_marginTop="@dimen/collapsed_toolbar_size">
 
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+                        <TextView
+                            android:id="@+id/tv_patient_name"
+                            style="@style/TextAppearance.ListItemSubHeader"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="top|center_horizontal"
+                            android:text="@{viewModel.patientName}"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_large"
+                            app:layout_collapseMode="parallax" />
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="fill_vertical"
-            android:fadingEdgeLength="@dimen/content_margin_large"
-            android:layout_marginBottom="@dimen/toolbar_size"
-            android:requiresFadingEdge="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="@dimen/content_margin_large"
+                            android:background="@drawable/ic_user"
+                            android:foreground="?android:attr/selectableItemBackground" />
+                    </RelativeLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="@dimen/fab_margin"
+                android:onClick="@{() -> viewModel.onClickAddProvider()}"
+                app:srcCompat="@drawable/ic_add" />
+
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:clipToPadding="false"
-                android:padding="@dimen/content_margin_medium">
+                android:layout_gravity="fill_vertical"
+                android:layout_marginBottom="@dimen/toolbar_size"
+                android:fadingEdgeLength="@dimen/content_margin_large"
+                android:requiresFadingEdge="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <TextView
-                    android:id="@+id/my_linked_accounts"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/content_margin_extra_small"
-                    android:layout_marginBottom="@dimen/content_padding_large"
-                    style="@style/TextAppearance.Title"
-                    android:text="@{@string/my_linked_accounts(linkedPatient.links.size())}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:clipToPadding="false"
+                    android:padding="@dimen/content_margin_medium">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:id="@+id/rv_user_accounts"
-                    android:layout_height="0dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/my_linked_accounts"
-                    tools:listitem="@layout/account_item" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/my_linked_accounts"
+                        style="@style/TextAppearance.Title"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/content_margin_extra_small"
+                        android:layout_marginBottom="@dimen/content_padding_large"
+                        android:text="@{@string/my_linked_accounts(viewModel.linksSize)}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.core.widget.NestedScrollView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_user_accounts"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/my_linked_accounts"
+                        tools:listitem="@layout/account_item" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <include
+            android:id="@+id/progress_bar_layout"
+            layout="@layout/progress_layout"
+            app:message="@{viewModel.showProgressMessage}"
+            app:showProgress="@{viewModel.showProgress}"
+            tools:visibility="gone" />
+    </FrameLayout>
 </layout>

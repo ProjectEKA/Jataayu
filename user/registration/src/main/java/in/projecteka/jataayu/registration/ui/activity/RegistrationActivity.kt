@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.registration.ui.activity.databinding.RegistrationActivityBinding
 import `in`.projecteka.jataayu.registration.ui.fragment.RegistrationFragment
 import `in`.projecteka.jataayu.registration.ui.fragment.RegistrationOtpFragment
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel
@@ -17,21 +18,32 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class RegistrationActivity : BaseActivity() {
+class RegistrationActivity : BaseActivity<RegistrationActivityBinding>() {
+
+    override fun layoutId(): Int = R.layout.registration_activity
 
     private val viewModel by viewModel<RegistrationActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding.viewModel = viewModel
         viewModel.redirectToRegistrationScreen()
         initObservers()
+        initToolbar()
+    }
+
+    private fun initToolbar(){
+        setSupportActionBar(binding.appToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        binding.appToolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
     private fun initObservers() {
         viewModel.redirectTo.observe(this, Observer {
             when (it) {
-                Show.VERIFICATION -> replaceFragment(RegistrationOtpFragment.newInstance())
-                Show.REGISTRATION -> replaceFragment(RegistrationFragment.newInstance())
+                Show.VERIFICATION -> replaceFragment(RegistrationOtpFragment.newInstance(), R.id.fragment_container)
+                Show.REGISTRATION -> replaceFragment(RegistrationFragment.newInstance(), R.id.fragment_container)
                 Show.NEXT -> {
                     finish()
                     startAccountCreation(this) {
@@ -47,7 +59,7 @@ class RegistrationActivity : BaseActivity() {
                     viewModel.redirectToOtpScreen(it.data?.sessionId)
                 }
                 is Loading -> {
-                    showProgressBar(it.isLoading, getString(R.string.sending_otp))
+                    viewModel.showProgress(it.isLoading, R.string.sending_otp)
                 }
                 is Failure -> {
                     showErrorDialog(it.error.localizedMessage)
@@ -66,7 +78,7 @@ class RegistrationActivity : BaseActivity() {
                     viewModel.redirectToNext()
                 }
                 is Loading -> {
-                    showProgressBar(it.isLoading, getString(R.string.sending_otp))
+                    viewModel.showProgress(it.isLoading, R.string.sending_otp)
                 }
                 is Failure -> {
                     showErrorDialog(it.error.localizedMessage)

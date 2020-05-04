@@ -106,7 +106,11 @@
             app:layout_constraintVertical_bias="0.05">
 
         </com.google.android.material.button.MaterialButton>
-
+        <include
+            android:id="@+id/progress_bar_layout"
+            app:showProgress="@{viewModel.showProgress}"
+            app:message="@{viewModel.showProgressMessage}"
+            layout="@layout/progress_layout"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

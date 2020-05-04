@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="gender_chip_male" type="id"/>
+    <item name="gender_chip_female" type="id"/>
+    <item name="gender_chip_other" type="id"/>
+</resources>

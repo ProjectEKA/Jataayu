@@ -6,12 +6,12 @@ import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsRe
 import `in`.projecteka.jataayu.core.model.grantedconsent.LinkedHip
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
+import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
 
-class GrantedConsentDetailsViewModel(private val repository: ConsentRepository) : ViewModel() {
+class GrantedConsentDetailsViewModel(private val repository: ConsentRepository) : BaseViewModel() {
 
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()

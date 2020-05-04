@@ -1,13 +1,17 @@
 package `in`.projecteka.jataayu.consent.ui.activity
 
+import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.ui.fragment.UserVerificationFragment
+import `in`.projecteka.jataayu.presentation.databinding.BaseActivityBinding
 import `in`.projecteka.jataayu.consent.viewmodel.PinVerificationViewModel
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import android.os.Bundle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PinVerificationActivity : BaseActivity() {
+class PinVerificationActivity : BaseActivity<BaseActivityBinding>() {
+
+    override fun layoutId(): Int = R.layout.base_activity
 
     private val viewModel: PinVerificationViewModel by viewModel()
 

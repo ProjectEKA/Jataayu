@@ -60,7 +60,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
     private fun initObservers() {
         viewModel.userVerificationResponse.observe(this, Observer { it ->
             when (it) {
-                is Loading -> showProgressBar(true)
+                is Loading -> viewModel.showProgress(true)
                 is Success -> {
                     viewModel.credentialsRepository.consentTemporaryToken = it.data?.temporaryToken
                     activity?.setResult(Activity.RESULT_OK)
@@ -93,6 +93,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
     }
 
     private fun initBindings() {
+        binding.viewModel = viewModel
         binding.clickHandler = this
         binding.isOtpEntered = false
         binding.otpChangeWatcher = OtpChangeWatcher(4, this)
@@ -107,7 +108,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         binding.lblInvalidPin.visibility = View.GONE
         UiUtils.hideKeyboard(activity!!)
         val pin = binding.etPin.text.toString()
-        showProgressBar(true)
+        viewModel.showProgress(true)
         viewModel.verifyUser(pin)
     }
 

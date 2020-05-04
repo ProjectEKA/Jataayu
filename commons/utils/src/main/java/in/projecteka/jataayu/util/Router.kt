@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.util
 
+import `in`.projecteka.jataayu.util.extension.startActivityForResult
 import android.content.Context
 import android.content.Intent
 
@@ -9,7 +10,8 @@ private const val ACTIVITY_REGISTRATION = "in.projecteka.jataayu.registration.ui
 private const val ACTIVITY_PROVIDER = "in.projecteka.jataayu.provider.ui.ProviderActivity"
 private const val ACTIVITY_ACCOUNT_CREATION = "in.projecteka.jataayu.user.account.ui.activity.AccountCreationActivity"
 private const val ACTIVITY_LOGIN = "in.projecteka.jataayu.registration.ui.activity.LoginActivity"
-private const val ACTIVITY_LAUNCHER = "in.projecteka.jataayu.ui.LauncherActivity"
+private const val ACTIVITY_LAUNCHER = "in.projecteka.jataayu.ui.launcher.LauncherActivity"
+private const val ACTIVITY_DASHBOARD = "in.projecteka.jataayu.ui.dashboard.DashboardActivity"
 
 private fun defaultIntentDefinition(
     context: Context,
@@ -24,8 +26,12 @@ fun startRegistration(context: Context, intentDefinition: IntentDefinition? = nu
     context.startActivity(defaultIntentDefinition(context, ACTIVITY_REGISTRATION, intentDefinition))
 }
 
-fun startProvider(context: Context, intentDefinition: IntentDefinition? = null) {
-    context.startActivity(defaultIntentDefinition(context, ACTIVITY_PROVIDER, intentDefinition))
+fun startProvider(context: Context, resultCode: Int? = null, intentDefinition: IntentDefinition? = null) {
+    resultCode?.let {
+        context.startActivityForResult(context.classLoader.loadClass(ACTIVITY_REGISTRATION), it)
+    } ?: run {
+        context.startActivity(defaultIntentDefinition(context, ACTIVITY_PROVIDER, intentDefinition))
+    }
 }
 
 fun startAccountCreation(context: Context, intentDefinition: IntentDefinition? = null) {
@@ -38,4 +44,8 @@ fun startLogin(context: Context, intentDefinition: IntentDefinition? = null) {
 
 fun startLauncher(context: Context, intentDefinition: IntentDefinition? = null) {
     context.startActivity(defaultIntentDefinition(context, ACTIVITY_LAUNCHER, intentDefinition))
+}
+
+fun startDashboard(context: Context, intentDefinition: IntentDefinition? = null) {
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_DASHBOARD, intentDefinition))
 }

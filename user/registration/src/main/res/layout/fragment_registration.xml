@@ -102,5 +102,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/continue_button_side_margin" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

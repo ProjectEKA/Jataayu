@@ -10,25 +10,6 @@
             name="viewModel"
             type="in.projecteka.jataayu.consent.viewmodel.EditConsentDetailsVM" />
 
-        <!--        <variable-->
-        <!--            name="saveEnabled"-->
-        <!--            type="Boolean" />-->
-
-        <!--        <variable-->
-        <!--            name="allProvidersChecked"-->
-        <!--            type="Boolean" />-->
-
-        <!--        <variable-->
-        <!--            name="consent"-->
-        <!--            type="in.projecteka.jataayu.core.model.Consent" />-->
-
-        <!--        <variable-->
-        <!--            name="pickerClickHandler"-->
-        <!--            type="in.projecteka.jataayu.consent.ui.handler.PickerClickHandler" />-->
-
-        <!--        <variable-->
-        <!--            name="clickHandler"-->
-        <!--            type="in.projecteka.jataayu.provider.ui.handler.EditConsentClickHandler" />-->
     </data>
 
 

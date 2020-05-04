@@ -29,7 +29,7 @@ class RegistrationOTPFragmentTest{
     @Before
     fun setUp()
     {
-        activityRule.activity.addFragment(RegistrationOtpFragment())
+        activityRule.activity.addFragment(RegistrationOtpFragment(), R.id.fragment_container)
         EventBus.getDefault().postSticky(mobileNumber)
     }
 
