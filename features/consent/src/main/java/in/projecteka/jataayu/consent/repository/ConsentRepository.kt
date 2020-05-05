@@ -62,7 +62,7 @@ class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentReposi
     private fun getProviderData(idList: List<String>): MediatorLiveData<HipHiuNameResponse> {
 
         providerLiveDataCount += idList.count()
-        var nameResponseMap = HashMap<String, String>()
+        val nameResponseMap = HashMap<String, String>()
         val mediatorLiveData = MediatorLiveData<HipHiuNameResponse>()
         idList.forEach { id ->
             val liveData = PayloadLiveData<ProviderInfo>()

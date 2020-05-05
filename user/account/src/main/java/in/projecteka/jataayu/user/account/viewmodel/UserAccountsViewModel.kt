@@ -20,7 +20,7 @@ import java.util.regex.Pattern
 class UserAccountsViewModel(private val repository: UserAccountsRepository,
                             val preferenceRepository: PreferenceRepository,
                             val credentialRepository: CredentialsRepository) : BaseViewModel() {
-    var linkedAccountsResponse = liveDataOf<LinkedAccountsResponse>()
+    var linkedAccountsResponse = liveDataOf<List<Links>>()
     var createAccountResponse = liveDataOf<CreateAccountResponse>()
     var myProfileResponse = liveDataOf<MyProfile>()
     val logoutResponse = PayloadLiveData<Void>()
@@ -37,8 +37,6 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
 
     val userAccountLoading = ObservableBoolean()
     val myProfileLoading = ObservableBoolean()
-    var userAccountsResponse: LinkedAccountsResponse? = null
-    private set
 
     fun fetchAll() {
         val accountLiveData = getUserAccounts()
@@ -49,8 +47,9 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
                     isCurrentlyFetching()
                 }
                 is Success -> {
-                    userAccountsResponse = it.data
-                    updatePatient(it.data?.linkedPatient)
+                    val linkedPatient = it.data?.linkedPatient
+                    linkedAccountsResponse.value = linkedPatient?.links
+                    updatePatient(linkedPatient)
                 }
             }
         })
@@ -80,6 +79,8 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
     fun getUserAccounts() = repository.getUserAccounts()
 
     fun getMyProfile() = repository.getMyProfile()
+
+    fun getHipHiuNamesByIdList(idList: List<HipHiuIdentifiable>) = repository.getProviderBy(idList)
 
 
     fun updateDisplayAccounts(links: List<Links>?) {

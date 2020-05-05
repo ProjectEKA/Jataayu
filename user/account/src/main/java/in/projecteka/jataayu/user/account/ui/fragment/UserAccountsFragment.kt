@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
+import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
@@ -126,6 +127,11 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
                 }
             }
         })
+
+        viewModel.linkedAccountsResponse.observe(viewLifecycleOwner, Observer { links ->
+            val hipList = links.map { it.hip }
+            getNamesOfHipList(hipList)
+        })
     }
 
 
@@ -154,6 +160,20 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
         super.onStart()
         if (!eventBusInstance.isRegistered(this))
             eventBusInstance.register(this)
+    }
+
+
+    private fun getNamesOfHipList(idList: List<HipHiuIdentifiable>) {
+        val hipHiuNameResponse = viewModel.getHipHiuNamesByIdList(idList)
+        hipHiuNameResponse.observe(this, Observer { hipHiuNameResponse ->
+            if (hipHiuNameResponse.status) {
+                val linkedAccountsResponse = viewModel.linkedAccountsResponse.value
+                linkedAccountsResponse?.forEach { it.hip.name = hipHiuNameResponse.nameMap[it.hip.getId()] ?: "" }
+                viewModel.updateDisplayAccounts(viewModel.linkedAccountsResponse.value)
+            } else {
+                context?.showErrorDialog(getString(R.string.something_went_wrong))
+            }
+        })
     }
 }
 

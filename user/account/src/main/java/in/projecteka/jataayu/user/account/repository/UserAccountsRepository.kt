@@ -1,12 +1,12 @@
 package `in`.projecteka.jataayu.user.account.repository
 
-import `in`.projecteka.jataayu.core.model.CreateAccountRequest
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
-import `in`.projecteka.jataayu.core.model.MyProfile
+import `in`.projecteka.jataayu.core.model.*
+import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.user.account.remote.UserAccountApis
+import androidx.lifecycle.MediatorLiveData
 import retrofit2.Call
 
 interface UserAccountsRepository {
@@ -14,6 +14,7 @@ interface UserAccountsRepository {
     fun createAccount(createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse>
     fun getMyProfile(): PayloadLiveData<MyProfile>
     fun logout(refreshToken: String): Call<Void>
+    fun getProviderBy(providerIdList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse>
 }
 
 class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) : UserAccountsRepository {
@@ -35,5 +36,42 @@ class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) :
 
     override fun logout(refreshToken: String): Call<Void> {
         return userAccountApis.logout(mapOf("refreshToken" to refreshToken))
+    }
+
+    override fun getProviderBy(providerIdList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
+        val idList = providerIdList.toSet().map { it.getId() }
+        return getProviderData(idList)
+    }
+
+    private var providerLiveDataCount = 0
+
+    private fun getProviderData(idList: List<String>): MediatorLiveData<HipHiuNameResponse> {
+
+        providerLiveDataCount += idList.count()
+        val nameResponseMap = HashMap<String, String>()
+        val mediatorLiveData = MediatorLiveData<HipHiuNameResponse>()
+        idList.forEach { id ->
+            val liveData = PayloadLiveData<ProviderInfo>()
+            liveData.fetch(userAccountApis.getProvidersBy(id))
+            mediatorLiveData.addSource(liveData) { response ->
+                when(response) {
+                    is Success ->  {
+                        response.data?.hip?.let {  nameResponseMap[it.getId()] = it.name }
+                        mediatorLiveData.removeSource(liveData)
+                        providerLiveDataCount -=1
+                    }
+                    is Loading -> {}
+                    else  -> {
+                        mediatorLiveData.removeSource(liveData)
+                        providerLiveDataCount -=1
+                    }
+                }
+                if (providerLiveDataCount == 0) {
+                    val hipHiuNameResponse = HipHiuNameResponse(true, nameResponseMap)
+                    mediatorLiveData.postValue(hipHiuNameResponse)
+                }
+            }
+        }
+        return mediatorLiveData
     }
 }
