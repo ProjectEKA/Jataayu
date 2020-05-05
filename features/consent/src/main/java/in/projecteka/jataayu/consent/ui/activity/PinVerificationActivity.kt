@@ -2,8 +2,9 @@ package `in`.projecteka.jataayu.consent.ui.activity
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.ui.fragment.UserVerificationFragment
-import `in`.projecteka.jataayu.presentation.databinding.BaseActivityBinding
 import `in`.projecteka.jataayu.consent.viewmodel.PinVerificationViewModel
+import `in`.projecteka.jataayu.core.ConsentScopeType
+import `in`.projecteka.jataayu.presentation.databinding.BaseActivityBinding
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import android.os.Bundle
@@ -17,6 +18,11 @@ class PinVerificationActivity : BaseActivity<BaseActivityBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (intent.hasExtra(PinVerificationViewModel.KEY_SCOPE_TYPE)) {
+            viewModel.scopeType.set(ConsentScopeType.values()[intent.getIntExtra(PinVerificationViewModel.KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_GRAND.ordinal)])
+        }
+
         UserVerificationFragment.newInstance()
             .show(supportFragmentManager, UserVerificationFragment::class.java.name)
 
