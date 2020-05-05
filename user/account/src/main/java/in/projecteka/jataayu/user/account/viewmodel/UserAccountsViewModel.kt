@@ -37,18 +37,25 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
 
     val userAccountLoading = ObservableBoolean()
     val myProfileLoading = ObservableBoolean()
+    var userAccountsResponse: LinkedAccountsResponse? = null
+    private set
 
     fun fetchAll() {
-        userProfileResponse.addSource(getUserAccounts(), Observer {
+        val accountLiveData = getUserAccounts()
+        userProfileResponse.addSource(accountLiveData, Observer {
             when (it) {
                 is Loading -> {
                     userAccountLoading.set(it.isLoading)
                     isCurrentlyFetching()
                 }
-                is Success -> updatePatient(it.data?.linkedPatient)
+                is Success -> {
+                    userAccountsResponse = it.data
+                    updatePatient(it.data?.linkedPatient)
+                }
             }
         })
-        userProfileResponse.addSource(getMyProfile(), Observer {
+        val profileLiveData = getMyProfile()
+        userProfileResponse.addSource(profileLiveData, Observer {
             when (it) {
                 is Loading -> {
                     myProfileLoading.set(it.isLoading)
@@ -95,6 +102,7 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
     private fun isCurrentlyFetching() {
         showProgress(userAccountLoading.get() && myProfileLoading.get())
     }
+
     fun logout() {
         credentialRepository.refreshToken?.let {
             logoutResponse.fetch(repository.logout(it))

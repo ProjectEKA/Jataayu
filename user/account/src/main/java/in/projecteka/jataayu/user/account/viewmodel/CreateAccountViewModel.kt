@@ -113,7 +113,14 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
 
     fun createAccount() {
 
-        var unverifiedIdentifiers: List<UnverifiedIdentifier>?= null
+        val payload = getCreateAccountPayload()
+        val call = repository.createAccount(payload)
+        createAccountResponse.fetch(call)
+    }
+
+    fun getCreateAccountPayload(): CreateAccountRequest {
+
+        var unverifiedIdentifiers: List<UnverifiedIdentifier>? = null
         if (!inputAyushmanIdLbl.get().isNullOrEmpty()){
             if (!showErrorAyushmanId.get()) {
                 unverifiedIdentifiers =
@@ -121,13 +128,12 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
             }
         }
 
-        val createAccountRequest = CreateAccountRequest(
+        return CreateAccountRequest(
             userName = "${inputUsernameLbl.get()}${usernameProviderLbl.get()}" ,
             password = inputPasswordLbl.get() ?: "",
             name = inputFullName.get() ?: "",
             gender = getGender(),
             yearOfBirth = selectedYoB, unverifiedIdentifiers = unverifiedIdentifiers)
-        createAccountResponse.fetch(repository.createAccount(createAccountRequest))
     }
 
     internal fun getYearsToPopulate(): List<String> {

@@ -1,0 +1,10 @@
+{
+  "id": "user@ncg",
+  "name": "Raj Sharma",
+  "gender": "M",
+  "hasTransactionPin": true,
+  "verifiedIdentifiers": [ {
+    "type": "MOBILE",
+    "value": "+91-9800083232"
+  }]
+}

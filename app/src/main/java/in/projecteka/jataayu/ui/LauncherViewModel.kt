@@ -35,5 +35,4 @@ class LauncherViewModel(private val preferenceRepository: PreferenceRepository,
         preferenceRepository.resetPreferences()
         credentialsRepository.reset()
     }
-
 }
