@@ -3,19 +3,13 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.MyProfile
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
-import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
-import `in`.projecteka.jataayu.user.account.remote.UserAccountApis
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Lifecycle.Event.ON_CREATE
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
 import org.junit.After
@@ -54,17 +48,6 @@ class UserAccountsViewModelTest {
     @Mock
     private lateinit var profileResponseCall: Call<MyProfile>
 
-    @Mock
-    private lateinit var lifecycleOwner: LifecycleOwner
-
-    @Mock
-    private lateinit var userAccountApis: UserAccountApis
-
-    @Mock
-    private lateinit var profileObserver: Observer<PayloadResource<MyProfile>>
-
-    @Mock
-    private lateinit var userAccountListObserver: Observer<PayloadResource<LinkedAccountsResponse>>
 
     @Mock
     private lateinit var logoutCall: Call<Void>
@@ -74,46 +57,21 @@ class UserAccountsViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        val lifecycleRegistry = LifecycleRegistry(lifecycleOwner)
-        lifecycleRegistry.handleLifecycleEvent(ON_CREATE)
-        `when`(lifecycleOwner.lifecycle).thenReturn(lifecycleRegistry)
         viewModel = UserAccountsViewModel(repository,preferenceRepository,credentialsRepository)
     }
 
 
     @After
     fun tearDown() {
-        verifyNoMoreInteractions(repository, profileResponseCall, linkedAcccoutCall, lifecycleOwner, profileObserver, logoutCall)
+        verifyNoMoreInteractions(repository, profileResponseCall, linkedAcccoutCall, logoutCall)
         validateMockitoUsage()
     }
 
     @Test
     fun `should display link accounts list and user profile details `() {
+
         val myProfile = getMyProfileResponse()
         val linkedAccountsResponse = getLinkedAccountsResponse()
-
-
-
-        viewModel.userProfileResponse.addSource(viewModel.getUserAccounts(), userAccountListObserver)
-        viewModel.userProfileResponse.addSource(viewModel.getMyProfile(), profileObserver)
-        viewModel.updateProfile.value  = myProfile
-        verify(profileObserver).onChanged(Success(myProfile))
-    }
-
-    @Test
-    fun `should create linked accounts by links response `() {
-        val linkedAccountsResponse = getLinkedAccountsResponse()
-        viewModel.updateDisplayAccounts(linkedAccountsResponse!!.linkedPatient.links)
-
-        assertEquals(2, viewModel.updateLinks.value?.count())
-        assertEquals(2, viewModel.linksSize.get())
-    }
-
-
-    @Test
-    fun `should clear all shared preferences`() {
-        val myProfile = getLinkedAccountsResponse()
-        val linkedAccountsResponse = getMyProfileResponse()
 
         val profileLiveData = PayloadLiveData<MyProfile>()
         val linkedAccountsLiveData = PayloadLiveData<LinkedAccountsResponse>()
@@ -140,11 +98,45 @@ class UserAccountsViewModelTest {
                     assertEquals(linkedAccountsResponse, viewModel.updateProfile.value)
                 }
             }
-
         }
+
         viewModel.fetchAll()
+
         verify(repository).getMyProfile()
         verify(repository).getUserAccounts()
+    }
+
+    @Test
+    fun `should create linked accounts by links response `() {
+        val linkedAccountsResponse = getLinkedAccountsResponse()
+        viewModel.updateDisplayAccounts(linkedAccountsResponse!!.linkedPatient.links)
+
+        assertEquals(2, viewModel.updateLinks.value?.count())
+        assertEquals(2, viewModel.linksSize.get())
+    }
+
+
+    @Test
+    fun `should logout user`() {
+
+        val refreshToken = "abc"
+        `when`(credentialsRepository.refreshToken).thenReturn(refreshToken)
+        `when`(repository.logout(refreshToken)).thenReturn(logoutCall).then {
+                invocation ->
+            val callback = invocation.arguments[0] as Callback<Void>
+            callback.onResponse(logoutCall, Response.success(null))
+        }
+        viewModel.logout()
+        verify(repository).logout(refreshToken)
+        verify(logoutCall).enqueue(any())
+    }
+
+    @Test
+    fun `should clear all shared preferences`() {
+
+        viewModel.clearSharedPreferences()
+        verify(credentialsRepository, times(1)).reset()
+        verify(preferenceRepository, times(1)).resetPreferences()
     }
 
 
