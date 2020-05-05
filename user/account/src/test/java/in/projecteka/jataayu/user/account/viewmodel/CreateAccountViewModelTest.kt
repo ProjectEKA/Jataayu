@@ -45,7 +45,6 @@ class CreateAccountViewModelTest {
     @Mock
     private lateinit var createAccountAccountCall: Call<CreateAccountResponse>
 
-
     @Mock
     private lateinit var responseCallback: Callback<CreateAccountResponse>
 
@@ -60,7 +59,6 @@ class CreateAccountViewModelTest {
         Mockito.verifyNoMoreInteractions(repository, createAccountAccountCall)
         Mockito.validateMockitoUsage()
     }
-
 
     @Test
     fun `should set error flag when username have empty`() {
