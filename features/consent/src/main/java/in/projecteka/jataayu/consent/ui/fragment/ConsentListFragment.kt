@@ -9,6 +9,7 @@ import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentListViewModel
+import `in`.projecteka.jataayu.core.ConsentScopeType
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.RequestStatus
@@ -56,6 +57,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
         fun newInstance() = ConsentListFragment()
         const val CONSENT_FLOW = "consent_flow"
         const val REQUEST_CODE_PIN_VERIFICATION = 701
+        const val KEY_SCOPE_TYPE = "scope_type"
     }
 
     override fun onCreateView(
@@ -214,6 +216,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     override fun askForConsentPin(iDataBindingModel: IDataBindingModel) {
         consentToRevoke = (iDataBindingModel as Consent)
         val intent = Intent(context, PinVerificationActivity::class.java)
+        intent.putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_REVOKE.ordinal)
         startActivityForResult(intent, REQUEST_CODE_PIN_VERIFICATION)
     }
 

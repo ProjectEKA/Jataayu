@@ -26,7 +26,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -109,7 +108,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         UiUtils.hideKeyboard(activity!!)
         val pin = binding.etPin.text.toString()
         viewModel.showProgress(true)
-        viewModel.verifyUser(pin)
+        viewModel.verifyUser(pin, parentViewModel.scopeType.get()!!)
     }
 
     override fun setButtonEnabled(isOtpEntered: Boolean) {

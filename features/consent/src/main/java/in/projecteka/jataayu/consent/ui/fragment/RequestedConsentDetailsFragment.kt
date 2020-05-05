@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.CreatePinActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
 import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentDetailsViewModel
+import `in`.projecteka.jataayu.core.ConsentScopeType
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
@@ -58,6 +59,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         const val KEY_CONSENT_EVENT_TYPE = "consent_event_type"
         const val KEY_EVENT_GRANT = "grant"
         const val KEY_EVENT_DENY = "deny"
+        const val KEY_SCOPE_TYPE = "scope_type"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -233,6 +235,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     private fun validateUser() {
         if (viewModel.preferenceRepository.pinCreated) {
             val intent = Intent(context, PinVerificationActivity::class.java)
+            intent.putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_GRAND.ordinal)
             startActivityForResult(intent, 301)
         } else {
             val intent = Intent(context, CreatePinActivity::class.java)

@@ -1,6 +1,8 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.repository.UserVerificationRepository
+import `in`.projecteka.jataayu.core.ConsentScopeType
+import `in`.projecteka.jataayu.core.model.UserVerificationRequest
 import `in`.projecteka.jataayu.core.model.UserVerificationResponse
 import `in`.projecteka.jataayu.util.extension.fromJson
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
@@ -13,11 +15,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.times
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
@@ -44,6 +44,12 @@ class UserVerificationViewModelTest {
 
     private lateinit var userVerificationViewModel: UserVerificationViewModel
 
+    private lateinit var userVerificationRequestForGrand: UserVerificationRequest
+
+    private lateinit var userVerificationRequestForRevoke: UserVerificationRequest
+
+    private lateinit var userVerificationResponse: UserVerificationResponse
+
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
 
@@ -51,20 +57,39 @@ class UserVerificationViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         userVerificationViewModel = UserVerificationViewModel(userVerificationRepository, credRepo, preferenceRepository)
-
+        userVerificationRequestForGrand = Gson().fromJson<UserVerificationRequest>("{\"pin\":\"1234\",\"scope\":\"consentrequest.approve\"}")
+        userVerificationRequestForRevoke = Gson().fromJson<UserVerificationRequest>("{\"pin\":\"1234\",\"scope\":\"consent.revoke\"}")
+        userVerificationResponse = Gson().fromJson<UserVerificationResponse>("{\"temporaryToken\":\"12345abc\"}")
     }
 
     @Test
-    fun shouldCallRepositoryUserVerificationMethod() {
-        val mockResponse = Gson().fromJson<UserVerificationResponse>("{\"isValid\":\"true\"}")
-        `when`(userVerificationRepository.verifyUser(anyString())).thenReturn(call)
+    fun `should call verify user method of repository for grand consent`() {
+        `when`(userVerificationRepository.verifyUser(userVerificationRequestForGrand)).thenReturn(call)
         `when`(call.enqueue(any()))
             .then { invocation ->
                 val callback = invocation.arguments[0] as Callback<UserVerificationResponse>
-                callback.onResponse(call, Response.success(mockResponse))
+                callback.onResponse(call, Response.success(userVerificationResponse))
             }
-        userVerificationViewModel.verifyUser("1234")
-        Mockito.verify(userVerificationRepository, times(1)).verifyUser("1234")
+
+
+        userVerificationViewModel.verifyUser("1234", ConsentScopeType.SCOPE_GRAND)
+        Mockito.verify(userVerificationRepository).verifyUser(userVerificationRequestForGrand)
+        Mockito.verify(call).enqueue(any())
+    }
+
+    @Test
+    fun `should call verify user method of repository for revoke consent`() {
+        `when`(userVerificationRepository.verifyUser(userVerificationRequestForRevoke)).thenReturn(call)
+        `when`(call.enqueue(any()))
+            .then { invocation ->
+                val callback = invocation.arguments[0] as Callback<UserVerificationResponse>
+                callback.onResponse(call, Response.success(userVerificationResponse))
+            }
+
+
+        userVerificationViewModel.verifyUser("1234", ConsentScopeType.SCOPE_REVOKE)
+        Mockito.verify(userVerificationRepository).verifyUser(userVerificationRequestForRevoke)
+        Mockito.verify(call).enqueue(any())
     }
 
     @After

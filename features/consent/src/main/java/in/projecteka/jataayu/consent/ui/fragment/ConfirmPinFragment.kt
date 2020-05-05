@@ -3,6 +3,7 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.ConfirmPinFragmentBinding
 import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel
+import `in`.projecteka.jataayu.core.ConsentScopeType
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
@@ -66,7 +67,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                         arguments?.let { bundle ->
                             bundle.getString(PIN)?.let { pin ->
                                 if (binding.etPin.text.toString() == pin) {
-                                    viewModel.verifyUser(binding.etPin.text.toString())
+                                    viewModel.verifyUser(binding.etPin.text.toString(), ConsentScopeType.SCOPE_GRAND)
                                 }
                             }
                         }

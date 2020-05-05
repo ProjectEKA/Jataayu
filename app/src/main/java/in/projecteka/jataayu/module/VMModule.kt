@@ -49,5 +49,6 @@ val viewModelModule = module {
 
     //User Verification
     viewModel { UserVerificationViewModel(get(), get(), get()) }
+    viewModel { PinVerificationViewModel() }
 
 }

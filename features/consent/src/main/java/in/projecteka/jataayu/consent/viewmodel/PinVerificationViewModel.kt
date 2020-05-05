@@ -1,13 +1,13 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
-import androidx.lifecycle.MutableLiveData
+import `in`.projecteka.jataayu.core.ConsentScopeType
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 
 class PinVerificationViewModel() : ViewModel() {
-    enum class EVENT_TYPE {
-        USER_VERIFIED
+    companion object {
+        const val KEY_SCOPE_TYPE = "scope_type"
     }
-
-    var event = MutableLiveData<EVENT_TYPE>()
+    var scopeType = ObservableField<ConsentScopeType>(ConsentScopeType.SCOPE_GRAND)
 }
 

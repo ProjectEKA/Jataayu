@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.consent.repository
 
 import `in`.projecteka.jataayu.consent.remote.UserVerificationApis
+import `in`.projecteka.jataayu.core.model.UserVerificationRequest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -15,6 +16,9 @@ class UserVerificationRepositoryImplTest {
     @Mock
     private lateinit var userVerificationApis: UserVerificationApis
 
+    @Mock
+    private lateinit var userVerificationRequest: UserVerificationRequest
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
@@ -22,9 +26,8 @@ class UserVerificationRepositoryImplTest {
 
     @Test
     fun shouldCallUserVerificationApi() {
-        val pin = "1234"
-        UserVerificationRepositoryImpl(userVerificationApis).verifyUser(pin)
-        Mockito.verify(userVerificationApis).getUserVerificationResponse(mapOf("pin" to pin))
+        UserVerificationRepositoryImpl(userVerificationApis).verifyUser(userVerificationRequest)
+        Mockito.verify(userVerificationApis).getUserVerificationResponse(userVerificationRequest)
     }
 
     @After
