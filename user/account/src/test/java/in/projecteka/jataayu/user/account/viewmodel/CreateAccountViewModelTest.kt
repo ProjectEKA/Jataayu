@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
@@ -9,8 +10,7 @@ import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertFalse
+import junit.framework.Assert.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -45,6 +45,7 @@ class CreateAccountViewModelTest {
     @Mock
     private lateinit var createAccountAccountCall: Call<CreateAccountResponse>
 
+
     @Mock
     private lateinit var responseCallback: Callback<CreateAccountResponse>
 
@@ -60,9 +61,10 @@ class CreateAccountViewModelTest {
         Mockito.validateMockitoUsage()
     }
 
+
     @Test
     fun `should set error flag when username have empty`() {
-        viewModel.inputUsernameLbl.set(" ")
+        viewModel.inputUsernameLbl.set("")
         viewModel.validateUserName()
         assertFalse(!viewModel.showErrorUserName.get())
     }
@@ -110,7 +112,7 @@ class CreateAccountViewModelTest {
     }
 
     @Test
-    fun `should not set error flag when username matches all the criteria`() {
+    fun `username must be minimum 3 characters long, one uppercase one lower case, one number and only dot and hypen allowed`() {
         viewModel.inputUsernameLbl.set("raj3.-A9")
         viewModel.validateUserName()
         assertEquals(false, viewModel.showErrorUserName.get())
@@ -152,7 +154,7 @@ class CreateAccountViewModelTest {
     }
 
     @Test
-    fun `should not set error flag when password matches all criteria`() {
+    fun `password must be minimum 8 characters should contain at least one uppercase, one lowercase, special character and spaces allowed`() {
         viewModel.inputPasswordLbl.set("Abcd 12356@")
         viewModel.validatePassword()
         assertEquals(false, viewModel.showErrorPassword.get())
@@ -262,20 +264,6 @@ class CreateAccountViewModelTest {
         viewModel.onCheckedChanged(null, 2)
 
         val createAccountResponse = Gson().fromJson<CreateAccountResponse>(TestUtils.readFile("create_account_response.json"))
-//        Mockito.when(repository.createAccount(accountDetails)).thenReturn(createAccountAccountCall)
-//        Mockito.when(createAccountAccountCall.enqueue(any()))
-//            .then { invocation ->
-//                val callback = invocation.arguments[0] as Callback<CreateAccountResponse>
-//                callback.onResponse(createAccountAccountCall, Response.success(createAccountResponse))
-//            }
-
-//        viewModel.createAccount()
-//        Mockito.verify(repository).createAccount(accountDetails)
-        // Mockito.verifyNoInteractions()
-        //Mockito.verify(createAccountAccountCall).enqueue(responseCallback)
-        // assertEquals(createAccountResponse, viewModel.createAccountResponse.value)
-
-
         val payload = viewModel.getCreateAccountPayload()
         Mockito.`when`(repository.createAccount(payload)).thenReturn(createAccountAccountCall)
         Mockito.`when`(createAccountAccountCall.enqueue(any()))
@@ -283,12 +271,52 @@ class CreateAccountViewModelTest {
                 val callback = invocation.arguments[0] as Callback<CreateAccountResponse>
                 callback.onResponse(createAccountAccountCall, Response.success(createAccountResponse))
             }
-
+        viewModel.createAccountResponse.observeForever {
+            when(it) {
+                is Success -> {
+                    val response = viewModel.createAccountResponse.value as Success<CreateAccountResponse>
+                    assertEquals(createAccountResponse, response.data)
+                }
+            }
+        }
         viewModel.createAccount()
         Mockito.verify(repository).createAccount(payload)
         Mockito.verify(createAccountAccountCall).enqueue(any())
-//        Mockito.verifyNoInteractions()
-//        assertEquals(createAccountResponse, viewModel.createAccountResponse.value)
+    }
 
+    @Test
+    fun `test ayushman Id should return valid if id starts with letter P `() {
+        viewModel.inputAyushmanIdLbl.set("PAYUSh123")
+        viewModel.validateAyushmanId()
+        assertTrue(!viewModel.showErrorAyushmanId.get())
+    }
+
+    @Test
+    fun `test ayushman Id should return valid with letter P with ignoring case sensitive `() {
+        viewModel.inputAyushmanIdLbl.set("P123456ID")
+        viewModel.validateAyushmanId()
+        assertTrue(!viewModel.showErrorAyushmanId.get())
+    }
+
+    @Test
+    fun `test ayushman Id should return invalid if id must be 9 characters long`() {
+        viewModel.inputAyushmanIdLbl.set("P123456ID")
+        viewModel.validateAyushmanId()
+        assertTrue(!viewModel.showErrorAyushmanId.get())
+    }
+
+    @Test
+    fun `test ayushman Id should return invalid if id not starts with letter P `() {
+        viewModel.inputAyushmanIdLbl.set("JAYUSh123")
+        viewModel.validateAyushmanId()
+        assertFalse(!viewModel.showErrorAyushmanId.get())
+    }
+
+
+    @Test
+    fun `test ayushman Id should return valid if id must be 9 characters long`() {
+        viewModel.inputAyushmanIdLbl.set("P123456IDK")
+        viewModel.validateAyushmanId()
+        assertFalse(!viewModel.showErrorAyushmanId.get())
     }
 }
