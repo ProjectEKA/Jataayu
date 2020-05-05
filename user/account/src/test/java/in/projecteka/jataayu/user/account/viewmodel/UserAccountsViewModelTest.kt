@@ -21,12 +21,13 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.quality.Strictness
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-@RunWith(MockitoJUnitRunner::class)
+@RunWith(MockitoJUnitRunner.Silent::class)
 class UserAccountsViewModelTest {
 
     @Mock
