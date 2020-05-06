@@ -71,13 +71,6 @@
                             android:textSize="@dimen/text_size_large"
                             app:layout_collapseMode="parallax" />
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="@dimen/content_margin_large"
-                            android:background="@drawable/ic_user"
-                            android:foreground="?android:attr/selectableItemBackground" />
                     </RelativeLayout>
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>

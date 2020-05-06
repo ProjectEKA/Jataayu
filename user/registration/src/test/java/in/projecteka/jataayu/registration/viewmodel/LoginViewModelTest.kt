@@ -13,10 +13,15 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
 class LoginViewModelTest {
@@ -52,21 +57,28 @@ class LoginViewModelTest {
         loginResponse = Gson()
             .fromJson(TestUtils.readFile("login_response.json"), CreateAccountResponse::class.java)
 
-        loginRequest =  Gson().fromJson(TestUtils.readFile("login_request.json"), LoginRequest::class.java)
-
-        //TODO: Modify after refactor
-//        `when`(repository.login("username", "password@135", "password")).thenReturn(call)
-//        `when`(call.enqueue(any()))
-//            .then { invocation ->
-//                val callback = invocation.arguments[0] as Callback<CreateAccountResponse>
-//                callback.onResponse(call, Response.success(loginResponse))
-//            }
     }
 
-    //TODO: Modify after refactor
     @Test
     fun shouldCallRepositoryLogin() {
-//        verify(repository).login("username", "password@135", "password")
-//        verify(call).enqueue(any())
+
+        val username = "username"
+        val provider = "@ncg"
+        val password = "password@135"
+        loginViewModel.usernameProviderLbl.set(provider)
+        loginViewModel.inputPasswordLbl.set(password)
+        loginViewModel.inputUsernameLbl.set(username)
+
+        Mockito.`when`(repository.login(username + provider,password, "password")).thenReturn(call)
+        Mockito.`when`(call.enqueue(any()))
+            .then { invocation ->
+                val callback = invocation.arguments[0] as Callback<CreateAccountResponse>
+                callback.onResponse(call, Response.success(loginResponse))
+            }
+
+
+        loginViewModel.onLoginClicked()
+        verify(repository).login(username + provider, password, "password")
+        verify(call).enqueue(any())
     }
 }

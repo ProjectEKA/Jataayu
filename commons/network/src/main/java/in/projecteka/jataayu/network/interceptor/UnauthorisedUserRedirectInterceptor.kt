@@ -15,8 +15,9 @@ class UnauthorisedUserRedirectInterceptor(private val context: Context, private 
     override fun intercept(chain: Interceptor.Chain): Response {
 
         val response = chain.proceed(chain.request())
+        val requestURL = response.request.url
 
-        return when (response.request.url.toString()) {
+        return when (requestURL.toString()) {
             "${baseUrl}users/verify",
             "${baseUrl}users/permit",
             "${baseUrl}patients/verify-pin",

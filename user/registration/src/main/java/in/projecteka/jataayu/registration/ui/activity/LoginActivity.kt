@@ -44,6 +44,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     finish()
                     viewModel.credentialsRepository.accessToken = "${it.data?.tokenType?.capitalize()} ${it.data?.accessToken}"
                     viewModel.preferenceRepository.isUserLoggedIn = true
+                    viewModel.credentialsRepository.refreshToken =  it.data?.refreshToken
                     startDashboard(this)
 
                 }
