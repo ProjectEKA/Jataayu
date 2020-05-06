@@ -21,7 +21,6 @@ class UnauthorisedUserRedirectInterceptor(private val context: Context, private 
             "${baseUrl}users/verify",
             "${baseUrl}users/permit",
             "${baseUrl}patients/verify-pin",
-            "${baseUrl}patients/link/${requestURL.pathSegments.last()}",
             "${baseUrl}sessions" -> {
                 response
             }
