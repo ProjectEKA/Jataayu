@@ -1,13 +1,9 @@
 package `in`.projecteka.jataayu.user.account.remote
 
-import `in`.projecteka.jataayu.core.model.CreateAccountRequest
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
-import `in`.projecteka.jataayu.core.model.MyProfile
+import `in`.projecteka.jataayu.core.model.*
+import androidx.annotation.NonNull
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface UserAccountApis {
     @GET("patients/links")
@@ -21,4 +17,8 @@ interface UserAccountApis {
 
     @POST("logout")
     fun logout(@Body body: Map<String, String>): Call<Void>
+
+    @Headers("Cache-Control: max-age=86400")
+    @GET("providers/{provider-id}")
+    fun getProvidersBy(@NonNull @Path("provider-id") providerId: String): Call<ProviderInfo>
 }
