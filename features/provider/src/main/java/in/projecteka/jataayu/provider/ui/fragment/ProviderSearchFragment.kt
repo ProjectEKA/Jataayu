@@ -190,7 +190,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         if (binding.etPatientId.text.toString().isNotEmpty()){
             unverifiedIdentifiers.add(UnverifiedIdentifier(binding.etPatientId.text.toString(), UNVERIFIED_IDENTIFIER_MEDICAL_RECORD))
         }
-        viewModel.getPatientAccounts(Request(Hip(selectedProvider.hip.getId(), selectedProvider.hip.name), unverifiedIdentifiers), this)
+        viewModel.getPatientAccounts(Request(viewModel.uuidRepository.generateUUID(), Hip(selectedProvider.hip.getId(), selectedProvider.hip.name), unverifiedIdentifiers), this)
         viewModel.showProgress(true, R.string.looking_up_info)
         observePatients()
     }

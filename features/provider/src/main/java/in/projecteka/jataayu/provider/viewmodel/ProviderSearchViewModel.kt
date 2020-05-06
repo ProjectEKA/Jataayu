@@ -7,22 +7,20 @@ import `in`.projecteka.jataayu.core.model.Request
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.network.utils.observeOn
 import `in`.projecteka.jataayu.presentation.BaseViewModel
-import `in`.projecteka.jataayu.provider.model.LinkAccountsResponse
-import `in`.projecteka.jataayu.provider.model.Otp
-import `in`.projecteka.jataayu.provider.model.PatientDiscoveryResponse
-import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
+import `in`.projecteka.jataayu.provider.model.*
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.extension.liveDataOf
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
+import `in`.projecteka.jataayu.util.repository.UuidRepository
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.ViewModel
 
 class ProviderSearchViewModel(private val providerRepository: ProviderRepository,
-                              val preferenceRepository: PreferenceRepository) : BaseViewModel(), TextWatcher {
+                              val preferenceRepository: PreferenceRepository,
+                              val uuidRepository: UuidRepository) : BaseViewModel(), TextWatcher {
     val providers = liveDataOf<List<ProviderInfo>>()
     var providersList = emptyList<ProviderInfo>()
     val patientDiscoveryResponse = liveDataOf<PatientDiscoveryResponse>()
@@ -59,10 +57,10 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
         }
 
         val discoveryResponse = patientDiscoveryResponse.value
-        val selectedAccountsResponse = PatientDiscoveryResponse(Patient(discoveryResponse?.patient?.referenceNumber!!,
+        val selectedAccountsResponse = LinkPatientAccountRequest(
+            uuidRepository.generateUUID(), Patient(discoveryResponse?.patient?.referenceNumber!!,
             discoveryResponse.patient.display, linkedAccounts, discoveryResponse.patient?.matchedBy!!),
-            discoveryResponse.transactionId)
-
+        discoveryResponse.transactionId)
 
         providerRepository.linkPatientAccounts(selectedAccountsResponse!!).observeOn(linkAccountsResponse, responseCallback)
     }

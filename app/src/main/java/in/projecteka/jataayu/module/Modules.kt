@@ -18,10 +18,7 @@ import `in`.projecteka.jataayu.registration.repository.AuthenticationRepositoryI
 import `in`.projecteka.jataayu.user.account.remote.UserAccountApis
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepositoryImpl
-import `in`.projecteka.jataayu.util.repository.CredentialsRepository
-import `in`.projecteka.jataayu.util.repository.CredentialsRepositoryImpl
-import `in`.projecteka.jataayu.util.repository.PreferenceRepository
-import `in`.projecteka.jataayu.util.repository.PreferenceRepositoryImpl
+import `in`.projecteka.jataayu.util.repository.*
 import okhttp3.ResponseBody
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -34,6 +31,7 @@ val repositoryModule = module {
     factory { UserAccountsRepositoryImpl(get()) as UserAccountsRepository }
     factory { AuthenticationRepositoryImpl(get()) as AuthenticationRepository }
     factory { UserVerificationRepositoryImpl(get()) as UserVerificationRepository }
+    factory { UuidRepositoryImpl() as UuidRepository }
 
     single { PreferenceRepositoryImpl(get(named(ENCRYPTED_PREFS))) as PreferenceRepository }
     single { CredentialsRepositoryImpl(get(named(ENCRYPTED_PREFS))) as CredentialsRepository }

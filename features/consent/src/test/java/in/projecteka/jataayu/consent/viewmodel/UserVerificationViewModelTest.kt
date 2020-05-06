@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.core.model.UserVerificationResponse
 import `in`.projecteka.jataayu.util.extension.fromJson
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
+import `in`.projecteka.jataayu.util.repository.UuidRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import org.junit.After
@@ -40,6 +41,9 @@ class UserVerificationViewModelTest {
     private lateinit var preferenceRepository: PreferenceRepository
 
     @Mock
+    private lateinit var uuidRepository: UuidRepository
+
+    @Mock
     private lateinit var call: Call<UserVerificationResponse>
 
     private lateinit var userVerificationViewModel: UserVerificationViewModel
@@ -56,14 +60,15 @@ class UserVerificationViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        userVerificationViewModel = UserVerificationViewModel(userVerificationRepository, credRepo, preferenceRepository)
-        userVerificationRequestForGrand = Gson().fromJson<UserVerificationRequest>("{\"pin\":\"1234\",\"scope\":\"consentrequest.approve\"}")
-        userVerificationRequestForRevoke = Gson().fromJson<UserVerificationRequest>("{\"pin\":\"1234\",\"scope\":\"consent.revoke\"}")
+        userVerificationViewModel = UserVerificationViewModel(userVerificationRepository, credRepo, uuidRepository)
+        userVerificationRequestForGrand = Gson().fromJson<UserVerificationRequest>("{\"requestId\":\"276fa8f3-810b-49d0-b0b5-d1f760271255\",\"pin\":\"1234\",\"scope\":\"consentrequest.approve\"}")
+        userVerificationRequestForRevoke = Gson().fromJson<UserVerificationRequest>("{\"requestId\":\"276fa8f3-810b-49d0-b0b5-d1f760271255\",\"pin\":\"1234\",\"scope\":\"consent.revoke\"}")
         userVerificationResponse = Gson().fromJson<UserVerificationResponse>("{\"temporaryToken\":\"12345abc\"}")
     }
 
     @Test
     fun `should call verify user method of repository for grand consent`() {
+        `when`(uuidRepository.generateUUID()).thenReturn("276fa8f3-810b-49d0-b0b5-d1f760271255")
         `when`(userVerificationRepository.verifyUser(userVerificationRequestForGrand)).thenReturn(call)
         `when`(call.enqueue(any()))
             .then { invocation ->
@@ -79,6 +84,7 @@ class UserVerificationViewModelTest {
 
     @Test
     fun `should call verify user method of repository for revoke consent`() {
+        `when`(uuidRepository.generateUUID()).thenReturn("276fa8f3-810b-49d0-b0b5-d1f760271255")
         `when`(userVerificationRepository.verifyUser(userVerificationRequestForRevoke)).thenReturn(call)
         `when`(call.enqueue(any()))
             .then { invocation ->
