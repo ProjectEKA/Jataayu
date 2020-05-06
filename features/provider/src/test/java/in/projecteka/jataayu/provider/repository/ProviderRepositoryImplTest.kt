@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
 import `in`.projecteka.jataayu.provider.remote.ProviderApis
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
@@ -31,7 +32,7 @@ class ProviderRepositoryImplTest {
     fun shouldCallGetPatientsApi() {
         var unverifiedIdentifiers = ArrayList<UnverifiedIdentifier>()
         unverifiedIdentifiers.add(UnverifiedIdentifier("XXX", "MR"))
-        val request = Request(Hip("1", " Tata"), unverifiedIdentifiers)
+        val request = Request(ArgumentMatchers.anyString(), Hip("1", " Tata"), unverifiedIdentifiers)
         ProviderRepositoryImpl(providerSearchApi).getPatientAccounts(request)
         verify(providerSearchApi).getPatientAccounts(request)
     }

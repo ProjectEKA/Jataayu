@@ -39,7 +39,7 @@ class ExtensionsTest {
     }*/
 
     @Test
-    fun shouldFindViewByIdForGivenContext() {
+    fun `should find view by id for given context`() {
         val dummyView = mock(View::class.java)
         @IntegerRes val someResource = R.id.textWatcher
         `when`(testActivity.findViewById<View>(anyInt())).thenReturn(dummyView)

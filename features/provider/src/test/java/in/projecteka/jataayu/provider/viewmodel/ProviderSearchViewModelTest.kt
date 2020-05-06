@@ -9,8 +9,8 @@ import `in`.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
-import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
+import `in`.projecteka.jataayu.util.repository.UUIDRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import junit.framework.Assert
@@ -23,6 +23,7 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
@@ -38,6 +39,9 @@ class ProviderSearchViewModelTest {
 
     @Mock
     private lateinit var preferenceRepository: PreferenceRepository
+
+    @Mock
+    private lateinit var uuidRepository: UUIDRepository
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
@@ -56,7 +60,7 @@ class ProviderSearchViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        viewModel = ProviderSearchViewModel(repository,preferenceRepository)
+        viewModel = ProviderSearchViewModel(repository,preferenceRepository, uuidRepository)
     }
 
     @After
@@ -117,9 +121,10 @@ class ProviderSearchViewModelTest {
     }
 
     private fun setUpPatients(): PatientDiscoveryResponse {
+        `when`(uuidRepository.generateUUID()).thenReturn("276fa8f3-810b-49d0-b0b5-d1f760271255")
         var unverifiedIdentifiers = ArrayList<UnverifiedIdentifier>()
         unverifiedIdentifiers.add(UnverifiedIdentifier("XXX", "MR"))
-        val request = Request(Hip("1", " Tata"), unverifiedIdentifiers)
+        val request = Request(uuidRepository.generateUUID(), Hip("1", " Tata"), unverifiedIdentifiers)
         val patients = Gson().fromJson<PatientDiscoveryResponse>(
             TestUtils.readFile("patient_info_from_providers.json"),
             PatientDiscoveryResponse::class.java
