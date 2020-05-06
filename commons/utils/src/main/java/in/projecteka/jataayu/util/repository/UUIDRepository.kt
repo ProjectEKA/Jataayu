@@ -2,11 +2,11 @@ package `in`.projecteka.jataayu.util.repository
 
 import java.util.*
 
-interface UuidRepository {
+interface UUIDRepository {
     fun generateUUID(): String
 }
 
-class UuidRepositoryImpl() : UuidRepository {
+class UUIDRepositoryImpl() : UUIDRepository {
 
     override fun generateUUID(): String {
         return UUID.randomUUID().toString()

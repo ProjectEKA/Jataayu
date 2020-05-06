@@ -10,7 +10,7 @@ import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
-import `in`.projecteka.jataayu.util.repository.UuidRepository
+import `in`.projecteka.jataayu.util.repository.UUIDRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import junit.framework.Assert
@@ -41,7 +41,7 @@ class ProviderSearchViewModelTest {
     private lateinit var preferenceRepository: PreferenceRepository
 
     @Mock
-    private lateinit var uuidRepository: UuidRepository
+    private lateinit var uuidRepository: UUIDRepository
 
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()

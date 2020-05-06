@@ -9,11 +9,11 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
-import `in`.projecteka.jataayu.util.repository.UuidRepository
+import `in`.projecteka.jataayu.util.repository.UUIDRepository
 
 class UserVerificationViewModel(private val userVerificationRepository: UserVerificationRepository,
                                 val credentialsRepository: CredentialsRepository,
-                                val uuidRepository: UuidRepository) : BaseViewModel
+                                val uuidRepository: UUIDRepository) : BaseViewModel
     () {
 
     companion object {

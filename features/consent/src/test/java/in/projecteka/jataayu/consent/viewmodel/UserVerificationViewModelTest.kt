@@ -7,7 +7,7 @@ import `in`.projecteka.jataayu.core.model.UserVerificationResponse
 import `in`.projecteka.jataayu.util.extension.fromJson
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
-import `in`.projecteka.jataayu.util.repository.UuidRepository
+import `in`.projecteka.jataayu.util.repository.UUIDRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import org.junit.After
@@ -41,7 +41,7 @@ class UserVerificationViewModelTest {
     private lateinit var preferenceRepository: PreferenceRepository
 
     @Mock
-    private lateinit var uuidRepository: UuidRepository
+    private lateinit var uuidRepository: UUIDRepository
 
     @Mock
     private lateinit var call: Call<UserVerificationResponse>

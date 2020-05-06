@@ -31,7 +31,7 @@ val repositoryModule = module {
     factory { UserAccountsRepositoryImpl(get()) as UserAccountsRepository }
     factory { AuthenticationRepositoryImpl(get()) as AuthenticationRepository }
     factory { UserVerificationRepositoryImpl(get()) as UserVerificationRepository }
-    factory { UuidRepositoryImpl() as UuidRepository }
+    factory { UUIDRepositoryImpl() as UUIDRepository }
 
     single { PreferenceRepositoryImpl(get(named(ENCRYPTED_PREFS))) as PreferenceRepository }
     single { CredentialsRepositoryImpl(get(named(ENCRYPTED_PREFS))) as CredentialsRepository }

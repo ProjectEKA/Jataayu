@@ -12,7 +12,7 @@ import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.extension.liveDataOf
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
-import `in`.projecteka.jataayu.util.repository.UuidRepository
+import `in`.projecteka.jataayu.util.repository.UUIDRepository
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.databinding.ObservableBoolean
@@ -20,7 +20,7 @@ import androidx.databinding.ObservableField
 
 class ProviderSearchViewModel(private val providerRepository: ProviderRepository,
                               val preferenceRepository: PreferenceRepository,
-                              val uuidRepository: UuidRepository) : BaseViewModel(), TextWatcher {
+                              val uuidRepository: UUIDRepository) : BaseViewModel(), TextWatcher {
     val providers = liveDataOf<List<ProviderInfo>>()
     var providersList = emptyList<ProviderInfo>()
     val patientDiscoveryResponse = liveDataOf<PatientDiscoveryResponse>()
