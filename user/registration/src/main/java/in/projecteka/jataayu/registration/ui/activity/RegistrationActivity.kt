@@ -32,7 +32,7 @@ class RegistrationActivity : BaseActivity<RegistrationActivityBinding>() {
         initToolbar()
     }
 
-    private fun initToolbar(){
+    private fun initToolbar() {
         setSupportActionBar(binding.appToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -42,8 +42,14 @@ class RegistrationActivity : BaseActivity<RegistrationActivityBinding>() {
     private fun initObservers() {
         viewModel.redirectTo.observe(this, Observer {
             when (it) {
-                Show.VERIFICATION -> replaceFragment(RegistrationOtpFragment.newInstance(), R.id.fragment_container)
-                Show.REGISTRATION -> replaceFragment(RegistrationFragment.newInstance(), R.id.fragment_container)
+                Show.VERIFICATION -> replaceFragment(
+                    RegistrationOtpFragment.newInstance(),
+                    R.id.fragment_container
+                )
+                Show.REGISTRATION -> replaceFragment(
+                    RegistrationFragment.newInstance(),
+                    R.id.fragment_container
+                )
                 Show.NEXT -> {
                     finish()
                     startAccountCreation(this) {
@@ -65,10 +71,18 @@ class RegistrationActivity : BaseActivity<RegistrationActivityBinding>() {
                     showErrorDialog(it.error.localizedMessage)
                 }
                 is PartialFailure -> {
-                    showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
+                    val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container);
+                    if (currentFragment is RegistrationFragment) {
+                        showAlertDialog(
+                            getString(R.string.request_limit_exceeded),
+                            it.error?.message,
+                            getString(android.R.string.ok)
+                        )
+                    }
                 }
             }
         })
+
         viewModel.verifyIdentifierResponseLiveData.observe(this, Observer {
             when (it) {
                 is Success -> {
