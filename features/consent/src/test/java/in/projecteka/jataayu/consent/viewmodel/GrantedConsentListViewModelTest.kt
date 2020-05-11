@@ -16,7 +16,7 @@ import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
-import junit.framework.Assert.*
+import junit.framework.Assert.assertEquals
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -58,6 +58,9 @@ class ConsentListViewModelTest {
 
     private lateinit var consentsListResponse: ConsentsListResponse
 
+    private lateinit var grantedConsentList: List<Consent>
+
+
 
     @Before
     fun setUp() {
@@ -65,20 +68,24 @@ class ConsentListViewModelTest {
 
         consentViewModel = GrantedConsentListViewModel(repository,credentialRepo)
 
+        val filters = consentViewModel.currentStatus.value?.let { "status==${it.name}" }
         consentsListResponse = Gson()
             .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)
+        grantedConsentList = filterConsents(RequestStatus.GRANTED)
 
-        `when`(repository.getConsents()).thenReturn(call)
+        `when`(repository.getConsents(10, 0, filters)).thenReturn(call)
         `when`(call.enqueue(any()))
             .then { invocation ->
                 val callback = invocation.arguments[0] as Callback<ConsentsListResponse>
-                callback.onResponse(call, Response.success(consentsListResponse))
+                if (filters.isNullOrEmpty()) {
+                    callback.onResponse(call, Response.success(consentsListResponse))
+                } else {
+                    consentsListResponse = ConsentsListResponse(grantedConsentList, consentsListResponse.totalCount, consentsListResponse.offset)
+                    callback.onResponse(call, Response.success(consentsListResponse))
+                }
             }
 
         consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
-
-        consentViewModel.getConsents()
-        consentViewModel.filterConsents(consentsListResponse.requests)
     }
 
     @After
@@ -89,9 +96,9 @@ class ConsentListViewModelTest {
     @Test
     fun `should Populate Filter Items For Granted Consents`() {
 
-        `when`(resources.getString(R.string.status_all_granted_consents)).thenReturn("All Granted Consents (%d)")
-        `when`(resources.getString(R.string.status_active_granted_consents)).thenReturn("Active granted consents (%d)")
-        `when`(resources.getString(R.string.status_expired_granted_consents)).thenReturn("Expired granted consents (%d)")
+        `when`(resources.getString(R.string.status_all_granted_consents)).thenReturn("All Granted Consents")
+        `when`(resources.getString(R.string.status_active_granted_consents)).thenReturn("Active granted consents")
+        `when`(resources.getString(R.string.status_expired_granted_consents)).thenReturn("Expired granted consents")
         val populatedFilterItems = consentViewModel.populateFilterItems(resources, ConsentFlow.GRANTED_CONSENTS)
 
         assertEquals(dummyGrantedFilterList(), populatedFilterItems)
@@ -99,9 +106,9 @@ class ConsentListViewModelTest {
 
     private fun dummyGrantedFilterList(): ArrayList<String> {
         val list = ArrayList<String>(3)
-        list.add("All Granted Consents (2)")
-        list.add("Active granted consents (2)")
-        list.add("Expired granted consents (0)")
+        list.add("All Granted Consents")
+        list.add("Active granted consents")
+        list.add("Expired granted consents")
         return list
     }
 
@@ -118,21 +125,24 @@ class ConsentListViewModelTest {
 
     @Test
     fun `should Filter Consents And Return Only Granted RequestedList`() {
-        consentViewModel.filterConsents(consentsListResponse.requests)
-        assertFalse(consentViewModel.grantedConsentsList.value!!.filter { it.status == RequestStatus.REQUESTED || it.status == RequestStatus.DENIED }.count() > 0)
+
+        val filters = consentViewModel.currentStatus.value?.let { "status==${it.name}" }
+        consentViewModel.getConsents( offset = 0)
+        verify(repository).getConsents(10, 0, filters = filters)
+        verify(call).enqueue(any())
+        val expectedResponse = ConsentsListResponse(grantedConsentList, consentsListResponse.totalCount, 0)
+        assertEquals(expectedResponse,consentsListResponse)
+
     }
 
-    @Test
-    fun `should Filter And Sorted Requested Consent List By Descending Order`() {
-        consentViewModel.filterConsents(consentsListResponse.requests)
-        val first =  consentViewModel.grantedConsentsList.value!!.first().getLastUpdated()
-        val second = consentViewModel.grantedConsentsList.value!![1].getLastUpdated()
-        assertTrue(first!!.after(second!!))
-    }
 
     private fun dummyGrantedConsentsList(): List<Consent>? {
         return getData("granted_consents.json")
     }
 
     private fun getData(fileName: String) = Gson().fromJson<List<Consent>>(TestUtils.readFile(fileName))
+
+    private fun filterConsents(status: RequestStatus) : List<Consent> {
+        return consentsListResponse.requests.asSequence().filter { it.status == status }.toList()
+    }
 }

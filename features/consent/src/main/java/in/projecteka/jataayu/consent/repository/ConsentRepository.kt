@@ -18,7 +18,7 @@ import androidx.lifecycle.MediatorLiveData
 import retrofit2.Call
 
 interface ConsentRepository {
-    fun getConsents(): Call<ConsentsListResponse>
+    fun getConsents(limit: Int, offSet: Int, filters: String?): Call<ConsentsListResponse>
     fun grantConsent(requestId: String, approveConsentRequest: ConsentArtifactRequest, authToken: String?): Call<ConsentArtifactResponse>
     fun getLinkedAccounts(): Call<LinkedAccountsResponse>
     fun revokeConsent(revokeConsentRequest: RevokeConsentRequest, authToken: String?): Call<Void>
@@ -33,8 +33,8 @@ class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentReposi
         return consentApi.approveConsent(requestId, approveConsentRequest, authToken)
     }
 
-    override fun getConsents(): Call<ConsentsListResponse> {
-        return consentApi.getConsents()
+    override fun getConsents(limit: Int, offSet: Int, filters: String?): Call<ConsentsListResponse> {
+        return consentApi.getConsents(limit, offSet, filters)
     }
     override fun getLinkedAccounts(): Call<LinkedAccountsResponse> {
         return consentApi.getLinkedAccounts()

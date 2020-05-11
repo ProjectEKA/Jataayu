@@ -200,9 +200,8 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             when (consent.status) {
                 RequestStatus.DENIED -> R.string.denied_consent
                 RequestStatus.GRANTED -> R.string.granted_consent
-                RequestStatus.REQUESTED -> if (DateTimeUtils.isDateExpired(consent.permission.dataEraseAt))
-                    R.string.expired_consent
-                else R.string.new_request
+                RequestStatus.EXPIRED ->  R.string.expired_consent  //if (DateTimeUtils.isDateExpired(consent.permission.dataEraseAt))
+                else ->  { R.string.new_request }
             }
         )
         getNameOf(consent.hiu) {

@@ -35,6 +35,18 @@ class ConsentsListAdapter(
         return ConsentRecyclerViewHolder(binding)
     }
 
+    override fun updateData(bindingModels: List<IDataBindingModel>?) {
+        bindingModels?.let {
+            listOfBindingModels.addAll(bindingModels)
+            notifyDataSetChanged()
+        }
+    }
+
+     fun clearAll() {
+        listOfBindingModels.clear()
+        notifyDataSetChanged()
+    }
+
     inner class ConsentRecyclerViewHolder(
         private val binding: ViewDataBinding
     ) : GenericRecyclerViewAdapter.RecyclerViewHolder(binding) {

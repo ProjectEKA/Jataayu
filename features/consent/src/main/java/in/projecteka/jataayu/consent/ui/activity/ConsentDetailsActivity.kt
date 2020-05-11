@@ -8,6 +8,7 @@ import `in`.projecteka.jataayu.consent.ui.fragment.GrantedConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.RequestedConsentDetailsFragment
 import `in`.projecteka.jataayu.consent.ui.fragment.RequestedListFragment
 import `in`.projecteka.jataayu.consent.viewmodel.RequestedListViewModel
+import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
@@ -68,7 +69,7 @@ class ConsentDetailsActivity : BaseActivity<BaseActivityBinding>(), ResponseCall
                 }
 
             })
-            viewModel.getConsents()
+            viewModel.getConsents(RequestStatus.REQUESTED, offset = 0)
         }
     }
 

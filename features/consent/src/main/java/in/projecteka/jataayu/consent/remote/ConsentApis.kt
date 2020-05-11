@@ -13,7 +13,9 @@ import retrofit2.http.*
 
 interface ConsentApis {
     @GET("consent-requests")
-    fun getConsents(): Call<ConsentsListResponse>
+    fun getConsents(@Query("limit")limit: Int,
+                    @Query("offset") offset: Int,
+                    @Query("filters", encoded = true) filters: String?): Call<ConsentsListResponse>
 
     @GET("patients/links")
     fun getLinkedAccounts(): Call<LinkedAccountsResponse>
