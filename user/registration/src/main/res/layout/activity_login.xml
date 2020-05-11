@@ -34,7 +34,7 @@
                     android:paddingTop="16dp"
                     android:paddingBottom="16dp"
                     android:text="@string/account_lock"
-                    android:visibility="@{viewModel.showErrorAccountLockBlock}"
+                    android:visibility="@{viewModel.accountLockBlockEnable}"
                     app:layout_constraintBottom_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

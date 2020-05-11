@@ -103,7 +103,7 @@ class LoginViewModelTest {
         loginViewModel.usernameProviderLbl.set(provider)
         loginViewModel.inputPasswordLbl.set(password)
         loginViewModel.inputUsernameLbl.set(username)
-        val error = Error(1029, "User Blocked temporarily")
+        val error = Error(1031, "User Blocked temporarily")
         val errorResponse = ErrorResponse(error)
         val body =  ResponseBody.Companion.create("application/json; charset=utf-8".toMediaTypeOrNull(),Gson().toJson(errorResponse))
 

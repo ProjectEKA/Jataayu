@@ -21,7 +21,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     val viewModel: LoginViewModel by viewModel()
     companion object {
-        private const val ERROR_CODE_BLOCK_USER = 1029
+        private const val ERROR_CODE_BLOCK_USER = 1031
     }
     override fun layoutId(): Int = R.layout.activity_login
 
@@ -54,7 +54,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 }
                 is PartialFailure -> {
                     when (it.error?.code) {
-                        ERROR_CODE_BLOCK_USER -> viewModel.showErrorAccountLockBlock.set(View.VISIBLE)
+                        ERROR_CODE_BLOCK_USER -> viewModel.accountLockBlockEnable.set(View.VISIBLE)
                         else ->{
                             showAlertDialog(
                                 getString(R.string.failure), it.error?.message,
