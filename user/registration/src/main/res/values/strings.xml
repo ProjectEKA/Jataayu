@@ -12,4 +12,5 @@
     <string name="login">login</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="logging_in">Logging In&#8230;</string>
+    <string name="account_lock">Your account has been locked due invalid attempts.please try again after sometime.</string>
 </resources>
