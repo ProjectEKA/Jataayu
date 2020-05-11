@@ -36,4 +36,5 @@
     <color name="negative_button_ripple_color">@color/gray</color>
 
     <color name="error_message_color">#D90000</color>
+    <color name="accountlock_error_message">#99000000</color>
 </resources>

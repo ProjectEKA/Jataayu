@@ -1,6 +1,8 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
+import `in`.projecteka.jataayu.network.model.Error
+import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
@@ -12,6 +14,7 @@ import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
@@ -33,9 +36,9 @@ class LoginViewModel(
     val usernameProviderLbl = ObservableField<String>()
     val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
     val loginEnabled = ObservableBoolean(false)
-
     val onClickRegisterEvent = SingleLiveEvent<Void>()
     val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
+    val showErrorAccountLockBlock = ObservableField<Int>(View.GONE)
 
     val loginResponse = PayloadLiveData<CreateAccountResponse>()
 
