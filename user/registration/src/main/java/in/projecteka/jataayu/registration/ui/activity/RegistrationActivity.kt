@@ -71,13 +71,15 @@ class RegistrationActivity : BaseActivity<RegistrationActivityBinding>() {
                     showErrorDialog(it.error.localizedMessage)
                 }
                 is PartialFailure -> {
-                    val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container);
+                    val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
                     if (currentFragment is RegistrationFragment) {
-                        showAlertDialog(
-                            getString(R.string.request_limit_exceeded),
-                            it.error?.message,
-                            getString(android.R.string.ok)
-                        )
+                        var message = it.error?.message
+                        var title = getString(R.string.failure)
+                        if(it.error?.code == RegistrationOtpFragment.ERROR_CODE_OTP_LIMIT_EXCEEDED){
+                            message = getString(R.string.otp_limit_exceeded)
+                            title = getString(R.string.request_limit_exceeded)
+                        }
+                        showAlertDialog(title, message, getString(android.R.string.ok))
                     }
                 }
             }

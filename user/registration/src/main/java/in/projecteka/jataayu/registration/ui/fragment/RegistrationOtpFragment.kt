@@ -23,9 +23,8 @@ class RegistrationOtpFragment : BaseFragment() {
     private lateinit var binding: FragmentOtpVerificationBinding
 
     companion object {
-
-        private const val ERROR_CODE_INVALID_OTP = 1003
-        private const val ERROR_CODE_OTP_LIMIT_EXCEEDED = 1029
+        const val ERROR_CODE_INVALID_OTP = 1003
+        const val ERROR_CODE_OTP_LIMIT_EXCEEDED = 1029
         fun newInstance() = RegistrationOtpFragment()
     }
 
@@ -84,7 +83,11 @@ class RegistrationOtpFragment : BaseFragment() {
             when (it) {
                 is PartialFailure -> {
                     viewModel.otpText.set(null)
-                    viewModel.errorLbl.set(it.error?.message)
+                    if (it.error?.code == ERROR_CODE_OTP_LIMIT_EXCEEDED) {
+                        viewModel.errorLbl.set(getString(R.string.otp_limit_exceeded))
+                    } else {
+                        viewModel.errorLbl.set(it.error?.message)
+                    }
                 }
             }
         })
