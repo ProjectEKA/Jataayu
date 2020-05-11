@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.registration.ui.fragment
 
 
 import `in`.projecteka.jataayu.network.utils.PartialFailure
+import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentOtpVerificationBinding
@@ -12,7 +13,6 @@ import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.bold
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,8 +23,8 @@ class RegistrationOtpFragment : BaseFragment() {
     private lateinit var binding: FragmentOtpVerificationBinding
 
     companion object {
-
-        private const val ERROR_CODE_INVALID_OTP = 1003
+        const val ERROR_CODE_INVALID_OTP = 1003
+        const val ERROR_CODE_OTP_LIMIT_EXCEEDED = 1029
         fun newInstance() = RegistrationOtpFragment()
     }
 
@@ -40,19 +40,16 @@ class RegistrationOtpFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onVisible() {
-        super.onVisible()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         parentVM.appBarTitle.set(getString(R.string.verification))
 
-        viewModel.otpMessageLbl.set(SpannableStringBuilder()
-            .append(getString(R.string.otp_sent))
-            .bold { append(" ${parentVM.getIdentifierValue()}") })
-
+        viewModel.otpMessageLbl.set(
+            SpannableStringBuilder()
+                .append(getString(R.string.otp_sent))
+        )
+        viewModel.mobileNumberText.set(parentVM.getIdentifierValue())
         initObservers()
     }
 
@@ -60,10 +57,15 @@ class RegistrationOtpFragment : BaseFragment() {
         viewModel.onClickVerifyEvent.observe(this, Observer {
             parentVM.verifyRequest(it)
         })
+
+        viewModel.onClickResendEvent.observe(this, Observer {
+            parentVM.requestVerification(it)
+        })
+
         parentVM.verifyIdentifierResponseLiveData.observe(this, Observer {
             when (it) {
                 is PartialFailure -> {
-                    if (it.error?.code == ERROR_CODE_INVALID_OTP){
+                    if (it.error?.code == ERROR_CODE_INVALID_OTP) {
                         viewModel.otpText.set(null)
                     }
 
@@ -73,6 +75,19 @@ class RegistrationOtpFragment : BaseFragment() {
                         } else
                             it.error?.message
                     )
+                }
+            }
+        })
+
+        parentVM.requestVerificationResponseLiveData.observe(this, Observer {
+            when (it) {
+                is PartialFailure -> {
+                    viewModel.otpText.set(null)
+                    if (it.error?.code == ERROR_CODE_OTP_LIMIT_EXCEEDED) {
+                        viewModel.errorLbl.set(getString(R.string.otp_limit_exceeded))
+                    } else {
+                        viewModel.errorLbl.set(it.error?.message)
+                    }
                 }
             }
         })
