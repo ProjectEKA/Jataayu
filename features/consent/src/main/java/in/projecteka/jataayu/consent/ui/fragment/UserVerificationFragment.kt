@@ -66,6 +66,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
                     activity?.finish()
                 }
                 is PartialFailure -> {
+                    viewModel.showProgress(false)
                     when (it.error?.code) {
                         ERROR_CODE_INVALID_PIN -> {
                             binding.lblInvalidPin.visibility = View.VISIBLE
@@ -85,6 +86,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
                     }
                 }
                 is Failure -> {
+                    viewModel.showProgress(false)
                     context?.showErrorDialog(it.error.localizedMessage)
                 }
             }
