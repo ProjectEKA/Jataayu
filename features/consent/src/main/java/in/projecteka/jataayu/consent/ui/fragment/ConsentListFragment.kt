@@ -77,8 +77,9 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                 is Success -> {
                     parentViewModel.showRefreshing(false)
                     viewModel.grantedConsentsList.value = response.data
+                    val filteredRequests = viewModel.filterConsents(response.data?.requests)
                     resetScrollListener()
-                    response.data?.requests?.let {
+                    filteredRequests?.let {
                         val hiuList = it.map { consent -> consent.hiu }
                         getNamesOf(hiuList)
                     }
@@ -182,7 +183,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     }
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
-        consentsListAdapter.updateData(requests.reversed())
+        consentsListAdapter.updateData(requests)
     }
 
 
@@ -206,7 +207,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun getNamesOf(hiuList: List<HipHiuIdentifiable>) {
         val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(hiuList)
         hipHiuNameResponse.observe(this, Observer {
-            viewModel.grantedConsentsList.value?.requests?.let { consentList ->
+            viewModel.consentList?.let { consentList ->
                 if(it.status) {
                     consentList.forEach { consent -> consent.hiu.name = it.nameMap[consent.hiu.getId()] ?: "" }
                     renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)

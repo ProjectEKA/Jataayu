@@ -2,11 +2,13 @@ package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.callback.PaginationEventCallback
+import `in`.projecteka.jataayu.consent.extension.grantedConsentList
 import `in`.projecteka.jataayu.consent.listners.PaginationScrollListener
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
+import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.HipHiuNameResponse
 import `in`.projecteka.jataayu.core.model.RequestStatus
@@ -37,6 +39,9 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
     val grantedConsentsList = MutableLiveData<ConsentsListResponse>()
     val currentStatus = MutableLiveData<RequestStatus>(RequestStatus.GRANTED)
     var scrollListener: PaginationScrollListener? = null
+    var consentList: List<Consent>? = null
+    private set
+
 
 
     private val grantedConsentStatusList = listOf(
@@ -48,7 +53,7 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
     internal var selectedProviderName = String.EMPTY
 
     fun getConsents(limit: Int = LIMIT, offset: Int) {
-        consentListResponse.fetch(repository.getConsents(limit, offset, FILTERS))
+        consentListResponse.fetch(repository.getConsents(limit, offset, null))
     }
 
     fun getGrantedConsentDetails(requestId: String) {
@@ -83,9 +88,10 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
         return String.format(resources.getString(filterItem), count)
     }
 
-//    fun filterConsents(consentList: List<Consent>?) {
-//        grantedConsentsList.value = consentList?.grantedConsentList()
-//    }
+    fun filterConsents(consentList: List<Consent>?) : List<Consent>? {
+        this.consentList = consentList?.grantedConsentList()
+        return this.consentList
+    }
 
     fun revokeConsent(consentArtifactId: String) {
         val list: ArrayList<String> = ArrayList()

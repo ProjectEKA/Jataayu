@@ -68,7 +68,7 @@ class ConsentListViewModelTest {
 
         consentViewModel = GrantedConsentListViewModel(repository,credentialRepo)
 
-        val filters = consentViewModel.currentStatus.value?.let { "status==${it.name}" }
+        val filters = null
         consentsListResponse = Gson()
             .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)
         grantedConsentList = filterConsents(RequestStatus.GRANTED)
@@ -77,12 +77,8 @@ class ConsentListViewModelTest {
         `when`(call.enqueue(any()))
             .then { invocation ->
                 val callback = invocation.arguments[0] as Callback<ConsentsListResponse>
-                if (filters.isNullOrEmpty()) {
-                    callback.onResponse(call, Response.success(consentsListResponse))
-                } else {
-                    consentsListResponse = ConsentsListResponse(grantedConsentList, consentsListResponse.totalCount, consentsListResponse.offset)
-                    callback.onResponse(call, Response.success(consentsListResponse))
-                }
+                consentsListResponse = ConsentsListResponse(grantedConsentList, consentsListResponse.totalCount, consentsListResponse.offset)
+                callback.onResponse(call, Response.success(consentsListResponse))
             }
 
         consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
@@ -116,6 +112,7 @@ class ConsentListViewModelTest {
     @Test
     fun `should Fetch Consents`() {
 
+        consentViewModel.getConsents(offset = 0)
         verify(consentsFetchObserver, Mockito.times(1)).onChanged(Loading(true))
         verify(consentsFetchObserver, Mockito.times(1)).onChanged(Loading(false))
         verify(consentsFetchObserver, Mockito.times(1)).onChanged(Success(consentsListResponse))
@@ -126,13 +123,10 @@ class ConsentListViewModelTest {
     @Test
     fun `should Filter Consents And Return Only Granted RequestedList`() {
 
-        val filters = consentViewModel.currentStatus.value?.let { "status==${it.name}" }
+        val filters = null
         consentViewModel.getConsents( offset = 0)
         verify(repository).getConsents(10, 0, filters = filters)
         verify(call).enqueue(any())
-        val expectedResponse = ConsentsListResponse(grantedConsentList, consentsListResponse.totalCount, 0)
-        assertEquals(expectedResponse,consentsListResponse)
-
     }
 
 
