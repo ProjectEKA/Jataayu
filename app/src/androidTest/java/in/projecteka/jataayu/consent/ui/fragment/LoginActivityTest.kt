@@ -1,60 +1,50 @@
-package `in`.projecteka.jataayu.consent.ui.fragment
+package `in`.projecteka.jataayu.registration.ui.activity
 
 import `in`.projecteka.jataayu.R
-import `in`.projecteka.jataayu.R.id.*
-import `in`.projecteka.jataayu.ui.activity.TestsOnlyActivity
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.runner.AndroidJUnit4
-import br.com.concretesolutions.kappuccino.actions.TextActions.typeText
-import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.displayed
+import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.rule.ActivityTestRule
+import br.com.concretesolutions.kappuccino.actions.TextActions
 import org.hamcrest.CoreMatchers.not
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-//TODO: REWRITE TO USE LOGIN ACTIVITY
 @RunWith(AndroidJUnit4::class)
 class LoginFragmentTest{
-    @get:Rule
-    var activityRule: IntentsTestRule<TestsOnlyActivity> =
-        IntentsTestRule(TestsOnlyActivity::class.java, true, true)
-
-    @Before
-    @Throws(Exception::class)
-    fun setup() {
-//        activityRule.activity.addFragment(LoginFragment())
-    }
+    @Rule
+    @JvmField
+    var mActivityTestRule = ActivityTestRule(LoginActivity::class.java)
 
     @Test
     fun shouldRenderUI(){
-        displayed{
+        VisibilityAssertions.displayed {
             allOf {
-                id(et_username)
+                id(R.id.et_username)
                 text("")
             }
 
             allOf {
-                id(tv_provider_name)
+                id(R.id.tv_provider_name)
                 text(R.string.cm_config_provider)
             }
 
             allOf {
-                id(et_password)
+                id(R.id.et_password)
                 text("")
             }
 
             allOf {
-                id(btn_register)
+                id(R.id.btn_register)
                 text("REGISTER")
             }
 
             allOf {
-                id(btn_login)
+                id(R.id.btn_login)
                 text("LOGIN")
             }
         }
@@ -67,28 +57,33 @@ class LoginFragmentTest{
 
     @Test
     fun shouldDisableLoginButtonIfUsernameIsEmpty(){
-        typeText("password"){
-            id(R.id.et_password)
+        TextActions.typeText("username") {
+            id(R.id.et_username)
         }
         onView(withId(R.id.btn_login)).check(matches(not(isEnabled())))
     }
 
     @Test
     fun shouldDisableLoginButtonIfPasswordIsEmpty() {
-        typeText("username") {
-            id(R.id.et_username)
+        TextActions.typeText("password") {
+            id(R.id.et_password)
         }
-
+        onView(withId(R.id.btn_login)).check(matches(not(isEnabled())))
     }
 
     @Test
     fun shouldEnableLoginButtonIfUsernameAndPasswordIsNlotEmpty(){
-        typeText("username"){
+        TextActions.typeText("username") {
             id(R.id.et_username)
         }
-        typeText("password"){
+        TextActions.typeText("password") {
             id(R.id.et_password)
         }
         onView(withId(R.id.btn_login)).check(matches(isEnabled()))
+    }
+
+    @Test
+    fun shouldDisableAccountLockLableByDefault(){
+        onView(withId(R.id.account_lock_error_text)).check(matches(isEnabled()))
     }
 }
