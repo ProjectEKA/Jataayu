@@ -4,6 +4,7 @@ package `in`.projecteka.resetpassword.ui.fragment
 import `in`.projecteka.forgotpassword.R
 import `in`.projecteka.forgotpassword.databinding.ResetPasswordOtpVerificationBinding
 import `in`.projecteka.jataayu.network.utils.Failure
+import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showErrorDialog
@@ -68,6 +69,9 @@ class ResetPasswordOtpFragment : BaseFragment() {
         })
         viewModel.verifyOtpResponse.observe(this, Observer {
             when (it) {
+
+                is Loading -> viewModel.showProgress(it.isLoading)
+
                 is PartialFailure -> {
                     if (it.error?.code == ERROR_CODE_INVALID_OTP || it.error?.code == ERROR_CODE_OTP_EXPIRED) {
                         viewModel.otpText.set(null)

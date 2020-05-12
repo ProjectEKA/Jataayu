@@ -59,7 +59,7 @@ class ResetPasswordFragment : Fragment() {
 
         viewModel.resetPasswordResponse.observe(this, Observer {
             when(it){
-                is Loading -> viewModel.showProgress(true)
+                is Loading -> viewModel.showProgress(it.isLoading)
                 is Success -> {
                     showLongToast(getString(R.string.password_changed))
                     activity?.finish()

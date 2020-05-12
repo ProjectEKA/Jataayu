@@ -48,7 +48,7 @@ class ReadIdentifierFragment : Fragment() {
     private fun initObservers() {
         viewModel.generateOtpResponse.observe(this, Observer {
             when(it){
-                is Loading -> viewModel.showProgress(true)
+                is Loading -> viewModel.showProgress(it.isLoading)
                 is Success -> {
 //                    parentViewModel.addedConsentManagerId.set(it.data?.otpMediumValue)
                     parentViewModel.sessionId = it.data?.sessionId

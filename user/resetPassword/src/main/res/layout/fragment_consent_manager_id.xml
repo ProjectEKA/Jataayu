@@ -15,6 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            android:id="@+id/progress_bar_layout"
+            app:showProgress="@{viewModel.showProgress}"
+            app:message="@{viewModel.showProgressMessage}"
+            layout="@layout/progress_layout"/>
+
         <TextView
             android:id="@+id/lbl_consent_manager_id"
             style="@style/TextAppearance.ListItemSubHeader"
