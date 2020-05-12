@@ -114,15 +114,6 @@ class ResetPasswordFragmentViewModel(val resetPasswordRepository: ResetPasswordR
         return matcher.matches()
     }
 
-    fun initializeAllTheValues() {
-        inputCreatePasswordLbl.set(null)
-        inputConfirmPasswordLbl.set(null)
-        setConfirmButtonEnabled.set(false)
-        showErrorCreatePassword.set(false)
-        showConfirmPasswordMismatch.set(false)
-        showConfirmPasswordMatch.set(false)
-    }
-
     fun resetPassword() {
         resetPasswordResponse.fetch(resetPasswordRepository.resetPassword(ResetPasswordRequest(inputConfirmPasswordLbl.get().toString()), tempToken?:""))
     }

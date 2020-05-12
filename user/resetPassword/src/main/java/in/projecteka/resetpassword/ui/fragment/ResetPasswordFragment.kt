@@ -49,7 +49,6 @@ class ResetPasswordFragment : Fragment() {
     }
 
     private fun initObservers() {
-//        viewModel.initializeAllTheValues()
         binding.etCreatePassword.addTextChangedListener { text ->
             viewModel.validatePassword()
         }
