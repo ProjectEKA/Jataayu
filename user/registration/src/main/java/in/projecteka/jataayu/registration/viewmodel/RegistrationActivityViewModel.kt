@@ -59,9 +59,7 @@ class RegistrationActivityViewModel(
 
     fun redirectToOtpScreen(sessionId: String?) {
         this.sessionId = sessionId
-        if(redirectTo.value != Show.VERIFICATION){
-            redirectTo.value = Show.VERIFICATION
-        }
+        redirectTo.value = Show.VERIFICATION
     }
 
     fun redirectToNext() {
