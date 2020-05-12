@@ -11,6 +11,10 @@ import `in`.projecteka.jataayu.ui.LauncherViewModel
 import `in`.projecteka.jataayu.ui.dashboard.DashboardViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
+import `in`.projecteka.resetpassword.viewmodel.ReadIdentifierFragmentViewModel
+import `in`.projecteka.resetpassword.viewmodel.ResetPasswordActivityViewModel
+import `in`.projecteka.resetpassword.viewmodel.ResetPasswordFragmentViewModel
+import `in`.projecteka.resetpassword.viewmodel.ResetPasswordOtpVerificationViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -50,5 +54,11 @@ val viewModelModule = module {
     //User Verification
     viewModel { UserVerificationViewModel(get(), get(), get()) }
     viewModel { PinVerificationViewModel() }
+
+    //Forgot Password
+    viewModel { ResetPasswordActivityViewModel() }
+    viewModel { ReadIdentifierFragmentViewModel(get()) }
+    viewModel { ResetPasswordOtpVerificationViewModel(get()) }
+    viewModel { ResetPasswordFragmentViewModel(get()) }
 
 }

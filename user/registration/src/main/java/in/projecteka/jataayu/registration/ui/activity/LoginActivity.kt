@@ -6,11 +6,13 @@ import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
+
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ActivityLoginBinding
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.util.startDashboard
+import `in`.projecteka.jataayu.util.startForgotPassword
 import `in`.projecteka.jataayu.util.startRegistration
 import android.os.Bundle
 import android.view.View
@@ -67,6 +69,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     showErrorDialog(it.error.localizedMessage)
                 }
             }
+        })
+
+        viewModel.onClickForgotPasswordEvent.observe(this, Observer {
+            startForgotPassword(this)
         })
     }
 }

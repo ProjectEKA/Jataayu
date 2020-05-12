@@ -1,0 +1,126 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.projecteka.resetpassword.ui.fragment.ReadIdentifierFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.projecteka.resetpassword.viewmodel.ReadIdentifierFragmentViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/progress_bar_layout"
+            app:showProgress="@{viewModel.showProgress}"
+            app:message="@{viewModel.showProgressMessage}"
+            layout="@layout/progress_layout"/>
+
+        <TextView
+            android:id="@+id/lbl_consent_manager_id"
+            style="@style/TextAppearance.ListItemSubHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_margin_medium"
+            android:paddingBottom="@dimen/content_margin_extra_small"
+            android:text="@string/consent_manager_id"
+            app:layout_constraintBottom_toTopOf="@id/cv_consent_manager_id"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_consent_manager_id"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height_large"
+            android:layout_marginLeft="@dimen/content_margin_medium"
+            android:layout_marginRight="@dimen/content_margin_medium"
+            app:cardElevation="@dimen/content_padding_medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:padding="@dimen/content_margin_medium">
+
+                <EditText
+                    android:id="@+id/et_consent_manager_id"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
+                    android:layout_weight=".7"
+                    android:background="@color/white"
+                    android:cursorVisible="true"
+                    android:drawableStart="@drawable/ic_username"
+                    android:drawablePadding="@dimen/content_margin_medium"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
+                    android:text="@={viewModel.inputConsentManagerId}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <TextView
+                    android:id="@+id/tv_provider_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:drawablePadding="@dimen/content_margin_medium"
+                    android:text="@={viewModel.consentManagerIdProviderLbl}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_medium"
+                    app:resource_reference="@{viewModel.consentManagerIdProviderLblId}" />
+                <!--android:text="@={viewModel.usernameProviderLbl}"
+                app:resource_reference="@{viewModel.usernameProviderLblId}"-->
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/consent_manager_id_error_text"
+            style="@style/TextAppearance.ErrorMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_margin_medium"
+            android:layout_marginTop="@dimen/content_margin_extra_extra_small"
+            android:text="@string/consent_manager_id_validation_hint"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cv_consent_manager_id"
+            app:toggledVisibility="@{viewModel.showErrorConsentManagerId}" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next"
+            style="@style/Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginLeft="@dimen/content_margin_medium"
+            android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+            android:layout_marginRight="@dimen/content_margin_medium"
+            android:enabled="@{viewModel.setEnableButton}"
+            android:onClick="@{() -> viewModel.generateOtp()}"
+            android:text="@string/next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/consent_manager_id_error_text"
+            app:layout_constraintVertical_bias="0.05">
+
+        </com.google.android.material.button.MaterialButton>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
