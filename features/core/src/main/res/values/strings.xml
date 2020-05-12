@@ -8,6 +8,7 @@
     <string name="btn_continue">Continue</string>
     <string name="enter_otp">Enter 6 digit OTP</string>
     <string name="invalid_otp">Invalid OTP entered. Please try again.</string>
+    <string name="otp_expired">OTP expired.</string>
     <string name="username_already_taken">Username already taken</string>
     <string name="to">to</string>
     <string name="from">From</string>
@@ -16,4 +17,5 @@
     <string name="show">Show</string>
     <string name="hide">Hide</string>
     <string name="registered_successfully">Registered Successfully</string>
+    <string name="otp_limit_exceeded">OTP request limit exceeded. Please try again after some time.</string>
 </resources>

@@ -1,0 +1,17 @@
+<resources>
+    <string name="consent_manager_id">Consent Manager ID</string>
+    <string name="next">Next</string>
+    <string name="ncg">\@ncg</string>
+    <string name="consent_manager_id_validation_hint">Minimum length 3\nIt may contain . and -</string>
+    <string name="otp_lbl">Enter OTP</string>
+    <string name="validate">Validate</string>
+    <string name="otp_sent_msg">An OTP has been sent to mobile number linked with Consent Manager ID %s</string>
+    <string name="set_password_lbl">Set a password</string>
+    <string name="create_password">Create password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="confirm">Confirm</string>
+    <string name="password_validation_hint">Minimum length 8\nIt must contain one capital letter, one small letter, one number\nIt must also contain one special character</string>
+    <string name="password_mismatch">Password doesn\'t match</string>
+    <string name="password_match">Password matches</string>
+    <string name="password_changed">Password changed successfully!!Redirecting to login.</string>
+</resources>

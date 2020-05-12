@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -190,6 +189,21 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cv_password" />
+
+            <TextView
+                android:onClick="@{() -> viewModel.onForgotPasswordClicked()}"
+                android:clickable="true"
+                android:textAllCaps="true"
+                android:textAlignment="center"
+                android:padding="@dimen/content_margin_medium"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/forgot_password"
+                app:layout_constraintBottom_toTopOf="@+id/tv_dont_have_account"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:id="@+id/tv_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/tv_dont_have_account"

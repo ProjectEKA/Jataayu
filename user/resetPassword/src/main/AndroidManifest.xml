@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="in.projecteka.forgotpassword">
+
+    <application>
+        <activity android:name="in.projecteka.resetpassword.ui.activity.ResetPasswordActivity"></activity>
+    </application>
+
+</manifest>

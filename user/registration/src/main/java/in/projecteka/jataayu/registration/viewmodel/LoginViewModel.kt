@@ -38,6 +38,7 @@ class LoginViewModel(
     val loginEnabled = ObservableBoolean(false)
     val onClickRegisterEvent = SingleLiveEvent<Void>()
     val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
+    var onClickForgotPasswordEvent = SingleLiveEvent<Void>()
     val accountLockBlockEnable = ObservableField<Int>(View.GONE)
 
     val loginResponse = PayloadLiveData<CreateAccountResponse>()
@@ -68,6 +69,10 @@ class LoginViewModel(
 
     fun onClickRegister() {
         onClickRegisterEvent.call()
+    }
+
+    fun onForgotPasswordClicked() {
+        onClickForgotPasswordEvent.call()
     }
 
     fun onLoginClicked() = loginResponse.fetch(

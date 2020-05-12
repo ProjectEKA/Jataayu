@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
 import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +13,7 @@ class RegistrationVerificationViewModel : BaseViewModel(), TextWatcher {
 
     companion object {
         const val OTP_LENGTH = 6
+        private val MOBILE_IDENTIFIER_TYPE = "mobile"
     }
 
     val otpMessageLbl = ObservableField<CharSequence>()
@@ -21,6 +23,7 @@ class RegistrationVerificationViewModel : BaseViewModel(), TextWatcher {
     val submitEnabled = ObservableBoolean()
 
     val onClickVerifyEvent = SingleLiveEvent<String>()
+    val onClickResendEvent = SingleLiveEvent<RequestVerificationRequest>()
 
     override fun afterTextChanged(s: Editable?) {
         if (otpText.get()?.isNotEmpty() == true) {
@@ -38,4 +41,7 @@ class RegistrationVerificationViewModel : BaseViewModel(), TextWatcher {
         onClickVerifyEvent.value = otpText.get()
     }
 
+    fun onClickResend(){
+        onClickResendEvent.value = RequestVerificationRequest(MOBILE_IDENTIFIER_TYPE, mobileNumberText.get().toString())
+    }
 }
