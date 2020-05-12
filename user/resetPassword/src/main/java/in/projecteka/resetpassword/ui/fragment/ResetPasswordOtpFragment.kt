@@ -51,11 +51,6 @@ class ResetPasswordOtpFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-//        parentVM.appBarTitle.set(getString(R    .string.verification))
-
-//        viewModel.otpMessageLbl.set(SpannableStringBuilder()
-//            .append(getString(R.string.otp_sent))
-//            .bold { append(" ${parentVM.getIdentifierValue()}") })
         initObservers()
         parentViewModel.tempToken?.let {
             viewModel.init(it)
@@ -64,7 +59,6 @@ class ResetPasswordOtpFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.onClickValidateEvent.observe(this, Observer {
-            //            parentViewModel.onValidateClicked()
             parentViewModel.sessionId?.let {
                 viewModel.verifyOtp(
                     it,
@@ -93,7 +87,6 @@ class ResetPasswordOtpFragment : BaseFragment() {
                 }
                 is Success -> {
                     parentViewModel.tempToken = it.data?.temporaryToken
-//                    parentViewModel.onValidateClicked()
                     parentViewModel.onVerifyOtpRedirectRequest()
                     if (snackbar.isShown) snackbar.dismiss()
                 }
@@ -109,24 +102,15 @@ class ResetPasswordOtpFragment : BaseFragment() {
         val spannableString = SpannableString(message)
 
         spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        snackbar = Snackbar.make(snackbar_container, spannableString, Snackbar.LENGTH_INDEFINITE)
-//        var layoutParams = MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-//        layoutParams.setMargins(snackbarMargin, snackbarMargin, snackbarMargin, snackbarMargin)
-//        snackbar.view.layoutParams = layoutParams
+        snackbar = Snackbar.make(snackbar_container, spannableString, Snackbar.LENGTH_LONG)
         if (!snackbar.isShown) snackbar.show()
     }
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        if (snackbar.isShown) snackbar.dismiss()
-//    }
-//
     override fun onResume() {
         super.onResume()
         showSnackbar(String.format(getString(R.string.otp_sent_msg), parentViewModel.consentManagerId))
     }
-//
-//
+
     override fun onPause() {
         super.onPause()
         if (snackbar.isShown) snackbar.dismiss()

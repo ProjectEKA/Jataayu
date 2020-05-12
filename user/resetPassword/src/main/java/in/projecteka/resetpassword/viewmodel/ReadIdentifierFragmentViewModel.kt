@@ -15,7 +15,7 @@ import java.util.regex.Pattern
 class ReadIdentifierFragmentViewModel(val resetPasswordRepository: ResetPasswordRepository): BaseViewModel() {
 
 
-    val consentManagerIdProviderLblId = ObservableField<Int>(R.string.ncg)
+    val consentManagerIdProviderLblId = ObservableField<Int>(R.string.cm_config_provider)
     val consentManagerIdProviderLbl = ObservableField<String>()
     val setEnableButton = ObservableBoolean(false)
 
