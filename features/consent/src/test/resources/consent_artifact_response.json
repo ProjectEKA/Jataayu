@@ -1,0 +1,66 @@
+{
+  "limit": 0,
+  "size": 0,
+  "offset": 0,
+  "consentArtefacts": [
+    {
+      "status": "REQUESTED",
+      "consentDetail": {
+        "schemaVersion": "string",
+        "consentId": "string",
+        "createdAt": "2020-05-12T05:03:06.618Z",
+        "patient": {
+          "id": "batman@ncg"
+        },
+        "careContexts": [
+          {
+            "patientReference": "batman@tmh",
+            "careContextReference": "Episode1"
+          }
+        ],
+        "purpose": {
+          "text": "string",
+          "code": "string",
+          "refUri": "string"
+        },
+        "hip": {
+          "id": "string",
+          "name": "string"
+        },
+        "hiu": {
+          "id": "string",
+          "name": "string"
+        },
+        "consentManager": {
+          "id": "string"
+        },
+        "requester": {
+          "name": "string",
+          "identifier": {
+            "value": "string",
+            "type": "string",
+            "system": "string"
+          }
+        },
+        "hiTypes": [
+          "Condition"
+        ],
+        "permission": {
+          "accessMode": "VIEW",
+          "dateRange": {
+            "from": "2020-05-12T05:03:06.618Z",
+            "to": "2020-05-12T05:03:06.618Z"
+          },
+          "dataEraseAt": "2020-05-12T05:03:06.618Z",
+          "frequency": {
+            "unit": "HOUR",
+            "value": 0,
+            "repeats": 0
+          }
+        }
+      },
+      "signature": "Signature of CM as defined in W3C standards; Base64 encoded"
+    }
+  ],
+  "signature": "Signature of CM as defined in W3C standards; Base64 encoded"
+}

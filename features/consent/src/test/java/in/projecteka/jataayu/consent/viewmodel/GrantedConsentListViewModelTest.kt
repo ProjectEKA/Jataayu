@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.RequestStatus
+import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
@@ -17,6 +18,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertNotNull
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -127,6 +129,16 @@ class ConsentListViewModelTest {
         consentViewModel.getConsents( offset = 0)
         verify(repository).getConsents(10, 0, filters = filters)
         verify(call).enqueue(any())
+    }
+
+
+    @Test
+    fun `should parse the response and return consent artifact response`() {
+
+        val consentArtifactResponse = Gson()
+            .fromJson(TestUtils.readFile("consent_artifact_response.json"), ConsentArtifactResponse::class.java)
+        assertNotNull(consentArtifactResponse)
+
     }
 
 
