@@ -40,6 +40,7 @@ class LoginViewModel(
     val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
     var onClickForgotPasswordEvent = SingleLiveEvent<Void>()
     val accountLockBlockEnable = ObservableField<Int>(View.GONE)
+    val accountLockBlockDividerEnable = ObservableField<Int>(View.GONE)
 
     val loginResponse = PayloadLiveData<CreateAccountResponse>()
 

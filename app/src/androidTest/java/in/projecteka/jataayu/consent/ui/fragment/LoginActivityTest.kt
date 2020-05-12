@@ -85,5 +85,7 @@ class LoginActivityTest{
     @Test
     fun shouldDisableAccountLockLableByDefault(){
         onView(withId(R.id.account_lock_error_text)).check(matches(isEnabled()))
+        onView(withId(R.id.divider)).check(matches(isEnabled()))
+
     }
 }
