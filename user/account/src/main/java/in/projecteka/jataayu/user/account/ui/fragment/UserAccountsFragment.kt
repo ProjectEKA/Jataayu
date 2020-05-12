@@ -5,7 +5,6 @@ import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
-import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
@@ -116,14 +115,8 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
                 is Loading -> {
                     viewModel.showProgress.set(true)
                 }
-                is Success -> {
-                    viewModel.showProgress.set(false)
-                    viewModel.clearSharedPreferences()
-                    startLauncher(context!!)
-                }
                 else -> {
-                    viewModel.clearSharedPreferences()
-                    startLauncher(context!!)
+                    onLogoutFinish()
                 }
             }
         })
@@ -132,6 +125,13 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
             val hipList = links.map { it.hip }
             getNamesOfHipList(hipList)
         })
+    }
+
+    private fun onLogoutFinish() {
+        viewModel.showProgress.set(false)
+        viewModel.clearSharedPreferences()
+        activity?.finish()
+        startLauncher(context!!)
     }
 
 

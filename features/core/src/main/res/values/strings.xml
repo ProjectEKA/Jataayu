@@ -17,4 +17,5 @@
     <string name="show">Show</string>
     <string name="hide">Hide</string>
     <string name="registered_successfully">Registered Successfully</string>
+    <string name="otp_limit_exceeded">OTP request limit exceeded. Please try again after some time.</string>
 </resources>
