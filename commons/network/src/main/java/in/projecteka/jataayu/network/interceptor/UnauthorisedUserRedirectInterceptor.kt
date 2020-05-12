@@ -20,6 +20,9 @@ class UnauthorisedUserRedirectInterceptor(private val context: Context, private 
             "${baseUrl}users/verify",
             "${baseUrl}users/permit",
             "${baseUrl}patients/verify-pin",
+            "${baseUrl}patients/generateotp",
+            "${baseUrl}patients/verifyotp",
+            "${baseUrl}patients/profile/reset-password",
             "${baseUrl}sessions" -> {
                 response
             }

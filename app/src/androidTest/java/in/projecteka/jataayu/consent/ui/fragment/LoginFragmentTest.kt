@@ -34,7 +34,7 @@ class LoginFragmentTest{
     fun shouldRenderUI(){
         displayed{
             allOf {
-                id(et_username)
+                id(et_consent_manager_id)
                 text("")
             }
 
@@ -76,7 +76,7 @@ class LoginFragmentTest{
     @Test
     fun shouldDisableLoginButtonIfPasswordIsEmpty() {
         typeText("username") {
-            id(R.id.et_username)
+            id(R.id.et_consent_manager_id)
         }
 
     }
@@ -84,7 +84,7 @@ class LoginFragmentTest{
     @Test
     fun shouldEnableLoginButtonIfUsernameAndPasswordIsNlotEmpty(){
         typeText("username"){
-            id(R.id.et_username)
+            id(R.id.et_consent_manager_id)
         }
         typeText("password"){
             id(R.id.et_password)

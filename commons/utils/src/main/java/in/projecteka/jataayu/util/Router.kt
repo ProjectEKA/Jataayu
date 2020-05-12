@@ -12,6 +12,7 @@ private const val ACTIVITY_ACCOUNT_CREATION = "in.projecteka.jataayu.user.accoun
 private const val ACTIVITY_LOGIN = "in.projecteka.jataayu.registration.ui.activity.LoginActivity"
 private const val ACTIVITY_LAUNCHER = "in.projecteka.jataayu.ui.launcher.LauncherActivity"
 private const val ACTIVITY_DASHBOARD = "in.projecteka.jataayu.ui.dashboard.DashboardActivity"
+private const val ACTIVITY_FORGOT_PASSWORD = "in.projecteka.resetpassword.ui.activity.ResetPasswordActivity"
 
 private fun defaultIntentDefinition(
     context: Context,
@@ -48,4 +49,8 @@ fun startLauncher(context: Context, intentDefinition: IntentDefinition? = null) 
 
 fun startDashboard(context: Context, intentDefinition: IntentDefinition? = null) {
     context.startActivity(defaultIntentDefinition(context, ACTIVITY_DASHBOARD, intentDefinition))
+}
+
+fun startForgotPassword(context: Context, intentDefinition: IntentDefinition? = null) {
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_FORGOT_PASSWORD))
 }

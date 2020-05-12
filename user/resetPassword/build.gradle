@@ -1,0 +1,20 @@
+import dependancies.Modules
+
+apply from: rootProject.file("android-library-commons.gradle")
+apply from: rootProject.file("jacoco.gradle")
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+            minifyEnabled false
+            debuggable true
+        }
+    }
+}
+
+dependencies {
+    api project(Modules.core)
+}
