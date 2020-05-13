@@ -9,9 +9,5 @@ data class ConsentArtifact (
 	@SerializedName("hiTypes") val hiTypes : List<String>,
 	@SerializedName("hip") val hip : Hip,
 	@SerializedName("careContexts") val careReferences : List<CareReference>,
-	@SerializedName("permission") val permission : Permission,
-	@SerializedName("consentDetail") val consentDetail: ConsentDetail? = null,
-    @SerializedName("signature") val signature: String? = null,
-	@SerializedName("status") val status: String? = null
-
+	@SerializedName("permission") val permission : Permission
 )

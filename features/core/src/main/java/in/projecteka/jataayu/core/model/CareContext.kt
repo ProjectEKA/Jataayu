@@ -6,8 +6,8 @@ import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import androidx.databinding.BaseObservable
 import com.google.gson.annotations.SerializedName
 
-open class CareContext(@SerializedName("referenceNumber") open val referenceNumber: String,
-                       @SerializedName("display") open val display: String): BaseObservable(), IDataBindingModel {
+open class CareContext(@SerializedName("referenceNumber", alternate = ["careContextReference"]) open val referenceNumber: String,
+                       @SerializedName("display", alternate = ["patientReference"]) open val display: String): BaseObservable(), IDataBindingModel {
 
     var contextChecked = true
 

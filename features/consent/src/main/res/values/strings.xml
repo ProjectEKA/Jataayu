@@ -26,9 +26,10 @@
     <string name="status_denied_consent_requests">Denied consent requests</string>
     <string name="status_all_requested_consents">All consent requests</string>
 
-    <string name="status_active_granted_consents">Active consents (%d)</string>
-    <string name="status_expired_granted_consents">Expired consents (%d)</string>
-    <string name="status_all_granted_consents">All Consents (%d)</string>
+    <string name="status_active_granted_consents">Granted consents</string>
+    <string name="status_expired_granted_consents">Expired consents</string>
+    <string name="status_revoked_consents">Revoked consents</string>
+    <string name="status_all_consents_artifacts">All Consents</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>

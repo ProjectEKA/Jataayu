@@ -42,7 +42,7 @@ private const val INDEX_ALL = 3
 
 class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener, ItemClickCallback {
 
-    protected lateinit var binding: ConsentRequestFragmentBinding
+    private lateinit var binding: ConsentRequestFragmentBinding
     private lateinit var consentsListAdapter: ConsentsListAdapter
 
     private val viewModel: RequestedListViewModel by sharedViewModel()
@@ -68,7 +68,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
-        viewModel.getConsents(RequestStatus.REQUESTED, offset = 0)
+        viewModel.getConsents(limit = 4, offset = 0)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -112,8 +112,9 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
                         getNamesOf(hiuList)
                     }
                     parentViewModel.showRefreshing(false)
-                    binding.hideRequestsList = response.data?.requests?.isNullOrEmpty()
-                    binding.hideFilter = binding.hideRequestsList
+
+                    binding.hideRequestsList = false
+                    binding.hideFilter = false
                 }
                 is PartialFailure -> {
                     context?.showAlertDialog(getString(R.string.failure), response.error?.message,
@@ -182,7 +183,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
             INDEX_ACTIVE -> viewModel.currentStatus.value = RequestStatus.REQUESTED
             INDEX_EXPIRED -> viewModel.currentStatus.value = RequestStatus.EXPIRED
             INDEX_DENIED -> viewModel.currentStatus.value = RequestStatus.DENIED
-            INDEX_ALL -> viewModel.currentStatus.value = null
+            INDEX_ALL -> viewModel.currentStatus.value = RequestStatus.ALL
         }
     }
 
@@ -224,7 +225,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     private fun resetScrollListener() {
         if (viewModel.scrollListener == null) {
-            viewModel.scrollListener = PaginationScrollListener(viewModel, 9)
+            viewModel.scrollListener = PaginationScrollListener(viewModel, viewModel.requestedConsentsList.value?.totalCount ?: 0)
             setupScrollListener()
         }
     }
@@ -233,7 +234,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         consentsListAdapter.clearAll()
         viewModel.scrollListener = null
         resetScrollListener()
-        viewModel.getConsents(viewModel.currentStatus.value, offset = 0)
+        viewModel.getConsents(offset = 0)
     }
 
     private fun setupScrollListener() {

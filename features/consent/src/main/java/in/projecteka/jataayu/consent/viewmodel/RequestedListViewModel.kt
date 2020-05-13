@@ -48,12 +48,11 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
 
     internal var selectedProviderName = String.EMPTY
 
-    fun getConsents(status: RequestStatus?,
-                    limit: Int = fetchLimit,
+    fun getConsents(limit: Int = fetchLimit,
                     offset: Int) {
         fetchLimit = limit
-        val filters = status?.let { "status==${status.name}" }
-        consentListResponse.fetch(repository.getConsents(limit, offset, filters))
+//        val filters = status?.let { "status==${status.name}" }
+        consentListResponse.fetch(repository.getConsents(limit, offset, currentStatus.value?.name))
     }
 
     fun populateFilterItems(resources: Resources): List<String>  {
@@ -63,7 +62,7 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
 
     override fun loadMoreItems(totalFetchedCount: Int) {
         isLoadingMore.set(View.VISIBLE)
-        getConsents(RequestStatus.REQUESTED, offset = totalFetchedCount)
+        getConsents(offset = totalFetchedCount)
     }
 
 

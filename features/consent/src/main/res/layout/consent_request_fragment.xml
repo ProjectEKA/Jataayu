@@ -70,6 +70,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvConsents"
             android:fadingEdge="vertical"
+            android:scrollbars="vertical"
             android:requiresFadingEdge="vertical"
             android:fadingEdgeLength="@dimen/recycler_view_fading_edge_length"
             android:layout_width="match_parent"

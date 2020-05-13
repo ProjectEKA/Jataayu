@@ -8,7 +8,7 @@
       "consentDetail": {
         "schemaVersion": "string",
         "consentId": "string",
-        "createdAt": "2020-05-12T05:03:06.618Z",
+        "createdAt": "2020-05-12T06:53:42.996Z",
         "patient": {
           "id": "batman@ncg"
         },
@@ -48,10 +48,10 @@
         "permission": {
           "accessMode": "VIEW",
           "dateRange": {
-            "from": "2020-05-12T05:03:06.618Z",
-            "to": "2020-05-12T05:03:06.618Z"
+            "from": "2020-05-12T06:53:42.996Z",
+            "to": "2020-05-12T06:53:42.996Z"
           },
-          "dataEraseAt": "2020-05-12T05:03:06.618Z",
+          "dataEraseAt": "2020-05-12T06:53:42.996Z",
           "frequency": {
             "unit": "HOUR",
             "value": 0,

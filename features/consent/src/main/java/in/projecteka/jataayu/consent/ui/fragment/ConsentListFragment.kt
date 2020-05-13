@@ -5,6 +5,7 @@ import `in`.projecteka.jataayu.consent.callback.DeleteConsentCallback
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
 import `in`.projecteka.jataayu.consent.listners.PaginationScrollListener
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
+import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
@@ -13,7 +14,6 @@ import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentListViewModel
 import `in`.projecteka.jataayu.core.ConsentScopeType
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
-import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.*
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
@@ -38,10 +38,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.consent_request_fragment.*
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-
-private const val INDEX_ACTIVE = 0
-private const val INDEX_EXPIRED = 1
-private const val INDEX_ALL = 2
 
 class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     DeleteConsentCallback, ItemClickCallback {
@@ -71,26 +67,32 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     private fun initObservers() {
 
-        viewModel.consentListResponse.observe(this, Observer { response ->
+        viewModel.consentArtifactResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Loading -> viewModel.showProgress(response.isLoading, R.string.loading_requests)
                 is Success -> {
                     parentViewModel.showRefreshing(false)
-                    viewModel.grantedConsentsList.value = response.data
-                    val filteredRequests = viewModel.filterConsents(response.data?.requests)
-                    resetScrollListener()
-                    filteredRequests?.let {
-                        val hiuList = it.map { consent -> consent.hiu }
-                        getNamesOf(hiuList)
+                    response.data?.let {
+                        viewModel.consentListResponse.value = ConsentsListResponse(it.getArtifacts(), it.size, it.offset)
                     }
-                    binding.hideRequestsList = viewModel.grantedConsentsList.value?.requests.isNullOrEmpty()
-                    binding.hideFilter = true
                 }
                 is PartialFailure -> {
                     context?.showAlertDialog(getString(R.string.failure), response.error?.message,
                         getString(string.ok))
                 }
             }
+
+        })
+
+        viewModel.consentListResponse.observe(this, Observer { response ->
+            parentViewModel.showRefreshing(false)
+            resetScrollListener()
+            response.requests.let {
+                val hiuList = it.map { consent -> consent.hiu }
+                getNamesOf(hiuList)
+            }
+            binding.hideRequestsList = response.requests.isNullOrEmpty()
+            binding.hideFilter = false
         })
 
         viewModel.grantedConsentDetailsResponse.observe(
@@ -128,12 +130,16 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                 }
                 is Failure -> {
                     context?.showAlertDialog(
-                        getString(R.string.failure), it.error?.message,
+                        getString(R.string.failure), it.error.message,
                         getString(string.ok)
                     )
                 }
 
             }
+        })
+
+        viewModel.currentStatus.observe(this, Observer {
+            clearRecylerView()
         })
 
         parentViewModel.pullToRefreshEvent.observe(viewLifecycleOwner, Observer{
@@ -147,7 +153,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
         val arrayAdapter = ArrayAdapter<String>(
             context!!,
             layout.simple_dropdown_item_1line, android.R.id.text1,
-            viewModel.populateFilterItems(resources, ConsentFlow.GRANTED_CONSENTS)
+            viewModel.populateFilterItems(resources)
         )
         binding.spRequestFilter.adapter = arrayAdapter
         arrayAdapter.notifyDataSetChanged()
@@ -166,7 +172,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     private fun initRecyclerViewAdapter() {
         consentsListAdapter = ConsentsListAdapter(
-            this, listOf()
+            this, listOf(), this
         )
         binding.rvConsents.apply {
             layoutManager = LinearLayoutManager(context)
@@ -183,7 +189,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     }
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
-        consentsListAdapter.updateData(requests)
+        consentsListAdapter.updateData(requests.reversed())
     }
 
 
@@ -192,11 +198,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        when (position) {
-            INDEX_ACTIVE -> viewModel.currentStatus.value = RequestStatus.REQUESTED
-            INDEX_EXPIRED -> viewModel.currentStatus.value = RequestStatus.EXPIRED
-            INDEX_ALL -> viewModel.currentStatus.value = null
-        }
+        viewModel.updateFilterSelectedItem(position)
     }
 
 
@@ -207,7 +209,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun getNamesOf(hiuList: List<HipHiuIdentifiable>) {
         val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(hiuList)
         hipHiuNameResponse.observe(this, Observer {
-            viewModel.consentList?.let { consentList ->
+            viewModel.consentListResponse.value?.requests?.let { consentList ->
                 if(it.status) {
                     consentList.forEach { consent -> consent.hiu.name = it.nameMap[consent.hiu.getId()] ?: "" }
                     renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)
@@ -231,7 +233,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
             val intent = Intent(context, ConsentDetailsActivity::class.java)
             intent.putExtra(CONSENT_FLOW, ConsentFlow.GRANTED_CONSENTS.ordinal)
             startActivity(intent)
-            EventBus.getDefault().postSticky(iDataBindingModel.id)
+            EventBus.getDefault().postSticky(iDataBindingModel)
             }
         }
 
@@ -247,7 +249,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     private fun resetScrollListener() {
         if (viewModel.scrollListener == null) {
-            viewModel.scrollListener = PaginationScrollListener(viewModel, viewModel.grantedConsentsList.value?.totalCount ?: 0)
+            viewModel.scrollListener = PaginationScrollListener(viewModel, viewModel.consentListResponse.value?.totalCount ?: 0)
             setupScrollListener()
         }
     }

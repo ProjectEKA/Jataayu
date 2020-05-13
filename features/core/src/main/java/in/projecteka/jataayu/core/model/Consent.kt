@@ -2,7 +2,9 @@ package `in`.projecteka.jataayu.core.model
 
 import `in`.projecteka.jataayu.core.BR
 import `in`.projecteka.jataayu.core.R
+import `in`.projecteka.jataayu.core.model.RequestStatus.*
 import `in`.projecteka.jataayu.core.model.approveconsent.CareReference
+import `in`.projecteka.jataayu.core.model.approveconsent.ConsentManager
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import androidx.annotation.StringRes
@@ -13,7 +15,7 @@ import java.util.*
 
 data class Consent(
     @SerializedName("id", alternate = ["consentId"]) val id: String,
-    @SerializedName("createdAt") val createdAt: String,
+    @SerializedName("createdAt") private val createdAt: String,
     @SerializedName("purpose") val purpose: Purpose,
     @SerializedName("patient") val patient: PatientId,
     @SerializedName("hip") val hip: Hip?,
@@ -22,8 +24,9 @@ data class Consent(
     @SerializedName("hiTypes") val hiTypes: ArrayList<String>,
     @SerializedName("permission") @Bindable val permission: Permission,
     @SerializedName("status") var status: RequestStatus,
-    @SerializedName("lastUpdated") val lastUpdated: String,
-    @SerializedName("careContexts") val careContexts : List<CareReference>?
+    @SerializedName("lastUpdated") private var lastUpdated: String = createdAt,
+    @SerializedName("careContexts") val careContexts : List<CareReference>?,
+    @SerializedName("consentManager") val consentManager: ConsentManager? = null
     ) : BaseObservable(), IDataBindingModel, Cloneable {
     var showDetails = true
     lateinit var relativeTimeSpan : String
@@ -70,19 +73,40 @@ data class Consent(
         return DateTimeUtils.getDateInUTCFormat(lastUpdated)
     }
 
+
     public override fun clone(): Consent {
         return copy(permission = permission.clone())
     }
 
+
     private fun modifyData() {
-        if (status == RequestStatus.GRANTED) {
-            relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(lastUpdated)
-            showDetails = false
-            baseString = R.string.granted_timespan
-        } else {
-            createdAt?.let { relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(createdAt) }
-            showDetails = true
-            baseString = R.string.requested_timespan
+
+        when(status) {
+            GRANTED -> {
+                relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(createdAt)
+                showDetails = false
+                baseString = R.string.granted_timespan
+            }
+            REVOKED -> {
+                relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(createdAt)
+                showDetails = true
+                baseString = R.string.revoked_timespan
+            }
+            EXPIRED -> {
+                relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(createdAt)
+                showDetails = true
+                baseString = R.string.expired_timespan
+            }
+            DENIED -> {
+                relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(lastUpdated)
+                showDetails = true
+                baseString = R.string.denied_timespan
+            }
+            else -> {
+                createdAt.let { relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(createdAt) }
+                showDetails = true
+                baseString = R.string.requested_timespan
+            }
         }
     }
 }

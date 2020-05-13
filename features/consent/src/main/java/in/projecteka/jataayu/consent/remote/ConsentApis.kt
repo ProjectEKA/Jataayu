@@ -15,12 +15,12 @@ interface ConsentApis {
     @GET("consent-requests")
     fun getConsents(@Query("limit")limit: Int,
                     @Query("offset") offset: Int,
-                    @Query("filters", encoded = true) filters: String?): Call<ConsentsListResponse>
+                    @Query("status") status: String?): Call<ConsentsListResponse>
 
     @GET("consent-artefacts")
     fun getConsentsArtifactList(@Query("limit")limit: Int,
                     @Query("offset") offset: Int,
-                    @Query("status", encoded = true) status: String): Call<ConsentArtifactResponse>
+                    @Query("status") status: String): Call<ConsentArtifactResponse>
 
     @GET("patients/links")
     fun getLinkedAccounts(): Call<LinkedAccountsResponse>

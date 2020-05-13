@@ -2,7 +2,6 @@ package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
-import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.RequestStatus
@@ -51,14 +50,14 @@ class ConsentListViewModelTest {
     private lateinit var resources: Resources
 
     @Mock
-    private lateinit var call: Call<ConsentsListResponse>
+    private lateinit var call: Call<ConsentArtifactResponse>
 
     @Mock
-    private lateinit var consentsFetchObserver: Observer<PayloadResource<ConsentsListResponse>>
+    private lateinit var consentsFetchObserver: Observer<PayloadResource<ConsentArtifactResponse>>
 
     private lateinit var consentViewModel: GrantedConsentListViewModel
 
-    private lateinit var consentsListResponse: ConsentsListResponse
+    private lateinit var consentsListResponse: ConsentArtifactResponse
 
     private lateinit var grantedConsentList: List<Consent>
 
@@ -72,23 +71,22 @@ class ConsentListViewModelTest {
 
         val filters = null
         consentsListResponse = Gson()
-            .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)
+            .fromJson(TestUtils.readFile("consent_artifact_response.json"), ConsentArtifactResponse::class.java)
         grantedConsentList = filterConsents(RequestStatus.GRANTED)
 
-        `when`(repository.getConsents(10, 0, filters)).thenReturn(call)
+        `when`(repository.getConsentsArtifactList(10, 0, RequestStatus.ALL)).thenReturn(call)
         `when`(call.enqueue(any()))
             .then { invocation ->
-                val callback = invocation.arguments[0] as Callback<ConsentsListResponse>
-                consentsListResponse = ConsentsListResponse(grantedConsentList, consentsListResponse.totalCount, consentsListResponse.offset)
+                val callback = invocation.arguments[0] as Callback<ConsentArtifactResponse>
                 callback.onResponse(call, Response.success(consentsListResponse))
             }
 
-        consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
+        consentViewModel.consentArtifactResponse.observeForever(consentsFetchObserver)
     }
 
     @After
     fun tearDown() {
-        consentViewModel.consentListResponse.removeObserver(consentsFetchObserver)
+        consentViewModel.consentArtifactResponse.removeObserver(consentsFetchObserver)
     }
 
     @Test
@@ -149,6 +147,6 @@ class ConsentListViewModelTest {
     private fun getData(fileName: String) = Gson().fromJson<List<Consent>>(TestUtils.readFile(fileName))
 
     private fun filterConsents(status: RequestStatus) : List<Consent> {
-        return consentsListResponse.requests.asSequence().filter { it.status == status }.toList()
+        return consentsListResponse.getArtifacts().asSequence().filter { it.status == status }.toList()
     }
 }
