@@ -56,7 +56,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 }
                 is PartialFailure -> {
                     when (it.error?.code) {
-                        ERROR_CODE_BLOCK_USER -> viewModel.accountLockBlockEnable.set(View.VISIBLE)
+                        ERROR_CODE_BLOCK_USER ->
+                        {
+                            viewModel.accountLockBlockEnable.set(View.VISIBLE)
+                            viewModel.accountLockBlockDividerEnable.set(View.VISIBLE)
+                        }
                         else ->{
                             showAlertDialog(
                                 getString(R.string.failure), it.error?.message,
