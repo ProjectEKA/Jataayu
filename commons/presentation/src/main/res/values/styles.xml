@@ -148,6 +148,12 @@
         <item name="android:textColor">@color/error_message_color</item>
     </style>
 
+    <style name="TextAppearance.AccountLockErrorMessage" parent="TextAppearance">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textColor">@color/accountlock_error_message</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+
     <style name="ConsentRequestHiuDetails" parent="TextAppearance.ListItemSubHeader">
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">sans-serif-medium</item>

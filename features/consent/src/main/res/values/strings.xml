@@ -65,4 +65,5 @@
     <string name="consent_granted">Consent Granted Successfully</string>
     <string name="consent_denied">Consent Denied Successfully</string>
     <string name="consent_revoked">Consent Revoked Successfully</string>
+    <string name="blocked_user_exceed_limit">You have exceeded the number of  attempts. Please try again after sometime.</string>
 </resources>
