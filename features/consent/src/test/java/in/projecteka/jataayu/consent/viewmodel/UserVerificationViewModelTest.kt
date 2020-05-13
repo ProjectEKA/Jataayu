@@ -109,7 +109,7 @@ class UserVerificationViewModelTest {
     }
 
     @Test
-    fun `should Return Account Lock With Exceed Limit`(){
+    fun `should Return Account Lock when wrong otp entered five times`(){
         `when`(uuidRepository.generateUUID()).thenReturn("276fa8f3-810b-49d0-b0b5-d1f760271255")
         `when`(userVerificationRepository.verifyUser(userVerificationRequestForGrand)).thenReturn(call)
         `when`(call.enqueue(any()))
