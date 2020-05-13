@@ -38,6 +38,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         fun newInstance() = UserVerificationFragment()
         private const val ERROR_CODE_INVALID_PIN = 1022
         private const val ERROR_CODE_TOKEN_INVALID = 1017
+        private const val ERROR_CODE_INVALID_PIN_ATTEMPTS_EXCEEDED = 1032
     }
 
     private val viewModel: UserVerificationViewModel by viewModel()
@@ -70,6 +71,7 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
                     when (it.error?.code) {
                         ERROR_CODE_INVALID_PIN -> {
                             binding.lblInvalidPin.visibility = View.VISIBLE
+                            binding.lblInvalidPin.setText(it.error?.message)
                             binding.etPin.setText("")
                             binding.etPin.wobble()
                         }
@@ -79,6 +81,10 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                                         Intent.FLAG_ACTIVITY_CLEAR_TASK
                             })
+                        } ERROR_CODE_INVALID_PIN_ATTEMPTS_EXCEEDED -> {
+                            binding.lblBlockUser.visibility = View.VISIBLE
+                            binding.etPin.setText("")
+                            binding.etPin.wobble()
                         }
                         else -> {
                             context?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
