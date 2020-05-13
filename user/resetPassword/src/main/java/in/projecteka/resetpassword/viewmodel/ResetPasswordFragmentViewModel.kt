@@ -15,7 +15,6 @@ import androidx.databinding.ObservableInt
 import java.util.regex.Pattern
 
 class ResetPasswordFragmentViewModel(val resetPasswordRepository: ResetPasswordRepository): BaseViewModel() {
-    val inputCreatePasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
     val inputConfirmPasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
     val createPasswordInputType = ObservableInt(hiddenPasswordInputType())
     val confirmPasswordInputType = ObservableInt(hiddenPasswordInputType())
@@ -39,22 +38,6 @@ class ResetPasswordFragmentViewModel(val resetPasswordRepository: ResetPasswordR
 
     fun init(tempToken: String) {
         this.tempToken = tempToken
-    }
-
-    fun toggleCreatePasswordVisible() {
-        val newInputType = when (createPasswordInputType.get()) {
-            visiblePasswordInputType() -> {
-                inputCreatePasswordVisibilityToggleLbl.set(R.string.show)
-                hiddenPasswordInputType()
-            }
-            hiddenPasswordInputType() -> {
-                inputCreatePasswordVisibilityToggleLbl.set(R.string.hide)
-                visiblePasswordInputType()
-            }
-            else -> hiddenPasswordInputType()
-        }
-        createPasswordInputType.set(newInputType)
-        onCreatePasswordVisibilityToggleEvent.value = inputCreatePasswordLbl.get()?.length ?: 0
     }
 
     fun toggleConfirmPasswordVisible() {
