@@ -35,7 +35,6 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.consent_request_fragment.*
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -201,10 +200,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
         viewModel.updateFilterSelectedItem(position)
     }
 
-
-    private fun filterRequests(requests: List<Consent>) {
-        (rvConsents.adapter as ConsentsListAdapter).updateData(requests)
-    }
 
     private fun getNamesOf(hiuList: List<HipHiuIdentifiable>) {
         val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(hiuList)

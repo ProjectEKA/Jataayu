@@ -51,12 +51,10 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
     fun getConsents(limit: Int = fetchLimit,
                     offset: Int) {
         fetchLimit = limit
-//        val filters = status?.let { "status==${status.name}" }
         consentListResponse.fetch(repository.getConsents(limit, offset, currentStatus.value?.name))
     }
 
     fun populateFilterItems(resources: Resources): List<String>  {
-//        requestedConsentStatusList.map { getFormattedItem(resources,it, REQUESTED)  }
         return requestedConsentStatusList.map { resources.getString(it) }
     }
 
@@ -65,37 +63,6 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
         getConsents(offset = totalFetchedCount)
     }
 
-
-
-//    private fun getFormattedItem(
-//        resources: Resources,
-//        filterItem: Int,
-//        requestStatus: RequestStatus
-//    ): String {
-//        val list = requestedConsentsList.value
-//
-//        val count = list?.count { consent ->
-//            val dataExpired = DateTimeUtils.isDateExpired(consent.permission.dataEraseAt)
-//            when (filterItem) {
-//                R.string.status_denied_consent_requests -> {
-//                    consent.status == DENIED
-//                }
-//                R.string.status_active_requested_consents -> {
-//                    if (consent.status != DENIED) !dataExpired else false
-//                }
-//                R.string.status_expired_requested_consents -> {
-//                    if (consent.status != DENIED) dataExpired else false
-//                }
-//                else -> true
-//            }
-//        }
-//
-//        return String.format(resources.getString(filterItem), count)
-//    }
-
-//    fun filterConsents(consentList: List<Consent>?) {
-//        requestedConsentsList.value = consentList
-//    }
 
     fun fetchHipHiuNamesOf(idList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
         return repository.getProviderBy(idList)

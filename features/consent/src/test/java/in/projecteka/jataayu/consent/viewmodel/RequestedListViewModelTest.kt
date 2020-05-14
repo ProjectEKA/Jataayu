@@ -10,8 +10,6 @@ import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
-import `in`.projecteka.jataayu.util.repository.CredentialsRepository
-import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
@@ -41,18 +39,12 @@ class RequestedConsentListViewModelTest {
     private lateinit var repository: ConsentRepository
 
     @Mock
-    private lateinit var preferenceRepo: PreferenceRepository
-
-    @Mock
-    private lateinit var credentialsRepo: CredentialsRepository
-
-    @Mock
     private lateinit var resources: Resources
 
     @Mock
     private lateinit var call: Call<ConsentsListResponse>
 
-    private lateinit var consentViewModel: RequestedListViewModel
+    private lateinit var requestedListViewModel: RequestedListViewModel
     @Mock
     private lateinit var consentsFetchObserver: Observer<PayloadResource<ConsentsListResponse>>
 
@@ -62,17 +54,19 @@ class RequestedConsentListViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-
-        consentViewModel = RequestedListViewModel(repository)
-
+        requestedListViewModel = RequestedListViewModel(repository)
         consentsListResponse = Gson()
-            .fromJson(TestUtils.readFile("consent_list_response.json"), ConsentsListResponse::class.java)
+            .fromJson(
+                TestUtils.readFile("consent_list_response.json"),
+                ConsentsListResponse::class.java
+            )
+        requestedListViewModel.consentListResponse.observeForever(consentsFetchObserver)
 
     }
 
     @After
     fun tearDown() {
-        consentViewModel.consentListResponse.removeObserver(consentsFetchObserver)
+        requestedListViewModel.consentListResponse.removeObserver(consentsFetchObserver)
     }
 
     @Test
@@ -81,7 +75,7 @@ class RequestedConsentListViewModelTest {
         `when`(resources.getString(R.string.status_expired_requested_consents)).thenReturn("Expired requested consents")
         `when`(resources.getString(R.string.status_denied_consent_requests)).thenReturn("Denied consent requests")
         `when`(resources.getString(R.string.status_all_requested_consents)).thenReturn("All requested consents")
-        val populatedFilterItems = consentViewModel.populateFilterItems(resources)
+        val populatedFilterItems = requestedListViewModel.populateFilterItems(resources)
 
         assertEquals(dummyRequestedFilterList(), populatedFilterItems)
     }
@@ -96,18 +90,11 @@ class RequestedConsentListViewModelTest {
     }
 
     @Test
-    fun `should Fetch Consents`() {
+    fun `should Fetch all consents`() {
 
-        `when`(repository.getConsents(10, 0, null)).thenReturn(call)
-        `when`(call.enqueue(any()))
-            .then { invocation ->
-                val callback = invocation.arguments[0] as Callback<ConsentsListResponse>
-                callback.onResponse(call, Response.success(consentsListResponse))
-            }
-
-        consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
-
-        consentViewModel.getConsents(offset = 0)
+        requestedListViewModel.currentStatus.value = RequestStatus.ALL
+        setupConsentAPI()
+        requestedListViewModel.getConsents(offset = 0)
 
         verify(consentsFetchObserver, times(1)).onChanged(Loading(true))
         verify(consentsFetchObserver, times(1)).onChanged(Loading(false))
@@ -117,85 +104,77 @@ class RequestedConsentListViewModelTest {
     @Test
     fun `should Fetch only active consents`() {
 
-        consentViewModel.currentStatus.value = RequestStatus.REQUESTED
-        val activeConsents = filterConsents(consentViewModel.currentStatus.value!!)
-        val expectedResponse = ConsentsListResponse(activeConsents, activeConsents.size, 0)
-        val filters = consentViewModel.currentStatus.value?.let { "status==${it.name}" }
-        `when`(repository.getConsents(10, 0, filters)).thenReturn(call)
-        `when`(call.enqueue(any()))
-            .then { invocation ->
-                val callback = invocation.arguments[0] as Callback<ConsentsListResponse>
-                callback.onResponse(call, Response.success(expectedResponse))
-            }
+        requestedListViewModel.currentStatus.value = RequestStatus.REQUESTED
+        setupConsentAPI()
+        requestedListViewModel.getConsents(offset = 0)
 
-        consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
-
-        consentViewModel.getConsents(offset = 0)
-
-        verify(repository).getConsents(10, 0, filters)
+        verify(repository).getConsents(10, 0, RequestStatus.REQUESTED.name)
         verify(call).enqueue(any())
-        assertEquals(expectedResponse.requests, activeConsents)
 
+        verify(consentsFetchObserver, times(1)).onChanged(Loading(true))
+        verify(consentsFetchObserver, times(1)).onChanged(Loading(false))
+        verify(consentsFetchObserver, times(1)).onChanged(Success(consentsListResponse))
     }
 
     @Test
     fun `should Fetch only expired consents`() {
 
-        consentViewModel.currentStatus.value = RequestStatus.EXPIRED
-        val activeConsents = filterConsents(consentViewModel.currentStatus.value!!)
-        val expectedResponse = ConsentsListResponse(activeConsents, activeConsents.size, 0)
-        val filters = consentViewModel.currentStatus.value?.let { "status==${it.name}" }
-        `when`(repository.getConsents(10, 0, filters)).thenReturn(call)
-        `when`(call.enqueue(any()))
-            .then { invocation ->
-                val callback = invocation.arguments[0] as Callback<ConsentsListResponse>
-                callback.onResponse(call, Response.success(expectedResponse))
-            }
+        requestedListViewModel.currentStatus.value = RequestStatus.EXPIRED
+        setupConsentAPI()
+        requestedListViewModel.getConsents(offset = 0)
 
-        consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
-
-        consentViewModel.getConsents(offset = 0)
-
-        verify(repository).getConsents(10, 0, filters)
+        verify(repository).getConsents(10, 0, RequestStatus.EXPIRED.name)
         verify(call).enqueue(any())
-        assertEquals(expectedResponse.requests, activeConsents)
+
+        verify(consentsFetchObserver, times(1)).onChanged(Loading(true))
+        verify(consentsFetchObserver, times(1)).onChanged(Loading(false))
+        verify(consentsFetchObserver, times(1)).onChanged(Success(consentsListResponse))
 
     }
 
     @Test
     fun `should Fetch only denied consents`() {
 
-        consentViewModel.currentStatus.value = RequestStatus.DENIED
-        val activeConsents = filterConsents(consentViewModel.currentStatus.value!!)
-        val expectedResponse = ConsentsListResponse(activeConsents, activeConsents.size, 0)
-        val filters = consentViewModel.currentStatus.value?.let { "status==${it.name}" }
-        `when`(repository.getConsents(10, 0, filters)).thenReturn(call)
-        `when`(call.enqueue(any()))
-            .then { invocation ->
-                val callback = invocation.arguments[0] as Callback<ConsentsListResponse>
-                callback.onResponse(call, Response.success(expectedResponse))
-            }
+        requestedListViewModel.currentStatus.value = RequestStatus.EXPIRED
+        setupConsentAPI()
+        requestedListViewModel.getConsents(offset = 0)
 
-        consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
-
-        consentViewModel.getConsents(offset = 0)
-
-        verify(repository).getConsents(10, 0, filters)
+        verify(repository).getConsents(10, 0, RequestStatus.EXPIRED.name)
         verify(call).enqueue(any())
-        assertEquals(expectedResponse.requests, activeConsents)
+
+        verify(consentsFetchObserver, times(1)).onChanged(Loading(true))
+        verify(consentsFetchObserver, times(1)).onChanged(Loading(false))
+        verify(consentsFetchObserver, times(1)).onChanged(Success(consentsListResponse))
 
     }
-
 
 
     private fun dummyRequestedConsentsList(): List<Consent>? {
         return getData("requested_consents.json")
     }
 
-    private fun getData(fileName: String) = Gson().fromJson<List<Consent>>(TestUtils.readFile(fileName))
+    private fun getData(fileName: String) =
+        Gson().fromJson<List<Consent>>(TestUtils.readFile(fileName))
 
-    private fun filterConsents(status: RequestStatus) : List<Consent> {
+    private fun filterConsents(status: RequestStatus): List<Consent> {
         return consentsListResponse.requests.asSequence().filter { it.status == status }.toList()
+    }
+
+    private fun setupConsentAPI() {
+
+        var filteredConsents = consentsListResponse.requests
+        if (requestedListViewModel.currentStatus.value != RequestStatus.ALL) {
+            filteredConsents = filterConsents(requestedListViewModel.currentStatus.value!!)
+        }
+        val expectedResponse = ConsentsListResponse(filteredConsents, filteredConsents.size, 0)
+        val filters = requestedListViewModel.currentStatus.value?.name
+        `when`(repository.getConsents(10, 0, filters)).thenReturn(call)
+        `when`(call.enqueue(any()))
+            .then { invocation ->
+                val callback = invocation.arguments[0] as Callback<ConsentsListResponse>
+                consentsListResponse = expectedResponse
+                callback.onResponse(call, Response.success(expectedResponse))
+            }
     }
 
 }
