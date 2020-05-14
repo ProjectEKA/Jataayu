@@ -202,7 +202,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     }
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
-        consentsListAdapter.updateData(requests.getSortedConsentListByLastUpdatedDate())
+        consentsListAdapter.updateData(requests)
     }
 
     fun getConsentFlow(): ConsentFlow {
