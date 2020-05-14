@@ -247,7 +247,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                     eventBusInstance.register(this)
                 viewModel.showProgress(true)
                 viewModel.grantConsent(
-                    consent.id!!,
+                    consent.id,
                     viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission))
             }
         }
@@ -287,7 +287,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     }
 
     private fun showConsentExpiryErrorMessage() {
-        showSnackbar(binding.layoutRoot, resources.getString(R.string.consent_expiry_message), object: Snackbar.Callback() {
+        showSnackbar(binding.layoutRoot, resources.getString(R.string.consent_expiry_message),1500, object: Snackbar.Callback() {
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                 val intent = Intent()
                 intent.putExtra(KEY_CONSENT_EVENT_TYPE, KEY_EVENT_EXPIRED)

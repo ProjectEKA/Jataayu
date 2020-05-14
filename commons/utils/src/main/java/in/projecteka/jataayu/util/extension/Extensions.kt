@@ -34,11 +34,11 @@ fun <T> Fragment.startActivity(clazz: Class<T>) {
     context?.startActivity(Intent(context, clazz))
 }
 
-fun <T> Context.startActivityForResult(clazz: Class<T>, requestCode : Int) {
+fun <T> Context.startActivityForResult(clazz: Class<T>, requestCode: Int) {
     (this as Activity).startActivityForResult(Intent(this, clazz), requestCode)
 }
 
-fun <T> Fragment.startActivityForResult(clazz: Class<T>, requestCode : Int) {
+fun <T> Fragment.startActivityForResult(clazz: Class<T>, requestCode: Int) {
     activity!!.startActivityForResult(Intent(activity, clazz), requestCode)
 }
 
@@ -67,10 +67,13 @@ fun Context.showLongToast(text: CharSequence) = Toast.makeText(this, text, Toast
 fun Fragment.showLongToast(text: CharSequence) = context?.showLongToast(text)
 fun Context.showShortToast(text: CharSequence) =
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+
 val Context.isConnected: Boolean
     get() {
-        val connectivityManager = (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
-        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        val connectivityManager =
+            (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         return if (capabilities != null) {
             when {
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
@@ -81,7 +84,8 @@ val Context.isConnected: Boolean
                 }
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
                     true
-                } else -> false
+                }
+                else -> false
             }
         } else {
             false
@@ -90,11 +94,12 @@ val Context.isConnected: Boolean
 
 fun Fragment.showShortToast(text: CharSequence) = context?.showShortToast(text)
 
-fun Date.toUtc() : String {
+fun Date.toUtc(): String {
     return DateTimeUtils.getUtcDate(this)
 }
 
-inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)
+inline fun <reified T> Gson.fromJson(json: String) =
+    this.fromJson<T>(json, object : TypeToken<T>() {}.type)
 
 fun View.show(shouldShow: Boolean) {
     this.visibility = if (shouldShow) View.VISIBLE else View.GONE
@@ -110,10 +115,19 @@ fun <T> Observable<T>.getIo(): Observable<T> {
         .observeOn(AndroidSchedulers.mainThread())
 }
 
-fun showSnackbar(view: View, message: String, callback: Snackbar.Callback?= null) {
+fun showSnackbar(
+    view: View, message: String,
+    duration: Int = 2000,
+    callback: Snackbar.Callback? = null
+) {
     val spannableString = SpannableString(message)
-    spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-    val snackbar = Snackbar.make(view, spannableString, 2000)
+    spannableString.setSpan(
+        ForegroundColorSpan(Color.WHITE),
+        0,
+        message.length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+    val snackbar = Snackbar.make(view, spannableString, duration)
     callback?.let { snackbar.addCallback(it) }
     snackbar.show()
 }

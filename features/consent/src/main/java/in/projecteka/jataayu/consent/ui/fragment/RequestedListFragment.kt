@@ -80,6 +80,9 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
             }
             parentViewModel.pullToRefreshEvent.value = true
         }
+        if (requestCode == REQUEST_CONSENT_DETAILS && resultCode == Activity.RESULT_CANCELED) {
+            parentViewModel.pullToRefreshEvent.value = true
+        }
     }
 
     //endregion
@@ -217,10 +220,6 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
             viewModel.scrollListener = PaginationScrollListener(viewModel, viewModel.requestedConsentsList.value?.totalCount ?: 0)
             setupScrollListener()
         }
-         if (requestCode == REQUEST_CONSENT_DETAILS && resultCode == Activity.RESULT_CANCELED) {
-            parentViewModel.pullToRefreshEvent.value = true
-        }
-
     }
 
     private fun clearRecylerView() {
