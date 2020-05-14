@@ -30,6 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ResetPasswordOtpFragment : BaseFragment() {
 
     private lateinit var binding: ResetPasswordOtpVerificationBinding
+    private var textView: TextView? = null
 
     companion object {
         private const val ERROR_CODE_INVALID_OTP = 1003
@@ -110,8 +111,10 @@ class ResetPasswordOtpFragment : BaseFragment() {
         snackbar = Snackbar.make(snackbar_container, spannableString, Snackbar.LENGTH_LONG)
 
         val layout = snackbar.view
-        val textView = layout.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
-        textView.maxLines = 10
+        if (textView == null) {
+            textView = layout.findViewById(com.google.android.material.R.id.snackbar_text) as? TextView
+            textView?.maxLines = 10
+        }
         if (!snackbar.isShown) snackbar.show()
     }
 
