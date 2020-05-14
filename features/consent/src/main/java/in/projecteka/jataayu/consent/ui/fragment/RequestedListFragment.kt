@@ -217,6 +217,10 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
             viewModel.scrollListener = PaginationScrollListener(viewModel, viewModel.requestedConsentsList.value?.totalCount ?: 0)
             setupScrollListener()
         }
+         if (requestCode == REQUEST_CONSENT_DETAILS && resultCode == Activity.RESULT_CANCELED) {
+            parentViewModel.pullToRefreshEvent.value = true
+        }
+
     }
 
     private fun clearRecylerView() {

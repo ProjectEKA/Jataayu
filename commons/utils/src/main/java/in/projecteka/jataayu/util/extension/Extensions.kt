@@ -4,14 +4,19 @@ import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
@@ -103,4 +108,12 @@ fun <T> Observable<T>.get(): Observable<T> {
 fun <T> Observable<T>.getIo(): Observable<T> {
     return this.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+}
+
+fun showSnackbar(view: View, message: String, callback: Snackbar.Callback?= null) {
+    val spannableString = SpannableString(message)
+    spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    val snackbar = Snackbar.make(view, spannableString, 2000)
+    callback?.let { snackbar.addCallback(it) }
+    snackbar.show()
 }

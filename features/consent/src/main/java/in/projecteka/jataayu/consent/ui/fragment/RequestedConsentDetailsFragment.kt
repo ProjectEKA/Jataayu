@@ -2,6 +2,8 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.RequestedConsentDetailsFragmentBinding
+import `in`.projecteka.jataayu.consent.errors.ConsentError.CONSENT_EXPIRED_DENY
+import `in`.projecteka.jataayu.consent.errors.ConsentError.CONSENT_EXPIRED_GRANT
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.CreatePinActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
@@ -14,9 +16,11 @@ import `in`.projecteka.jataayu.network.utils.*
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.extension.showSnackbar
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
 import android.content.Intent
@@ -28,6 +32,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -60,6 +65,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         const val KEY_EVENT_GRANT = "grant"
         const val KEY_EVENT_DENY = "deny"
         const val KEY_SCOPE_TYPE = "scope_type"
+        const val KEY_EVENT_EXPIRED = "KEY_CONSENT_EXPIRED"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,6 +106,17 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                         activity?.finish()
                     }
                 }
+                is PartialFailure -> {
+                    it.error?.let { error ->
+                        if (error.code == CONSENT_EXPIRED_GRANT.errorCode) {
+                            showConsentExpiryErrorMessage()
+                        } else {
+                            context?.showErrorDialog(error.message)
+                        }
+                    }?: kotlin.run {
+                        context?.showErrorDialog(it.error?.message)
+                    }
+                }
             }
         })
         viewModel.consentDenyResponse.observe(this, Observer<PayloadResource<Void>> {
@@ -114,10 +131,15 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                     }
                 }
                 is PartialFailure -> {
-                    context?.showAlertDialog(
-                        getString(R.string.failure), it.error?.message,
-                        getString(android.R.string.ok)
-                    )
+                    it.error?.let { error ->
+                        if (error.code == CONSENT_EXPIRED_DENY.errorCode) {
+                            showConsentExpiryErrorMessage()
+                        } else {
+                            context?.showErrorDialog(error.message)
+                        }
+                    }?: kotlin.run {
+                        context?.showErrorDialog(it.error?.message)
+                    }
                 }
                 is Failure -> {
                     context?.showAlertDialog(
@@ -261,6 +283,17 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 consent.hiu.name = it.nameMap[consent.hiu.getId()] ?: ""
             }
             completion()
+        })
+    }
+
+    private fun showConsentExpiryErrorMessage() {
+        showSnackbar(binding.layoutRoot, resources.getString(R.string.consent_expiry_message), object: Snackbar.Callback() {
+            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                val intent = Intent()
+                intent.putExtra(KEY_CONSENT_EVENT_TYPE, KEY_EVENT_EXPIRED)
+                activity?.setResult(Activity.RESULT_CANCELED, intent)
+                activity?.finish()
+            }
         })
     }
 }
