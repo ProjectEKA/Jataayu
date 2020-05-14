@@ -92,7 +92,7 @@ class RequestedConsentListViewModelTest {
     @Test
     fun `should Fetch all consents`() {
 
-        requestedListViewModel.currentStatus.value = RequestStatus.ALL
+        requestedListViewModel.updateFilterSelectedItem(3)
         setupConsentAPI()
         requestedListViewModel.getConsents(offset = 0)
 
@@ -104,7 +104,7 @@ class RequestedConsentListViewModelTest {
     @Test
     fun `should Fetch only active consents`() {
 
-        requestedListViewModel.currentStatus.value = RequestStatus.REQUESTED
+        requestedListViewModel.updateFilterSelectedItem(0)
         setupConsentAPI()
         requestedListViewModel.getConsents(offset = 0)
 
@@ -119,7 +119,7 @@ class RequestedConsentListViewModelTest {
     @Test
     fun `should Fetch only expired consents`() {
 
-        requestedListViewModel.currentStatus.value = RequestStatus.EXPIRED
+        requestedListViewModel.updateFilterSelectedItem(1)
         setupConsentAPI()
         requestedListViewModel.getConsents(offset = 0)
 
@@ -135,17 +135,41 @@ class RequestedConsentListViewModelTest {
     @Test
     fun `should Fetch only denied consents`() {
 
-        requestedListViewModel.currentStatus.value = RequestStatus.EXPIRED
+        requestedListViewModel.updateFilterSelectedItem(2)
         setupConsentAPI()
         requestedListViewModel.getConsents(offset = 0)
 
-        verify(repository).getConsents(10, 0, RequestStatus.EXPIRED.name)
+        verify(repository).getConsents(10, 0, RequestStatus.DENIED.name)
         verify(call).enqueue(any())
 
         verify(consentsFetchObserver, times(1)).onChanged(Loading(true))
         verify(consentsFetchObserver, times(1)).onChanged(Loading(false))
         verify(consentsFetchObserver, times(1)).onChanged(Success(consentsListResponse))
 
+    }
+
+    @Test
+    fun `should change current status to requested when filter is selected to 1st item`() {
+        requestedListViewModel.updateFilterSelectedItem(0)
+        assertEquals(RequestStatus.REQUESTED, requestedListViewModel.currentStatus.value)
+    }
+
+    @Test
+    fun `should change current status to expired when filter is selected to 2nd item`() {
+        requestedListViewModel.updateFilterSelectedItem(1)
+        assertEquals(RequestStatus.EXPIRED, requestedListViewModel.currentStatus.value)
+    }
+
+    @Test
+    fun `should change current status to denied when filter is selected to 3rd item`() {
+        requestedListViewModel.updateFilterSelectedItem(2)
+        assertEquals(RequestStatus.DENIED, requestedListViewModel.currentStatus.value)
+    }
+
+    @Test
+    fun `should change current status to all when filter is selected to 4th item`() {
+        requestedListViewModel.updateFilterSelectedItem(3)
+        assertEquals(RequestStatus.ALL, requestedListViewModel.currentStatus.value)
     }
 
 

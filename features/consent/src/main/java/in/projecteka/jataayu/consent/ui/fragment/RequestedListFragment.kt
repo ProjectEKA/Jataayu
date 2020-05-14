@@ -10,7 +10,6 @@ import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Co
 import `in`.projecteka.jataayu.consent.viewmodel.RequestedListViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
-import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.Success
@@ -34,10 +33,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-private const val INDEX_ACTIVE = 0
-private const val INDEX_EXPIRED = 1
-private const val INDEX_DENIED = 2
-private const val INDEX_ALL = 3
 
 class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener, ItemClickCallback {
 
@@ -175,12 +170,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        when (position) {
-            INDEX_ACTIVE -> viewModel.currentStatus.value = RequestStatus.REQUESTED
-            INDEX_EXPIRED -> viewModel.currentStatus.value = RequestStatus.EXPIRED
-            INDEX_DENIED -> viewModel.currentStatus.value = RequestStatus.DENIED
-            INDEX_ALL -> viewModel.currentStatus.value = RequestStatus.ALL
-        }
+        viewModel.updateFilterSelectedItem(position)
     }
 
     override fun onItemClick(
@@ -212,7 +202,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     }
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
-        consentsListAdapter.updateData(requests.reversed())
+        consentsListAdapter.updateData(requests.getSortedConsentListByLastUpdatedDate())
     }
 
     fun getConsentFlow(): ConsentFlow {

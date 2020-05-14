@@ -25,6 +25,10 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
     companion object {
         private const val VISIBLE_THRESHOLD = 0
         private const val DEFAULT_LIMIT = 10
+        private const val INDEX_ACTIVE = 0
+        private const val INDEX_EXPIRED = 1
+        private const val INDEX_DENIED = 2
+        private const val INDEX_ALL = 3
     }
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
@@ -35,7 +39,9 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
 
     val paginationScrollListener: PaginationScrollListener = PaginationScrollListener(this)
 
-    val currentStatus = MutableLiveData<RequestStatus>(RequestStatus.REQUESTED)
+    private val _currentStatus =  MutableLiveData<RequestStatus>()
+    val currentStatus: LiveData<RequestStatus>
+    get() = _currentStatus
     val isLoadingMore = ObservableInt(View.INVISIBLE)
 
 
@@ -78,6 +84,15 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
     fun updateRequestedConsentList(consentsListResponse: ConsentsListResponse) {
         paginationScrollListener.updateTotalSize(consentsListResponse.totalCount)
         _requestedConsentsList.value = consentsListResponse
+    }
+
+    fun updateFilterSelectedItem(position: Int) {
+        when (position) {
+            INDEX_ACTIVE -> _currentStatus.value = RequestStatus.REQUESTED
+            INDEX_EXPIRED -> _currentStatus.value = RequestStatus.EXPIRED
+            INDEX_DENIED -> _currentStatus.value = RequestStatus.DENIED
+            INDEX_ALL -> _currentStatus.value = RequestStatus.ALL
+        }
     }
 }
 
