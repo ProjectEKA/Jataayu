@@ -26,13 +26,12 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
                                   private val credentialsRepository: CredentialsRepository) : BaseViewModel(), PaginationEventCallback {
 
     companion object {
-        private const val VISIBLE_THRESHOLD = 2
-        private const val LIMIT = 10
-        private var FILTERS = "status==${GRANTED.name}"
-        private const val INDEX_GRANTED = 0
-        private const val INDEX_REVOKED = 1
-        private const val INDEX_EXPIRED = 2
-        private const val INDEX_ALL = 3
+        const val VISIBLE_THRESHOLD = 2
+        const val LIMIT = 10
+        const val INDEX_GRANTED = 0
+        const val INDEX_REVOKED = 1
+        const val INDEX_EXPIRED = 2
+        const val INDEX_ALL = 3
 
     }
 

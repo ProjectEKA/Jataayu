@@ -107,7 +107,7 @@ class RequestedConsentListViewModelTest {
 
         consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
 
-        consentViewModel.getConsents(null, offset = 0)
+        consentViewModel.getConsents(offset = 0)
 
         verify(consentsFetchObserver, times(1)).onChanged(Loading(true))
         verify(consentsFetchObserver, times(1)).onChanged(Loading(false))
@@ -130,7 +130,7 @@ class RequestedConsentListViewModelTest {
 
         consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
 
-        consentViewModel.getConsents(consentViewModel.currentStatus.value, offset = 0)
+        consentViewModel.getConsents(offset = 0)
 
         verify(repository).getConsents(10, 0, filters)
         verify(call).enqueue(any())
@@ -154,7 +154,7 @@ class RequestedConsentListViewModelTest {
 
         consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
 
-        consentViewModel.getConsents(consentViewModel.currentStatus.value, offset = 0)
+        consentViewModel.getConsents(offset = 0)
 
         verify(repository).getConsents(10, 0, filters)
         verify(call).enqueue(any())
@@ -178,7 +178,7 @@ class RequestedConsentListViewModelTest {
 
         consentViewModel.consentListResponse.observeForever(consentsFetchObserver)
 
-        consentViewModel.getConsents(consentViewModel.currentStatus.value, offset = 0)
+        consentViewModel.getConsents(offset = 0)
 
         verify(repository).getConsents(10, 0, filters)
         verify(call).enqueue(any())

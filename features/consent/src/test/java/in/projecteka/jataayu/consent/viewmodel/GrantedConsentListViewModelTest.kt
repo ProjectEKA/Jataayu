@@ -1,11 +1,11 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.R
-import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
+import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
@@ -57,7 +57,7 @@ class ConsentListViewModelTest {
 
     private lateinit var consentViewModel: GrantedConsentListViewModel
 
-    private lateinit var consentsListResponse: ConsentArtifactResponse
+    private lateinit var consentArtifactResponse: ConsentArtifactResponse
 
     private lateinit var grantedConsentList: List<Consent>
 
@@ -69,17 +69,8 @@ class ConsentListViewModelTest {
 
         consentViewModel = GrantedConsentListViewModel(repository,credentialRepo)
 
-        val filters = null
-        consentsListResponse = Gson()
+        consentArtifactResponse = Gson()
             .fromJson(TestUtils.readFile("consent_artifact_response.json"), ConsentArtifactResponse::class.java)
-        grantedConsentList = filterConsents(RequestStatus.GRANTED)
-
-        `when`(repository.getConsentsArtifactList(10, 0, RequestStatus.ALL)).thenReturn(call)
-        `when`(call.enqueue(any()))
-            .then { invocation ->
-                val callback = invocation.arguments[0] as Callback<ConsentArtifactResponse>
-                callback.onResponse(call, Response.success(consentsListResponse))
-            }
 
         consentViewModel.consentArtifactResponse.observeForever(consentsFetchObserver)
     }
@@ -92,41 +83,69 @@ class ConsentListViewModelTest {
     @Test
     fun `should Populate Filter Items For Granted Consents`() {
 
-        `when`(resources.getString(R.string.status_all_granted_consents)).thenReturn("All Granted Consents")
-        `when`(resources.getString(R.string.status_active_granted_consents)).thenReturn("Active granted consents")
-        `when`(resources.getString(R.string.status_expired_granted_consents)).thenReturn("Expired granted consents")
-        val populatedFilterItems = consentViewModel.populateFilterItems(resources, ConsentFlow.GRANTED_CONSENTS)
+        `when`(resources.getString(R.string.status_all_consents_artifacts)).thenReturn("All consents")
+        `when`(resources.getString(R.string.status_active_granted_consents)).thenReturn("Granted consents")
+        `when`(resources.getString(R.string.status_revoked_consents)).thenReturn("Revoked consents")
+        `when`(resources.getString(R.string.status_expired_granted_consents)).thenReturn("Expired consents")
+        val populatedFilterItems = consentViewModel.populateFilterItems(resources)
 
         assertEquals(dummyGrantedFilterList(), populatedFilterItems)
     }
 
     private fun dummyGrantedFilterList(): ArrayList<String> {
         val list = ArrayList<String>(3)
-        list.add("All Granted Consents")
-        list.add("Active granted consents")
-        list.add("Expired granted consents")
+        list.add("Granted consents")
+        list.add("Revoked consents")
+        list.add("Expired consents")
+        list.add("All consents")
         return list
     }
 
 
     @Test
-    fun `should Fetch Consents`() {
+    fun `should Fetch all Consents artifacts`() {
 
+        consentViewModel.updateFilterSelectedItem( GrantedConsentListViewModel.INDEX_ALL)
+        getConsentArtifactSetup()
         consentViewModel.getConsents(offset = 0)
         verify(consentsFetchObserver, Mockito.times(1)).onChanged(Loading(true))
         verify(consentsFetchObserver, Mockito.times(1)).onChanged(Loading(false))
-        verify(consentsFetchObserver, Mockito.times(1)).onChanged(Success(consentsListResponse))
+        verify(consentsFetchObserver, Mockito.times(1)).onChanged(Success(consentArtifactResponse))
 
     }
 
 
     @Test
-    fun `should Filter Consents And Return Only Granted RequestedList`() {
+    fun `should Filter Consents And Return Only Granted ConsentList`() {
 
-        val filters = null
+        consentViewModel.updateFilterSelectedItem(GrantedConsentListViewModel.INDEX_GRANTED)
+        getConsentArtifactSetup()
         consentViewModel.getConsents( offset = 0)
-        verify(repository).getConsents(10, 0, filters = filters)
+        verify(repository).getConsentsArtifactList(GrantedConsentListViewModel.LIMIT, 0, consentViewModel.currentStatus.value!!)
         verify(call).enqueue(any())
+        assertEquals(0, consentArtifactResponse.getArtifacts().filter { it.status != RequestStatus.GRANTED }.size)
+    }
+
+    @Test
+    fun `should Filter Consents And Return Only Revoked ConsentList`() {
+
+        consentViewModel.updateFilterSelectedItem(GrantedConsentListViewModel.INDEX_REVOKED)
+        getConsentArtifactSetup()
+        consentViewModel.getConsents( offset = 0)
+        verify(repository).getConsentsArtifactList(GrantedConsentListViewModel.LIMIT, 0, consentViewModel.currentStatus.value!!)
+        verify(call).enqueue(any())
+        assertEquals(0, consentArtifactResponse.getArtifacts().filter { it.status != RequestStatus.REVOKED }.size)
+    }
+
+    @Test
+    fun `should Filter Consents And Return Only Expired ConsentList`() {
+
+        consentViewModel.updateFilterSelectedItem(GrantedConsentListViewModel.INDEX_EXPIRED)
+        getConsentArtifactSetup()
+        consentViewModel.getConsents( offset = 0)
+        verify(repository).getConsentsArtifactList(GrantedConsentListViewModel.LIMIT, 0, consentViewModel.currentStatus.value!!)
+        verify(call).enqueue(any())
+        assertEquals(0, consentArtifactResponse.getArtifacts().filter { it.status != RequestStatus.EXPIRED }.size)
     }
 
 
@@ -136,7 +155,30 @@ class ConsentListViewModelTest {
         val consentArtifactResponse = Gson()
             .fromJson(TestUtils.readFile("consent_artifact_response.json"), ConsentArtifactResponse::class.java)
         assertNotNull(consentArtifactResponse)
+    }
 
+    @Test
+    fun `should change current status to granted when filter is selected to 1st item`() {
+        consentViewModel.updateFilterSelectedItem(0)
+        assertEquals(RequestStatus.GRANTED, consentViewModel.currentStatus.value)
+    }
+
+    @Test
+    fun `should change current status to revoked when filter is selected to 2nd item`() {
+        consentViewModel.updateFilterSelectedItem(1)
+        assertEquals(RequestStatus.REVOKED, consentViewModel.currentStatus.value)
+    }
+
+    @Test
+    fun `should change current status to expired when filter is selected to 3rd item`() {
+        consentViewModel.updateFilterSelectedItem(2)
+        assertEquals(RequestStatus.EXPIRED, consentViewModel.currentStatus.value)
+    }
+
+    @Test
+    fun `should change current status to all when filter is selected to 4th item`() {
+        consentViewModel.updateFilterSelectedItem(3)
+        assertEquals(RequestStatus.ALL, consentViewModel.currentStatus.value)
     }
 
 
@@ -147,6 +189,28 @@ class ConsentListViewModelTest {
     private fun getData(fileName: String) = Gson().fromJson<List<Consent>>(TestUtils.readFile(fileName))
 
     private fun filterConsents(status: RequestStatus) : List<Consent> {
-        return consentsListResponse.getArtifacts().asSequence().filter { it.status == status }.toList()
+        return consentArtifactResponse.getArtifacts().asSequence().filter { it.status == status }.toList()
+    }
+
+    private fun getGrantedConsentDetailsList(consents: List<Consent>) : List<GrantedConsentDetailsResponse> {
+        return consents.map { GrantedConsentDetailsResponse(it.status, it, "") }
+    }
+
+    private fun getConsentArtifactSetup() {
+
+        `when`(repository.getConsentsArtifactList(GrantedConsentListViewModel.LIMIT, 0, consentViewModel.currentStatus.value!!)).thenReturn(call)
+        `when`(call.enqueue(any()))
+            .then { invocation ->
+                val callback = invocation.arguments[0] as Callback<ConsentArtifactResponse>
+                grantedConsentList = filterConsents(consentViewModel.currentStatus.value!!)
+                val grantedConsentDetailsResponse = getGrantedConsentDetailsList(grantedConsentList)
+                val response = ConsentArtifactResponse(null,
+                    grantedConsentDetailsResponse,
+                    consentArtifactResponse.limit,
+                    consentArtifactResponse.size,
+                    consentArtifactResponse.signature)
+                consentArtifactResponse = response
+                callback.onResponse(call, Response.success(response))
+            }
     }
 }
