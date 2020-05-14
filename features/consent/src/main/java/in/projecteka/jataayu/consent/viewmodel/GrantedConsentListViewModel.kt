@@ -37,10 +37,13 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
     }
 
     val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()
-    val consentArtifacts = MutableLiveData<ConsentArtifactResponse>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
     val revokeConsentResponse = PayloadLiveData<Void>()
     val isLoadingMore = ObservableInt(View.INVISIBLE)
+
+    private val _consentArtifactList = MutableLiveData<ConsentArtifactResponse>()
+    val consentArtifactList: LiveData<ConsentArtifactResponse>
+    get() = _consentArtifactList
 
 
     private val _currentStatus = MutableLiveData<RequestStatus>(GRANTED)
@@ -51,7 +54,7 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
 //    get() = getEmptyConsentMesage()
 
 
-    var scrollListener: PaginationScrollListener? = null
+    val paginationScrollListener: PaginationScrollListener = PaginationScrollListener(this)
 
 
     private val grantedConsentStatusList = listOf(
@@ -86,7 +89,7 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
     }
 
     override fun loadMoreItems(totalFetchedCount: Int) {
-        if (totalFetchedCount == consentArtifacts.value?.size) return
+        if (totalFetchedCount == consentArtifactList.value?.size) return
         isLoadingMore.set(View.VISIBLE)
         getConsents(offset = totalFetchedCount)
     }
@@ -98,6 +101,11 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
             INDEX_REVOKED -> _currentStatus.postValue(REVOKED)
             INDEX_ALL -> _currentStatus.postValue(ALL)
         }
+    }
+
+    fun updateConsentArtifactList(response: ConsentArtifactResponse) {
+        paginationScrollListener.updateTotalSize(response.size)
+        _consentArtifactList.value = response
     }
 
 }
