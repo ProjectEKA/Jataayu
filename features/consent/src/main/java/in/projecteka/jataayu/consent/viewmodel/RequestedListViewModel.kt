@@ -39,7 +39,7 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
 
     val paginationScrollListener: PaginationScrollListener = PaginationScrollListener(this)
 
-    private val _currentStatus =  MutableLiveData<RequestStatus>()
+    private val _currentStatus =  MutableLiveData<RequestStatus>(RequestStatus.REQUESTED)
     val currentStatus: LiveData<RequestStatus>
     get() = _currentStatus
     val isLoadingMore = ObservableInt(View.INVISIBLE)
