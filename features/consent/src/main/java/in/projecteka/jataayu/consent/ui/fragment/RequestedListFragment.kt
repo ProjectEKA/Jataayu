@@ -233,7 +233,6 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     private fun clearRecylerView() {
         consentsListAdapter.clearAll()
         viewModel.scrollListener = null
-        resetScrollListener()
         viewModel.getConsents(offset = 0)
     }
 

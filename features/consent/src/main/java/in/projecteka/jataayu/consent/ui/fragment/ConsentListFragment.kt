@@ -5,7 +5,6 @@ import `in`.projecteka.jataayu.consent.callback.DeleteConsentCallback
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
 import `in`.projecteka.jataayu.consent.listners.PaginationScrollListener
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
-import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
@@ -66,14 +65,27 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     private fun initObservers() {
 
-        viewModel.consentArtifactResponse.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.consentArtifactResponse.observe(this, Observer { response ->
             when (response) {
-                is Loading -> viewModel.showProgress(response.isLoading, R.string.loading_requests)
-                is Success -> {
-                    parentViewModel.showRefreshing(false)
-                    response.data?.let {
-                        viewModel.consentListResponse.value = ConsentsListResponse(it.getArtifacts(), it.size, it.offset)
+                is Loading -> {
+                    if (viewModel.isLoadingMore.get() != View.VISIBLE) {
+                        viewModel.showProgress(response.isLoading, R.string.loading_requests)
+                    } else {
+                        viewModel.isLoadingMore.set(View.VISIBLE)
                     }
+                }
+                is Success -> {
+                    response.data?.let {
+                        viewModel.consentArtifacts.value = it
+                        resetScrollListenerIfNeeded()
+                        val hiuList = it.getArtifacts().map { consent -> consent.hiu }
+                        getNamesOf(hiuList)
+                        binding.hideRequestsList = it.getArtifacts().isNullOrEmpty()
+                        binding.hideFilter = false
+                    }
+                    parentViewModel.showRefreshing(false)
+                    viewModel.isLoadingMore.set(View.INVISIBLE)
+                    viewModel.showProgress(false)
                 }
                 is PartialFailure -> {
                     context?.showAlertDialog(getString(R.string.failure), response.error?.message,
@@ -83,16 +95,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
         })
 
-        viewModel.consentListResponse.observe(this, Observer { response ->
-            parentViewModel.showRefreshing(false)
-            resetScrollListener()
-            response.requests.let {
-                val hiuList = it.map { consent -> consent.hiu }
-                getNamesOf(hiuList)
-            }
-            binding.hideRequestsList = response.requests.isNullOrEmpty()
-            binding.hideFilter = false
-        })
 
         viewModel.grantedConsentDetailsResponse.observe(
             this,
@@ -204,7 +206,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun getNamesOf(hiuList: List<HipHiuIdentifiable>) {
         val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(hiuList)
         hipHiuNameResponse.observe(this, Observer {
-            viewModel.consentListResponse.value?.requests?.let { consentList ->
+            viewModel.consentArtifacts.value?.getArtifacts()?.let { consentList ->
                 if(it.status) {
                     consentList.forEach { consent -> consent.hiu.name = it.nameMap[consent.hiu.getId()] ?: "" }
                     renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)
@@ -242,9 +244,9 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     }
 
 
-    private fun resetScrollListener() {
+    private fun resetScrollListenerIfNeeded() {
         if (viewModel.scrollListener == null) {
-            viewModel.scrollListener = PaginationScrollListener(viewModel, viewModel.consentListResponse.value?.totalCount ?: 0)
+            viewModel.scrollListener = PaginationScrollListener(viewModel, viewModel.consentArtifacts.value?.size ?: 0)
             setupScrollListener()
         }
     }
@@ -252,7 +254,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun clearRecylerView() {
         consentsListAdapter.clearAll()
         viewModel.scrollListener = null
-        resetScrollListener()
         viewModel.getConsents(offset = 0)
     }
 

@@ -3,7 +3,6 @@ package `in`.projecteka.jataayu.consent.viewmodel
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.callback.PaginationEventCallback
 import `in`.projecteka.jataayu.consent.listners.PaginationScrollListener
-import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
@@ -18,6 +17,8 @@ import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import android.content.res.Resources
+import android.view.View
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,14 +36,19 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
 
     }
 
-    val consentListResponse = MutableLiveData<ConsentsListResponse>()
     val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()
+    val consentArtifacts = MutableLiveData<ConsentArtifactResponse>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
     val revokeConsentResponse = PayloadLiveData<Void>()
+    val isLoadingMore = ObservableInt(View.INVISIBLE)
+
 
     private val _currentStatus = MutableLiveData<RequestStatus>(GRANTED)
     val currentStatus : LiveData<RequestStatus>
     get() = _currentStatus
+
+//    val noConsentMessage: ObservableField<String>
+//    get() = getEmptyConsentMesage()
 
 
     var scrollListener: PaginationScrollListener? = null
@@ -80,6 +86,8 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
     }
 
     override fun loadMoreItems(totalFetchedCount: Int) {
+        if (totalFetchedCount == consentArtifacts.value?.size) return
+        isLoadingMore.set(View.VISIBLE)
         getConsents(offset = totalFetchedCount)
     }
 
@@ -91,7 +99,6 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
             INDEX_ALL -> _currentStatus.postValue(ALL)
         }
     }
-
 
 }
 
