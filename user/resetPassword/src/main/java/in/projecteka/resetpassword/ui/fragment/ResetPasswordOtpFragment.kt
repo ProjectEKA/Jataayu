@@ -19,6 +19,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.reset_password_otp_verification.*
@@ -107,6 +108,10 @@ class ResetPasswordOtpFragment : BaseFragment() {
 
         spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         snackbar = Snackbar.make(snackbar_container, spannableString, Snackbar.LENGTH_LONG)
+
+        val layout = snackbar.view
+        val textView = layout.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+        textView.maxLines = 10
         if (!snackbar.isShown) snackbar.show()
     }
 
