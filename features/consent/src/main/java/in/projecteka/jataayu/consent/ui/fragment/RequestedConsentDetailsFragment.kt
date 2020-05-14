@@ -165,7 +165,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     override fun onDenyConsent(view: View) {
         MaterialAlertDialogBuilder(context)
             .setTitle(R.string.title_deny_consent)
-            .setPositiveButton(R.string.deny) { _, _ -> viewModel.denyConsent(consent.id) }
+            .setPositiveButton(R.string.deny) { _, _ -> viewModel.denyConsent(consent.id!!) }
             .setNegativeButton(android.R.string.cancel, null)
             .setMessage(R.string.msg_deny_consent)
             .show()
@@ -200,9 +200,8 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             when (consent.status) {
                 RequestStatus.DENIED -> R.string.denied_consent
                 RequestStatus.GRANTED -> R.string.granted_consent
-                RequestStatus.REQUESTED -> if (DateTimeUtils.isDateExpired(consent.permission.dataEraseAt))
-                    R.string.expired_consent
-                else R.string.new_request
+                RequestStatus.EXPIRED ->  R.string.expired_consent  //if (DateTimeUtils.isDateExpired(consent.permission.dataEraseAt))
+                else ->  { R.string.new_request }
             }
         )
         getNameOf(consent.hiu) {
@@ -226,7 +225,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                     eventBusInstance.register(this)
                 viewModel.showProgress(true)
                 viewModel.grantConsent(
-                    consent.id,
+                    consent.id!!,
                     viewModel.getConsentArtifact(it, hiTypeObjects, consent.permission))
             }
         }

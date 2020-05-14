@@ -4,6 +4,9 @@
     <string name="requests_information">Information request</string>
     <string name="requested_timespan">Requested %s</string>
     <string name="granted_timespan">Granted %s</string>
+    <string name="expired_timespan">Expired %s</string>
+    <string name="revoked_timespan">Revoked %s</string>
+    <string name="denied_timespan">Denied %s</string>
     <string name="request_expired">Request expired</string>
     <string name="btn_continue">Continue</string>
     <string name="enter_otp">Enter 6 digit OTP</string>

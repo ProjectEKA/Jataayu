@@ -1,82 +1,79 @@
 package `in`.projecteka.jataayu.consent.viewmodel
 
 import `in`.projecteka.jataayu.consent.R
-import `in`.projecteka.jataayu.consent.extension.grantedConsentList
-import `in`.projecteka.jataayu.consent.model.ConsentFlow
-import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
+import `in`.projecteka.jataayu.consent.callback.PaginationEventCallback
+import `in`.projecteka.jataayu.consent.listners.PaginationScrollListener
 import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
-import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.HipHiuNameResponse
 import `in`.projecteka.jataayu.core.model.RequestStatus
-import `in`.projecteka.jataayu.core.model.RequestStatus.GRANTED
+import `in`.projecteka.jataayu.core.model.RequestStatus.*
+import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
-import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.content.res.Resources
+import android.view.View
+import androidx.databinding.ObservableInt
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 
 class GrantedConsentListViewModel(private val repository: ConsentRepository,
-                                  private val credentialsRepository: CredentialsRepository) : BaseViewModel() {
+                                  private val credentialsRepository: CredentialsRepository) : BaseViewModel(), PaginationEventCallback {
 
-    val consentListResponse = PayloadLiveData<ConsentsListResponse>()
+    companion object {
+        const val VISIBLE_THRESHOLD = 2
+        const val LIMIT = 10
+        const val INDEX_GRANTED = 0
+        const val INDEX_REVOKED = 1
+        const val INDEX_EXPIRED = 2
+        const val INDEX_ALL = 3
+
+    }
+
+    val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()
+    val consentArtifacts = MutableLiveData<ConsentArtifactResponse>()
     val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
     val revokeConsentResponse = PayloadLiveData<Void>()
-    val grantedConsentsList = MutableLiveData<List<Consent>>()
+    val isLoadingMore = ObservableInt(View.INVISIBLE)
+
+
+    private val _currentStatus = MutableLiveData<RequestStatus>(GRANTED)
+    val currentStatus : LiveData<RequestStatus>
+    get() = _currentStatus
+
+//    val noConsentMessage: ObservableField<String>
+//    get() = getEmptyConsentMesage()
+
+
+    var scrollListener: PaginationScrollListener? = null
 
 
     private val grantedConsentStatusList = listOf(
-        R.string.status_all_granted_consents,
         R.string.status_active_granted_consents,
-        R.string.status_expired_granted_consents
+        R.string.status_revoked_consents,
+        R.string.status_expired_granted_consents,
+        R.string.status_all_consents_artifacts
     )
 
     internal var selectedProviderName = String.EMPTY
 
-    fun getConsents() =
-        consentListResponse.fetch(repository.getConsents())
+    fun getConsents(limit: Int = LIMIT, offset: Int) {
+        consentArtifactResponse.fetch(repository.getConsentsArtifactList(limit, offset, currentStatus.value!!))
+    }
 
     fun getGrantedConsentDetails(requestId: String) {
         grantedConsentDetailsResponse.fetch(repository.getGrantedConsentDetails(requestId))
     }
 
+    fun populateFilterItems(resources: Resources): List<String> =
+        grantedConsentStatusList.map { resources.getString(it) }
 
-    fun populateFilterItems(resources: Resources, flow: ConsentFlow?): List<String> =
-        grantedConsentStatusList.map { getFormattedItem(resources,it, GRANTED) }
-
-
-    private fun getFormattedItem(
-        resources: Resources,
-        filterItem: Int,
-        requestStatus: RequestStatus
-    ): String {
-        val list = grantedConsentsList.value
-
-        val count = list?.count { consent ->
-            val dataExpired = DateTimeUtils.isDateExpired(consent.permission.dataEraseAt)
-            when (filterItem) {
-                R.string.status_active_granted_consents -> {
-                    !dataExpired
-                }
-                R.string.status_expired_granted_consents -> {
-                    dataExpired
-                }
-                else -> true
-            }
-        }
-
-        return String.format(resources.getString(filterItem), count)
-    }
-
-    fun filterConsents(consentList: List<Consent>?) {
-        grantedConsentsList.value = consentList?.grantedConsentList()
-    }
 
     fun revokeConsent(consentArtifactId: String) {
         val list: ArrayList<String> = ArrayList()
@@ -87,5 +84,21 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
     fun fetchHipHiuNamesOf(idList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
         return repository.getProviderBy(idList)
     }
+
+    override fun loadMoreItems(totalFetchedCount: Int) {
+        if (totalFetchedCount == consentArtifacts.value?.size) return
+        isLoadingMore.set(View.VISIBLE)
+        getConsents(offset = totalFetchedCount)
+    }
+
+    fun updateFilterSelectedItem(position: Int) {
+        when (position) {
+            INDEX_GRANTED -> _currentStatus.postValue(GRANTED)
+            INDEX_EXPIRED -> _currentStatus.postValue(EXPIRED)
+            INDEX_REVOKED -> _currentStatus.postValue(REVOKED)
+            INDEX_ALL -> _currentStatus.postValue(ALL)
+        }
+    }
+
 }
 
