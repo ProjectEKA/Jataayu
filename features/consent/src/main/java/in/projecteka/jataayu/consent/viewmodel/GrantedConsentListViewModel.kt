@@ -13,6 +13,7 @@ import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
+import `in`.projecteka.jataayu.network.utils.isLoading
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
@@ -89,7 +90,7 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
     }
 
     override fun loadMoreItems(totalFetchedCount: Int) {
-        if (totalFetchedCount == consentArtifactList.value?.size) return
+        if (consentArtifactResponse.isLoading()) return
         isLoadingMore.set(View.VISIBLE)
         getConsents(offset = totalFetchedCount)
     }
