@@ -3,6 +3,7 @@ package `in`.projecteka.jataayu.consent.listners
 import `in`.projecteka.jataayu.consent.callback.PaginationEventCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import timber.log.Timber
 
 class PaginationScrollListener(private val callback: PaginationEventCallback) : RecyclerView.OnScrollListener() {
 
@@ -16,8 +17,8 @@ class PaginationScrollListener(private val callback: PaginationEventCallback) : 
             if (dy <= 0) return
             val totalItemCount = it.itemCount
             val visibleItemCount = it.childCount
-            val firstVisibleItem = it.findFirstVisibleItemPosition()
-            listScrolled(visibleItemCount, firstVisibleItem, totalItemCount)
+            val lastVisibleItem = it.findFirstVisibleItemPosition()
+            listScrolled(visibleItemCount, lastVisibleItem, totalItemCount)
         }?: kotlin.run {
             TODO("NOT implemented")
         }
@@ -29,9 +30,10 @@ class PaginationScrollListener(private val callback: PaginationEventCallback) : 
 
     private fun listScrolled(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
 
-        if (totalItemCount == totalSize) return
+        if (totalItemCount >= totalSize) return
         val isPageReachingEnd = ((totalItemCount - visibleItemCount) <= (firstVisibleItemPosition + visibleThreshold))
         if (isPageReachingEnd) {
+            Timber.d("total size is $totalSize, $totalItemCount")
             callback.loadMoreItems(totalItemCount)
         }
     }

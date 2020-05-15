@@ -140,7 +140,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
             clearRecylerView()
         })
 
-        parentViewModel.pullToRefreshEvent.observe(viewLifecycleOwner, Observer{
+        parentViewModel.pullToRefreshEvent.observe(this, Observer{
             if (it) {
                 clearRecylerView()
             }
