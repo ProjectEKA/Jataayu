@@ -33,4 +33,5 @@
     <string name="edit">Edit</string>
     <string name="consent_pin">Consent PIN</string>
     <string name="yob">Year of Birth</string>
+    <string name="ayushman_id">Ayushman Bharat ID</string>
 </resources>

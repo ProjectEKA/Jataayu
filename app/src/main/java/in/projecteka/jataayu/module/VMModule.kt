@@ -65,6 +65,6 @@ val viewModelModule = module {
 
     //Profile
     viewModel { ProfileActivityViewModel()}
-    viewModel { ProfileFragmentViewModel(get()) }
+    viewModel { ProfileFragmentViewModel(get(), get(), get()) }
 
 }

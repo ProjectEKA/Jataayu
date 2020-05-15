@@ -1,9 +1,12 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
+import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.user.account.databinding.FragmentViewProfileBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.ProfileFragmentViewModel
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
+import `in`.projecteka.jataayu.util.startLauncher
 import android.R
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +23,6 @@ class ProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var binding: FragmentViewProfileBinding
     private val viewModel: ProfileFragmentViewModel by viewModel()
-//    private val parentViewModel: ResetPasswordActivityViewModel by sharedViewModel()
 
     companion object {
         fun newInstance() = ProfileFragment()
@@ -58,29 +60,31 @@ class ProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     private fun initObservers() {
-        viewModel.isEditMode.observe(this, Observer {
-//            if (it) {
-//                binding.spinnerListener = this
-//            } else {
-//                binding.spinnerListener = null
-//            }
-//            binding.spinnerYob.isEnabled = it
 
-//            binding.spinnerYob.getChildAt(0)?.let {
-//                (binding.spinnerYob.getChildAt(0) as TextView).setTextColor(
-//                    resources.getColor(R.color.black)
-//                )
-//            }
-//            binding.spinnerYob.alpha = 1.0f;
-//            binding.spinnerYob.isClickable = it
-//            binding.spinnerYob.isContextClickable = it
+        viewModel.logoutResponse.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Loading -> {
+                    viewModel.showProgress.set(true)
+                }
+                else -> {
+                    onLogoutFinish()
+                }
+            }
         })
+    }
+
+    private fun onLogoutFinish() {
+        viewModel.showProgress.set(false)
+        viewModel.clearSharedPreferences()
+        activity?.finish()
+        startLauncher(context!!) {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
     }
 
     private fun initBindings() {
         binding.viewModel = viewModel
         binding.spinnerListener = this
-//        binding.isEditMode = false
     }
 
     private fun initSpinner() {

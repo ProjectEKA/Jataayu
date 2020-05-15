@@ -1,14 +1,22 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
+import `in`.projecteka.jataayu.network.utils.PayloadLiveData
+import `in`.projecteka.jataayu.network.utils.fetch
+import `in`.projecteka.jataayu.network.utils.partialFailure
 import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import java.util.*
 
-class ProfileFragmentViewModel(val preferenceRepository: PreferenceRepository): BaseViewModel() {
+class ProfileFragmentViewModel(val repository: UserAccountsRepository,
+                               val preferenceRepository: PreferenceRepository,
+                               val credentialsRepository: CredentialsRepository): BaseViewModel() {
 
     private var yob: Int? = null
     var isEditMode = SingleLiveEvent<Boolean>()
+    val logoutResponse = PayloadLiveData<Void>()
 
     companion object {
         private const val INDIA_COUNTRY_CODE = "+91"
@@ -37,5 +45,18 @@ class ProfileFragmentViewModel(val preferenceRepository: PreferenceRepository): 
 
     fun selectedYoB(yob: Int){
         this.yob = yob
+    }
+
+    fun logout() {
+        credentialsRepository.refreshToken?.let {
+            logoutResponse.fetch(repository.logout(it))
+        } ?: kotlin.run {
+            logoutResponse.partialFailure(null)
+        }
+    }
+
+    fun clearSharedPreferences() {
+        preferenceRepository.resetPreferences()
+        credentialsRepository.reset()
     }
 }

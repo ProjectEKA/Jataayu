@@ -334,7 +334,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_small"
-                    android:text="@string/full_name"
+                    android:text="@string/ayushman_id"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cg_gender" />
@@ -446,7 +446,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_medium"
-                    android:text="@string/password"
+                    android:text="@string/consent_pin"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cv_password" />
@@ -511,6 +511,7 @@
                     android:layout_marginTop="@dimen/content_margin_small"
                     android:layout_height="wrap_content"
                     style="@style/Button"
+                    android:onClick="@{() -> viewModel.logout()}"
                     android:padding="@dimen/content_margin_medium"
                     android:layout_width="match_parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_edit_consent_pin"
@@ -520,8 +521,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:text="@string/action_logout" />
 
-
-
+                <include
+                    android:id="@+id/progress_bar_layout"
+                    app:showProgress="@{viewModel.showProgress}"
+                    app:message="@{viewModel.showProgressMessage}"
+                    layout="@layout/progress_layout"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
