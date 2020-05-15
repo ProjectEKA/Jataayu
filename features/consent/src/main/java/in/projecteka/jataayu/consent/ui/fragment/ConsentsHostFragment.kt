@@ -4,16 +4,12 @@ import `in`.projecteka.jataayu.consent.databinding.FragmentConsentHostBinding
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentPagerAdapter
 import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import android.graphics.Color
+import `in`.projecteka.jataayu.util.extension.showSnackbar
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_consent_host.*
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -61,16 +57,10 @@ class ConsentHostFragment : BaseFragment() {
             }
         })
         viewModel.showToastEvent.observe(this, Observer {
-            showSnackbar(it)
+            showSnackbar(host_container, it)
         })
     }
 
-    private fun showSnackbar(message: String) {
-        val spannableString = SpannableString(message)
-        spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        val snackbar = Snackbar.make(host_container, spannableString, 2000)
-        snackbar.show()
-    }
 }
 
 
