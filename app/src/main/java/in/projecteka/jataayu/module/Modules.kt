@@ -13,13 +13,13 @@ import `in`.projecteka.jataayu.provider.remote.ProviderApis
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.provider.repository.ProviderRepositoryImpl
 import `in`.projecteka.jataayu.registration.remote.AuthenticationApis
-import `in`.projecteka.resetpassword.remote.ResetPasswordApis
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepositoryImpl
 import `in`.projecteka.jataayu.user.account.remote.UserAccountApis
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepositoryImpl
 import `in`.projecteka.jataayu.util.repository.*
+import `in`.projecteka.resetpassword.remote.ResetPasswordApis
 import `in`.projecteka.resetpassword.repository.ResetPasswordRepository
 import `in`.projecteka.resetpassword.repository.ResetPasswordRepositoryImpl
 import okhttp3.ResponseBody

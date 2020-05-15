@@ -3,7 +3,8 @@
     package="in.projecteka.forgotpassword">
 
     <application>
-        <activity android:name="in.projecteka.resetpassword.ui.activity.ResetPasswordActivity"></activity>
+        <activity android:name="in.projecteka.resetpassword.ui.activity.ResetPasswordActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

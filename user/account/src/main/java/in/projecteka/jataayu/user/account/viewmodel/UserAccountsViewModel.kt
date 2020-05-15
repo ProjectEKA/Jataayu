@@ -61,11 +61,45 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
                     isCurrentlyFetching()
                 }
                 is Success -> {
+                    saveProfileDetails(it.data)
                     patientName.set(it.data?.name)
                     updateProfile.value = it.data
                 }
+                is PartialFailure -> {
+                }
             }
         })
+    }
+
+    private fun saveProfileDetails(profile: MyProfile?) {
+        profile?.let {
+            preferenceRepository.name = profile.name
+            preferenceRepository.pinCreated = profile.hasTransactionPin
+            preferenceRepository.gender = profile.gender
+            preferenceRepository.consentManagerId = profile.id
+
+            profile.yearOfBirth?.let {
+                preferenceRepository.yearOfBirth = profile.yearOfBirth!!
+            }
+
+            profile.verifiedIdentifiers.forEach { identifier ->
+                if (identifier.type == PreferenceRepository.VERIFIED_IDENTIFIER_TYPE_MOBILE) {
+                    preferenceRepository.countryCode =
+                        (identifier.value).substringBeforeLast(PreferenceRepository.MOBILE_NUMBER_DELIMITER) + PreferenceRepository.MOBILE_NUMBER_DELIMITER
+                    preferenceRepository.mobileIdentifier =
+                        (identifier.value).substringAfter(PreferenceRepository.MOBILE_NUMBER_DELIMITER)
+                }
+            }
+
+            profile.unverifiedIdentifiers.forEach { unverifiedIdentifier ->
+                if (unverifiedIdentifier.type == PreferenceRepository.TYPE_AYUSHMAN_BHARAT_ID){
+                    preferenceRepository.ayushmanBharatId = unverifiedIdentifier.value
+                }
+                if (unverifiedIdentifier.type == PreferenceRepository.TYPE_PAN) {
+                    preferenceRepository.pan = unverifiedIdentifier.value
+                }
+            }
+        }
     }
 
     private fun updatePatient(linkedPatient: LinkedPatient?) {
