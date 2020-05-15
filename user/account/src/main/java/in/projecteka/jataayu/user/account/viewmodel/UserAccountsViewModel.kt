@@ -2,7 +2,10 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.R
 import `in`.projecteka.jataayu.core.model.*
-import `in`.projecteka.jataayu.network.utils.*
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PartialFailure
+import `in`.projecteka.jataayu.network.utils.PayloadResource
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
@@ -23,7 +26,6 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
     var linkedAccountsResponse = liveDataOf<List<Links>>()
     var createAccountResponse = liveDataOf<CreateAccountResponse>()
     var myProfileResponse = liveDataOf<MyProfile>()
-    val logoutResponse = PayloadLiveData<Void>()
 
     val patientId = ObservableField<String>()
     val patientName = ObservableField<String>()
@@ -61,11 +63,45 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
                     isCurrentlyFetching()
                 }
                 is Success -> {
+                    saveProfileDetails(it.data)
                     patientName.set(it.data?.name)
                     updateProfile.value = it.data
                 }
+                is PartialFailure -> {
+                }
             }
         })
+    }
+
+    private fun saveProfileDetails(profile: MyProfile?) {
+        profile?.let {
+            preferenceRepository.name = profile.name
+            preferenceRepository.pinCreated = profile.hasTransactionPin
+            preferenceRepository.gender = profile.gender
+            preferenceRepository.consentManagerId = profile.id
+
+            profile.yearOfBirth?.let {
+                preferenceRepository.yearOfBirth = profile.yearOfBirth!!
+            }
+
+            profile.verifiedIdentifiers.forEach { identifier ->
+                if (identifier.type == PreferenceRepository.VERIFIED_IDENTIFIER_TYPE_MOBILE) {
+                    preferenceRepository.countryCode =
+                        (identifier.value).substringBeforeLast(PreferenceRepository.MOBILE_NUMBER_DELIMITER) + PreferenceRepository.MOBILE_NUMBER_DELIMITER
+                    preferenceRepository.mobileIdentifier =
+                        (identifier.value).substringAfter(PreferenceRepository.MOBILE_NUMBER_DELIMITER)
+                }
+            }
+
+            profile.unverifiedIdentifiers.forEach { unverifiedIdentifier ->
+                if (unverifiedIdentifier.type == PreferenceRepository.TYPE_AYUSHMAN_BHARAT_ID){
+                    preferenceRepository.ayushmanBharatId = unverifiedIdentifier.value
+                }
+                if (unverifiedIdentifier.type == PreferenceRepository.TYPE_PAN) {
+                    preferenceRepository.pan = unverifiedIdentifier.value
+                }
+            }
+        }
     }
 
     private fun updatePatient(linkedPatient: LinkedPatient?) {
@@ -102,19 +138,6 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
 
     private fun isCurrentlyFetching() {
         showProgress(userAccountLoading.get() && myProfileLoading.get())
-    }
-
-    fun logout() {
-        credentialRepository.refreshToken?.let {
-            logoutResponse.fetch(repository.logout(it))
-        } ?: kotlin.run {
-            logoutResponse.partialFailure(null)
-        }
-    }
-
-    fun clearSharedPreferences() {
-        preferenceRepository.resetPreferences()
-        credentialRepository.reset()
     }
 
     fun isValid(text: String, criteria: String): Boolean {

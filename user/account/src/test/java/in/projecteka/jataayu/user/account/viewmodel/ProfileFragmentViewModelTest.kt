@@ -2,8 +2,6 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.MyProfile
-import `in`.projecteka.jataayu.network.utils.PayloadLiveData
-import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
@@ -11,7 +9,6 @@ import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
-import junit.framework.Assert.assertEquals
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -27,7 +24,7 @@ import retrofit2.Response
 
 
 @RunWith(MockitoJUnitRunner.Silent::class)
-class UserAccountsViewModelTest {
+class ProfileFragmentViewModelTest {
 
     @Mock
     private lateinit var repository: UserAccountsRepository
@@ -52,12 +49,12 @@ class UserAccountsViewModelTest {
     @Mock
     private lateinit var logoutCall: Call<Void>
 
-    private lateinit var viewModel: UserAccountsViewModel
+    private lateinit var viewModel: ProfileFragmentViewModel
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        viewModel = UserAccountsViewModel(repository,preferenceRepository,credentialsRepository)
+        viewModel = ProfileFragmentViewModel(repository,preferenceRepository,credentialsRepository)
     }
 
 
@@ -68,52 +65,28 @@ class UserAccountsViewModelTest {
     }
 
     @Test
-    fun `should display link accounts list and user profile details `() {
+    fun `should logout user`() {
 
-        val myProfile = getMyProfileResponse()
-        val linkedAccountsResponse = getLinkedAccountsResponse()
-
-        val profileLiveData = PayloadLiveData<MyProfile>()
-        val linkedAccountsLiveData = PayloadLiveData<LinkedAccountsResponse>()
-
-        `when`(repository.getMyProfile()).thenReturn(profileLiveData)
-        `when`(profileResponseCall.enqueue(any())).then {
-            (it.arguments[0] as Callback<MyProfile>).apply {
-                onResponse(profileResponseCall, Response.success(myProfile))
-            }
+        val refreshToken = "abc"
+        `when`(credentialsRepository.refreshToken).thenReturn(refreshToken)
+        `when`(repository.logout(refreshToken)).thenReturn(logoutCall).then {
+                invocation ->
+            val callback = invocation.arguments[0] as Callback<Void>
+            callback.onResponse(logoutCall, Response.success(null))
         }
-
-        `when`(repository.getUserAccounts()).thenReturn(linkedAccountsLiveData)
-        `when`(linkedAcccoutCall.enqueue(any())).then {
-            (it.arguments[0] as Callback<LinkedAccountsResponse>).apply {
-                onResponse(linkedAcccoutCall, Response.success(linkedAccountsResponse))
-            }
-        }
-
-        viewModel.updateProfile.observeForever {  }
-
-        viewModel.userProfileResponse.observeForever {
-            when(it) {
-                is Success -> {
-                    assertEquals(linkedAccountsResponse, viewModel.updateProfile.value)
-                }
-            }
-        }
-
-        viewModel.fetchAll()
-
-        verify(repository).getMyProfile()
-        verify(repository).getUserAccounts()
+        viewModel.logout()
+        verify(repository).logout(refreshToken)
+        verify(logoutCall).enqueue(any())
     }
 
     @Test
-    fun `should create linked accounts by links response `() {
-        val linkedAccountsResponse = getLinkedAccountsResponse()
-        viewModel.updateDisplayAccounts(linkedAccountsResponse!!.linkedPatient.links)
+    fun `should clear all shared preferences`() {
 
-        assertEquals(2, viewModel.updateLinks.value?.count())
-        assertEquals(2, viewModel.linksSize.get())
+        viewModel.clearSharedPreferences()
+        verify(credentialsRepository, times(1)).reset()
+        verify(preferenceRepository, times(1)).resetPreferences()
     }
+
 
     private fun getLinkedAccountsResponse(): LinkedAccountsResponse? {
         return Gson().fromJson<LinkedAccountsResponse>(TestUtils.readFile("linked_accounts.json"))
