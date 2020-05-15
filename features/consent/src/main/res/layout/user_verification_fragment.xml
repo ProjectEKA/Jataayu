@@ -27,6 +27,24 @@
         tools:context=".ui.fragment.ConfirmPinFragment">
 
         <TextView
+                android:id="@+id/lblBlockUser"
+                style="@style/TextAppearance.AccountLockErrorMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:drawableStart="@drawable/ic_cross"
+                android:drawablePadding="@dimen/content_margin_medium"
+                android:padding="20dp"
+                android:text="@string/blocked_user_exceed_limit"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/progress_bar_layout"
+                app:layout_constraintTop_toTopOf="@+id/progress_bar_layout"
+                app:layout_constraintVertical_bias="0.28"
+                tools:visibility="visible" />
+
+        <TextView
             android:id="@+id/lbl_enter_otp"
             style="@style/TextAppearance.ListItemSubHeader"
             android:layout_width="match_parent"

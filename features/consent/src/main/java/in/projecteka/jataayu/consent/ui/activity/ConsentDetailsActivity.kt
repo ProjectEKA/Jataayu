@@ -68,7 +68,7 @@ class ConsentDetailsActivity : BaseActivity<BaseActivityBinding>(), ResponseCall
                 }
 
             })
-            viewModel.getConsents()
+            viewModel.getConsents(offset = 0)
         }
     }
 

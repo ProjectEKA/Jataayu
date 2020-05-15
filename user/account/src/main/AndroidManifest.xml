@@ -5,7 +5,10 @@
     <application>
         <activity
             android:label="AccountCreation"
-            android:name=".ui.activity.AccountCreationActivity">
+            android:name=".ui.activity.AccountCreationActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            >
         </activity>
         <activity
             android:label="AccountCreation"

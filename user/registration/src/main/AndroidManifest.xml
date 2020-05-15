@@ -5,11 +5,16 @@
     <application>
         <activity
             android:label="Registration"
-            android:name=".RegistrationActivity">
+            android:name=".RegistrationActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            >
         </activity>
         <activity
             android:label="Login"
             android:name=".LoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

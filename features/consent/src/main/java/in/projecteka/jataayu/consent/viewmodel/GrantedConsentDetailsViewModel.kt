@@ -10,18 +10,20 @@ import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 
 class GrantedConsentDetailsViewModel(private val repository: ConsentRepository) : BaseViewModel() {
 
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
-    val grantedConsentDetailsResponse = PayloadLiveData<List<GrantedConsentDetailsResponse>>()
+    val grantedConsentDetailsResponse = MutableLiveData<GrantedConsentDetailsResponse>()
     internal var selectedProviderName = String.EMPTY
 
     fun getLinkedAccounts() =
         linkedAccountsResponse.fetch(repository.getLinkedAccounts())
 
-    fun getGrantedConsentDetails(requestId: String) {
-        grantedConsentDetailsResponse.fetch(repository.getGrantedConsentDetails(requestId))
+    fun getGrantedConsentDetails(consent: Consent) {
+        val grantedConsentDetailsResponse = GrantedConsentDetailsResponse(consent.status, consent, "")
+         this.grantedConsentDetailsResponse.value = grantedConsentDetailsResponse
     }
 
 
