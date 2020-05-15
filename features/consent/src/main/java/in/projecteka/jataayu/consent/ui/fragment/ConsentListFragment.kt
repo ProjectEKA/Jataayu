@@ -3,7 +3,6 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.callback.DeleteConsentCallback
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
-import `in`.projecteka.jataayu.consent.listners.PaginationScrollListener
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
@@ -65,7 +64,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     private fun initObservers() {
 
-        viewModel.consentArtifactResponse.observe(this, Observer { response ->
+        viewModel.consentArtifactResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Loading -> {
                     if (viewModel.isLoadingMore.get() != View.VISIBLE) {
@@ -76,8 +75,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                 }
                 is Success -> {
                     response.data?.let {
-                        viewModel.consentArtifacts.value = it
-                        resetScrollListenerIfNeeded()
+                        viewModel.updateConsentArtifactList(it)
                         val hiuList = it.getArtifacts().map { consent -> consent.hiu }
                         getNamesOf(hiuList)
                         binding.hideRequestsList = it.getArtifacts().isNullOrEmpty()
@@ -95,7 +93,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
         })
 
-
         viewModel.grantedConsentDetailsResponse.observe(
             this,
             Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
@@ -112,7 +109,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                 }
             })
 
-        viewModel.revokeConsentResponse.observe(this, Observer<PayloadResource<Void>> {
+        viewModel.revokeConsentResponse.observe(viewLifecycleOwner, Observer<PayloadResource<Void>> {
             when (it) {
                 is Loading -> viewModel.showProgress(
                     it.isLoading, R.string.revoking_consent
@@ -139,7 +136,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
             }
         })
 
-        viewModel.currentStatus.observe(this, Observer {
+        viewModel.currentStatus.observe(viewLifecycleOwner, Observer {
             clearRecylerView()
         })
 
@@ -206,7 +203,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun getNamesOf(hiuList: List<HipHiuIdentifiable>) {
         val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(hiuList)
         hipHiuNameResponse.observe(this, Observer {
-            viewModel.consentArtifacts.value?.getArtifacts()?.let { consentList ->
+            viewModel.consentArtifactList.value?.getArtifacts()?.let { consentList ->
                 if(it.status) {
                     consentList.forEach { consent -> consent.hiu.name = it.nameMap[consent.hiu.getId()] ?: "" }
                     renderConsentRequests(consentList, binding.spRequestFilter.selectedItemPosition)
@@ -244,20 +241,12 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     }
 
 
-    private fun resetScrollListenerIfNeeded() {
-        if (viewModel.scrollListener == null) {
-            viewModel.scrollListener = PaginationScrollListener(viewModel, viewModel.consentArtifacts.value?.size ?: 0)
-            setupScrollListener()
-        }
-    }
-
     private fun clearRecylerView() {
         consentsListAdapter.clearAll()
-        viewModel.scrollListener = null
         viewModel.getConsents(offset = 0)
     }
 
     private fun setupScrollListener() {
-        viewModel.scrollListener?.let { binding.rvConsents.addOnScrollListener(it) }
+        binding.rvConsents.addOnScrollListener(viewModel.paginationScrollListener)
     }
 }

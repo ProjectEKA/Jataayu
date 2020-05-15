@@ -10,6 +10,7 @@ import `in`.projecteka.jataayu.core.model.HipHiuNameResponse
 import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
+import `in`.projecteka.jataayu.network.utils.isLoading
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import android.content.res.Resources
@@ -31,10 +32,14 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
     }
 
     val consentListResponse = PayloadLiveData<ConsentsListResponse>()
-    val requestedConsentsList = MutableLiveData<ConsentsListResponse>()
-    var scrollListener: PaginationScrollListener? = null
 
-    private val _currentStatus =  MutableLiveData<RequestStatus>()
+    private val _requestedConsentsList = MutableLiveData<ConsentsListResponse>()
+    val requestedConsentsList: LiveData<ConsentsListResponse>
+    get() = _requestedConsentsList
+
+    val paginationScrollListener: PaginationScrollListener = PaginationScrollListener(this)
+
+    private val _currentStatus =  MutableLiveData<RequestStatus>(RequestStatus.REQUESTED)
     val currentStatus: LiveData<RequestStatus>
     get() = _currentStatus
     val isLoadingMore = ObservableInt(View.INVISIBLE)
@@ -66,6 +71,7 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
     }
 
     override fun loadMoreItems(totalFetchedCount: Int) {
+        if (consentListResponse.isLoading()) return
         isLoadingMore.set(View.VISIBLE)
         getConsents(offset = totalFetchedCount)
     }
@@ -73,6 +79,11 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
 
     fun fetchHipHiuNamesOf(idList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
         return repository.getProviderBy(idList)
+    }
+
+    fun updateRequestedConsentList(consentsListResponse: ConsentsListResponse) {
+        paginationScrollListener.updateTotalSize(consentsListResponse.totalCount)
+        _requestedConsentsList.value = consentsListResponse
     }
 
     fun updateFilterSelectedItem(position: Int) {

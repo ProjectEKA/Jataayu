@@ -2,8 +2,6 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.ConsentRequestFragmentBinding
-import `in`.projecteka.jataayu.consent.extension.getSortedConsentListByLastUpdatedDate
-import `in`.projecteka.jataayu.consent.listners.PaginationScrollListener
 import `in`.projecteka.jataayu.consent.model.ConsentFlow
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.adapter.ConsentsListAdapter
@@ -64,7 +62,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
-        viewModel.getConsents(limit = 4, offset = 0)
+        viewModel.getConsents(offset = 0)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -102,15 +100,14 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
                 }
                 is Success -> {
                     binding.progressBar.visibility = View.INVISIBLE
-                    viewModel.requestedConsentsList.value = response.data
-                    resetScrollListener()
+                    viewModel.updateRequestedConsentList(response.data!!)
                     response.data?.requests?.let {
                         val hiuList = it.map { consent -> consent.hiu }
                         getNamesOf(hiuList)
                     }
                     parentViewModel.showRefreshing(false)
 
-                    binding.hideRequestsList = false
+                    binding.hideRequestsList = response.data?.requests.isNullOrEmpty()
                     binding.hideFilter = false
                 }
                 is PartialFailure -> {
@@ -208,28 +205,20 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
     }
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
-        consentsListAdapter.updateData(requests.getSortedConsentListByLastUpdatedDate())
+        consentsListAdapter.updateData(requests)
     }
 
     fun getConsentFlow(): ConsentFlow {
         return ConsentFlow.REQUESTED_CONSENTS
     }
 
-    private fun resetScrollListener() {
-        if (viewModel.scrollListener == null) {
-            viewModel.scrollListener = PaginationScrollListener(viewModel, viewModel.requestedConsentsList.value?.totalCount ?: 0)
-            setupScrollListener()
-        }
-    }
-
     private fun clearRecylerView() {
         consentsListAdapter.clearAll()
-        viewModel.scrollListener = null
         viewModel.getConsents(offset = 0)
     }
 
     private fun setupScrollListener() {
-        viewModel.scrollListener?.let { binding.rvConsents.addOnScrollListener(it) }
+        binding.rvConsents.addOnScrollListener(viewModel.paginationScrollListener)
     }
 
     //endregion

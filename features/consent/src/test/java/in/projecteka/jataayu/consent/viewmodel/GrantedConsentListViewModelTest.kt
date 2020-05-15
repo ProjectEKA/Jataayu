@@ -181,6 +181,10 @@ class ConsentListViewModelTest {
         assertEquals(RequestStatus.ALL, consentViewModel.currentStatus.value)
     }
 
+    @Test
+    fun `should select current status default value to granted`() {
+        assertEquals(RequestStatus.GRANTED, consentViewModel.currentStatus.value)
+    }
 
     private fun dummyGrantedConsentsList(): List<Consent>? {
         return getData("granted_consents.json")
