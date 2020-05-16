@@ -25,4 +25,13 @@
     <string name="action_logout">Logout</string>
     <string name="ayushman_bharat_id">Ayushman Bharat ID (optional)</string>
     <string name="ayushman_validation_hint">Should be 9 characters long\nShould start with P</string>
+
+<!--    Profile-->
+    <string name="consent_manager_id">Consent Manager ID</string>
+    <string name="password">Password</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="edit">Edit</string>
+    <string name="consent_pin">Consent PIN</string>
+    <string name="yob">Year of Birth</string>
+    <string name="ayushman_id">Ayushman Bharat ID</string>
 </resources>

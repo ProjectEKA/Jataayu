@@ -11,6 +11,7 @@ import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TYPE_AYUSHMAN_BHARAT_ID
 import android.text.InputType
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -37,7 +38,6 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
         $                 # end-of-string*/
         private const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
         const val ayushmanIdCriteria =  "^[P|p]([A-Z][0-9])*.{8}$"
-        const val TYPE_AYUSHMAN_BHARAT_ID = "ABPMJAYID"
         private const val DEFAULT_CHECKED_ID = -1
     }
 
@@ -147,10 +147,10 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
 
     private fun getGender(): String {
         return when (genderCheckId) {
-            R.id.gender_chip_male -> "M"
-            R.id.gender_chip_female -> "F"
-            R.id.gender_chip_other -> "O"
-            else -> "O"
+            R.id.gender_chip_male -> PreferenceRepository.GENDER_MALE
+            R.id.gender_chip_female -> PreferenceRepository.GENDER_FEMALE
+            R.id.gender_chip_other -> PreferenceRepository.GENDER_OTHERS
+            else -> PreferenceRepository.GENDER_OTHERS
         }
     }
 

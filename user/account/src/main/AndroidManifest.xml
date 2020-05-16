@@ -10,6 +10,10 @@
             android:configChanges="orientation"
             >
         </activity>
+        <activity
+            android:label="AccountCreation"
+            android:name=".ui.activity.ProfileActivity">
+        </activity>
     </application>
 
 </manifest>
