@@ -10,6 +10,13 @@
             android:configChanges="orientation"
             >
         </activity>
+        <activity
+            android:label="ChangePassword"
+            android:name=".ui.activity.ChangePasswordActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            >
+        </activity>
     </application>
 
 </manifest>

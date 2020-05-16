@@ -9,6 +9,7 @@ import `in`.projecteka.jataayu.registration.viewmodel.RegistrationFragmentViewMo
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationVerificationViewModel
 import `in`.projecteka.jataayu.ui.LauncherViewModel
 import `in`.projecteka.jataayu.ui.dashboard.DashboardViewModel
+import `in`.projecteka.jataayu.user.account.viewmodel.ChangePasswordViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.resetpassword.viewmodel.ReadIdentifierFragmentViewModel
@@ -60,5 +61,8 @@ val viewModelModule = module {
     viewModel { ReadIdentifierFragmentViewModel(get()) }
     viewModel { ResetPasswordOtpVerificationViewModel(get()) }
     viewModel { ResetPasswordFragmentViewModel(get()) }
+
+    //Change Password
+    viewModel { ChangePasswordViewModel(get()) }
 
 }

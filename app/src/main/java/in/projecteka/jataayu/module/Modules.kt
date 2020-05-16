@@ -16,7 +16,10 @@ import `in`.projecteka.jataayu.registration.remote.AuthenticationApis
 import `in`.projecteka.resetpassword.remote.ResetPasswordApis
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepositoryImpl
+import `in`.projecteka.jataayu.user.account.remote.ChangePasswordApis
 import `in`.projecteka.jataayu.user.account.remote.UserAccountApis
+import `in`.projecteka.jataayu.user.account.repository.ChangePasswordRepository
+import `in`.projecteka.jataayu.user.account.repository.ChangePasswordRepositoryImpl
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepositoryImpl
 import `in`.projecteka.jataayu.util.repository.*
@@ -36,6 +39,7 @@ val repositoryModule = module {
     factory { UserVerificationRepositoryImpl(get()) as UserVerificationRepository }
     factory { UUIDRepositoryImpl() as UUIDRepository }
     factory { ResetPasswordRepositoryImpl(get()) as ResetPasswordRepository }
+    factory { ChangePasswordRepositoryImpl(get()) as ChangePasswordRepository }
 
     single { PreferenceRepositoryImpl(get(named(ENCRYPTED_PREFS))) as PreferenceRepository }
     single { CredentialsRepositoryImpl(get(named(ENCRYPTED_PREFS))) as CredentialsRepository }
@@ -55,4 +59,5 @@ val networkModule = module {
     single { get<Retrofit>().create(AuthenticationApis::class.java) }
     single { get<Retrofit>().create(ResetPasswordApis::class.java) }
     single { get<Retrofit>().create(UserVerificationApis::class.java) }
+    single { get<Retrofit>().create(ChangePasswordApis::class.java) }
 }
