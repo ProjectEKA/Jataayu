@@ -56,14 +56,10 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         binding = ConsentRequestFragmentBinding.inflate(inflater)
         initBindings()
         initRecyclerViewAdapter()
+        initObservers()
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initObservers()
-        viewModel.getConsents(offset = 0)
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -72,14 +68,15 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
                 val eventType = data.getStringExtra(ConsentHostFragmentViewModel.KEY_CONSENT_EVENT_TYPE)
                 if (eventType == ConsentHostFragmentViewModel.KEY_EVENT_GRANT) {
                     parentViewModel.showToastEvent.value = getString(R.string.consent_granted)
+                    parentViewModel.pullToRefreshEvent.value = true
                 } else if (eventType == ConsentHostFragmentViewModel.KEY_EVENT_DENY) {
                     parentViewModel.showToastEvent.value =getString(R.string.consent_denied)
+                    parentViewModel.pullToRefreshEvent.value = true
                 }
             }
-            parentViewModel.pullToRefreshEvent.value = true
         }
         if (requestCode == REQUEST_CONSENT_DETAILS && resultCode == Activity.RESULT_CANCELED) {
-            parentViewModel.pullToRefreshEvent.value = true
+            data?.let { parentViewModel.pullToRefreshEvent.value = true }
         }
     }
 
@@ -152,6 +149,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         binding.hideFilter =  binding.hideRequestsList
         viewModel.showProgress(false)
         initSpinner(0)
+        viewModel.getConsents(offset = 0)
     }
 
     private fun initRecyclerViewAdapter() {
@@ -203,6 +201,7 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
             }
         })
     }
+
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
         consentsListAdapter.updateData(requests)
