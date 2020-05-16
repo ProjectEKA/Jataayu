@@ -4,11 +4,11 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
-import androidx.databinding.ObservableBoolean
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener
 import com.google.android.material.textfield.TextInputEditText
@@ -60,4 +60,9 @@ object BindingAdapters {
         else editText.error = null
     }
 
+    @BindingAdapter("imageResource")
+    @JvmStatic
+    fun setImageResource(imageView: ImageView, resource: Int) {
+        imageView.setImageResource(resource)
+    }
 }

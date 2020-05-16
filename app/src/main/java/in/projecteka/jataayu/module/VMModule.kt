@@ -3,10 +3,7 @@ package `in`.projecteka.jataayu.module
 import `in`.projecteka.jataayu.consent.viewmodel.*
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderActivityViewModel
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
-import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
-import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel
-import `in`.projecteka.jataayu.registration.viewmodel.RegistrationFragmentViewModel
-import `in`.projecteka.jataayu.registration.viewmodel.RegistrationVerificationViewModel
+import `in`.projecteka.jataayu.registration.viewmodel.*
 import `in`.projecteka.jataayu.ui.LauncherViewModel
 import `in`.projecteka.jataayu.ui.dashboard.DashboardViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
@@ -40,6 +37,9 @@ val viewModelModule = module {
 
     //Login
     viewModel { LoginViewModel(get(), get(), get()) }
+    viewModel { ConsentManagerIDInputViewModel() }
+    viewModel { PasswordInputViewModel() }
+    viewModel { LoginOtpViewModel() }
 
     //Consent
     viewModel { ConsentHostFragmentViewModel() }

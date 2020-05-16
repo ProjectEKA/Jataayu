@@ -1,8 +1,6 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.network.model.Error
-import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
@@ -15,9 +13,13 @@ import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
+import androidx.annotation.LayoutRes
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 
 class LoginViewModel(
     private val repository: AuthenticationRepository,
@@ -35,7 +37,7 @@ class LoginViewModel(
     val inputPasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
     val usernameProviderLbl = ObservableField<String>()
     val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
-    val loginEnabled = ObservableBoolean(false)
+    val nextEnabled = ObservableBoolean(false)
     val onClickRegisterEvent = SingleLiveEvent<Void>()
     val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
     var onClickForgotPasswordEvent = SingleLiveEvent<Void>()
@@ -43,6 +45,12 @@ class LoginViewModel(
     val accountLockBlockDividerEnable = ObservableField<Int>(View.GONE)
 
     val loginResponse = PayloadLiveData<CreateAccountResponse>()
+
+    private val currentFragmentLayout = MutableLiveData(R.layout.consent_manager_id_input_fragment)
+    val redirectLiveEvent : LiveData<Int> = Transformations.map(currentFragmentLayout) {
+        it
+    }
+
 
     private fun visiblePasswordInputType(): Int {
         return InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
@@ -76,6 +84,11 @@ class LoginViewModel(
         onClickForgotPasswordEvent.call()
     }
 
+
+    fun replaceFragment(@LayoutRes layoutRes: Int) {
+        currentFragmentLayout.value = layoutRes
+    }
+
     fun onLoginClicked() = loginResponse.fetch(
             repository.login(
                 "${inputUsernameLbl.get()}${usernameProviderLbl.get()}",
@@ -90,6 +103,6 @@ class LoginViewModel(
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        loginEnabled.set(inputUsernameLbl.get()?.isNotEmpty() == true && inputPasswordLbl.get()?.isNotEmpty() == true)
+        nextEnabled.set(inputUsernameLbl.get()?.isNotEmpty() == true && inputPasswordLbl.get()?.isNotEmpty() == true)
     }
 }

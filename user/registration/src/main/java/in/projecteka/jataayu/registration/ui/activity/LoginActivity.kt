@@ -6,10 +6,11 @@ import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
-
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
-import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ActivityLoginBinding
+import `in`.projecteka.jataayu.registration.ui.fragment.ConsentManagerIDInputFragment
+import `in`.projecteka.jataayu.registration.ui.fragment.LoginOtpFragment
+import `in`.projecteka.jataayu.registration.ui.fragment.PasswordInputFragment
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.util.startDashboard
 import `in`.projecteka.jataayu.util.startForgotPassword
@@ -31,7 +32,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
         initObservers()
+        addFragment(ConsentManagerIDInputFragment.newInstance(), R.id.fragment_container)
     }
+
 
     private fun initObservers() {
         viewModel.onClickRegisterEvent.observe(this, Observer {
@@ -39,7 +42,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         })
 
         viewModel.onPasswordVisibilityToggleEvent.observe(this, Observer {
-            binding.etPassword.setSelection(it)
+//            binding.etPassword.setSelection(it)
         })
 
         viewModel.loginResponse.observe(this, Observer {
@@ -77,6 +80,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
         viewModel.onClickForgotPasswordEvent.observe(this, Observer {
             startForgotPassword(this)
+        })
+
+        viewModel.redirectLiveEvent.observe(this, Observer {
+            when(it) {
+                R.layout.password_input_fragment -> replaceFragment(PasswordInputFragment.newInstance(), R.id.fragment_container)
+                R.layout.login_otp_fragment -> replaceFragment(LoginOtpFragment.newInstance(), R.id.fragment_container)
+            }
         })
     }
 }
