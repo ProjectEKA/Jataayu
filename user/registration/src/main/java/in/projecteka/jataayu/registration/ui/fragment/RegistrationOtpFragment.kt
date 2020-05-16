@@ -78,7 +78,7 @@ class RegistrationOtpFragment : BaseFragment() {
                                 getString(R.string.otp_expired)
                             }
                             EXCEEDED_INVALID_ATTEMPT_LIMIT -> {
-                                getString(R.string.exceeded_otp_attempt_limit)
+                                getString(R.string.otp_attempt_limit_exceed)
                             }
                             else -> it.error?.message
                         }
