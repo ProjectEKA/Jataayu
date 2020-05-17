@@ -41,12 +41,5 @@ class ConsentManagerIDInputViewModel : BaseViewModel(), TextWatcher {
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         nextEnabled.set(inputUsernameLbl.get()?.isNotEmpty() == true)
-        inputUsernameLbl.get()?.let {
-            if (it.length >= 8) {
-                this.cmIDCheckMarkImage.set(R.drawable.ic_check_green)
-            } else {
-                this.cmIDCheckMarkImage.set(R.drawable.ic_check_gray)
-            }
-        }
     }
 }

@@ -9,3 +9,4 @@ data class CreateAccountResponse(
     @SerializedName("refreshExpiresIn") val refreshExpiresIn: Int,
     @SerializedName("tokenType") val tokenType: String
 )
+

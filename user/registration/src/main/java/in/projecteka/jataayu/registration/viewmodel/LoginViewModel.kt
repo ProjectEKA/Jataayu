@@ -16,7 +16,6 @@ class LoginViewModel : BaseViewModel() {
 
     var cmId: String = ""
     private set
-    var password: String = ""
 
 
     private val currentFragmentLayout = MutableLiveData(R.layout.consent_manager_id_input_fragment)
@@ -29,7 +28,6 @@ class LoginViewModel : BaseViewModel() {
     fun replaceFragment(@LayoutRes layoutRes: Int) {
         currentFragmentLayout.value = layoutRes
     }
-
 
     fun updateConsentManagerID(id: String, provider: String) {
         cmId = id + provider

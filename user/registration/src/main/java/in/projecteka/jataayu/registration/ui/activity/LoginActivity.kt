@@ -22,7 +22,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.viewModel = viewModel
         initObservers()
         addFragment(ConsentManagerIDInputFragment.newInstance(), R.id.fragment_container)
     }
