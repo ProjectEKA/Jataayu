@@ -35,4 +35,5 @@
     <string name="yob">Year of Birth</string>
     <string name="ayushman_id">Ayushman Bharat ID</string>
     <string name="mobile">Mobile Number</string>
+    <string name="my_profile">My Profile</string>
 </resources>

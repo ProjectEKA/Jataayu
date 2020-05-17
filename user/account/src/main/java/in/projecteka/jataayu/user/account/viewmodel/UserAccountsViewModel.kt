@@ -75,16 +75,16 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
 
     private fun saveProfileDetails(profile: MyProfile?) {
         profile?.let {
-            preferenceRepository.name = profile.name
-            preferenceRepository.pinCreated = profile.hasTransactionPin
-            preferenceRepository.gender = profile.gender
-            preferenceRepository.consentManagerId = profile.id
+            preferenceRepository.name = it.name
+            preferenceRepository.pinCreated = it.hasTransactionPin
+            preferenceRepository.gender = it.gender
+            preferenceRepository.consentManagerId = it.id
 
-            profile.yearOfBirth?.let {
-                preferenceRepository.yearOfBirth = profile.yearOfBirth!!
+            it.yearOfBirth?.let {yob ->
+                preferenceRepository.yearOfBirth = yob
             }
 
-            profile.verifiedIdentifiers.forEach { identifier ->
+            it.verifiedIdentifiers?.forEach { identifier ->
                 if (identifier.type == PreferenceRepository.VERIFIED_IDENTIFIER_TYPE_MOBILE) {
                     preferenceRepository.countryCode =
                         (identifier.value).substringBeforeLast(PreferenceRepository.MOBILE_NUMBER_DELIMITER) + PreferenceRepository.MOBILE_NUMBER_DELIMITER
@@ -93,7 +93,8 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
                 }
             }
 
-            profile.unverifiedIdentifiers.forEach { unverifiedIdentifier ->
+
+            it.unverifiedIdentifiers?.forEach { unverifiedIdentifier ->
                 if (unverifiedIdentifier.type == PreferenceRepository.TYPE_AYUSHMAN_BHARAT_ID){
                     preferenceRepository.ayushmanBharatId = unverifiedIdentifier.value
                 }
