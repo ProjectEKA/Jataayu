@@ -8,6 +8,6 @@ data class MyProfile(
     @SerializedName("gender") val gender: String,
     @SerializedName("yearOfBirth") val yearOfBirth: Int?,
     @SerializedName("hasTransactionPin") val hasTransactionPin: Boolean,
-    @SerializedName("verifiedIdentifiers") val verifiedIdentifiers: List<Identifier>,
-    @SerializedName("unverifiedIdentifiers") val unverifiedIdentifiers: List<UnverifiedIdentifier>
+    @SerializedName("verifiedIdentifiers") val verifiedIdentifiers: List<Identifier>?,
+    @SerializedName("unverifiedIdentifiers") val unverifiedIdentifiers: List<UnverifiedIdentifier>?
     )
