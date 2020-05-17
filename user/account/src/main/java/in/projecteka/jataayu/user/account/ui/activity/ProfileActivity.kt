@@ -19,8 +19,21 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initToolbar()
+        initBindingzs()
         initObservers()
-        viewmodel.init()
+        viewmodel.init(getString(R.string.my_profile))
+    }
+
+    private fun initBindingzs() {
+        binding.viewmodel = viewmodel
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(binding.appToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        binding.appToolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
     private fun initObservers() {
