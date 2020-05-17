@@ -23,30 +23,77 @@
             android:orientation="vertical"
             android:padding="@dimen/content_margin_medium">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/account_lock_error_text"
+                style="@style/TextAppearance.AccountLockErrorMessage"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawablePadding="@dimen/content_margin_medium"
+                android:padding="16dp"
+                android:layout_marginBottom="18dp"
+                android:text="@string/account_lock"
+                android:visibility="@{viewModel.accountLockBlockEnable}"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/divider"
+                app:layout_constraintVertical_bias="0.435" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:visibility="@{viewModel.accountLockBlockDividerEnable}"
+                android:layout_marginTop="24dp"
+                android:background="#14212121"
+                app:layout_constraintTop_toTopOf="@id/tv_welcome"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="1dp" />
+
+            <TextView
+                android:id="@+id/tv_welcome"
+                style="@style/TextAppearance.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                android:text="@string/welcome"
+                android:paddingTop="20dp"
+                android:textSize="32sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="30dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/lbl_enter_otp"
                 android:orientation="horizontal"
+                android:paddingBottom="10dp"
                 >
                 <TextView
                     android:id="@+id/otp_valid_lbl"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:text="@string/otp_is_valid_for_2_min"
+                    style="@style/TextAppearance.ListItemSubHeader"
                     />
                 <TextView
                     android:id="@+id/otp_time_validity_lbl"
-                    android:layout_width="40dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintStart_toEndOf="@id/otp_valid_lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/TextAppearance.ListItemSubHeader"
                     android:text="@={viewModel.timeRemaining}"
                     />
 

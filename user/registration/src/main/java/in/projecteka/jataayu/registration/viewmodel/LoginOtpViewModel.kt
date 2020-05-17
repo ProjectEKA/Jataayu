@@ -5,6 +5,7 @@ import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 
@@ -20,6 +21,9 @@ class LoginOtpViewModel : BaseViewModel(), TextWatcher {
     val otpText = ObservableField<String>()
     val mobileNumberText = ObservableField<String>()
     val submitEnabled = ObservableBoolean()
+
+    val accountLockBlockEnable = ObservableField<Int>(View.GONE)
+    val accountLockBlockDividerEnable = ObservableField<Int>(View.GONE)
 
     val onValidatOTPEvent = SingleLiveEvent<String>()
     val onClickResendEvent = SingleLiveEvent<RequestVerificationRequest>()

@@ -24,7 +24,6 @@ class ConsentManagerIDInputViewModel : BaseViewModel(), TextWatcher {
 
 
 
-
     fun onNextButtonClicked() {
         onNextButtonClickEvent.call()
     }

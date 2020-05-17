@@ -1,8 +1,17 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
+import `in`.projecteka.jataayu.network.utils.Failure
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PartialFailure
+import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
+import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
+import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.PasswordInputFragmentBinding
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.PasswordInputViewModel
+import `in`.projecteka.jataayu.util.startForgotPassword
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +48,44 @@ class PasswordInputFragment : Fragment() {
             binding.etPassword.setSelection(it)
         })
 
+        binding.btnLogin.setOnClickListener {
+            viewModel.onLoginClicked(loginViewModel.cmId)
+        }
+
+        viewModel.loginByPasswordResponse.observe(viewLifecycleOwner, Observer {
+
+            when (it) {
+                is Loading -> viewModel.showProgress(it.isLoading, R.string.logging_in)
+                is Success -> {
+                    viewModel.credentialsRepository.accessToken =
+                        "${it.data?.tokenType?.capitalize()} ${it.data?.accessToken}"
+                    viewModel.preferenceRepository.isUserLoggedIn = true
+                    viewModel.credentialsRepository.refreshToken = it.data?.refreshToken
+                    loginViewModel.loginResponseSuccessEvent.call()
+                }
+                is PartialFailure -> {
+                    when (it.error?.code) {
+                        LoginActivity.ERROR_CODE_BLOCK_USER -> {
+                            viewModel.accountLockBlockEnable.set(View.VISIBLE)
+                            viewModel.accountLockBlockDividerEnable.set(View.VISIBLE)
+                        }
+                        else -> {
+                            context?.showAlertDialog(
+                                getString(R.string.failure), it.error?.message,
+                                getString(android.R.string.ok)
+                            )
+                        }
+                    }
+                }
+                is Failure -> {
+                    context?.showErrorDialog(it.error.localizedMessage)
+                }
+            }
+        })
+
+        viewModel.onClickForgotPasswordEvent.observe(viewLifecycleOwner, Observer {
+            activity?.let { startForgotPassword(it) }
+        })
     }
 
 }

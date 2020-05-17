@@ -36,9 +36,9 @@ val viewModelModule = module {
     viewModel { CreateAccountViewModel(get(), get(), get()) }
 
     //Login
-    viewModel { LoginViewModel(get(), get(), get()) }
+    viewModel { LoginViewModel() }
     viewModel { ConsentManagerIDInputViewModel() }
-    viewModel { PasswordInputViewModel() }
+    viewModel { PasswordInputViewModel(get(), get(), get()) }
     viewModel { LoginOtpViewModel() }
 
     //Consent
