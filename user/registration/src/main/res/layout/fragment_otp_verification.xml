@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/toolbar_size"
             android:gravity="center_horizontal"
-            android:text="@string/enter_otp"
+            android:text="@string/enter_six_digit_otp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number"

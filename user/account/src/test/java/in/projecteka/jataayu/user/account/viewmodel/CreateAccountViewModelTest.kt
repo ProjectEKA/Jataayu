@@ -3,7 +3,7 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.network.utils.Success
-import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
