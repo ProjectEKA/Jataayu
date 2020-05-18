@@ -15,7 +15,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 
 
-
 class ConsentManagerIDInputViewModel(private val userAccountsRepository: UserAccountsRepository) : BaseViewModel(), TextWatcher {
 
     val onRegisterButtonClickEvent = SingleLiveEvent<Void>()
@@ -25,7 +24,7 @@ class ConsentManagerIDInputViewModel(private val userAccountsRepository: UserAcc
     val inputUsernameLbl = ObservableField<String>()
     val nextEnabled = ObservableBoolean(false)
 
-    private val loginModeLiveDataResponse = PayloadLiveData<LoginType>()
+   private val loginModeLiveDataResponse = PayloadLiveData<LoginType>()
 
     val loginMode: LiveData<APIResponse<out LoginMode>?> = Transformations.map(loginModeLiveDataResponse) {
         when(it) {

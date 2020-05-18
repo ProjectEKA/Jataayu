@@ -1,7 +1,6 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
-import `in`.projecteka.jataayu.core.model.LoginMode.OTP
-import `in`.projecteka.jataayu.core.model.LoginMode.PASSWORD
+import `in`.projecteka.jataayu.core.model.LoginMode
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ConsentManagerIdInputFragmentBinding
@@ -54,15 +53,16 @@ class ConsentManagerIDInputFragment : Fragment() {
             viewModel.fetchLoginMode(loginViewModel.cmId)
         })
 
+
         viewModel.loginMode.observe(viewLifecycleOwner, Observer { loginMode ->
             if (loginMode?.isLoading == true) return@Observer
             loginMode.let {
                 if(it?.hasErrors() == true) {
                     activity?.showErrorDialog(it.error?.message)
                 } else {
-                    when(it?.response) {
-                        OTP -> loginViewModel.replaceFragment(R.layout.login_otp_fragment)
-                        PASSWORD -> loginViewModel.replaceFragment(R.layout.password_input_fragment)
+                    when(loginMode?.response) {
+                        LoginMode.OTP -> loginViewModel.replaceFragment(R.layout.login_otp_fragment)
+                        LoginMode.PASSWORD -> loginViewModel.replaceFragment(R.layout.password_input_fragment)
                         else -> {}
                     }
                 }

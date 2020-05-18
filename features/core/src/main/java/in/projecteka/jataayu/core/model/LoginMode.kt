@@ -2,8 +2,17 @@ package `in`.projecteka.jataayu.core.model
 import com.google.gson.annotations.SerializedName
 
 
-data class LoginType(@SerializedName("loginType") val loginMode: LoginMode) {}
+
+data class LoginType(
+    @SerializedName("loginMode")
+    val loginMode: LoginMode
+)
+
+
 
 enum class LoginMode(val loginMode: String) {
-    OTP("OTP"), PASSWORD("CREDENTIAL")
+    @SerializedName("OTP")
+    OTP("OTP"),
+    @SerializedName("CREDENTIAL")
+    PASSWORD("CREDENTIAL")
 }
