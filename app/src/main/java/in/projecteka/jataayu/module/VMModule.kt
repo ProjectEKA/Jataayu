@@ -39,7 +39,7 @@ val viewModelModule = module {
     viewModel { LoginViewModel() }
     viewModel { ConsentManagerIDInputViewModel() }
     viewModel { PasswordInputViewModel(get(), get(), get()) }
-    viewModel { LoginOtpViewModel() }
+    viewModel { LoginOtpViewModel(get(), get(), get()) }
 
     //Consent
     viewModel { ConsentHostFragmentViewModel() }

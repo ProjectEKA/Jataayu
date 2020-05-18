@@ -9,6 +9,8 @@ interface AuthenticationRepository {
     fun requestVerification(requestVerificationRequest: RequestVerificationRequest): Call<RequestVerificationResponse>
     fun verifyIdentifier(body: VerifyIdentifierRequest): Call<VerifyIdentifierResponse>
     fun login(username: String, password: String, grantType: String): Call<CreateAccountResponse>
+    fun generateOtp(body: LoginOTPSessionRequest): Call<LoginOTPSessionResponse>
+    fun loginOtp(body: LoginOTPRequest): Call<CreateAccountResponse>
 }
 
 class AuthenticationRepositoryImpl(private val authApi: AuthenticationApis) : AuthenticationRepository {
@@ -23,6 +25,14 @@ class AuthenticationRepositoryImpl(private val authApi: AuthenticationApis) : Au
 
     override fun requestVerification(requestVerificationRequest: RequestVerificationRequest): Call<RequestVerificationResponse> {
         return authApi.requestVerification(requestVerificationRequest)
+    }
+
+    override fun generateOtp(body: LoginOTPSessionRequest): Call<LoginOTPSessionResponse> {
+        return authApi.generateOtp(body)
+    }
+
+    override fun loginOtp(body: LoginOTPRequest): Call<CreateAccountResponse> {
+        return authApi.loginOTP(body)
     }
 
 }

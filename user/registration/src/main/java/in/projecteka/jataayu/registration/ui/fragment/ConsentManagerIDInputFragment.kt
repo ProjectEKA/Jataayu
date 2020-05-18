@@ -19,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConsentManagerIDInputFragment : Fragment() {
 
-    private val loginMode = PASSWORD
+    private val loginMode = OTP
 
     companion object {
         fun newInstance() = ConsentManagerIDInputFragment()

@@ -136,7 +136,7 @@
                 app:layout_constraintLeft_toLeftOf="@+id/et_otp"
                 app:layout_constraintRight_toRightOf="@id/et_otp"
                 app:layout_constraintTop_toBottomOf="@+id/et_otp"
-                tools:text="Invalid OTP entered. Please try again." />
+                tools:text="@string/invalid_otp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_continue"
@@ -145,7 +145,6 @@
                 android:layout_height="@dimen/button_height"
                 android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                 android:enabled="@{viewModel.submitEnabled}"
-                android:onClick="@{() -> viewModel.onValidateOTP()}"
                 android:text="@string/validate"
                 android:textAllCaps="true"
                 app:layout_constraintEnd_toEndOf="parent"
