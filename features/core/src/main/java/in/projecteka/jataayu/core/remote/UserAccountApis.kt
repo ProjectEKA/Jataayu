@@ -21,4 +21,7 @@ interface UserAccountApis {
     @Headers("Cache-Control: max-age=86400")
     @GET("providers/{provider-id}")
     fun getProvidersBy(@NonNull @Path("provider-id") providerId: String): Call<ProviderInfo>
+
+    @GET("/patients/profile/loginmode")
+    fun getLoginMode(@Query("userName") userName: String): Call<LoginType>
 }

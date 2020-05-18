@@ -15,6 +15,7 @@ interface UserAccountsRepository {
     fun getMyProfile(): PayloadLiveData<MyProfile>
     fun logout(refreshToken: String): Call<Void>
     fun getProviderBy(providerIdList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse>
+    fun getLoginMode(userName: String): Call<LoginType>
 }
 
 class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) :
@@ -42,6 +43,10 @@ class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) :
     override fun getProviderBy(providerIdList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
         val idList = providerIdList.toSet().map { it.getId() }
         return getProviderData(idList)
+    }
+
+    override fun getLoginMode(userName: String): Call<LoginType> {
+        return userAccountApis.getLoginMode(userName)
     }
 
     private var providerLiveDataCount = 0

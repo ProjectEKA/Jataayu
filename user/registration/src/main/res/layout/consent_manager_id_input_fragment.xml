@@ -96,13 +96,6 @@
                         android:text="@string/cm_config_provider"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium" />
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:padding="1dp"
-                        app:imageResource="@{viewModel.cmIDCheckMarkImage}"
-                        />
-
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>

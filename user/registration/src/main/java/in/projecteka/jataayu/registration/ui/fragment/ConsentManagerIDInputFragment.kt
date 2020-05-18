@@ -1,10 +1,11 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
+import `in`.projecteka.jataayu.core.model.LoginMode.OTP
+import `in`.projecteka.jataayu.core.model.LoginMode.PASSWORD
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ConsentManagerIdInputFragmentBinding
 import `in`.projecteka.jataayu.registration.viewmodel.ConsentManagerIDInputViewModel
-import `in`.projecteka.jataayu.registration.viewmodel.LoginMode.OTP
-import `in`.projecteka.jataayu.registration.viewmodel.LoginMode.PASSWORD
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.util.startRegistration
 import android.os.Bundle
@@ -19,7 +20,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConsentManagerIDInputFragment : Fragment() {
 
-    private val loginMode = OTP
 
     companion object {
         fun newInstance() = ConsentManagerIDInputFragment()
@@ -50,11 +50,22 @@ class ConsentManagerIDInputFragment : Fragment() {
         })
 
         viewModel.onNextButtonClickEvent.observe(viewLifecycleOwner, Observer {
-            // TODO - should remove after API integration
             loginViewModel.updateConsentManagerID(viewModel.inputUsernameLbl.get()!!, resources.getString(R.string.cm_config_provider))
-            when(loginMode) {
-                OTP -> loginViewModel.replaceFragment(R.layout.login_otp_fragment)
-                PASSWORD -> loginViewModel.replaceFragment(R.layout.password_input_fragment)
+            viewModel.fetchLoginMode(loginViewModel.cmId)
+        })
+
+        viewModel.loginMode.observe(viewLifecycleOwner, Observer { loginMode ->
+            if (loginMode?.isLoading == true) return@Observer
+            loginMode.let {
+                if(it?.hasErrors() == true) {
+                    activity?.showErrorDialog(it.error?.message)
+                } else {
+                    when(it?.response) {
+                        OTP -> loginViewModel.replaceFragment(R.layout.login_otp_fragment)
+                        PASSWORD -> loginViewModel.replaceFragment(R.layout.password_input_fragment)
+                        else -> {}
+                    }
+                }
             }
         })
     }
