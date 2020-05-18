@@ -1,4 +1,4 @@
-package `in`.projecteka.jataayu.user.account.remote
+package `in`.projecteka.jataayu.core.remote
 
 import `in`.projecteka.jataayu.core.model.*
 import androidx.annotation.NonNull

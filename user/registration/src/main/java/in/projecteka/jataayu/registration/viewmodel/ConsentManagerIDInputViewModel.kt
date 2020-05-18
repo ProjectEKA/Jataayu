@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
+import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
@@ -12,7 +13,7 @@ enum class LoginMode {
     OTP, PASSWORD
 }
 
-class ConsentManagerIDInputViewModel : BaseViewModel(), TextWatcher {
+class ConsentManagerIDInputViewModel(val userAccountsRepository: UserAccountsRepository) : BaseViewModel(), TextWatcher {
 
     val onRegisterButtonClickEvent = SingleLiveEvent<Void>()
     val onNextButtonClickEvent = SingleLiveEvent<Void>()
