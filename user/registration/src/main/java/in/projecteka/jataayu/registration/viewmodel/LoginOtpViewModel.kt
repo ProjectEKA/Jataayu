@@ -28,7 +28,7 @@ class LoginOtpViewModel(val authenticationRepository: AuthenticationRepository, 
     val errorLbl = ObservableField<String>()
     val otpText = ObservableField<String>()
     val mobileNumberText = ObservableField<String>()
-    val submitEnabled = ObservableBoolean()
+    val continueEnabled = ObservableBoolean()
 
     val accountLockBlockEnable = ObservableField<Int>(View.GONE)
     val accountLockBlockDividerEnable = ObservableField<Int>(View.GONE)
@@ -49,7 +49,7 @@ class LoginOtpViewModel(val authenticationRepository: AuthenticationRepository, 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        submitEnabled.set(s?.length == OTP_LENGTH)
+        continueEnabled.set(s?.length == OTP_LENGTH)
     }
 
 

@@ -144,7 +144,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginTop="@dimen/content_margin_extra_extra_large"
-                android:enabled="@{viewModel.submitEnabled}"
+                android:enabled="@{viewModel.continueEnabled}"
                 android:text="@string/validate"
                 android:textAllCaps="true"
                 app:layout_constraintEnd_toEndOf="parent"
