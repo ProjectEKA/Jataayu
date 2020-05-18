@@ -13,6 +13,8 @@ private const val ACTIVITY_LOGIN = "in.projecteka.jataayu.registration.ui.activi
 private const val ACTIVITY_LAUNCHER = "in.projecteka.jataayu.ui.launcher.LauncherActivity"
 private const val ACTIVITY_DASHBOARD = "in.projecteka.jataayu.ui.dashboard.DashboardActivity"
 private const val ACTIVITY_FORGOT_PASSWORD = "in.projecteka.resetpassword.ui.activity.ResetPasswordActivity"
+private const val ACTIVITY_PIN_VERIFICATION = "in.projecteka.jataayu.consent.ui.activity.PinVerificationActivity"
+private const val ACTIVITY_CREATE_PIN = "in.projecteka.jataayu.consent.ui.activity.CreatePinActivity"
 
 private fun defaultIntentDefinition(
     context: Context,
@@ -53,4 +55,12 @@ fun startDashboard(context: Context, intentDefinition: IntentDefinition? = null)
 
 fun startForgotPassword(context: Context, intentDefinition: IntentDefinition? = null) {
     context.startActivity(defaultIntentDefinition(context, ACTIVITY_FORGOT_PASSWORD))
+}
+
+fun startPinVerification(context: Context, intentDefinition: IntentDefinition? = null) {
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_PIN_VERIFICATION, intentDefinition))
+}
+
+fun startCreatePin(context: Context, resultCode: Int? = null, intentDefinition: IntentDefinition? = null) {
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_CREATE_PIN, intentDefinition))
 }

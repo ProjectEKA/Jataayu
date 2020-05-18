@@ -445,6 +445,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:text="@string/consent_pin"
+                    android:enabled="@{!viewModel.showPinNotCreated}"
+                    android:textColor="@drawable/edit_text_color_selector"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cv_password" />
@@ -474,14 +476,15 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:minEms="6"
+                            android:enabled="@{!viewModel.showPinNotCreated}"
                             android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
                             android:background="@color/white"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:cursorVisible="true"
-                            android:text="1234"
+                            android:text="@string/consent_placeholder"
                             android:singleLine="true"
-                            android:textColor="@color/black"
+                            android:textColor="@drawable/edit_text_color_selector"
                             android:textSize="@dimen/text_size_extra_large" />
 
 
@@ -496,13 +499,26 @@
                     android:layout_marginRight="@dimen/content_margin_large"
                     style="@style/Button.Secondary"
                     android:textSize="@dimen/text_size_small"
+                    android:onClick="@{()->viewModel.redirectToEditConsentPin()}"
                     android:padding="@dimen/content_padding_extra_large"
                     android:layout_width="wrap_content"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/cv_consent_pin"
                     app:layout_constraintBottom_toBottomOf="@+id/cv_consent_pin"
                     app:layout_constraintLeft_toRightOf="@id/cv_consent_pin"
-                    android:text="@string/edit" />
+                    android:text="@{viewModel.pinCreateOrEdit}" />
+
+                <TextView
+                    android:id="@+id/lbl_consent_pin_not_created"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/error_hint_color"
+                    app:toggledVisibility="@{viewModel.showPinNotCreated}"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_small"
+                    android:text="@string/consent_pin_not_created"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_consent_pin" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_logout"
@@ -512,7 +528,7 @@
                     android:onClick="@{() -> viewModel.logout()}"
                     android:padding="@dimen/content_margin_medium"
                     android:layout_width="match_parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_edit_consent_pin"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_consent_pin_not_created"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
