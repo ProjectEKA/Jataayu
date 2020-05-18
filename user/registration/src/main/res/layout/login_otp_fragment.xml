@@ -75,6 +75,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/lbl_enter_otp"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
+                android:visibility="invisible"
                 >
                 <TextView
                     android:id="@+id/otp_valid_lbl"
