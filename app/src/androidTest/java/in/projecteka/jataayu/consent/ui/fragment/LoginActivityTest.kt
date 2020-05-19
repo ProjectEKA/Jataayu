@@ -24,7 +24,7 @@ class LoginActivityTest{
     fun shouldRenderUI(){
         VisibilityAssertions.displayed {
             allOf {
-                id(R.id.et_username)
+                id(R.id.et_cm_id)
                 text("")
             }
 
@@ -58,7 +58,7 @@ class LoginActivityTest{
     @Test
     fun shouldDisableLoginButtonIfUsernameIsEmpty(){
         TextActions.typeText("username") {
-            id(R.id.et_username)
+            id(R.id.et_cm_id)
         }
         onView(withId(R.id.btn_login)).check(matches(not(isEnabled())))
     }
@@ -74,7 +74,7 @@ class LoginActivityTest{
     @Test
     fun shouldEnableLoginButtonIfUsernameAndPasswordIsNlotEmpty(){
         TextActions.typeText("username") {
-            id(R.id.et_username)
+            id(R.id.et_cm_id)
         }
         TextActions.typeText("password") {
             id(R.id.et_password)

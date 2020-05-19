@@ -55,15 +55,15 @@ class RegistrationOtpFragment : BaseFragment() {
     }
 
     private fun initObservers() {
-        viewModel.onClickVerifyEvent.observe(this, Observer {
+        viewModel.onClickVerifyEvent.observe(viewLifecycleOwner, Observer {
             parentVM.verifyRequest(it)
         })
 
-        viewModel.onClickResendEvent.observe(this, Observer {
+        viewModel.onClickResendEvent.observe(viewLifecycleOwner, Observer {
             parentVM.requestVerification(it)
         })
 
-        parentVM.verifyIdentifierResponseLiveData.observe(this, Observer {
+        parentVM.verifyIdentifierResponseLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is PartialFailure -> {
                     if (it.error?.code == ERROR_CODE_INVALID_OTP || it.error?.code == EXCEEDED_INVALID_ATTEMPT_LIMIT ) {
@@ -87,7 +87,7 @@ class RegistrationOtpFragment : BaseFragment() {
             }
         })
 
-        parentVM.requestVerificationResponseLiveData.observe(this, Observer {
+        parentVM.requestVerificationResponseLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is PartialFailure -> {
                     viewModel.otpText.set(null)

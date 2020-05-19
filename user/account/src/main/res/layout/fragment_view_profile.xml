@@ -38,38 +38,14 @@
                 android:paddingLeft="@dimen/content_margin_large"
                 android:paddingRight="@dimen/content_margin_large"
                 android:paddingBottom="@dimen/content_margin_36">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/img_user"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/ic_username"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.button.MaterialButton
-                    app:layout_constraintLeft_toRightOf="@+id/img_user"
-                    app:layout_constraintTop_toTopOf="@+id/img_user"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@+id/img_user"
-                    android:id="@+id/btn_edit_profile"
-                    android:layout_height="wrap_content"
-                    style="@style/Button.Secondary"
-                    android:textSize="@dimen/text_size_small"
-                    android:padding="@dimen/content_padding_extra_large"
-                    android:layout_width="wrap_content"
-                    android:text="@string/edit_profile" />
-
-
                 <TextView
                     android:id="@+id/lbl_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/content_margin_extra_small"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:text="@string/full_name"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/img_user" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cv_first_name"
@@ -105,10 +81,9 @@
 
                 <TextView
                     android:id="@+id/lbl_consent_manager_id"
-                    style="@style/TextAppearance.ListItemSubHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/content_margin_medium"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:text="@string/consent_manager_id"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -165,11 +140,10 @@
 
                 <TextView
                     android:id="@+id/tv_mobile_number_title"
-                    style="@style/TextAppearance.ListItemSubHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/content_margin_medium"
-                    android:text="mobile number"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:text="@string/mobile"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cv_consent_manager_id" />
@@ -278,7 +252,7 @@
                     android:id="@+id/lbl_gender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/content_margin_extra_small"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:text="@string/gender"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cv_yob" />
@@ -333,7 +307,7 @@
                     android:id="@+id/lbl_ayushman_bharat_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/content_margin_extra_small"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:text="@string/ayushman_id"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -376,10 +350,9 @@
 
                 <TextView
                     android:id="@+id/lbl_password"
-                    style="@style/TextAppearance.ListItemSubHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/content_margin_medium"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:text="@string/password"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -442,10 +415,9 @@
 
                 <TextView
                     android:id="@+id/lbl_consent_pin"
-                    style="@style/TextAppearance.ListItemSubHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/content_margin_medium"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:text="@string/consent_pin"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -508,7 +480,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_logout"
-                    android:layout_marginTop="@dimen/content_margin_small"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:layout_height="wrap_content"
                     style="@style/Button"
                     android:onClick="@{() -> viewModel.logout()}"

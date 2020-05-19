@@ -9,7 +9,8 @@
     <string name="denied_timespan">Denied %s</string>
     <string name="request_expired">Request expired</string>
     <string name="btn_continue">Continue</string>
-    <string name="enter_otp">Enter 6 digit OTP</string>
+    <string name="enter_six_digit_otp">Enter 6 digit OTP</string>
+    <string name="enter_otp">Enter OTP</string>
     <string name="invalid_otp">Invalid OTP entered. Please try again.</string>
     <string name="otp_expired">OTP expired.</string>
     <string name="username_already_taken">Username already taken</string>
