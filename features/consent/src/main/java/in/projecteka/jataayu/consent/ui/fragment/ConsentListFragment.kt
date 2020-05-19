@@ -12,7 +12,6 @@ import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentListViewModel
 import `in`.projecteka.jataayu.core.ConsentScopeType
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
-import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.*
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
@@ -90,24 +89,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                         getString(string.ok))
                 }
             }
-
         })
-
-        viewModel.grantedConsentDetailsResponse.observe(
-            this,
-            Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
-                when (payload) {
-                    is Success -> {
-                        payload.data?.firstOrNull()?.consentDetail?.let {
-                            viewModel.revokeConsent(it.id)
-                        }
-                    }
-
-                    is Loading -> {
-                        viewModel.showProgress(payload.isLoading)
-                    }
-                }
-            })
 
         viewModel.revokeConsentResponse.observe(viewLifecycleOwner, Observer<PayloadResource<Void>> {
             when (it) {
@@ -235,7 +217,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_PIN_VERIFICATION) {
             if (resultCode == Activity.RESULT_OK) {
-                viewModel.getGrantedConsentDetails(consentToRevoke.id)
+                viewModel.revokeConsent(consentToRevoke.id)
             }
         }
     }
