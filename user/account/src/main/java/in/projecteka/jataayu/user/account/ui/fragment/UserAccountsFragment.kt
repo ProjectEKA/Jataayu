@@ -3,7 +3,6 @@ package `in`.projecteka.jataayu.user.account.ui.fragment
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.network.utils.Failure
-import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapter
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
@@ -13,9 +12,10 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
+import `in`.projecteka.jataayu.user.account.ui.activity.ProfileActivity
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
-import `in`.projecteka.jataayu.util.startLauncher
 import `in`.projecteka.jataayu.util.startProvider
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -63,9 +63,8 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_profile -> false
-            R.id.action_logout -> {
-                viewModel.logout()
+            R.id.action_profile -> {
+                context?.startActivity(Intent(context, ProfileActivity::class.java))
                 return false
             }
             else -> super.onOptionsItemSelected(item)
@@ -77,14 +76,14 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
     }
 
     private fun initObservers() {
-        viewModel.updateProfile.observe(this, Observer {
+        /*viewModel.updateProfile.observe(this, Observer {
             viewModel.preferenceRepository.pinCreated = it.hasTransactionPin
             it.verifiedIdentifiers.forEach { identifier ->
                 if (identifier.type == VERIFIED_IDENTIFIER_MOBILE) {
                     viewModel.preferenceRepository.mobileIdentifier = identifier.value
                 }
             }
-        })
+        })*/
         viewModel.updateLinks.observe(this, Observer {
             listItems = it
             binding.rvUserAccounts.apply {
@@ -110,30 +109,12 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
         viewModel.addProviderEvent.observe(this, Observer {
             startProvider(context!!)
         })
-        viewModel.logoutResponse.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Loading -> {
-                    viewModel.showProgress.set(true)
-                }
-                else -> {
-                    onLogoutFinish()
-                }
-            }
-        })
 
         viewModel.linkedAccountsResponse.observe(viewLifecycleOwner, Observer { links ->
             val hipList = links.map { it.hip }
             getNamesOfHipList(hipList)
         })
     }
-
-    private fun onLogoutFinish() {
-        viewModel.showProgress.set(false)
-        viewModel.clearSharedPreferences()
-        activity?.finish()
-        startLauncher(context!!)
-    }
-
 
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,

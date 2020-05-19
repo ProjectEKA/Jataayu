@@ -17,6 +17,10 @@
             android:configChanges="orientation"
             >
         </activity>
+        <activity
+            android:label="ProfileActivity"
+            android:name=".ui.activity.ProfileActivity">
+        </activity>
     </application>
 
 </manifest>

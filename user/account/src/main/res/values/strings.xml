@@ -8,7 +8,7 @@
     <string name="patient_details">Patient details</string>
     <string name="create_username">Create Username</string>
     <string name="create_password">Create Password</string>
-    <string name="full_name">Full name</string>
+    <string name="full_name">Full Name</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -32,5 +32,17 @@
     <string name="confirm">Confirm</string>
     <string name="password_mismatch">Password doesn\'t match</string>
     <string name="password_match">Password matches</string>
-    <string name="password_changed">Password changed successfully!!Redirecting to login.</string>
+    <string name="password_changed">Password changed successfully.</string>
+    <string name="password_criteria">New password didn’t meet the criteria</string>
+
+<!--    Profile-->
+    <string name="consent_manager_id">Consent Manager ID</string>
+    <string name="password">Password</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="edit">Edit</string>
+    <string name="consent_pin">Consent PIN</string>
+    <string name="yob">Year of Birth</string>
+    <string name="ayushman_id">Ayushman Bharat ID</string>
+    <string name="mobile">Mobile Number</string>
+    <string name="my_profile">My Profile</string>
 </resources>

@@ -84,8 +84,11 @@ class ChangePasswordViewModel(val changePasswordRepository: ChangePasswordReposi
     }
 
     fun validateOldPassword() {
+
         inputOldPasswordLbl.get()?.let {
-            showErrorOldPassword.set(it.isNullOrEmpty())
+            if (inputOldPasswordLbl.get()?.isNotEmpty() == true) {
+                showErrorOldPassword.set(it.isNullOrEmpty())
+            }
         }
     }
 

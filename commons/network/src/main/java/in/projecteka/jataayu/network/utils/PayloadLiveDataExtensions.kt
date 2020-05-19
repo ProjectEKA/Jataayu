@@ -35,6 +35,7 @@ fun <T> PayloadLiveData<T>.isLoading(): Boolean {
     } else false
 }
 
+
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
     call.enqueue(object : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {

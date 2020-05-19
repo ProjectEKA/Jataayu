@@ -8,6 +8,9 @@
             name="viewModel"
             type="in.projecteka.jataayu.presentation.BaseViewModel" />
         <variable
+            name="isLoadingMore"
+            type="int" />
+        <variable
             name="noNewConsentsMessage"
             type="String" />
 
@@ -67,6 +70,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvConsents"
             android:fadingEdge="vertical"
+            android:scrollbars="vertical"
             android:requiresFadingEdge="vertical"
             android:fadingEdgeLength="@dimen/recycler_view_fading_edge_length"
             android:layout_width="match_parent"
@@ -76,6 +80,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:toggledVisibility="@{!hideRequestsList}"
             tools:listitem="@layout/consent_item" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <include
             android:id="@+id/progress_bar_layout"

@@ -3,10 +3,7 @@ package `in`.projecteka.jataayu.consent.repository
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
 import `in`.projecteka.jataayu.consent.remote.ConsentApis
-import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
-import `in`.projecteka.jataayu.core.model.HipHiuNameResponse
-import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
-import `in`.projecteka.jataayu.core.model.ProviderInfo
+import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactRequest
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
@@ -18,13 +15,16 @@ import androidx.lifecycle.MediatorLiveData
 import retrofit2.Call
 
 interface ConsentRepository {
-    fun getConsents(): Call<ConsentsListResponse>
+    fun getConsents(limit: Int, offSet: Int, filters: String?): Call<ConsentsListResponse>
     fun grantConsent(requestId: String, approveConsentRequest: ConsentArtifactRequest, authToken: String?): Call<ConsentArtifactResponse>
     fun getLinkedAccounts(): Call<LinkedAccountsResponse>
     fun revokeConsent(revokeConsentRequest: RevokeConsentRequest, authToken: String?): Call<Void>
     fun getGrantedConsentDetails(requestId: String): Call<List<GrantedConsentDetailsResponse>>
     fun denyConsent(requestId: String): Call<Void>
     fun getProviderBy(providerIdList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse>
+    fun getConsentsArtifactList(limit: Int,
+                                offset: Int,
+                                status: RequestStatus): Call<ConsentArtifactResponse>
 }
 
 class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentRepository {
@@ -33,8 +33,8 @@ class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentReposi
         return consentApi.approveConsent(requestId, approveConsentRequest, authToken)
     }
 
-    override fun getConsents(): Call<ConsentsListResponse> {
-        return consentApi.getConsents()
+    override fun getConsents(limit: Int, offSet: Int, filters: String?): Call<ConsentsListResponse> {
+        return consentApi.getConsents(limit, offSet, filters)
     }
     override fun getLinkedAccounts(): Call<LinkedAccountsResponse> {
         return consentApi.getLinkedAccounts()
@@ -55,6 +55,14 @@ class ConsentRepositoryImpl(private val consentApi: ConsentApis) : ConsentReposi
     override fun getProviderBy(providerIdList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
         val idList = providerIdList.toSet().map { it.getId() }
         return getProviderData(idList)
+    }
+
+    override fun getConsentsArtifactList(
+        limit: Int,
+        offset: Int,
+        status: RequestStatus
+    ): Call<ConsentArtifactResponse> {
+       return consentApi.getConsentsArtifactList(limit, offset, status.name)
     }
 
     private var providerLiveDataCount = 0

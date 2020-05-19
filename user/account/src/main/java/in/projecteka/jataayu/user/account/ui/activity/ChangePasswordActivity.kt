@@ -18,6 +18,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
 
+    companion object {
+        private const val ERROR_CODE_INVALID_OLD_PASSWORD = 1018
+        private const val ERROR_CODE_NOT_MATCH_NEW_PASSWORD_CRITERIA = 1017
+    }
     private val viewModel: ChangePasswordViewModel by viewModel()
 
     override fun layoutId(): Int = R.layout.activity_change_password
@@ -51,10 +55,24 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
                     finish()
                 }
                 is PartialFailure -> {
-                    showAlertDialog(
-                        getString(R.string.failure), it.error?.message,
-                        getString(android.R.string.ok)
-                    )
+                    viewModel.showProgress(false)
+                    when (it.error?.code) {
+                        ERROR_CODE_INVALID_OLD_PASSWORD -> {
+                            viewModel.showErrorOldPassword.set(true)
+                            binding.etOldPassword.setText("")
+                            binding.etCreatePassword.setText("")
+                            binding.etConfirmPassword.setText("")
+                        }
+                        ERROR_CODE_NOT_MATCH_NEW_PASSWORD_CRITERIA -> {
+                            showLongToast(getString(R.string.password_criteria))
+                             binding.etOldPassword.setText("")
+                             binding.etCreatePassword.setText("")
+                             binding.etConfirmPassword.setText("")
+                         }
+                        else -> {
+                            showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
+                        }
+                    }
                 }
                 is Failure -> {
                     showErrorDialog(it.error.localizedMessage)

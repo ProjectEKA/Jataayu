@@ -4,7 +4,7 @@ import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.MyProfile
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.Success
-import `in`.projecteka.jataayu.user.account.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
@@ -21,7 +21,6 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.quality.Strictness
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -115,31 +114,6 @@ class UserAccountsViewModelTest {
         assertEquals(2, viewModel.updateLinks.value?.count())
         assertEquals(2, viewModel.linksSize.get())
     }
-
-
-    @Test
-    fun `should logout user`() {
-
-        val refreshToken = "abc"
-        `when`(credentialsRepository.refreshToken).thenReturn(refreshToken)
-        `when`(repository.logout(refreshToken)).thenReturn(logoutCall).then {
-                invocation ->
-            val callback = invocation.arguments[0] as Callback<Void>
-            callback.onResponse(logoutCall, Response.success(null))
-        }
-        viewModel.logout()
-        verify(repository).logout(refreshToken)
-        verify(logoutCall).enqueue(any())
-    }
-
-    @Test
-    fun `should clear all shared preferences`() {
-
-        viewModel.clearSharedPreferences()
-        verify(credentialsRepository, times(1)).reset()
-        verify(preferenceRepository, times(1)).resetPreferences()
-    }
-
 
     private fun getLinkedAccountsResponse(): LinkedAccountsResponse? {
         return Gson().fromJson<LinkedAccountsResponse>(TestUtils.readFile("linked_accounts.json"))

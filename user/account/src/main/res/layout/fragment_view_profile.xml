@@ -1,0 +1,508 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.projecteka.resetpassword.ui.fragment.ReadIdentifierFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.projecteka.jataayu.user.account.viewmodel.ProfileFragmentViewModel" />
+
+        <variable
+            name="spinnerListener"
+            type="android.widget.AdapterView.OnItemSelectedListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clipToPadding="false">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/button_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:padding="@dimen/content_margin_medium"
+                android:paddingLeft="@dimen/content_margin_large"
+                android:paddingRight="@dimen/content_margin_large"
+                android:paddingBottom="@dimen/content_margin_36">
+                <TextView
+                    android:id="@+id/lbl_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:text="@string/full_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_first_name"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/edit_text_height_large"
+                    app:cardElevation="@dimen/content_padding_medium"
+                    android:layout_marginTop="@dimen/content_padding_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_name">
+
+
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_name"
+                            android:layout_width="match_parent"
+                            android:layout_margin="@dimen/content_margin_medium"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start"
+                            android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
+                            android:background="@color/white"
+                            android:cursorVisible="true"
+                            android:digits="@string/alphabets_and_space_only"
+                            android:focusable="@{viewModel.isEditMode}"
+                            android:focusableInTouchMode="@{viewModel.isEditMode}"
+                            android:singleLine="true"
+                            android:text="@{viewModel.preferenceRepository.name}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_medium" />
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/lbl_consent_manager_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:text="@string/consent_manager_id"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_first_name" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_consent_manager_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_text_height_large"
+                    app:cardElevation="@dimen/content_padding_medium"
+                    android:layout_marginTop="@dimen/content_padding_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_consent_manager_id">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/content_margin_medium">
+
+                        <EditText
+                            android:id="@+id/et_consent_manager_id"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start"
+                            android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
+                            android:layout_weight=".7"
+                            android:background="@color/white"
+                            android:focusable="@{viewModel.isEditMode}"
+                            android:focusableInTouchMode="@{viewModel.isEditMode}"
+                            android:cursorVisible="true"
+                            android:text="@{viewModel.preferenceRepository.consentManagerId}"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_medium" />
+
+                        <TextView
+                            android:id="@+id/tv_provider_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="end"
+                            android:drawablePadding="@dimen/content_margin_medium"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_medium" />
+                        <!--android:text="@={viewModel.usernameProviderLbl}"
+                        app:resource_reference="@{viewModel.usernameProviderLblId}"-->
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/tv_mobile_number_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:text="@string/mobile"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_consent_manager_id" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_mobile_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="@dimen/content_padding_medium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="@dimen/content_padding_medium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number_title">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/content_margin_medium">
+
+                        <TextView
+                            android:id="@+id/tv_country_code"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.preferenceRepository.countryCode}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_small"
+                            tools:text="+xx - " />
+
+                        <EditText
+                            android:id="@+id/et_mobile_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:focusable="@{viewModel.isEditMode}"
+                            android:focusableInTouchMode="@{viewModel.isEditMode}"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:text="@{viewModel.preferenceRepository.mobileIdentifier}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_small" />
+<!--                        app:onValueChanged="@{viewModel}"-->
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/lbl_yob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:text="@string/yob"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_mobile_number" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_yob"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_text_height_large"
+                    app:cardElevation="@dimen/content_padding_medium"
+                    android:layout_marginTop="@dimen/content_padding_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_yob">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/content_margin_medium">
+
+                        <TextView
+                            android:id="@+id/tv_yob"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.yearOfBirth()}"
+                            app:toggledVisibility="@{!viewModel.isEditMode}"/>
+<!--                        android:focusable="@{viewModel.isEditMode}"-->
+<!--                        android:focusableInTouchMode="@{viewModel.isEditMode}"-->
+<!--                        android:clickable="@{viewModel.isEditMode}"-->
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:toggledVisibility="@{viewModel.isEditMode}"
+                            android:background="@null"
+                            android:id="@+id/spinner_yob"
+                            android:drawableRight="@drawable/ic_calendar"
+                            android:drawablePadding="@dimen/content_margin_large"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginLeft="@dimen/content_margin_medium"
+                            android:text="yyyy"
+                            app:onItemSelected="@{spinnerListener}"/>
+<!--                        android:focusable="@{viewModel.isEditMode}"-->
+<!--                        android:focusableInTouchMode="@{viewModel.isEditMode}"-->
+<!--                        android:clickable="@{viewModel.isEditMode}"-->
+
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/lbl_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:text="@string/gender"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_yob" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cg_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_gender"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/gender_chip_male"
+                        android:focusable="@{viewModel.isEditMode}"
+                        android:focusableInTouchMode="@{viewModel.isEditMode}"
+                        android:clickable="@{viewModel.isEditMode}"
+                        style="@style/Chip.ChoiceCustomized"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/button_height"
+                        android:layout_weight="1"
+                        android:text="@string/male"
+                        app:chipCornerRadius="@dimen/chip_corner_radius" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/gender_chip_female"
+                        style="@style/Chip.ChoiceCustomized"
+                        android:focusable="@{viewModel.isEditMode}"
+                        android:focusableInTouchMode="@{viewModel.isEditMode}"
+                        android:clickable="@{viewModel.isEditMode}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/button_height"
+                        android:layout_weight="1"
+                        android:text="@string/female"
+                        app:chipCornerRadius="@dimen/chip_corner_radius" />
+
+                    <com.google.android.material.chip.Chip
+                        android:focusable="@{viewModel.isEditMode}"
+                        android:focusableInTouchMode="@{viewModel.isEditMode}"
+                        android:clickable="@{viewModel.isEditMode}"
+                        android:id="@+id/gender_chip_other"
+                        style="@style/Chip.ChoiceCustomized"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/button_height"
+                        android:layout_weight="1"
+                        android:text="@string/others"
+                        app:chipCornerRadius="@dimen/chip_corner_radius" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:id="@+id/lbl_ayushman_bharat_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:text="@string/ayushman_id"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cg_gender" />
+
+                <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_ayushman_bharat_id"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height_large"
+                app:cardElevation="@dimen/content_padding_medium"
+                android:layout_marginTop="@dimen/content_padding_medium"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_ayushman_bharat_id">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/content_margin_medium">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_ayushman_bharat_id"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
+                        android:layout_weight=".7"
+                        android:background="@color/white"
+                        android:cursorVisible="true"
+                        android:focusable="@{viewModel.isEditMode}"
+                        android:focusableInTouchMode="@{viewModel.isEditMode}"
+                        android:singleLine="true"
+                        android:text="@{viewModel.preferenceRepository.ayushmanBharatId}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_medium" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/lbl_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:text="@string/password"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_ayushman_bharat_id" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_password"
+                    app:layout_constraintRight_toLeftOf="@+id/btn_edit_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/edit_text_height_large"
+                    app:cardElevation="@dimen/content_padding_medium"
+                    android:layout_marginTop="@dimen/content_padding_medium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_password">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/content_margin_small">
+
+                        <EditText
+                            android:id="@+id/et_password"
+                            android:inputType="textPassword"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:minEms="6"
+                            android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
+                            android:background="@color/white"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:cursorVisible="true"
+                            android:text="12345678910"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_extra_large" />
+
+
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_edit_password"
+                        style="@style/Button.Secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/content_margin_large"
+                        android:layout_marginRight="@dimen/content_margin_large"
+                        android:onClick="@{() -> viewModel.redirectChangePassword()}"
+                        android:padding="@dimen/content_padding_extra_large"
+                        android:text="@string/edit"
+                        android:textSize="@dimen/text_size_small"
+                        app:layout_constraintBottom_toBottomOf="@+id/cv_password"
+                        app:layout_constraintLeft_toRightOf="@id/cv_password"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/cv_password" />
+
+                <TextView
+                    android:id="@+id/lbl_consent_pin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:text="@string/consent_pin"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_password" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_consent_pin"
+                    app:layout_constraintRight_toLeftOf="@+id/btn_edit_consent_pin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/edit_text_height_large"
+                    app:cardElevation="@dimen/content_padding_medium"
+                    android:layout_marginTop="@dimen/content_padding_medium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_consent_pin">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/content_margin_small">
+
+                        <EditText
+                            android:id="@+id/et_consent_pin"
+                            android:inputType="textPassword"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:minEms="6"
+                            android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
+                            android:background="@color/white"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:cursorVisible="true"
+                            android:text="1234"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_extra_large" />
+
+
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_edit_consent_pin"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/content_margin_large"
+                    android:layout_marginRight="@dimen/content_margin_large"
+                    style="@style/Button.Secondary"
+                    android:textSize="@dimen/text_size_small"
+                    android:padding="@dimen/content_padding_extra_large"
+                    android:layout_width="wrap_content"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/cv_consent_pin"
+                    app:layout_constraintBottom_toBottomOf="@+id/cv_consent_pin"
+                    app:layout_constraintLeft_toRightOf="@id/cv_consent_pin"
+                    android:text="@string/edit" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_logout"
+                    android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                    android:layout_height="wrap_content"
+                    style="@style/Button"
+                    android:onClick="@{() -> viewModel.logout()}"
+                    android:padding="@dimen/content_margin_medium"
+                    android:layout_width="match_parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_edit_consent_pin"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="@string/action_logout" />
+
+                <include
+                    android:id="@+id/progress_bar_layout"
+                    app:showProgress="@{viewModel.showProgress}"
+                    app:message="@{viewModel.showProgressMessage}"
+                    layout="@layout/progress_layout"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

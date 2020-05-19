@@ -42,7 +42,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
     protected var hiTypeObjects = ArrayList<HiType>()
 
     protected val eventBusInstance: EventBus = EventBus.getDefault()
-    private lateinit var consentId: String
+//    private lateinit var consentId: Consent
     private lateinit var genericRecyclerViewAdapter: GenericRecyclerViewAdapter
     private var linkedAccounts: List<Links>? = null
     private lateinit var linkedAccountsAndCount: Pair<List<IDataBindingModel>, Int>
@@ -133,12 +133,9 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
                             this.getHIPHiuNamesOf(ids) {
                                 linkedAccountHipResponse = it
                                 viewModel.grantedConsentDetailsResponse.value?.let { response ->
-                                    when(response) {
-                                        is Success -> response.data?.let { result -> onConsentDetailsResponseSuccess(result,it) }
-                                        else -> {}
-                                    }
+                                    onConsentDetailsResponseSuccess(listOf(response),it)
                                 } ?: kotlin.run {
-                                    viewModel.getGrantedConsentDetails(consentId)
+                                    viewModel.getGrantedConsentDetails(consent)
                                 }
                             }
                         }
@@ -146,18 +143,10 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
                 }
             })
 
-        viewModel.grantedConsentDetailsResponse.observe(
-            this,
-            Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
-                when (payload) {
-                    is Success -> {
-                        payload.data?.let { onConsentDetailsResponseSuccess(it, null) }
-                    }
-                    is Loading -> {
-                        viewModel.showProgress(payload.isLoading)
-                    }
-                }
-            })
+        viewModel.grantedConsentDetailsResponse.observe(this, Observer {
+            onConsentDetailsResponseSuccess(listOf(it), null)
+        })
+
     }
 
     private fun populateLinkedAccounts(grantedConsents: List<GrantedConsentDetailsResponse>) {
@@ -207,15 +196,17 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
 
     private fun getHIPHiuNamesOf(list: List<HipHiuIdentifiable>, completion: (HipHiuNameResponse) -> Unit) {
 
+        viewModel.showProgress(true)
         val hipHiuNameResponse = viewModel.fetchHipHiuNamesOf(list)
         hipHiuNameResponse.observe(this, Observer {
+            viewModel.showProgress(false)
             completion(it)
         })
     }
 
 
     @Subscribe(sticky = true)
-    public fun onConsentIdReceived(consentId: String) {
-        this.consentId = consentId
+    public fun onConsentIdReceived(consent: Consent) {
+        this.consent = consent
     }
 }

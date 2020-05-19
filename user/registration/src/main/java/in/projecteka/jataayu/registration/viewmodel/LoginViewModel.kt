@@ -1,95 +1,35 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.network.model.Error
-import `in`.projecteka.jataayu.network.utils.PartialFailure
-import `in`.projecteka.jataayu.network.utils.PayloadLiveData
-import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
-import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
-import `in`.projecteka.jataayu.util.repository.CredentialsRepository
-import `in`.projecteka.jataayu.util.repository.PreferenceRepository
-import android.text.Editable
-import android.text.InputType
-import android.text.TextWatcher
-import android.view.View
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
+import androidx.annotation.LayoutRes
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 
-class LoginViewModel(
-    private val repository: AuthenticationRepository,
-    val preferenceRepository: PreferenceRepository,
-    val credentialsRepository: CredentialsRepository
-) : BaseViewModel(), TextWatcher {
+class LoginViewModel : BaseViewModel() {
 
     companion object {
-        private const val GRANT_TYPE_PASSWORD = "password"
+        const val GRANT_TYPE_PASSWORD = "password"
     }
 
-    val passwordInputType = ObservableInt(hiddenPasswordInputType())
-    val inputUsernameLbl = ObservableField<String>()
-    val inputPasswordLbl = ObservableField<String>()
-    val inputPasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
-    val usernameProviderLbl = ObservableField<String>()
-    val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
-    val loginEnabled = ObservableBoolean(false)
-    val onClickRegisterEvent = SingleLiveEvent<Void>()
-    val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
-    var onClickForgotPasswordEvent = SingleLiveEvent<Void>()
-    val accountLockBlockEnable = ObservableField<Int>(View.GONE)
-    val accountLockBlockDividerEnable = ObservableField<Int>(View.GONE)
+    var cmId: String = ""
+    private set
 
-    val loginResponse = PayloadLiveData<CreateAccountResponse>()
 
-    private fun visiblePasswordInputType(): Int {
-        return InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+    private val currentFragmentLayout = MutableLiveData(R.layout.consent_manager_id_input_fragment)
+    val redirectLiveEvent : LiveData<Int> = Transformations.map(currentFragmentLayout) {
+        it
     }
 
-    private fun hiddenPasswordInputType(): Int {
-        return InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD
+    val loginResponseSuccessEvent = SingleLiveEvent<Void>()
+
+    fun replaceFragment(@LayoutRes layoutRes: Int) {
+        currentFragmentLayout.value = layoutRes
     }
 
-    fun togglePasswordVisible() {
-        val newInputType = when (passwordInputType.get()) {
-            visiblePasswordInputType() -> {
-                inputPasswordVisibilityToggleLbl.set(R.string.show)
-                hiddenPasswordInputType()
-            }
-            hiddenPasswordInputType() -> {
-                inputPasswordVisibilityToggleLbl.set(R.string.hide)
-                visiblePasswordInputType()
-            }
-            else -> hiddenPasswordInputType()
-        }
-        passwordInputType.set(newInputType)
-        onPasswordVisibilityToggleEvent.value = inputPasswordLbl.get()?.length ?: 0
-    }
-
-    fun onClickRegister() {
-        onClickRegisterEvent.call()
-    }
-
-    fun onForgotPasswordClicked() {
-        onClickForgotPasswordEvent.call()
-    }
-
-    fun onLoginClicked() = loginResponse.fetch(
-            repository.login(
-                "${inputUsernameLbl.get()}${usernameProviderLbl.get()}",
-                inputPasswordLbl.get() ?: "", GRANT_TYPE_PASSWORD
-            )
-        )
-
-    override fun afterTextChanged(s: Editable?) {
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        loginEnabled.set(inputUsernameLbl.get()?.isNotEmpty() == true && inputPasswordLbl.get()?.isNotEmpty() == true)
+    fun updateConsentManagerID(id: String, provider: String) {
+        cmId = id + provider
     }
 }
