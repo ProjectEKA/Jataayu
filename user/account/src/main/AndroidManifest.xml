@@ -11,9 +11,11 @@
             >
         </activity>
         <activity
-            android:label="AccountCreation"
-            android:name=".ui.activity.ProfileActivity">
-        </activity>
+            android:label="ProfileDetails"
+            android:name=".ui.activity.ProfileActivity"/>
+        <activity
+            android:label="EditConsentPin"
+            android:name=".ui.activity.EditConsentPinActivity"/>
     </application>
 
 </manifest>

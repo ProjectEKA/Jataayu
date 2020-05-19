@@ -68,7 +68,7 @@ class UserVerificationViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        userVerificationViewModel = UserVerificationViewModel(userVerificationRepository, credRepo, uuidRepository)
+        userVerificationViewModel = UserVerificationViewModel(userVerificationRepository, credRepo, uuidRepository, preferenceRepository)
         userVerificationRequestForGrand = Gson().fromJson<UserVerificationRequest>("{\"requestId\":\"276fa8f3-810b-49d0-b0b5-d1f760271255\",\"pin\":\"1234\",\"scope\":\"consentrequest.approve\"}")
         userVerificationRequestForRevoke = Gson().fromJson<UserVerificationRequest>("{\"requestId\":\"276fa8f3-810b-49d0-b0b5-d1f760271255\",\"pin\":\"1234\",\"scope\":\"consent.revoke\"}")
         userVerificationResponse = Gson().fromJson<UserVerificationResponse>("{\"temporaryToken\":\"12345abc\"}")

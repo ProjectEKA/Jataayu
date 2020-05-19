@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.MyProfile
+import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
@@ -9,6 +10,7 @@ import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
+import junit.framework.Assert.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -85,6 +87,28 @@ class ProfileFragmentViewModelTest {
         viewModel.clearSharedPreferences()
         verify(credentialsRepository, times(1)).reset()
         verify(preferenceRepository, times(1)).resetPreferences()
+    }
+
+    @Test
+    fun `should set consent pin creation status if pin has created`(){
+        `when`(preferenceRepository.pinCreated).thenReturn(true)
+        viewModel.setConsentPinStatus()
+        assertFalse(viewModel.showPinNotCreated.get())
+        assertEquals(R.string.edit, viewModel.pinCreateOrEdit.get())
+    }
+
+    @Test
+    fun `should set consent pin creation status if pin not created`(){
+        `when`(preferenceRepository.pinCreated).thenReturn(false)
+        viewModel.setConsentPinStatus()
+        assertTrue(viewModel.showPinNotCreated.get())
+        assertEquals(R.string.create, viewModel.pinCreateOrEdit.get())
+    }
+
+    @Test
+    fun `should redirect to eedit consent pin screen`(){
+        viewModel.redirectToEditConsentPin()
+        assertEquals(ProfileFragmentViewModel.RedirectTo.CONSENT_PIN, viewModel.redirectTo.value)
     }
 
 
