@@ -19,7 +19,6 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
-import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.showSnackbar
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
@@ -218,16 +217,19 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
 
     override fun onVisible() {
         super.onVisible()
-        setTitle(
-            when (consent.status) {
-                RequestStatus.DENIED -> R.string.denied_consent
-                RequestStatus.GRANTED -> R.string.granted_consent
-                RequestStatus.EXPIRED ->  R.string.expired_consent  //if (DateTimeUtils.isDateExpired(consent.permission.dataEraseAt))
-                else ->  { R.string.new_request }
-            }
-        )
+        (activity as? ConsentDetailsActivity)?.updateTitle(getTitle())
         getNameOf(consent.hiu) {
             renderUi()
+        }
+    }
+
+
+    private fun getTitle(): String {
+        return when(consent.status) {
+            RequestStatus.DENIED -> getString(R.string.denied_consent)
+            RequestStatus.GRANTED -> getString(R.string.granted_consent)
+            RequestStatus.EXPIRED ->  getString(R.string.expired_consent)  //if (DateTimeUtils.isDateExpired(consent.permission.dataEraseAt))
+            else ->  { getString(R.string.new_request) }
         }
     }
 

@@ -31,8 +31,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
         viewModel.redirectLiveEvent.observe(this, Observer {
             when(it) {
-                R.layout.password_input_fragment -> replaceFragment(PasswordInputFragment.newInstance(), R.id.fragment_container)
-                R.layout.login_otp_fragment -> replaceFragment(LoginOtpFragment.newInstance(), R.id.fragment_container)
+                R.layout.password_input_fragment -> addFragment(PasswordInputFragment.newInstance(), R.id.fragment_container)
+                R.layout.login_otp_fragment -> addFragment(LoginOtpFragment.newInstance(), R.id.fragment_container)
             }
         })
 
