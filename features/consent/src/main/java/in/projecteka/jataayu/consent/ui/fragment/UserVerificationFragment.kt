@@ -66,14 +66,21 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
                 is Loading -> viewModel.showProgress(true)
                 is Success -> {
                     viewModel.credentialsRepository.consentTemporaryToken = it.data?.temporaryToken
-                    if (parentViewModel.scopeType.get() == ConsentScopeType.SCOPE_GRAND) {
-                        activity?.setResult(Activity.RESULT_OK)
-                        activity?.finish()
-                    } else if (parentViewModel.scopeType.get() == ConsentScopeType.SCOPE_PIN_VERIFY){
-                        startCreatePin(activity!!){
-                            putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_PIN_VERIFY.ordinal)
+                    when {
+                        parentViewModel.scopeType.get() == ConsentScopeType.SCOPE_GRAND -> {
+                            activity?.setResult(Activity.RESULT_OK)
+                            activity?.finish()
                         }
-                        activity?.finish()
+                        parentViewModel.scopeType.get() == ConsentScopeType.SCOPE_PIN_VERIFY -> {
+                            startCreatePin(activity!!){
+                                putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_PIN_VERIFY.ordinal)
+                            }
+                            activity?.finish()
+                        }
+                        else -> {
+                            activity?.setResult(Activity.RESULT_OK)
+                            activity?.finish()
+                        }
                     }
                 }
                 is PartialFailure -> {
