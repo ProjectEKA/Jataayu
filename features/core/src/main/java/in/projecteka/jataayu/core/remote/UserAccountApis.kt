@@ -1,4 +1,4 @@
-package `in`.projecteka.jataayu.user.account.remote
+package `in`.projecteka.jataayu.core.remote
 
 import `in`.projecteka.jataayu.core.model.*
 import androidx.annotation.NonNull
@@ -21,4 +21,7 @@ interface UserAccountApis {
     @Headers("Cache-Control: max-age=86400")
     @GET("providers/{provider-id}")
     fun getProvidersBy(@NonNull @Path("provider-id") providerId: String): Call<ProviderInfo>
+
+    @GET("patients/profile/loginmode")
+    fun getLoginMode(@Query("userName") userName: String): Call<LoginType>
 }

@@ -1,11 +1,11 @@
-package `in`.projecteka.jataayu.user.account.repository
+package `in`.projecteka.jataayu.core.repository
 
 import `in`.projecteka.jataayu.core.model.*
+import `in`.projecteka.jataayu.core.remote.UserAccountApis
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.network.utils.fetch
-import `in`.projecteka.jataayu.user.account.remote.UserAccountApis
 import androidx.lifecycle.MediatorLiveData
 import retrofit2.Call
 
@@ -15,9 +15,11 @@ interface UserAccountsRepository {
     fun getMyProfile(): PayloadLiveData<MyProfile>
     fun logout(refreshToken: String): Call<Void>
     fun getProviderBy(providerIdList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse>
+    fun getLoginMode(userName: String): Call<LoginType>
 }
 
-class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) : UserAccountsRepository {
+class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) :
+    UserAccountsRepository {
     override fun getUserAccounts(): PayloadLiveData<LinkedAccountsResponse> {
         val liveData = PayloadLiveData<LinkedAccountsResponse>()
         liveData.fetch(userAccountApis.getUserAccounts())
@@ -41,6 +43,10 @@ class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) :
     override fun getProviderBy(providerIdList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
         val idList = providerIdList.toSet().map { it.getId() }
         return getProviderData(idList)
+    }
+
+    override fun getLoginMode(userName: String): Call<LoginType> {
+        return userAccountApis.getLoginMode(userName)
     }
 
     private var providerLiveDataCount = 0

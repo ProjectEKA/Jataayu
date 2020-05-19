@@ -127,5 +127,7 @@ class PreferenceRepositoryImpl(private val sharedPreferences: SharedPreferences)
         consentManagerId = null
         gender = null
         yearOfBirth = 0
+        ayushmanBharatId = null
+        pan = null
     }
 }

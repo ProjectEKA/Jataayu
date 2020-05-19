@@ -1,6 +1,8 @@
 import dependancies.Modules
 
 apply from: rootProject.file("android-library-commons.gradle")
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     buildTypes {
