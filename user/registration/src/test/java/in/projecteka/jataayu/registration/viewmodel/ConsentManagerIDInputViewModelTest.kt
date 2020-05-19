@@ -4,6 +4,7 @@ import `in`.projecteka.jataayu.core.model.LoginMode
 import `in`.projecteka.jataayu.core.model.LoginType
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.model.APIResponse
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
@@ -33,6 +34,9 @@ class ConsentManagerIDInputViewModelTest {
     private lateinit var registerEventObserver: Observer<Void>
 
     @Mock
+    private lateinit var preferenceRepository: PreferenceRepository
+
+    @Mock
     private lateinit var nextButtonEventObserver: Observer<Void>
 
     @Mock
@@ -50,7 +54,7 @@ class ConsentManagerIDInputViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        consentManagerIDInputViewModel = ConsentManagerIDInputViewModel(userAccountRepository)
+        consentManagerIDInputViewModel = ConsentManagerIDInputViewModel(userAccountRepository, preferenceRepository)
         loginViewModel = LoginViewModel()
         consentManagerIDInputViewModel.onRegisterButtonClickEvent.observeForever(
             registerEventObserver
