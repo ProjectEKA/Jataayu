@@ -9,10 +9,11 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ActivityCreateAccountBinding
+import `in`.projecteka.jataayu.user.account.ui.fragment.ConfirmAccountFragment
+import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
-import android.text.Editable
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -52,15 +53,6 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
         binding.spinnerListener = this
         binding.cgGender.setOnCheckedChangeListener(viewModel)
         viewModel.appBarTitle.set(getString(R.string.create_account))
-
-        binding.etUsername.addTextChangedListener { text: Editable? ->
-            viewModel.validateUserName()
-        }
-
-        binding.etPassword.addTextChangedListener { text: Editable? ->
-            viewModel.validatePassword()
-        }
-
         binding.etName.addTextChangedListener { text ->
             viewModel.validateName()
         }
@@ -72,6 +64,16 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
     }
 
     private fun initObservers() {
+        viewModel.redirectTo.observe(this, Observer {
+            addFragment(when(it){
+                RedirectingActivity.ShowPage.FIRST_SCREEN ->
+                    CreateAccountFragment.newInstance()
+                RedirectingActivity.ShowPage.SECOND_SCREEN ->
+                    ConfirmAccountFragment.newInstance()
+
+            },R.id.create_account_fragment_container)
+        })
+
         viewModel.createAccountResponse.observe(this,
             Observer {
                 when (it) {

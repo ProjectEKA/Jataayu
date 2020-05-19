@@ -12,6 +12,8 @@ import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.listener.*
+import `in`.projecteka.jataayu.user.account.ui.activity.RedirectingActivity
+import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.extension.show
@@ -26,7 +28,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatCheckedTextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -34,44 +38,55 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_create_account.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 
-/*
-class CreateAccountFragment : BaseFragment(),
-    AccountCreationClickHandler, CredentialsInputListener, ResponseCallback, AdapterView.OnItemSelectedListener {
 
+class CreateAccountFragment : BaseFragment(){
+
+    //private val disposables = CompositeDisposable()
+    //    private var isCriteriaMatch: Boolean = true
+    //    private var selectedYob: Int? = null
+    //    private var ayushmanId: String? = null
+    private val viewModel: CreateAccountViewModel by viewModel()
+    private val parentViewemodel: RedirectingActivity by viewModel()
     private lateinit var binding: FragmentCreateAccountBinding
 
-    private val disposables = CompositeDisposable()
-
-    private val viewModel: UserAccountsViewModel by sharedViewModel()
-
-    private var isCriteriaMatch: Boolean = true
-    private var selectedYob: Int? = null
-    private var ayushmanId: String? = null
     companion object {
         fun newInstance() = CreateAccountFragment()
-        const val SPACE = " "
-        const val YOB = "yyyy"
-        const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
-        */
-/*^                 # start-of-string
-        (?=.*[0-9])       # a digit must occur at least once
-        (?=.*[a-z])       # a lower case letter must occur at least once
-        (?=.*[A-Z])       # an upper case letter must occur at least once
-        (?=.*[@#$%^&+=])  # a special character must occur at least once
-        (?=\S+$)          # no whitespace allowed in the entire string
-        .{8,}             # anything, at least eight places though
-        $                 # end-of-string*//*
-
-        const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
-        const val DEFAULT_CHECKED_ID = -1
-        const val KEY_ACCOUNT_CREATED = "account_created"
-        const val TYPE_AYUSHMAN_BHARAT_ID = "ABPMJAYID"
-        const val ayushmanIdCriteria =  "^P([A-Z][0-9])*.{8}$"
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentCreateAccountBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initSpinner()
+        initBindings()
+//        initObservers()
+    }
+    private fun initSpinner() {
+        val arrayAdapter = ArrayAdapter<String>(
+            context!!,
+            android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, viewModel.getYearsToPopulate())
+        binding.spinnerYob.adapter = arrayAdapter
+        arrayAdapter.notifyDataSetChanged()
+        binding.spinnerYob.setSelection(0)
+    }
+    private fun initBindings() {
+        binding.viewModel = viewModel
+//        binding.passwordInputType = getPasswordInputType()
+//        binding.userNameChangeWatcher = UsernameChangeWatcher(this)
+//        binding.passwordChangeWatcher = PasswordChangeWatcher(this)
+//        binding.listener = this
+    }
+/*
     override fun showOrHidePassword(view: View) {
         when (binding.etPassword.inputType) {
             getPasswordInputType() -> {
@@ -269,4 +284,5 @@ class CreateAccountFragment : BaseFragment(),
             selectedYob = (view as AppCompatCheckedTextView).text.toString().toInt()
         }
     }
-}*/
+*/
+}

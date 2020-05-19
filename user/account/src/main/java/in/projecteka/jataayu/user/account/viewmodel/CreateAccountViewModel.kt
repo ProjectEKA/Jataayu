@@ -8,6 +8,8 @@ import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.user.account.ui.activity.RedirectingActivity
+import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
@@ -63,6 +65,7 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
     val showErrorGender = ObservableBoolean(false)
 
     val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
+    val redirectTo: SingleLiveEvent<RedirectingActivity.ShowPage> = SingleLiveEvent()
 
     val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
 
@@ -93,8 +96,6 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
     fun validateFields(): Boolean {
 
         val listOfEvents: List<Boolean> = listOf(
-            !showErrorUserName.get() && inputUsernameLbl.get()?.isNotEmpty() == true,
-            !showErrorPassword.get() && inputPasswordLbl.get()?.isNotEmpty() == true,
             !showErrorName.get() && inputFullName.get()?.isNotEmpty() == true,
             !showErrorGender.get() && genderCheckId != DEFAULT_CHECKED_ID
         )
@@ -112,10 +113,7 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
     }
 
     fun createAccount() {
-
-        val payload = getCreateAccountPayload()
-        val call = repository.createAccount(payload)
-        createAccountResponse.fetch(call)
+            redirectTo.value = RedirectingActivity.ShowPage.SECOND_SCREEN
     }
 
     fun getCreateAccountPayload(): CreateAccountRequest {
@@ -163,16 +161,20 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
         validateFields()
     }
 
+/*
     fun validateUserName() {
         inputUsernameLbl.get()?.let { showErrorUserName.set(!isValid(it, usernameCriteria)) }
         validateFields()
     }
+*/
 
+/*
     fun validatePassword() {
         if(inputPasswordLbl.get()?.isNotEmpty() == true)
         inputPasswordLbl.get()?.let { showErrorPassword.set(!isValid(it, passwordCriteria)) }
         validateFields()
     }
+*/
 
     fun validateAyushmanId(){
         if (inputAyushmanIdLbl.get()?.isNotEmpty() == true){
