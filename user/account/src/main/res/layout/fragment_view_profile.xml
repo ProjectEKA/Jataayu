@@ -405,7 +405,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/content_margin_large"
                         android:layout_marginRight="@dimen/content_margin_large"
-                        android:enabled="@{viewModel.editPasswordEnabled}"
+                        android:enabled="@{viewModel.preferenceRepository.loginMode.equalsIgnoreCase(@string/otp) ? false : true}"
                         android:onClick="@{() -> viewModel.redirectChangePassword()}"
                         android:padding="@dimen/content_padding_extra_large"
                         android:text="@string/edit"

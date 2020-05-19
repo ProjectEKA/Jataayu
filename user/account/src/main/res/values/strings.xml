@@ -34,6 +34,7 @@
     <string name="password_match">Password matches</string>
     <string name="password_changed">Password changed successfully.</string>
     <string name="password_criteria">New password didn’t meet the criteria</string>
+    <string name="otp">OTP</string>
 
 <!--    Profile-->
     <string name="consent_manager_id">Consent Manager ID</string>

@@ -8,7 +8,6 @@ import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
-import androidx.databinding.ObservableBoolean
 import java.util.*
 
 class ProfileFragmentViewModel(val repository: UserAccountsRepository,
@@ -19,7 +18,6 @@ class ProfileFragmentViewModel(val repository: UserAccountsRepository,
     var isEditMode = SingleLiveEvent<Boolean>()
     val logoutResponse = PayloadLiveData<Void>()
     var redirectTo = SingleLiveEvent<RedirectTo>()
-    val editPasswordEnabled = ObservableBoolean()
 
     enum class RedirectTo {
         CHANGE_PASSWORD
@@ -39,8 +37,6 @@ class ProfileFragmentViewModel(val repository: UserAccountsRepository,
 
     fun init() {
         isEditMode.value = false
-        var loginMode =preferenceRepository.loginMode == "OTP"
-        editPasswordEnabled.set(!loginMode)
     }
 
 
