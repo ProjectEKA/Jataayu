@@ -4,6 +4,8 @@ import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.UserVerificationFragmentBinding
 import `in`.projecteka.jataayu.consent.viewmodel.PinVerificationViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel
+import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel.Companion.KEY_SCOPE_TYPE
+import `in`.projecteka.jataayu.core.ConsentScopeType
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
@@ -17,6 +19,7 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.startCreatePin
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.content.Intent
@@ -63,8 +66,22 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
                 is Loading -> viewModel.showProgress(true)
                 is Success -> {
                     viewModel.credentialsRepository.consentTemporaryToken = it.data?.temporaryToken
-                    activity?.setResult(Activity.RESULT_OK)
-                    activity?.finish()
+                    when {
+                        parentViewModel.scopeType.get() == ConsentScopeType.SCOPE_GRAND -> {
+                            activity?.setResult(Activity.RESULT_OK)
+                            activity?.finish()
+                        }
+                        parentViewModel.scopeType.get() == ConsentScopeType.SCOPE_PIN_VERIFY -> {
+                            startCreatePin(activity!!){
+                                putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_PIN_VERIFY.ordinal)
+                            }
+                            activity?.finish()
+                        }
+                        else -> {
+                            activity?.setResult(Activity.RESULT_OK)
+                            activity?.finish()
+                        }
+                    }
                 }
                 is PartialFailure -> {
                     viewModel.showProgress(false)

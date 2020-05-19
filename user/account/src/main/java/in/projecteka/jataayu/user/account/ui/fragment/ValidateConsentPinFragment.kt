@@ -1,15 +1,9 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
-import `in`.projecteka.jataayu.core.ConsentScopeType
-import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.user.account.databinding.FragmentViewProfileBinding
+import `in`.projecteka.jataayu.user.account.ui.activity.EditConsentPinActivity
 import `in`.projecteka.jataayu.user.account.viewmodel.ProfileFragmentViewModel
-import `in`.projecteka.jataayu.user.account.viewmodel.ProfileFragmentViewModel.Companion.KEY_SCOPE_TYPE
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
-import `in`.projecteka.jataayu.util.startChangePassword
-import `in`.projecteka.jataayu.util.startCreatePin
-import `in`.projecteka.jataayu.util.startLauncher
-import `in`.projecteka.jataayu.util.startPinVerification
 import android.R
 import android.content.Intent
 import android.os.Bundle
@@ -24,10 +18,11 @@ import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class ValidateConsentPinFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var binding: FragmentViewProfileBinding
     private val viewModel: ProfileFragmentViewModel by viewModel()
+//    private val parentViewModel: ResetPasswordActivityViewModel by sharedViewModel()
 
     companion object {
         fun newInstance() = ProfileFragment()
@@ -66,49 +61,35 @@ class ProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private fun initObservers() {
 
-        viewModel.logoutResponse.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Loading -> {
-                    viewModel.showProgress.set(true)
-                }
-                else -> {
-                    onLogoutFinish()
-                }
-            }
-        })
-
-        viewModel.redirectTo.observe(this, Observer {
-            if (it == ProfileFragmentViewModel.RedirectTo.CHANGE_PASSWORD) {
-                startChangePassword(activity!!)
-            }
-        })
         viewModel.redirectTo.observe(this, Observer {
             if (it == ProfileFragmentViewModel.RedirectTo.CONSENT_PIN) {
-                if (viewModel.preferenceRepository.pinCreated){
-                    startPinVerification(activity!!) {
-                        putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_PIN_VERIFY.ordinal)
-                    }
-                } else {
-                    startCreatePin(activity!!) {
-                        putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_PIN_VERIFY.ordinal)
-                    }
-                }
+                startActivity(Intent(activity, EditConsentPinActivity::class.java))
             }
         })
-    }
 
-    private fun onLogoutFinish() {
-        viewModel.showProgress.set(false)
-        viewModel.clearSharedPreferences()
-        activity?.finish()
-        startLauncher(context!!) {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
+//        viewModel.isEditMode.observe(this, Observer {
+//            if (it) {
+//                binding.spinnerListener = this
+//            } else {
+//                binding.spinnerListener = null
+//            }
+//            binding.spinnerYob.isEnabled = it
+
+//            binding.spinnerYob.getChildAt(0)?.let {
+//                (binding.spinnerYob.getChildAt(0) as TextView).setTextColor(
+//                    resources.getColor(R.color.black)
+//                )
+//            }
+//            binding.spinnerYob.alpha = 1.0f;
+//            binding.spinnerYob.isClickable = it
+//            binding.spinnerYob.isContextClickable = it
+//        })
     }
 
     private fun initBindings() {
         binding.viewModel = viewModel
         binding.spinnerListener = this
+//        binding.isEditMode = false
     }
 
     private fun initSpinner() {
@@ -131,11 +112,6 @@ class ProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 viewModel.selectedYoB((view as AppCompatCheckedTextView).text.toString().toInt())
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.setConsentPinStatus()
     }
 
 }

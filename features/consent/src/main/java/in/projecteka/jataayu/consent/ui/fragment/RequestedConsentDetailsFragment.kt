@@ -260,6 +260,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             startActivityForResult(intent, 301)
         } else {
             val intent = Intent(context, CreatePinActivity::class.java)
+            intent.putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_GRAND.ordinal)
             startActivityForResult(intent, 201)
         }
     }

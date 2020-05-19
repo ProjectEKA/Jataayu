@@ -46,4 +46,7 @@
     <string name="ayushman_id">Ayushman Bharat ID</string>
     <string name="mobile">Mobile Number</string>
     <string name="my_profile">My Profile</string>
+    <string name="create">Create</string>
+    <string name="consent_placeholder">1234</string>
+    <string name="consent_pin_not_created">Consent PIN not created</string>
 </resources>

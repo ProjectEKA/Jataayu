@@ -55,8 +55,9 @@ val viewModelModule = module {
     viewModel { ProviderActivityViewModel() }
 
     //User Verification
-    viewModel { UserVerificationViewModel(get(), get(), get()) }
+    viewModel { UserVerificationViewModel(get(), get(), get(), get()) }
     viewModel { PinVerificationViewModel() }
+    viewModel { CreatePinActivityViewModel() }
 
     //Forgot Password
     viewModel { ResetPasswordActivityViewModel() }

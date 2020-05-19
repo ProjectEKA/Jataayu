@@ -214,6 +214,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     override fun askForConsentPin(iDataBindingModel: IDataBindingModel) {
         consentToRevoke = (iDataBindingModel as Consent)
+
         val intent = Intent(context, PinVerificationActivity::class.java)
         intent.putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_REVOKE.ordinal)
         startActivityForResult(intent, REQUEST_CODE_PIN_VERIFICATION)
