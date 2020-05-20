@@ -4,8 +4,8 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.network.utils.partialFailure
 import `in`.projecteka.jataayu.presentation.BaseViewModel
-import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
@@ -21,6 +21,7 @@ class ProfileFragmentViewModel(val repository: UserAccountsRepository,
     var isEditMode = SingleLiveEvent<Boolean>()
     val logoutResponse = PayloadLiveData<Void>()
     var redirectTo = SingleLiveEvent<RedirectTo>()
+
     var pinCreateOrEdit = ObservableField<Int>(R.string.create)
     var showPinNotCreated = ObservableBoolean(true)
 
@@ -34,7 +35,7 @@ class ProfileFragmentViewModel(val repository: UserAccountsRepository,
     }
 
     enum class RedirectTo {
-        CONSENT_PIN
+        CONSENT_PIN, CHANGE_PASSWORD
     }
 
     fun yearOfBirth(): String{
@@ -47,6 +48,7 @@ class ProfileFragmentViewModel(val repository: UserAccountsRepository,
         isEditMode.value = false
         setConsentPinStatus()
     }
+
 
     internal fun getYearsToPopulate(): List<String> {
         val years = arrayListOf<String>(YOB)
@@ -67,6 +69,10 @@ class ProfileFragmentViewModel(val repository: UserAccountsRepository,
         } ?: kotlin.run {
             logoutResponse.partialFailure(null)
         }
+    }
+
+    fun redirectChangePassword(){
+        redirectTo.value = RedirectTo.CHANGE_PASSWORD
     }
 
     fun clearSharedPreferences() {

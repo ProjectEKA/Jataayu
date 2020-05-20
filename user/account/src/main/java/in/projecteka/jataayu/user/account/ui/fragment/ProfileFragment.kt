@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.user.account.databinding.FragmentViewProfileBindi
 import `in`.projecteka.jataayu.user.account.viewmodel.ProfileFragmentViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.ProfileFragmentViewModel.Companion.KEY_SCOPE_TYPE
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
+import `in`.projecteka.jataayu.util.startChangePassword
 import `in`.projecteka.jataayu.util.startCreatePin
 import `in`.projecteka.jataayu.util.startLauncher
 import `in`.projecteka.jataayu.util.startPinVerification
@@ -73,6 +74,12 @@ class ProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 else -> {
                     onLogoutFinish()
                 }
+            }
+        })
+
+        viewModel.redirectTo.observe(this, Observer {
+            if (it == ProfileFragmentViewModel.RedirectTo.CHANGE_PASSWORD) {
+                startChangePassword(activity!!)
             }
         })
         viewModel.redirectTo.observe(this, Observer {
