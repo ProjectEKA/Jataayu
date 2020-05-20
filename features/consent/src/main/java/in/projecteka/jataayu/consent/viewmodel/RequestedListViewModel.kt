@@ -5,6 +5,7 @@ import `in`.projecteka.jataayu.consent.callback.PaginationEventCallback
 import `in`.projecteka.jataayu.consent.listners.PaginationScrollListener
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
+import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.HipHiuNameResponse
 import `in`.projecteka.jataayu.core.model.RequestStatus
@@ -43,7 +44,6 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
     val currentStatus: LiveData<RequestStatus>
     get() = _currentStatus
     val isLoadingMore = ObservableInt(View.INVISIBLE)
-
 
 
     private var fetchLimit = DEFAULT_LIMIT
@@ -94,5 +94,10 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
             INDEX_ALL -> _currentStatus.value = RequestStatus.ALL
         }
     }
+
+    fun getNoConsentMessage(): Int {
+        return Consent.getNoConsentMessageResourceId(currentStatus.value!!)
+    }
+
 }
 

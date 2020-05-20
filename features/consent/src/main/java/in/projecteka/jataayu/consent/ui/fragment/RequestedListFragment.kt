@@ -102,10 +102,10 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
                         val hiuList = it.map { consent -> consent.hiu }
                         getNamesOf(hiuList)
                     }
-                    parentViewModel.showRefreshing(false)
-
+                    binding.noNewConsentsMessage = getString(viewModel.getNoConsentMessage())
                     binding.hideRequestsList = response.data?.requests.isNullOrEmpty()
                     binding.hideFilter = false
+                    parentViewModel.showRefreshing(false)
                 }
                 is PartialFailure -> {
                     context?.showAlertDialog(getString(R.string.failure), response.error?.message,
@@ -143,10 +143,9 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
 
     private fun initBindings() {
         binding.viewModel = viewModel
-        binding.noNewConsentsMessage = getString(R.string.no_new_consent_requests)
         binding.listener = this
-        binding.hideRequestsList = true
-        binding.hideFilter =  binding.hideRequestsList
+        binding.hideRequestsList = (true)
+        binding.hideFilter =  true
         viewModel.showProgress(false)
         initSpinner(0)
         viewModel.getConsents(offset = 0)
