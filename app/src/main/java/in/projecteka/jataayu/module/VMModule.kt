@@ -6,10 +6,7 @@ import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.*
 import `in`.projecteka.jataayu.ui.LauncherViewModel
 import `in`.projecteka.jataayu.ui.dashboard.DashboardViewModel
-import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
-import `in`.projecteka.jataayu.user.account.viewmodel.ProfileActivityViewModel
-import `in`.projecteka.jataayu.user.account.viewmodel.ProfileFragmentViewModel
-import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
+import `in`.projecteka.jataayu.user.account.viewmodel.*
 import `in`.projecteka.resetpassword.viewmodel.ReadIdentifierFragmentViewModel
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordActivityViewModel
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordFragmentViewModel
@@ -34,6 +31,7 @@ val viewModelModule = module {
 
     //Create Account
     viewModel { CreateAccountViewModel(get(), get(), get()) }
+    viewModel { ConfirmAccountViewModel(get(), get(), get()) }
 
     //Login
     viewModel { LoginViewModel() }

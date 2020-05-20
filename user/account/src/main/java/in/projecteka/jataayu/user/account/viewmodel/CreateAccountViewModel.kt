@@ -4,25 +4,21 @@ import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
-import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.user.account.ui.activity.RedirectingActivity
-import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TYPE_AYUSHMAN_BHARAT_ID
-import android.text.InputType
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
 import com.google.android.material.chip.ChipGroup
 import java.util.*
 import java.util.regex.Pattern
 
-class CreateAccountViewModel(private val repository: UserAccountsRepository,
+class CreateAccountViewModel( val repository: UserAccountsRepository,
                              val preferenceRepository: PreferenceRepository,
                              val credentialsRepository: CredentialsRepository) : BaseViewModel(), ChipGroup.OnCheckedChangeListener {
 
@@ -38,7 +34,7 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
         (?=\S+$)          # no whitespace allowed in the entire string
         .{8,}             # anything, at least eight places though
         $                 # end-of-string*/
-        private const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
+//        private const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
         const val ayushmanIdCriteria =  "^[P|p]([A-Z][0-9])*.{8}$"
         private const val DEFAULT_CHECKED_ID = -1
     }
@@ -46,52 +42,14 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
     private var genderCheckId: Int = -1
     private var selectedYoB: Int? = null
 
-    val inputUsernameLbl = ObservableField<String>()
-    val inputPasswordLbl = ObservableField<String>()
-    val inputAyushmanIdLbl = ObservableField<String>()
     val inputFullName = ObservableField<String>()
-
-    val passwordInputType = ObservableInt(hiddenPasswordInputType())
-    val inputPasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
-
-    val usernameProviderLbl = ObservableField<String>()
-    val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
-    val submitEnabled = ObservableBoolean(false)
-
-    val showErrorUserName = ObservableBoolean(false)
-    val showErrorPassword = ObservableBoolean(false)
-    val showErrorAyushmanId = ObservableBoolean(false)
+    val inputAyushmanIdLbl = ObservableField<String>()
     val showErrorName = ObservableBoolean(false)
+    val showErrorAyushmanId = ObservableBoolean(false)
     val showErrorGender = ObservableBoolean(false)
-
-    val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
+    val submitEnabled = ObservableBoolean(false)
     val redirectTo: SingleLiveEvent<RedirectingActivity.ShowPage> = SingleLiveEvent()
-
     val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
-
-    private fun visiblePasswordInputType(): Int {
-        return InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-    }
-
-    private fun hiddenPasswordInputType(): Int {
-        return InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD
-    }
-
-    fun togglePasswordVisible() {
-        val newInputType = when (passwordInputType.get()) {
-            visiblePasswordInputType() -> {
-                inputPasswordVisibilityToggleLbl.set(R.string.show)
-                hiddenPasswordInputType()
-            }
-            hiddenPasswordInputType() -> {
-                inputPasswordVisibilityToggleLbl.set(R.string.hide)
-                visiblePasswordInputType()
-            }
-            else -> hiddenPasswordInputType()
-        }
-        passwordInputType.set(newInputType)
-        onPasswordVisibilityToggleEvent.value = inputPasswordLbl.get()?.length ?: 0
-    }
 
     fun validateFields(): Boolean {
 
@@ -127,8 +85,8 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
         }
 
         return CreateAccountRequest(
-            userName = "${inputUsernameLbl.get()}${usernameProviderLbl.get()}" ,
-            password = inputPasswordLbl.get() ?: "",
+            userName = "" ,
+            password = "",
             name = inputFullName.get() ?: "",
             gender = getGender(),
             yearOfBirth = selectedYoB, unverifiedIdentifiers = unverifiedIdentifiers)
@@ -161,21 +119,6 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
         validateFields()
     }
 
-/*
-    fun validateUserName() {
-        inputUsernameLbl.get()?.let { showErrorUserName.set(!isValid(it, usernameCriteria)) }
-        validateFields()
-    }
-*/
-
-/*
-    fun validatePassword() {
-        if(inputPasswordLbl.get()?.isNotEmpty() == true)
-        inputPasswordLbl.get()?.let { showErrorPassword.set(!isValid(it, passwordCriteria)) }
-        validateFields()
-    }
-*/
-
     fun validateAyushmanId(){
         if (inputAyushmanIdLbl.get()?.isNotEmpty() == true){
             inputAyushmanIdLbl.get()?.let {
@@ -201,4 +144,5 @@ class CreateAccountViewModel(private val repository: UserAccountsRepository,
         showErrorGender.set(genderCheckId == DEFAULT_CHECKED_ID)
         validateFields()
     }
+
 }

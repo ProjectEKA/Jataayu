@@ -11,6 +11,7 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ActivityCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.ui.fragment.ConfirmAccountFragment
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
+import `in`.projecteka.jataayu.user.account.viewmodel.ConfirmAccountViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
@@ -25,7 +26,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), AdapterView.OnItemSelectedListener {
 
-    private val viewModel: CreateAccountViewModel by viewModel()
+    private val createAccountViewModel: CreateAccountViewModel by viewModel()
+    private val confirmAccountViewModel: ConfirmAccountViewModel by viewModel()
 
     override fun layoutId(): Int = R.layout.activity_create_account
 
@@ -49,22 +51,22 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
     }
 
     private fun initBindings() {
-        binding.viewModel = viewModel
+        binding.viewModel = createAccountViewModel
         binding.spinnerListener = this
-        binding.cgGender.setOnCheckedChangeListener(viewModel)
-        viewModel.appBarTitle.set(getString(R.string.create_account))
+        binding.cgGender.setOnCheckedChangeListener(createAccountViewModel)
+        createAccountViewModel.appBarTitle.set(getString(R.string.create_account))
         binding.etName.addTextChangedListener { text ->
-            viewModel.validateName()
+            createAccountViewModel.validateName()
         }
 
         binding.etAyushmanBharatId.addTextChangedListener{text ->
-            viewModel.validateAyushmanId()
+            createAccountViewModel.validateAyushmanId()
         }
 
     }
 
     private fun initObservers() {
-        viewModel.redirectTo.observe(this, Observer {
+        createAccountViewModel.redirectTo.observe(this, Observer {
             addFragment(when(it){
                 RedirectingActivity.ShowPage.FIRST_SCREEN ->
                     CreateAccountFragment.newInstance()
@@ -74,13 +76,13 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
             },R.id.create_account_fragment_container)
         })
 
-        viewModel.createAccountResponse.observe(this,
+        createAccountViewModel.createAccountResponse.observe(this,
             Observer {
                 when (it) {
-                    is Loading -> viewModel.showProgress(it.isLoading)
+                    is Loading -> createAccountViewModel.showProgress(it.isLoading)
                     is Success -> {
-                        viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
-                        viewModel.preferenceRepository.isUserAccountCreated = true
+                        createAccountViewModel.credentialsRepository.accessToken = createAccountViewModel.getAuthTokenWithTokenType(it.data)
+                        createAccountViewModel.preferenceRepository.isUserAccountCreated = true
                         startProvider(this) {
                             putExtra(KEY_ACCOUNT_CREATED, true)
                         }
@@ -99,7 +101,7 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
     private fun initSpinner() {
         val arrayAdapter = ArrayAdapter<String>(
             this,
-            android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, viewModel.getYearsToPopulate()
+            android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, createAccountViewModel.getYearsToPopulate()
         )
         binding.spinnerYob.adapter = arrayAdapter
         arrayAdapter.notifyDataSetChanged()
@@ -111,7 +113,7 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (position != 0) {
-            viewModel.selectedYoB((view as AppCompatCheckedTextView).text.toString().toInt())
+            createAccountViewModel.selectedYoB((view as AppCompatCheckedTextView).text.toString().toInt())
         }
     }
 }
