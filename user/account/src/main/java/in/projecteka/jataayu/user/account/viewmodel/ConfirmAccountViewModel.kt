@@ -8,7 +8,6 @@ import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.presentation.BaseViewModel
-import `in`.projecteka.jataayu.user.account.ui.activity.RedirectingActivity
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
@@ -16,7 +15,6 @@ import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TY
 import android.text.InputType
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
 import com.google.android.material.chip.ChipGroup
 import java.util.regex.Pattern
 
@@ -47,33 +45,41 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val inputUsernameLbl = ObservableField<String>()
     val inputPasswordLbl = ObservableField<String>()
     val confirmationInputPasswordLbl = ObservableField<String>()
-    val passwordInputType = ObservableInt(hiddenPasswordInputType())
-    val confirmationPasswordInputType = ObservableInt(hiddenPasswordInputType())
+    val passwordInputType = ObservableField(hiddenPasswordInputType())
+    val confirmationPasswordInputType = ObservableField(hiddenPasswordInputType())
     val inputPasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
     val usernameProviderLbl = ObservableField<String>()
     val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
     val inputAyushmanIdLbl = ObservableField<String>()
-    val submitEnabled = ObservableBoolean(false)
+    val submitEnabled = ObservableBoolean(true)
     val showErrorUserName = ObservableBoolean(false)
     val showErrorGender = ObservableBoolean(false)
     val showErrorPassword = ObservableBoolean(false)
+    val showErrorConfirmPassword = ObservableBoolean(false)
     val showErrorAyushmanId = ObservableBoolean(false)
     val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
     val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
     val inputFullName = ObservableField<String>()
     val showErrorName = ObservableBoolean(false)
-    val redirectTo: SingleLiveEvent<RedirectingActivity.ShowPage> = SingleLiveEvent()
 
+
+    fun validatePassword() {
+        if(inputPasswordLbl.get()?.isNotEmpty() == true)
+            inputPasswordLbl.get()?.let { showErrorPassword.set(!isValid(it, passwordCriteria)) }
+        validateFields()
+    }
+    fun validateConfirmPassword() {
+        val arePasswordEqual = (inputPasswordLbl.get() == confirmationInputPasswordLbl.get())
+        showErrorConfirmPassword.set(!arePasswordEqual)
+    }
 
     fun validateFields(): Boolean {
-
         val listOfEvents: List<Boolean> = listOf(
             !showErrorUserName.get() && inputUsernameLbl.get()?.isNotEmpty() == true,
             !showErrorPassword.get() && inputPasswordLbl.get()?.equals(confirmationInputPasswordLbl.get())!!
         )
 
         var isValid = listOfEvents.all { it == true }
-        submitEnabled.set(isValid)
         return isValid
     }
 
@@ -99,6 +105,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     private fun hiddenPasswordInputType(): Int {
         return InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD
     }
+
     private fun isValid(text: String, criteria: String): Boolean {
         if(text.isEmpty()) return false
         val pattern = Pattern.compile(criteria)
@@ -108,11 +115,11 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
 
 
     fun createAccount() {
-        val payload = getCreateAccountPayload()
-        val call = repository.createAccount(payload)
-        createAccountResponse.fetch(call)
-
+            val payload = getCreateAccountPayload()
+            val call = repository.createAccount(payload)
+            createAccountResponse.fetch(call)
     }
+
     fun getAuthTokenWithTokenType(response: CreateAccountResponse?): String {
         return "${response?.tokenType?.capitalize()} ${response?.accessToken}"
     }

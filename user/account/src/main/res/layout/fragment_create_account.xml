@@ -14,27 +14,9 @@
             type="android.widget.AdapterView.OnItemSelectedListener" />
     </data>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/create_account_fragment_container"
-        >
-
-        <androidx.appcompat.widget.Toolbar
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/app_toolbar"
-            android:layout_height="@dimen/toolbar_size"
-            android:layout_width="match_parent"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:navigationIcon="?android:attr/homeAsUpIndicator"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title='@{@string/create_account}' />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/app_toolbar"
             android:background="@color/white"
             android:clipToPadding="false"
             android:paddingTop="@dimen/content_margin_36">
@@ -279,17 +261,9 @@
                     style="@style/Button"
                     android:layout_width="match_parent"
                     android:enabled="@{viewModel.submitEnabled}"
-                    android:onClick="@{() -> viewModel.createAccount()}"
                     android:text="@string/register" />
             </FrameLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <include
-            android:id="@+id/progress_bar_layout"
-            layout="@layout/progress_layout"
-            app:message="@{viewModel.showProgressMessage}"
-            app:showProgress="@{viewModel.showProgress}" />
-    </RelativeLayout>
 </layout>

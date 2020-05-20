@@ -1,16 +1,16 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ConfirmAccountFragmentBinding
+import `in`.projecteka.jataayu.user.account.viewmodel.AccountCreationActivityViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.ConfirmAccountViewModel
 import android.os.Bundle
-import android.text.InputType
-import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
-import androidx.fragment.app.Fragment
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -23,6 +23,7 @@ class ConfirmAccountFragment : BaseFragment() {
     }
 
     private val viewModel: ConfirmAccountViewModel by viewModel()
+    private val parentVM : AccountCreationActivityViewModel by sharedViewModel()
 
 
     override fun onCreateView(
@@ -36,11 +37,48 @@ class ConfirmAccountFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initBindings()
     }
 
     private fun initBindings() {
         binding.viewModel = viewModel
+        binding.etPassword.addTextChangedListener{text: Editable? ->
+            viewModel.validatePassword()
+        }
+        binding.etConfirmPassword.addTextChangedListener{text: Editable? ->
+            viewModel.validateConfirmPassword()
+        }
+
+        viewModel.inputUsernameLbl.set(parentVM.fullName)
+    }
+
+
+    private fun generateCheckDigit(digits: CharSequence): Char {
+        val lastIndex = digits.lastIndex
+        val lastIndexRem = lastIndex.rem(2)
+        val n = 10
+        val luhnSum = digits.foldRightIndexed(0, { index, c, acc ->
+            val currentRem = index.rem(2)
+            val numericValue = Character.getNumericValue(c)
+            var addend = if (lastIndexRem == currentRem) 2 * numericValue else numericValue
+            addend = addend.div(n) + addend.rem(n)
+            acc + addend
+        })
+        val checkDigit = (n - luhnSum.rem(n)) % n
+        return checkDigit.toString()[0]
+    }
+
+    private fun cmIdToDigitSeq(cmId: String): String {
+        return cmId.fold("", { result, ch ->
+            if (ch == '.') result else result + ch.toInt()
+        })
+    }
+
+    private fun generateCmId(mobile: String, name: String, suffix: String): String {
+        val rawCmId = mobile + "." + name.toUpperCase().take(3)
+        val digitSeq = cmIdToDigitSeq(rawCmId)
+        val firstCheckDigit = generateCheckDigit(digitSeq)
+        val secondCheckDigit = generateCheckDigit(digitSeq + firstCheckDigit)
+        return "$rawCmId.$firstCheckDigit$secondCheckDigit@$suffix"
     }
 }

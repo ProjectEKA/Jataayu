@@ -7,7 +7,6 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
-import `in`.projecteka.jataayu.user.account.ui.activity.RedirectingActivity
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
@@ -20,12 +19,9 @@ import com.google.android.material.chip.ChipGroup
 import java.util.*
 import java.util.regex.Pattern
 
-class CreateAccountViewModel( val repository: UserAccountsRepository,
-                             val preferenceRepository: PreferenceRepository,
-                             val credentialsRepository: CredentialsRepository) : BaseViewModel(), ChipGroup.OnCheckedChangeListener {
+class CreateAccountViewModel : BaseViewModel(), ChipGroup.OnCheckedChangeListener {
 
     companion object {
-
         private const val YOB = "yyyy"
         private const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
         /*^                 # start-of-string
@@ -42,16 +38,14 @@ class CreateAccountViewModel( val repository: UserAccountsRepository,
     }
 
     private var genderCheckId: Int = -1
-    private var selectedYoB: Int? = null
-
+    internal var selectedYoB: Int? = null
     val inputFullName = ObservableField<String>()
     val inputAyushmanIdLbl = ObservableField<String>()
     val showErrorName = ObservableBoolean(false)
     val showErrorAyushmanId = ObservableBoolean(false)
     val showErrorGender = ObservableBoolean(false)
     val submitEnabled = ObservableBoolean(false)
-    val redirectTo: SingleLiveEvent<RedirectingActivity.ShowPage> = SingleLiveEvent()
-    val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
+    val redirectTo: SingleLiveEvent<AccountCreationActivityViewModel.ShowPage> = SingleLiveEvent()
     val inputUsernameLbl = ObservableField<String>()
     val inputPasswordLbl = ObservableField<String>()
     val usernameProviderLbl = ObservableField<String>()
@@ -83,10 +77,6 @@ class CreateAccountViewModel( val repository: UserAccountsRepository,
         return isValid
     }
 
-    fun createAccount() {
-            redirectTo.value = RedirectingActivity.ShowPage.SECOND_SCREEN
-    }
-
     fun getCreateAccountPayload(): CreateAccountRequest {
 
         var unverifiedIdentifiers: List<UnverifiedIdentifier>? = null
@@ -115,7 +105,7 @@ class CreateAccountViewModel( val repository: UserAccountsRepository,
         return years
     }
 
-    private fun getGender(): String {
+    internal fun getGender(): String {
         return when (genderCheckId) {
             R.id.gender_chip_male -> PreferenceRepository.GENDER_MALE
             R.id.gender_chip_female -> PreferenceRepository.GENDER_FEMALE
@@ -147,10 +137,6 @@ class CreateAccountViewModel( val repository: UserAccountsRepository,
         val pattern = Pattern.compile(criteria)
         val matcher = pattern.matcher(text)
         return matcher.matches()
-    }
-
-    fun getAuthTokenWithTokenType(response: CreateAccountResponse?): String {
-        return "${response?.tokenType?.capitalize()} ${response?.accessToken}"
     }
 
     override fun onCheckedChanged(group: ChipGroup?, checkedId: Int) {

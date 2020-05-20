@@ -11,6 +11,8 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ActivityCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.ui.fragment.ConfirmAccountFragment
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
+import `in`.projecteka.jataayu.user.account.ui.fragment.ProfileFragment
+import `in`.projecteka.jataayu.user.account.viewmodel.AccountCreationActivityViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.ConfirmAccountViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
 import `in`.projecteka.jataayu.util.startProvider
@@ -24,10 +26,9 @@ import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), AdapterView.OnItemSelectedListener {
+class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
 
-    private val createAccountViewModel: CreateAccountViewModel by viewModel()
-    private val confirmAccountViewModel: ConfirmAccountViewModel by viewModel()
+    private val viewModel: AccountCreationActivityViewModel by viewModel()
 
     override fun layoutId(): Int = R.layout.activity_create_account
 
@@ -40,7 +41,7 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
         initBindings()
         initToolbar()
         initObservers()
-        initSpinner()
+        viewModel.redirectToCreateAccountPage();
     }
 
     private fun initToolbar() {
@@ -51,42 +52,36 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
     }
 
     private fun initBindings() {
-        binding.viewModel = createAccountViewModel
-        binding.spinnerListener = this
-        binding.cgGender.setOnCheckedChangeListener(createAccountViewModel)
-        createAccountViewModel.appBarTitle.set(getString(R.string.create_account))
-        binding.etName.addTextChangedListener { text ->
-            createAccountViewModel.validateName()
-        }
-
-        binding.etAyushmanBharatId.addTextChangedListener{text ->
-            createAccountViewModel.validateAyushmanId()
-        }
-
+        binding.viewModel = viewModel
+        viewModel.appBarTitle.set(getString(R.string.create_account))
     }
 
     private fun initObservers() {
-        createAccountViewModel.redirectTo.observe(this, Observer {
-            addFragment(when(it){
-                RedirectingActivity.ShowPage.FIRST_SCREEN ->
-                    CreateAccountFragment.newInstance()
-                RedirectingActivity.ShowPage.SECOND_SCREEN ->
-                    ConfirmAccountFragment.newInstance()
-
-            },R.id.create_account_fragment_container)
+        viewModel.currentPage.observe(this, Observer {
+            when(it){
+              AccountCreationActivityViewModel.ShowPage.FIRST_SCREEN ->
+                  replaceFragment(CreateAccountFragment.newInstance(), R.id.create_account_fragment_container)
+              AccountCreationActivityViewModel.ShowPage.SECOND_SCREEN ->
+                  replaceFragment(ConfirmAccountFragment.newInstance(), R.id.create_account_fragment_container)
+            }
+//            replaceFragment(when(it){
+//                AccountCreationActivityViewModel.ShowPage.FIRST_SCREEN ->
+//                    CreateAccountFragment.newInstance()
+//                AccountCreationActivityViewModel.ShowPage.SECOND_SCREEN ->
+//                    ConfirmAccountFragment.newInstance()
+//            },R.id.create_account_fragment_container)
         })
 
-        createAccountViewModel.createAccountResponse.observe(this,
+        viewModel.createAccountResponse.observe(this,
             Observer {
                 when (it) {
-                    is Loading -> createAccountViewModel.showProgress(it.isLoading)
+                    is Loading -> viewModel.showProgress(it.isLoading)
                     is Success -> {
-                        createAccountViewModel.credentialsRepository.accessToken = createAccountViewModel.getAuthTokenWithTokenType(it.data)
-                        createAccountViewModel.preferenceRepository.isUserAccountCreated = true
+                        viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
+                        viewModel.preferenceRepository.isUserAccountCreated = true
                         startProvider(this) {
                             putExtra(KEY_ACCOUNT_CREATED, true)
                         }
-
                         finish()
                     }
                     is PartialFailure ->
@@ -96,24 +91,5 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>(), Ad
 
                 }
             })
-    }
-
-    private fun initSpinner() {
-        val arrayAdapter = ArrayAdapter<String>(
-            this,
-            android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, createAccountViewModel.getYearsToPopulate()
-        )
-        binding.spinnerYob.adapter = arrayAdapter
-        arrayAdapter.notifyDataSetChanged()
-        binding.spinnerYob.setSelection(0)
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (position != 0) {
-            createAccountViewModel.selectedYoB((view as AppCompatCheckedTextView).text.toString().toInt())
-        }
     }
 }

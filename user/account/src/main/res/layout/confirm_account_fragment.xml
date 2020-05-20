@@ -11,25 +11,9 @@
 
     </data>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/create_account_fragment_container">
-
-        <androidx.appcompat.widget.Toolbar
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/confirm_account_app_toolbar"
-            android:layout_height="@dimen/toolbar_size"
-            android:layout_width="match_parent"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:navigationIcon="?android:attr/homeAsUpIndicator"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title='@{@string/create_account}' />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/confirm_account_app_toolbar"
             android:background="@color/white"
             android:clipToPadding="false"
             android:paddingTop="@dimen/content_margin_36">
@@ -268,10 +252,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/content_margin_extra_extra_small"
-                        android:text="@string/password_validation_hint"
+                        android:text="@string/passwords_do_not_match"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cv_confirm_password"
-                        app:toggledVisibility="@{viewModel.showErrorPassword}" />
+                        app:toggledVisibility="@{viewModel.showErrorConfirmPassword}" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -294,14 +278,5 @@
                     android:onClick="@{() -> viewModel.createAccount()}"
                     android:text="@string/register" />
             </FrameLayout>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <include
-            android:id="@+id/confirm_page_progress_bar_layout"
-            layout="@layout/progress_layout"
-            app:message="@{viewModel.showProgressMessage}"
-            app:showProgress="@{viewModel.showProgress}" />
-    </RelativeLayout>
 </layout>
