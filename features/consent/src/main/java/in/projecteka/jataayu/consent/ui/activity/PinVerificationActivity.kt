@@ -12,7 +12,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PinVerificationActivity : BaseActivity<BaseActivityBinding>() {
 
-    override fun layoutId(): Int = R.layout.base_activity
+    override fun layoutId(): Int = R.layout.activity_pin_verification
 
     private val viewModel: PinVerificationViewModel by viewModel()
 
@@ -23,8 +23,7 @@ class PinVerificationActivity : BaseActivity<BaseActivityBinding>() {
             viewModel.scopeType.set(ConsentScopeType.values()[intent.getIntExtra(PinVerificationViewModel.KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_GRAND.ordinal)])
         }
 
-        UserVerificationFragment.newInstance()
-            .show(supportFragmentManager, UserVerificationFragment::class.java.name)
+        addFragment(UserVerificationFragment.newInstance(), R.id.fragment_container)
 
         //TODO : check if it is needed here
         supportFragmentManager.apply {

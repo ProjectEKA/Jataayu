@@ -12,7 +12,7 @@ import android.os.Bundle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreatePinActivity : BaseActivity<BaseActivityBinding>() {
-    override fun layoutId(): Int = R.layout.base_activity
+    override fun layoutId(): Int = R.layout.activity_create_pin
 
     private val viewModel: CreatePinActivityViewModel by viewModel()
 //    private val viewModel: UserVerificationViewModel by viewModel()
@@ -27,7 +27,7 @@ class CreatePinActivity : BaseActivity<BaseActivityBinding>() {
             viewModel.scopeType.get()
         }
 
-        CreatePinFragment.newInstance().show(supportFragmentManager, CreatePinFragment::class.java.name)
+        addFragment(CreatePinFragment.newInstance(), R.id.fragment_container)
 
         supportFragmentManager.apply {
             addOnBackStackChangedListener {
