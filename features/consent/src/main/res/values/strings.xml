@@ -69,4 +69,6 @@
     <string name="consent_revoked">Consent Revoked Successfully</string>
     <string name="blocked_user_exceed_limit">You have exceeded the number of  attempts. Please try again after sometime.</string>
     <string name="consent_expiry_message">Cannot process the request as the consent request has expired</string>
+    <string name="pin_updated">Pin updated successfully</string>
+    <string name="pin_created">Pin created successfully</string>
 </resources>
