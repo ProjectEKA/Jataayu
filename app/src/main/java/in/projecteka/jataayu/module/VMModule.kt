@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.*
 import `in`.projecteka.jataayu.ui.LauncherViewModel
 import `in`.projecteka.jataayu.ui.dashboard.DashboardViewModel
+import `in`.projecteka.jataayu.user.account.viewmodel.ChangePasswordViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.ProfileActivityViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.ProfileFragmentViewModel
@@ -37,7 +38,7 @@ val viewModelModule = module {
 
     //Login
     viewModel { LoginViewModel() }
-    viewModel { ConsentManagerIDInputViewModel(get()) }
+    viewModel { ConsentManagerIDInputViewModel(get(), get()) }
     viewModel { PasswordInputViewModel(get(), get(), get()) }
     viewModel { LoginOtpViewModel(get(), get(), get()) }
 
@@ -63,6 +64,9 @@ val viewModelModule = module {
     viewModel { ReadIdentifierFragmentViewModel(get()) }
     viewModel { ResetPasswordOtpVerificationViewModel(get()) }
     viewModel { ResetPasswordFragmentViewModel(get()) }
+
+    //Change Password
+    viewModel { ChangePasswordViewModel(get()) }
 
     //Profile
     viewModel { ProfileActivityViewModel()}
