@@ -33,6 +33,7 @@ class ConsentDetailsActivity : BaseActivity<BaseActivityBinding>(), ResponseCall
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         handleIntent()
+        initToolbar()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -48,6 +49,13 @@ class ConsentDetailsActivity : BaseActivity<BaseActivityBinding>(), ResponseCall
         } else {
             deepLinkConsent(appLinkData)
         }
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(binding.baseToolbar.appToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        binding.baseToolbar.appToolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
     private fun deepLinkConsent(appLinkData: Uri) {
@@ -91,6 +99,10 @@ class ConsentDetailsActivity : BaseActivity<BaseActivityBinding>(), ResponseCall
     fun editConsentDetails() {
         addFragment(EditConsentDetailsFragment.newInstance(), R.id.fragment_container)
     }
+
+   fun updateTitle(title: String) {
+       binding.title = title
+   }
 
     override fun <T> onSuccess(body: T?) {
         viewModel.showProgress(false)
