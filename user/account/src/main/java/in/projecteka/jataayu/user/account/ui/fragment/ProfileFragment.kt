@@ -78,11 +78,6 @@ class ProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         })
 
         viewModel.redirectTo.observe(this, Observer {
-            if (it == ProfileFragmentViewModel.RedirectTo.CHANGE_PASSWORD) {
-                startChangePassword(activity!!)
-            }
-        })
-        viewModel.redirectTo.observe(this, Observer {
             if (it == ProfileFragmentViewModel.RedirectTo.CONSENT_PIN) {
                 if (viewModel.preferenceRepository.pinCreated){
                     startPinVerification(activity!!) {
@@ -93,6 +88,8 @@ class ProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_PIN_VERIFY.ordinal)
                     }
                 }
+            } else if (it == ProfileFragmentViewModel.RedirectTo.CHANGE_PASSWORD) {
+                startChangePassword(activity!!)
             }
         })
     }
