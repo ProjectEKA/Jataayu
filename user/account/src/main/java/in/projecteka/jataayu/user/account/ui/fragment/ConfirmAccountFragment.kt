@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
+import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ConfirmAccountFragmentBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.ConfirmAccountViewModel
@@ -13,7 +14,9 @@ import android.view.ViewGroup
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ConfirmAccountFragment : Fragment() {
+class ConfirmAccountFragment : BaseFragment() {
+
+    private lateinit var binding: ConfirmAccountFragmentBinding
 
     companion object {
         fun newInstance() = ConfirmAccountFragment()
@@ -27,17 +30,17 @@ class ConfirmAccountFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.confirm_account_fragment, container, false)
-
+        binding = ConfirmAccountFragmentBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.showProgress(false)
+
+        initBindings()
     }
 
-//    private fun getPasswordInputType(): Int {
-//        return InputType.TYPE_CLASS_TEXT + TYPE_TEXT_VARIATION_PASSWORD
-//    }
-
+    private fun initBindings() {
+        binding.viewModel = viewModel
+    }
 }

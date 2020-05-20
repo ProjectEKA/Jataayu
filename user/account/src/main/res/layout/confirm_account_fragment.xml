@@ -235,7 +235,7 @@
                                 android:drawablePadding="@dimen/content_margin_medium"
                                 android:focusable="true"
                                 android:focusableInTouchMode="true"
-                                android:inputType="@{viewModel.passwordInputType}"
+                                android:inputType="@{viewModel.confirmationPasswordInputType}"
                                 android:maxLength="30"
                                 android:singleLine="true"
                                 android:text="@={viewModel.confirmationInputPasswordLbl}"
@@ -298,10 +298,10 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--        <include-->
-<!--            android:id="@+id/confirm_page_progress_bar_layout"-->
-<!--            layout="@layout/progress_layout"-->
-<!--            app:message="@{viewModel.showProgressMessage}"-->
-<!--            app:showProgress="@{viewModel.showProgress}" />-->
+        <include
+            android:id="@+id/confirm_page_progress_bar_layout"
+            layout="@layout/progress_layout"
+            app:message="@{viewModel.showProgressMessage}"
+            app:showProgress="@{viewModel.showProgress}" />
     </RelativeLayout>
 </layout>

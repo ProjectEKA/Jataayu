@@ -12,8 +12,10 @@ import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TYPE_AYUSHMAN_BHARAT_ID
+import android.text.InputType
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import com.google.android.material.chip.ChipGroup
 import java.util.*
 import java.util.regex.Pattern
@@ -50,6 +52,17 @@ class CreateAccountViewModel( val repository: UserAccountsRepository,
     val submitEnabled = ObservableBoolean(false)
     val redirectTo: SingleLiveEvent<RedirectingActivity.ShowPage> = SingleLiveEvent()
     val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
+    val inputUsernameLbl = ObservableField<String>()
+    val inputPasswordLbl = ObservableField<String>()
+    val usernameProviderLbl = ObservableField<String>()
+    val showErrorPassword = ObservableBoolean(false)
+    val showErrorUserName = ObservableBoolean(false)
+    val confirmationInputPasswordLbl = ObservableField<String>()
+    val passwordInputType = ObservableInt(hiddenPasswordInputType())
+    val inputPasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
+    val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
+    val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
+
 
     fun validateFields(): Boolean {
 
@@ -85,11 +98,12 @@ class CreateAccountViewModel( val repository: UserAccountsRepository,
         }
 
         return CreateAccountRequest(
-            userName = "" ,
-            password = "",
+            userName = "${inputUsernameLbl.get()}${usernameProviderLbl.get()}" ,
+            password = inputPasswordLbl.get() ?: "",
             name = inputFullName.get() ?: "",
             gender = getGender(),
-            yearOfBirth = selectedYoB, unverifiedIdentifiers = unverifiedIdentifiers)
+            yearOfBirth = selectedYoB,
+            unverifiedIdentifiers = unverifiedIdentifiers)
     }
 
     internal fun getYearsToPopulate(): List<String> {
@@ -144,5 +158,7 @@ class CreateAccountViewModel( val repository: UserAccountsRepository,
         showErrorGender.set(genderCheckId == DEFAULT_CHECKED_ID)
         validateFields()
     }
-
+    private fun hiddenPasswordInputType(): Int {
+        return InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD
+    }
 }

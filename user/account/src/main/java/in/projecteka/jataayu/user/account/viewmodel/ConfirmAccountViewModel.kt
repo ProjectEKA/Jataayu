@@ -8,6 +8,7 @@ import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.user.account.ui.activity.RedirectingActivity
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
@@ -16,6 +17,7 @@ import android.text.InputType
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import com.google.android.material.chip.ChipGroup
 import java.util.regex.Pattern
 
 class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
@@ -36,7 +38,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
         $                 # end-of-string*/
         private const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
 //        const val ayushmanIdCriteria =  "^[P|p]([A-Z][0-9])*.{8}$"
-//        private const val DEFAULT_CHECKED_ID = -1
+        private const val DEFAULT_CHECKED_ID = -1
     }
 
     private var genderCheckId: Int = -1
@@ -46,24 +48,28 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val inputPasswordLbl = ObservableField<String>()
     val confirmationInputPasswordLbl = ObservableField<String>()
     val passwordInputType = ObservableInt(hiddenPasswordInputType())
+    val confirmationPasswordInputType = ObservableInt(hiddenPasswordInputType())
     val inputPasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
     val usernameProviderLbl = ObservableField<String>()
     val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
     val inputAyushmanIdLbl = ObservableField<String>()
     val submitEnabled = ObservableBoolean(false)
     val showErrorUserName = ObservableBoolean(false)
+    val showErrorGender = ObservableBoolean(false)
     val showErrorPassword = ObservableBoolean(false)
     val showErrorAyushmanId = ObservableBoolean(false)
     val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
     val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
+    val inputFullName = ObservableField<String>()
+    val showErrorName = ObservableBoolean(false)
+    val redirectTo: SingleLiveEvent<RedirectingActivity.ShowPage> = SingleLiveEvent()
 
 
     fun validateFields(): Boolean {
 
         val listOfEvents: List<Boolean> = listOf(
             !showErrorUserName.get() && inputUsernameLbl.get()?.isNotEmpty() == true,
-            !showErrorPassword.get() && inputPasswordLbl.get()?.equals(confirmationInputPasswordLbl.get())!!,
-            !isValid(inputPasswordLbl.get().toString(), passwordCriteria)
+            !showErrorPassword.get() && inputPasswordLbl.get()?.equals(confirmationInputPasswordLbl.get())!!
         )
 
         var isValid = listOfEvents.all { it == true }
@@ -72,7 +78,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     }
 
     fun togglePasswordVisible() {
-        val newInputType = when (passwordInputType.get()) {
+        val newInputType = when (confirmationPasswordInputType.get()) {
             visiblePasswordInputType() -> {
                 inputPasswordVisibilityToggleLbl.set(R.string.show)
                 hiddenPasswordInputType()
@@ -83,7 +89,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
             }
             else -> hiddenPasswordInputType()
         }
-        passwordInputType.set(newInputType)
+        confirmationPasswordInputType.set(newInputType)
         onPasswordVisibilityToggleEvent.value = inputPasswordLbl.get()?.length ?: 0
     }
     private fun visiblePasswordInputType(): Int {
@@ -124,12 +130,23 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
         return CreateAccountRequest(
             userName = "${inputUsernameLbl.get()}${usernameProviderLbl.get()}" ,
             password = inputPasswordLbl.get() ?: "",
-//            name = inputFullName.get() ?: "",
-            name = "",
-//            gender = getGender(),
-            gender = "M",
+            name = inputFullName.get() ?: "",
+            gender = getGender(),
             yearOfBirth = selectedYoB,
             unverifiedIdentifiers = unverifiedIdentifiers)
+    }
+    fun onCheckedChanged(group: ChipGroup?, checkedId: Int) {
+        genderCheckId = checkedId
+        showErrorGender.set(genderCheckId == ConfirmAccountViewModel.DEFAULT_CHECKED_ID)
+        validateFields()
+    }
+    private fun getGender(): String {
+        return when (genderCheckId) {
+            R.id.gender_chip_male -> PreferenceRepository.GENDER_MALE
+            R.id.gender_chip_female -> PreferenceRepository.GENDER_FEMALE
+            R.id.gender_chip_other -> PreferenceRepository.GENDER_OTHERS
+            else -> PreferenceRepository.GENDER_OTHERS
+        }
     }
 
 }
