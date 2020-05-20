@@ -17,7 +17,6 @@ import `in`.projecteka.jataayu.provider.model.LinkAccountsResponse
 import `in`.projecteka.jataayu.provider.ui.ProviderActivity
 import `in`.projecteka.jataayu.provider.ui.handler.PatientAccountsScreenHandler
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
-import `in`.projecteka.jataayu.util.extension.setTitle
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -62,12 +61,20 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
         binding.name = patient?.display
         binding.accountReferenceNumber = patient?.referenceNumber
         binding.clickHandler = this
-        binding.canLinkAccounts = viewModel.canLinkAccounts(patient?.careContexts!!)
+        val pair  = viewModel.canLinkAccounts(patient?.careContexts!!)
+        binding.canLinkAccounts = pair.first
+        updateLinkAccountButton(pair.second)
+
     }
 
     private fun renderPatientAccounts() {
 
         viewModel.makeAccountsSelected()
+        val careContextsCount = viewModel.patientDiscoveryResponse.value?.patient?.careContexts?.count() ?: 0
+        updateLinkAccountButton( careContextsCount)
+        binding.hideNoLinkingAccountView = careContextsCount > 0
+        binding.noLinkingAccounts = getString(R.string.link_accounts_alreday_done)
+
 
         genericRecyclerViewAdapter = GenericRecyclerViewAdapter(
             viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!,
@@ -85,12 +92,24 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
         val checkbox = (itemViewBinding as PatientAccountResultItemBinding).cbCareContext
         checkbox.toggle()
         (iDataBindingModel as CareContext).contextChecked = checkbox.isChecked
-        binding.canLinkAccounts = viewModel.canLinkAccounts(genericRecyclerViewAdapter.listOfBindingModels as List<CareContext>)
+        val pair = viewModel.canLinkAccounts(genericRecyclerViewAdapter.listOfBindingModels as List<CareContext>)
+        binding.canLinkAccounts = pair.first
+        updateLinkAccountButton(pair.second)
+
+    }
+
+    private fun updateLinkAccountButton(selectedItemsCount: Int) {
+        if (selectedItemsCount > 0) {
+            binding.linkSelected = getString(R.string.link_selected) + " (${selectedItemsCount})"
+        } else {
+            binding.linkSelected = getString(R.string.link_selected)
+        }
+
     }
 
     override fun onVisible() {
         super.onVisible()
-        setTitle(R.string.link_accounts)
+        (activity as? ProviderActivity)?.updateTitle(getString(R.string.link_accounts))
     }
 
     override fun onLinkAccountsClick(view: View) {

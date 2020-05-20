@@ -1,24 +1,25 @@
 package `in`.projecteka.jataayu.provider.viewmodel
 
-import `in`.projecteka.jataayu.core.model.CareContext
-import `in`.projecteka.jataayu.core.model.Patient
-import `in`.projecteka.jataayu.core.model.ProviderInfo
-import `in`.projecteka.jataayu.core.model.Request
-import `in`.projecteka.jataayu.network.utils.ResponseCallback
-import `in`.projecteka.jataayu.network.utils.observeOn
+import `in`.projecteka.jataayu.core.model.*
+import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.network.utils.*
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.provider.model.*
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.extension.liveDataOf
+import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.repository.UUIDRepository
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Observer
 
 class ProviderSearchViewModel(private val providerRepository: ProviderRepository,
+                              private val userAccountsRepository: UserAccountsRepository,
                               val preferenceRepository: PreferenceRepository,
                               val uuidRepository: UUIDRepository) : BaseViewModel(), TextWatcher {
     val providers = liveDataOf<List<ProviderInfo>>()
@@ -26,6 +27,10 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
     val patientDiscoveryResponse = liveDataOf<PatientDiscoveryResponse>()
     val linkAccountsResponse = liveDataOf<LinkAccountsResponse>()
     val successfulLinkingResponse = liveDataOf<SuccessfulLinkingResponse>()
+    val userProfileResponse = MediatorLiveData<PayloadResource<*>>()
+    val myProfile = SingleLiveEvent<MyProfile>()
+    val isViewDetailsEnabled = ObservableBoolean(false)
+
 
     internal var selectedProviderName = String.EMPTY
 
@@ -46,6 +51,8 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
         providerRepository.getPatientAccounts(request).observeOn(patientDiscoveryResponse, responseCallback)
     }
 
+    fun getMyProfile() = userAccountsRepository.getMyProfile()
+
     fun linkPatientAccounts(listCareContexts: List<CareContext>, responseCallback: ResponseCallback) {
 
         var linkedAccounts = ArrayList<CareContext>()
@@ -65,23 +72,35 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
         providerRepository.linkPatientAccounts(selectedAccountsResponse!!).observeOn(linkAccountsResponse, responseCallback)
     }
 
+    fun fetchProfileData() {
+        val profileLiveData = getMyProfile()
+        userProfileResponse.addSource(profileLiveData, Observer {
+            when (it) {
+                is Success -> {
+                    myProfile.value = it.data
+                }
+                is PartialFailure -> {
+                }
+            }
+        })
+    }
+
     fun verifyOtp(referenceNumber: String, otp: Otp, responseCallback: ResponseCallback) {
         providerRepository.verifyOtp(referenceNumber, otp).observeOn(successfulLinkingResponse, responseCallback)
     }
 
-    fun canLinkAccounts(careContexts: List<CareContext>): Boolean {
-        for (careContext in careContexts) {
-            if (careContext.contextChecked) return true
-        }
-        return false
+    fun canLinkAccounts(careContexts: List<CareContext>): Pair<Boolean, Int> {
+        val checkedCareContexts = careContexts.filter { it.contextChecked == true }
+        return Pair(checkedCareContexts.isNotEmpty(), checkedCareContexts.count())
     }
 
     fun clearList() {
         providersList = emptyList()
     }
 
-    fun makeAccountsSelected() {
+    fun makeAccountsSelected()  {
         patientDiscoveryResponse.value?.patient?.careContexts!!.forEach { careContext -> careContext.contextChecked = true }
+
     }
 
     override fun afterTextChanged(s: Editable?) {

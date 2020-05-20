@@ -51,7 +51,7 @@ val viewModelModule = module {
     viewModel { GrantedConsentDetailsViewModel(get()) }
 
     //Provider Search
-    viewModel { ProviderSearchViewModel(get(), get(), get()) }
+    viewModel { ProviderSearchViewModel(get(), get(), get(), get()) }
     viewModel { ProviderActivityViewModel() }
 
     //User Verification

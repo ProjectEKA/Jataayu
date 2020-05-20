@@ -22,12 +22,15 @@ class ProviderActivity : BaseActivity<BaseActivityBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        updateTitle(getString(R.string.link_your_id))
         replaceFragment(ProviderSearchFragment.newInstance(),R.id.fragment_container)
         intent.extras?.getBoolean(KEY_ACCOUNT_CREATED)?.let {
             if (intent.extras?.getBoolean(KEY_ACCOUNT_CREATED)!!){
                 viewmodel.showSnackbarevent.value = true
             }
         }
+
+        binding.baseToolbar.appToolbar.setNavigationOnClickListener{ onBackPressed() }
     }
 
     fun showPatientsAccounts() {
@@ -36,6 +39,10 @@ class ProviderActivity : BaseActivity<BaseActivityBinding>() {
 
     fun showVerifyOtpScreen() {
         addFragment(VerifyOtpFragment.newInstance(),R.id.fragment_container)
+    }
+
+     fun updateTitle(title: String) {
+        binding.title = title
     }
 
 }
