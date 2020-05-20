@@ -64,7 +64,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
     private fun initObservers() {
 
         viewModel.updatePinResponse.observe(this, Observer {
-            showShortToast("pin updated succesfuly")
+            showShortToast(getString(R.string.pin_updated))
             activity?.finish()
         })
 
@@ -74,7 +74,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                 is Loading -> viewModel.showProgress(it.isLoading, R.string.creating_pin)
                 is Success -> {
                     if (parentViewmodel.scopeType.get() == ConsentScopeType.SCOPE_PIN_VERIFY) {
-                        showShortToast("pin created succesfuly")
+                        showShortToast(getString(R.string.pin_created))
                         viewModel.preferenceRepository.pinCreated = true
                         activity?.finish()
                     } else {
