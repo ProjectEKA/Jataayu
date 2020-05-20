@@ -13,6 +13,9 @@ interface PreferenceRepository {
         const val GENDER_OTHERS = "O"
         const val TYPE_AYUSHMAN_BHARAT_ID = "ABPMJAYID"
         const val TYPE_PAN = "PAN"
+        const val INDIA_COUNTRY_CODE = "+91"
+        const val COUNTRY_CODE_SEPARATOR = "-"
+        const val MOBILE_IDENTIFIER_TYPE = "mobile"
     }
 
     var name: String?

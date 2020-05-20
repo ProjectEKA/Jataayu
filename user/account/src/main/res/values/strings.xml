@@ -35,6 +35,7 @@
     <string name="password_changed">Password changed successfully.</string>
     <string name="password_criteria">New password didn’t meet the criteria</string>
     <string name="otp">OTP</string>
+    <string name="mobile_number_error">Mobile number should be 10 digits long</string>
 
 <!--    Profile-->
     <string name="consent_manager_id">Consent Manager ID</string>
@@ -49,4 +50,8 @@
     <string name="create">Create</string>
     <string name="consent_placeholder">1234</string>
     <string name="consent_pin_not_created">Consent PIN not created</string>
+
+<!--    Recover CMID-->
+    <string name="forgot_cmid">Forgot CM ID</string>
+    <string name="forgot_cmid_title">Recover Consent Manager ID</string>
 </resources>

@@ -85,7 +85,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/lbl_username" />
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cv_username"
+                    android:id="@+id/cv_full_name"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edit_text_height_large"
                     android:layout_marginTop="@dimen/content_margin_extra_small"
@@ -143,7 +143,7 @@
                     android:text="@string/username_validation_hint"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cv_username" />
+                    app:layout_constraintTop_toBottomOf="@+id/cv_full_name" />
 
                 <TextView
                     android:id="@+id/lbl_password"

@@ -1,0 +1,354 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.projecteka.resetpassword.ui.fragment.ReadIdentifierFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="in.projecteka.jataayu.user.account.viewmodel.ReadValuesFragmentViewModel" />
+
+        <variable
+            name="spinnerListener"
+            type="android.widget.AdapterView.OnItemSelectedListener" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clipToPadding="false">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingLeft="@dimen/content_margin_large"
+                    android:paddingRight="@dimen/content_margin_large"
+                    android:paddingBottom="@dimen/content_margin_36">
+
+                    <TextView
+                        android:id="@+id/lbl_title"
+                        style="@style/TextAppearance.Light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                        android:text="@string/forgot_cmid_title"
+                        android:textSize="@dimen/text_size_large"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/lbl_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/content_margin_extra_small"
+                        android:text="@string/full_name"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_title" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cv_first_name"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/edit_text_height_large"
+                        android:layout_marginTop="@dimen/content_margin_extra_small"
+                        app:cardElevation="@dimen/content_padding_medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_name">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/content_margin_medium">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_name"
+                                error_text='@{@string/should_not_be_empty}'
+                                toggle_error="@{viewModel.showErrorName}"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="start"
+                                android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
+                                android:layout_weight=".7"
+                                android:background="@color/white"
+                                android:cursorVisible="true"
+                                android:digits="@string/alphabets_and_space_only"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:singleLine="true"
+                                android:text="@={viewModel.inputFullName}"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_medium" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:id="@+id/lbl_first_name_hint"
+                        android:layout_width="wrap_content"
+                        android:text=""
+                        android:layout_height="20dp"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/name_hint"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@id/cv_first_name"
+                        app:layout_constraintTop_toBottomOf="@id/cv_first_name" />
+
+                    <TextView
+                        android:id="@+id/tv_mobile_number_title"
+                        style="@style/TextAppearance.ListItemSubHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mobile"
+                        android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_first_name_hint"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cv_mobile_number"
+                        app:layout_goneMarginTop="@dimen/content_padding_medium"
+                        android:layout_width="match_parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/content_margin_extra_small"
+                        app:cardElevation="@dimen/content_padding_medium"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number_title">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/content_margin_medium">
+
+                            <TextView
+                                android:id="@+id/tv_country_code"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_small"
+                                android:text="@{viewModel.countryCode}"
+                                tools:text="+xx - " />
+
+                            <EditText
+                                android:id="@+id/et_mobile_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:cursorVisible="true"
+                                android:focusable="true"
+                                android:text="@={viewModel.inputMobileNumber}"
+                                android:focusableInTouchMode="true"
+                                android:inputType="number"
+                                android:maxLength="10"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_small"/>
+<!--                            app:onValueChanged="@{viewModel}"-->
+<!--                            android:text="@={viewModel.mobileNumberText}"-->
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:id="@+id/tv_err_mobile"
+                        style="@style/TextAppearance.ErrorMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/content_margin_extra_extra_small"
+                        android:text="@string/mobile_number_error"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cv_mobile_number"
+                        app:toggledVisibility="@{viewModel.showErrorMobile}" />
+
+                    <TextView
+                        android:id="@+id/lbl_yob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                        android:text="@string/year_of_birth_optional"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_err_mobile" />
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinner_yob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawSelectorOnTop="true"
+                        android:layout_marginTop="@dimen/content_padding_small"
+                        android:spinnerMode="dropdown"
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_yob"
+                        android:text="yyyy"
+                        android:textColor="@color/colorPrimary"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:onItemSelected="@{spinnerListener}" />
+
+                    <TextView
+                        android:id="@+id/lbl_gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/content_margin_extra_small"
+                        android:text="@string/gender"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/spinner_yob" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cg_gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_gender"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/gender_chip_male"
+                            style="@style/Chip.ChoiceCustomized"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/button_height"
+                            android:layout_weight="1"
+                            android:text="@string/male"
+                            app:chipCornerRadius="@dimen/chip_corner_radius" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/gender_chip_female"
+                            style="@style/Chip.ChoiceCustomized"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/button_height"
+                            android:layout_weight="1"
+                            android:text="@string/female"
+                            app:chipCornerRadius="@dimen/chip_corner_radius" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/gender_chip_other"
+                            style="@style/Chip.ChoiceCustomized"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/button_height"
+                            android:layout_weight="1"
+                            android:text="@string/others"
+                            app:chipCornerRadius="@dimen/chip_corner_radius" />
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <TextView
+                        android:id="@+id/tv_err_gender"
+                        style="@style/TextAppearance.ErrorMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/content_margin_extra_extra_small"
+                        android:text="@string/please_select_gender"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cg_gender"
+                        app:toggledVisibility="@{viewModel.showErrorGender}" />
+
+
+
+                    <TextView
+                        android:id="@+id/lbl_ayushman_bharat_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/content_margin_extra_small"
+                        android:text="@string/ayushman_bharat_id"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cg_gender" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cv_ayushman_bharat_id"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/edit_text_height_large"
+                        android:layout_marginTop="@dimen/content_margin_extra_small"
+                        app:cardElevation="@dimen/content_padding_medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_ayushman_bharat_id">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/content_margin_medium">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_ayushman_bharat_id"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="start"
+                                android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
+                                android:inputType="textCapCharacters"
+                                android:layout_weight=".7"
+                                android:text="@={viewModel.inputAyushmanIdLbl}"
+                                android:background="@color/white"/>
+                            <!--app:onValueChanged="@{ayushmanIdChangeWatcher}"
+                            android:cursorVisible="true"
+                            android:digits="@string/alphabets_and_space_only"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_medium" />-->
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:id="@+id/ayushman_error_text"
+                        style="@style/TextAppearance.ErrorMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/content_margin_extra_extra_small"
+                        android:text="@string/ayushman_validation_hint"
+                        app:toggledVisibility="@{viewModel.showErrorAyushmanId}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cv_ayushman_bharat_id" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_register"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ayushman_error_text"
+                        style="@style/Button"
+                        android:layout_width="match_parent"
+                        android:enabled="@{viewModel.submitEnabled}"
+                        android:onClick="@{() -> viewModel.createAccount()}"
+                        android:text="@string/register" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/progress_bar"
+            layout="@layout/progress_layout"
+            app:message="@{viewModel.showProgressMessage}"
+            app:showProgress="@{viewModel.showProgress}" />
+    </RelativeLayout>
+</layout>
