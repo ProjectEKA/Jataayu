@@ -35,6 +35,7 @@ class ResetPasswordOtpFragment : BaseFragment() {
     companion object {
         private const val ERROR_CODE_INVALID_OTP = 1003
         private const val ERROR_CODE_OTP_EXPIRED = 1004
+        const val EXCEEDED_INVALID_ATTEMPT_LIMIT = 1035
         fun newInstance() = ResetPasswordOtpFragment()
         private lateinit var snackbar: Snackbar
     }
@@ -75,10 +76,9 @@ class ResetPasswordOtpFragment : BaseFragment() {
                 is Loading -> viewModel.showProgress(it.isLoading)
 
                 is PartialFailure -> {
-                    if (it.error?.code == ERROR_CODE_INVALID_OTP || it.error?.code == ERROR_CODE_OTP_EXPIRED) {
+                    if (it.error?.code == ERROR_CODE_INVALID_OTP || it.error?.code == ERROR_CODE_OTP_EXPIRED || it.error?.code == EXCEEDED_INVALID_ATTEMPT_LIMIT) {
                         viewModel.otpText.set(null)
                     }
-
                     viewModel.errorLbl.set(
                         when (it.error?.code) {
                             ERROR_CODE_INVALID_OTP -> {
@@ -86,6 +86,9 @@ class ResetPasswordOtpFragment : BaseFragment() {
                             }
                             ERROR_CODE_OTP_EXPIRED -> {
                                 getString(R.string.otp_expired)
+                            }
+                            EXCEEDED_INVALID_ATTEMPT_LIMIT -> {
+                                getString(R.string.otp_attempt_limit_exceed)
                             }
                             else -> it.error?.message
                         }

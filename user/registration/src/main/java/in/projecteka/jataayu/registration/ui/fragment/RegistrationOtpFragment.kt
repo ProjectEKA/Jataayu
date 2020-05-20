@@ -23,7 +23,9 @@ class RegistrationOtpFragment : BaseFragment() {
 
     companion object {
         const val ERROR_CODE_INVALID_OTP = 1003
+        const val ERROR_CODE_OTP_EXPIRED = 1004
         const val ERROR_CODE_OTP_LIMIT_EXCEEDED = 1029
+        const val EXCEEDED_INVALID_ATTEMPT_LIMIT = 1035
         fun newInstance() = RegistrationOtpFragment()
     }
 
@@ -64,15 +66,22 @@ class RegistrationOtpFragment : BaseFragment() {
         parentVM.verifyIdentifierResponseLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is PartialFailure -> {
-                    if (it.error?.code == ERROR_CODE_INVALID_OTP) {
+                    if (it.error?.code == ERROR_CODE_INVALID_OTP || it.error?.code == EXCEEDED_INVALID_ATTEMPT_LIMIT ) {
                         viewModel.otpText.set(null)
                     }
-
                     viewModel.errorLbl.set(
-                        if (it.error?.code == ERROR_CODE_INVALID_OTP) {
-                            getString(R.string.invalid_otp)
-                        } else
-                            it.error?.message
+                        when (it.error?.code) {
+                            ERROR_CODE_INVALID_OTP -> {
+                                getString(R.string.invalid_otp)
+                            }
+                            ERROR_CODE_OTP_EXPIRED -> {
+                                getString(R.string.otp_expired)
+                            }
+                            EXCEEDED_INVALID_ATTEMPT_LIMIT -> {
+                                getString(R.string.otp_attempt_limit_exceed)
+                            }
+                            else -> it.error?.message
+                        }
                     )
                 }
             }
