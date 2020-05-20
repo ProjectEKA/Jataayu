@@ -7,6 +7,8 @@ import `in`.projecteka.jataayu.core.model.ProviderInfo
 import `in`.projecteka.jataayu.core.model.Request
 import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
 import `in`.projecteka.jataayu.network.model.ErrorResponse
+import `in`.projecteka.jataayu.network.utils.Failure
+import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
@@ -22,6 +24,7 @@ import `in`.projecteka.jataayu.provider.ui.handler.ProviderSearchScreenHandler
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderActivityViewModel
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.graphics.Color
@@ -34,6 +37,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -108,17 +112,19 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
 
     override fun onVisible() {
         if (!binding.inEditMode!!)
-            setTitle(R.string.confirm_provider)
+            (activity as? ProviderActivity)?.updateTitle(getString(R.string.link_your_id))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeProviders()
+        initObservers()
         parentVM.showSnackbarevent.observe(this, Observer{
             if (it) {
                 showSnackbar(getString(R.string.registered_successfully))
             }
         })
+        viewModel.fetchProfileData()
         setTitle(R.string.link_provider)
     }
 
@@ -144,8 +150,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         binding.tvSearchProviderLabel.text = getString(R.string.we_will_be_sending_info_to)
         binding.svProvider.clearFocus()
         binding.tvSelectedProvider.postDelayed({ binding.tvSelectedProvider.requestFocus() }, 100)
-        setTitle(R.string.confirm_provider)
-        binding.btnSearch.text = getString(R.string.confirm_provider)
+        binding.btnSearch.text = getString(R.string.fetch_record)
     }
 
     private val onScrollListener =
@@ -174,12 +179,14 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     override fun onClearTextButtonClick(view: View) {
         binding.svProvider.text.clear()
         binding.inEditMode = true
+        updateViewDetailsVisibility()
     }
 
     override fun onClearSelectionClick(view: View) {
         binding.svProvider.setText(lastQuery)
         binding.svProvider.setSelection(lastQuery.length)
         binding.inEditMode = true
+        updateViewDetailsVisibility()
         binding.svProvider.requestFocus()
         setTitle(R.string.link_provider)
         binding.btnSearch.text = getString(R.string.link_provider)
@@ -197,6 +204,74 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
 
     private fun observePatients() =
         viewModel.patientDiscoveryResponse.observe(this, patientAccountsObserver)
+
+    private fun initObservers() {
+
+        binding.viewDetails.setOnClickListener {
+           updateViewDetailsVisibility()
+        }
+        viewModel.userProfileResponse.observe(this, Observer {
+            when (it) {
+                is Failure -> {
+                    context?.showErrorDialog(it.error.localizedMessage)
+                }
+                is PartialFailure -> {
+                    context?.showAlertDialog(
+                        getString(R.string.failure), it.error?.message, getString(
+                            android
+                                .R.string.ok
+                        )
+                    )
+                }
+            }
+        })
+
+        viewModel.myProfile.observe(this, Observer { profile ->
+            binding.setSex(
+                if(profile.gender == "M") {
+                    getString(R.string.male)
+                } else {
+                    getString(R.string.female)
+                }
+            )
+            binding.setFullName(profile.name)
+            profile.yearOfBirth?.let {
+                binding.setYearOfBirth(it.toString())
+            }?: kotlin.run {
+                binding.yearOfBirth.visibility = GONE
+                binding.yearOfBirthLbl.visibility = GONE
+            }
+
+            profile.unverifiedIdentifiers?.let { unverifiedIdentifiers ->
+                unverifiedIdentifiers.firstOrNull { it.type == PreferenceRepository.TYPE_AYUSHMAN_BHARAT_ID }?.let {
+                    binding.ayushmanId = it.value
+                } ?: kotlin.run {
+                    binding.ayushmanBharatId.visibility = GONE
+                    binding.ayushmanBharatIdLbl.visibility = GONE
+                }
+            } ?: kotlin.run {
+                binding.ayushmanBharatId.visibility = GONE
+                binding.ayushmanBharatIdLbl.visibility = GONE
+            }
+        })
+    }
+
+    private fun updateViewDetailsVisibility() {
+        if (binding.inEditMode == false) {
+            viewModel.isViewDetailsEnabled.set(!viewModel.isViewDetailsEnabled.get())
+        } else {
+            viewModel.isViewDetailsEnabled.set(false)
+        }
+
+        if (viewModel.isViewDetailsEnabled.get()) {
+            //right drawable
+            val arrowTop = ContextCompat.getDrawable(context!!, R.drawable.ic_arrow_up)
+            binding.viewDetails.setCompoundDrawablesWithIntrinsicBounds(null, null, arrowTop, null)
+        } else {
+            val arrowRight = ContextCompat.getDrawable(context!!, R.drawable.ic_arrow_right)
+            binding.viewDetails.setCompoundDrawablesWithIntrinsicBounds(null, null, arrowRight, null)
+        }
+    }
 
     override fun <T> onSuccess(body: T?) {
         viewModel.showProgress(false)

@@ -4,6 +4,7 @@ import `in`.projecteka.jataayu.core.model.Hip
 import `in`.projecteka.jataayu.core.model.ProviderInfo
 import `in`.projecteka.jataayu.core.model.Request
 import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
+import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.provider.model.PatientDiscoveryResponse
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
@@ -55,12 +56,15 @@ class ProviderSearchViewModelTest {
     @Mock
     private lateinit var patientsInfoCall: Call<PatientDiscoveryResponse>
 
+    @Mock
+    private lateinit var userAccountsRepository: UserAccountsRepository
+
     private lateinit var viewModel: ProviderSearchViewModel
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        viewModel = ProviderSearchViewModel(repository,preferenceRepository, uuidRepository)
+        viewModel = ProviderSearchViewModel(repository, userAccountsRepository, preferenceRepository, uuidRepository)
     }
 
     @After
@@ -109,7 +113,7 @@ class ProviderSearchViewModelTest {
     fun shouldReturnTrueIfAtLeastOneCareContextIsSelected() {
         setUpPatients()
         viewModel.patientDiscoveryResponse.value?.patient?.careContexts!![1].contextChecked = true
-        Assert.assertTrue(viewModel.canLinkAccounts(viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!))
+        Assert.assertTrue(viewModel.canLinkAccounts(viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!).first)
     }
 
     @Test
@@ -117,7 +121,7 @@ class ProviderSearchViewModelTest {
         setUpPatients()
         viewModel.patientDiscoveryResponse.value?.patient?.careContexts!![0].contextChecked = false
         viewModel.patientDiscoveryResponse.value?.patient?.careContexts!![1].contextChecked = false
-        Assert.assertFalse(viewModel.canLinkAccounts(viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!))
+        Assert.assertFalse(viewModel.canLinkAccounts(viewModel.patientDiscoveryResponse.value?.patient?.careContexts!!).first)
     }
 
     private fun setUpPatients(): PatientDiscoveryResponse {
