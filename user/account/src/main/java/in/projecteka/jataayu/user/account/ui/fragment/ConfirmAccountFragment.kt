@@ -67,17 +67,16 @@ class ConfirmAccountFragment : BaseFragment() {
         }
 
         val generatedCmID = generateCmId(removeCountryCode(viewModel.getMobileIdentifier()), parentVM.fullName)
-        viewModel.inputFullName.set(parentVM.fullName)
-        viewModel.inputGender.set(parentVM.gender)
-        viewModel.selectedYoB.set(parentVM.yearOfBirth)
+        viewModel.inputFullName = parentVM.fullName
+        viewModel.inputGender = parentVM.gender
+        viewModel.selectedYoB = parentVM.yearOfBirth
         viewModel.inputUsernameLbl.set(generatedCmID)
     }
 
     private fun initObservers(){
         viewModel.createAccountResponse.observe(activity!!, Observer {
             when (it) {
-                is Loading -> {viewModel.showProgress(it.isLoading)
-                    println(it)}
+                is Loading -> viewModel.showProgress(it.isLoading)
                 is Success -> {
                     viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
                     viewModel.preferenceRepository.isUserAccountCreated = true
@@ -90,7 +89,6 @@ class ConfirmAccountFragment : BaseFragment() {
                     activity?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
                 is Failure ->
                     activity?.showErrorDialog(it.error.localizedMessage)
-
             }
         })
     }
