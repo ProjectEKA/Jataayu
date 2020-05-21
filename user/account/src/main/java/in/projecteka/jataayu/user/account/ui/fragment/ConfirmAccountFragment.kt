@@ -1,15 +1,24 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
+import `in`.projecteka.jataayu.network.utils.Failure
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PartialFailure
+import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.presentation.showAlertDialog
+import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ConfirmAccountFragmentBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.AccountCreationActivityViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.ConfirmAccountViewModel
+import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -20,8 +29,10 @@ class ConfirmAccountFragment : BaseFragment() {
     private lateinit var binding: ConfirmAccountFragmentBinding
 
     companion object {
+        const val KEY_ACCOUNT_CREATED = "account_created"
         fun newInstance() = ConfirmAccountFragment()
     }
+
 
     private val viewModel: ConfirmAccountViewModel by viewModel()
     private val parentVM : AccountCreationActivityViewModel by sharedViewModel()
@@ -39,8 +50,7 @@ class ConfirmAccountFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBindings()
-        val generatedCmID = generateCmId(removeCountryCode(viewModel.getMobileIdentifier()), parentVM.fullName)
-        viewModel.inputUsernameLbl.set(generatedCmID)
+        initObservers()
     }
 
     private fun initBindings() {
@@ -56,10 +66,33 @@ class ConfirmAccountFragment : BaseFragment() {
             viewModel.validateConfirmPassword()
         }
 
-        viewModel.inputUsernameLbl.set(parentVM.fullName)
-        viewModel.inputFullName .set(parentVM.fullName)
+        val generatedCmID = generateCmId(removeCountryCode(viewModel.getMobileIdentifier()), parentVM.fullName)
+        viewModel.inputFullName.set(parentVM.fullName)
         viewModel.inputGender.set(parentVM.gender)
         viewModel.selectedYoB.set(parentVM.yearOfBirth)
+        viewModel.inputUsernameLbl.set(generatedCmID)
+    }
+
+    private fun initObservers(){
+        viewModel.createAccountResponse.observe(activity!!, Observer {
+            when (it) {
+                is Loading -> {viewModel.showProgress(it.isLoading)
+                    println(it)}
+                is Success -> {
+                    viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
+                    viewModel.preferenceRepository.isUserAccountCreated = true
+                    startProvider(context!!) {
+                        putExtra(KEY_ACCOUNT_CREATED, true)
+                    }
+                    activity?.finish()
+                }
+                is PartialFailure ->
+                    activity?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
+                is Failure ->
+                    activity?.showErrorDialog(it.error.localizedMessage)
+
+            }
+        })
     }
 
 

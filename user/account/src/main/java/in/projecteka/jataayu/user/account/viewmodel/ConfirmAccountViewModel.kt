@@ -44,16 +44,16 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val usernameProviderLbl = ObservableField<String>()
     val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
     val inputAyushmanIdLbl = ObservableField<String>()
-    val submitEnabled = ObservableBoolean(true)
+    val submitEnabled = ObservableBoolean(false)
     val showErrorUserName = ObservableBoolean(false)
     val showErrorPassword = ObservableBoolean(false)
     val showErrorConfirmPassword = ObservableBoolean(false)
     val showErrorAyushmanId = ObservableBoolean(false)
     val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
     val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
-    var inputFullName = ObservableField<String>()
-    var inputGender = ObservableField<String>()
-    var selectedYoB = ObservableField<Int>()
+    var inputFullName: String? = ""
+    var inputGender: String? = ""
+    var selectedYoB: Int? = null
 
 
     fun validatePassword() {
@@ -81,6 +81,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
         )
 
         var isValid = listOfEvents.all { it == true }
+        submitEnabled.set(isValid)
         return isValid
     }
 
@@ -130,6 +131,10 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
        return preferenceRepository.mobileIdentifier.orEmpty();
     }
 
+    fun getAuthTokenWithTokenType(response: CreateAccountResponse?): String {
+        return "${response?.tokenType?.capitalize()} ${response?.accessToken}"
+    }
+
     fun getCreateAccountPayload(): CreateAccountRequest {
 
         var unverifiedIdentifiers: List<UnverifiedIdentifier>? = null
@@ -143,9 +148,9 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
         return CreateAccountRequest(
             userName = "${inputUsernameLbl.get()}${usernameProviderLbl.get()}" ,
             password = inputPasswordLbl.get() ?: "",
-            name = inputFullName.get() ?: "",
-            gender = inputGender.get() ?: "",
-            yearOfBirth = (selectedYoB.get() ?: "") as Int,
+            name = inputFullName.orEmpty(),
+            gender = inputGender.orEmpty(),
+            yearOfBirth = selectedYoB,
             unverifiedIdentifiers = unverifiedIdentifiers)
     }
 }

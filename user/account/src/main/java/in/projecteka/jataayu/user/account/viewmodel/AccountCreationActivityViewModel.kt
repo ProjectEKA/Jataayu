@@ -20,7 +20,6 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
     var yearOfBirth: Int? = null
     var gender = ""
     val currentPage = SingleLiveEvent<ShowPage>();
-    val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
 
     enum class ShowPage{
         FIRST_SCREEN,
@@ -37,9 +36,5 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
 
     fun redirectToCreateAccountPage(){
         currentPage.value = ShowPage.FIRST_SCREEN
-    }
-
-    fun getAuthTokenWithTokenType(response: CreateAccountResponse?): String {
-        return "${response?.tokenType?.capitalize()} ${response?.accessToken}"
     }
 }
