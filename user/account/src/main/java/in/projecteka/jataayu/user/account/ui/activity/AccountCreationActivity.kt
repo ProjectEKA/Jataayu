@@ -5,6 +5,7 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ActivityCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.ui.fragment.ConfirmAccountFragment
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
+import `in`.projecteka.jataayu.user.account.ui.fragment.SuccessPageFragment
 import `in`.projecteka.jataayu.user.account.viewmodel.AccountCreationActivityViewModel
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -44,6 +45,9 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
                   replaceFragment(CreateAccountFragment.newInstance(), R.id.create_account_fragment_container)
               AccountCreationActivityViewModel.ShowPage.SECOND_SCREEN ->
                   replaceFragment(ConfirmAccountFragment.newInstance(), R.id.create_account_fragment_container)
+                AccountCreationActivityViewModel.ShowPage.THIRD_SCREEN ->
+                    replaceFragment(SuccessPageFragment.newInstance(), R.id.create_account_fragment_container)
+
             }
         })
     }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.activity.AccountCreationActivity"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="in.projecteka.jataayu.user.account.viewmodel.SuccessPageViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/content_margin_extra_large"
+        android:paddingLeft="@dimen/content_padding_large"
+        android:paddingRight="@dimen/content_padding_large"
+        android:paddingStart="@dimen/content_padding_large"
+        android:paddingEnd="@dimen/content_padding_large">
+
+        <TextView
+            android:id="@+id/congrates"
+            style="@style/TextAppearance.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin_medium"
+            android:text="@string/congratulation"
+            android:textSize="@dimen/text_size_large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name_of_user"
+            style="@style/TextAppearance.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin_medium"
+            android:textStyle="bold"
+            android:text="@string/sample_name"
+            android:textSize="@dimen/text_size_large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cm_success-msg"
+            style="@style/TextAppearance.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin_medium"
+            android:text="@string/registration_success_message"
+            android:textSize="@dimen/text_size_large"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/cm_info"
+            style="@style/TextAppearance.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin_medium"
+            android:text="@string/cm_id_info"
+            android:textSize="@dimen/text_size_large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+</layout>

@@ -80,10 +80,12 @@ class ConfirmAccountFragment : BaseFragment() {
                 is Success -> {
                     viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
                     viewModel.preferenceRepository.isUserAccountCreated = true
-                    startProvider(context!!) {
-                        putExtra(KEY_ACCOUNT_CREATED, true)
-                    }
-                    activity?.finish()
+                    parentVM.redirectToCreateAccountSuccessPage()
+
+//                    startProvider(context!!) {
+//                        putExtra(KEY_ACCOUNT_CREATED, true)
+//                    }
+//                    activity?.finish()
                 }
                 is PartialFailure ->
                     activity?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))

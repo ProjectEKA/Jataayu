@@ -23,7 +23,8 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
 
     enum class ShowPage{
         FIRST_SCREEN,
-        SECOND_SCREEN
+        SECOND_SCREEN,
+        THIRD_SCREEN
     }
 
     fun redirectToConfirmAccountPage(fullName: String, ayushmanId: String, yearOfBirth: Int?, gender: String){
@@ -36,5 +37,8 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
 
     fun redirectToCreateAccountPage(){
         currentPage.value = ShowPage.FIRST_SCREEN
+    }
+    fun redirectToCreateAccountSuccessPage(){
+        currentPage.value = ShowPage.THIRD_SCREEN
     }
 }
