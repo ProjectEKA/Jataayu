@@ -4,11 +4,14 @@ import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
+import android.text.InputType
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import junit.framework.Assert.*
 import org.junit.After
@@ -70,95 +73,68 @@ class ConfirmAccountViewModelTest {
         assertEquals(true, viewModel.submitEnabled.get())
     }
 
+
     @Test
-    fun `should disable submit button when gender not selected`() {
+    fun `validate user name criteria`() {
 
         viewModel.inputUsernameLbl.set("raj1")
-        viewModel.inputPasswordLbl.set("Raj1234@13")
-        assertEquals(false,  viewModel.validateFields())
-        assertEquals(false, viewModel.submitEnabled.get())
+        viewModel.inputPasswordLbl.set("As1@12345")
+        viewModel.confirmationInputPasswordLbl.set("As1@12345")
+        viewModel.validateUserName()
+        assertTrue(!viewModel.showErrorUserName.get())
+
     }
 
     @Test
-    fun `should disable submit button when name not entered`() {
+    fun `validate password if pattern matches`() {
 
-        viewModel.inputUsernameLbl.set("raj1")
-        viewModel.inputPasswordLbl.set("Raj1234@13")
-        assertEquals(false,  viewModel.validateFields())
-        assertEquals(false, viewModel.submitEnabled.get())
+        viewModel.inputPasswordLbl.set("As1@12345")
+        viewModel.validatePassword()
+        assertTrue(!viewModel.showErrorPassword.get())
     }
 
     @Test
-    fun `should disable submit button when username is not entered`() {
+    fun `invalidate password if pattern does not match`() {
 
-        viewModel.inputUsernameLbl.set("")
-        viewModel.inputPasswordLbl.set("Raj1234@13")
-        assertEquals(false,  viewModel.validateFields())
-        assertEquals(false, viewModel.submitEnabled.get())
+        viewModel.inputPasswordLbl.set("As112345")
+        viewModel.validatePassword()
+        assertFalse(!viewModel.showErrorPassword.get())
     }
 
     @Test
-    fun `should disable submit button when password is not entered`() {
-        viewModel.inputUsernameLbl.set("raj2904201")
-        viewModel.inputPasswordLbl.set("")
-        assertEquals(false,  viewModel.validateFields())
-        assertEquals(false, viewModel.submitEnabled.get())
+    fun `validate confirmPassword if pattern match`() {
+
+        viewModel.inputPasswordLbl.set("As@12345")
+        viewModel.confirmationInputPasswordLbl.set("As@12345")
+        viewModel.validateConfirmPassword()
+        assertTrue(viewModel.showErrorConfirmPassword.get())
+    }
+    @Test
+    fun `invalidate confirmPassword if pattern does not match`() {
+
+        viewModel.inputPasswordLbl.set("As@12345")
+        viewModel.confirmationInputPasswordLbl.set("Aa@12345")
+        viewModel.validateConfirmPassword()
+        assertFalse(viewModel.showErrorConfirmPassword.get())
     }
 
     @Test
-    fun `should create correct create account payload for entered inputs`() {
-        val username = "raj-bande1"
-        val password = "Vik2704"
-        val fullName = "Maabu"
-        val provider = "hegde"
+    fun `validate hidden password field and toggle it `() {
 
-        viewModel.usernameProviderLbl.set(provider)
-        viewModel.inputUsernameLbl.set(username)
-        viewModel.inputPasswordLbl.set(password)
-        viewModel.inputFullName.set(fullName)
-        viewModel.onCheckedChanged(null, 2)
-        val createAccountRequest = viewModel.getCreateAccountPayload()
-        assertEquals(username + provider, createAccountRequest.userName)
-        assertEquals(password, createAccountRequest.password)
-        assertEquals(fullName, createAccountRequest.name)
-        assertEquals("O", createAccountRequest.gender)
+       viewModel.confirmationPasswordInputType.set(InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD)
+        viewModel.togglePasswordVisible()
+        assertEquals(InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,viewModel.confirmationPasswordInputType.get())
+        viewModel.togglePasswordVisible()
+        assertEquals(InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD,viewModel.confirmationPasswordInputType.get())
+
     }
-
-
-
 
     @Test
-    fun `should create an account`() {
-        val accountDetails = Gson().fromJson<CreateAccountRequest>(TestUtils.readFile("create_account_request.json"))
-        viewModel.usernameProviderLbl.set("@ncg")
-        viewModel.inputUsernameLbl.set(accountDetails.userName)
-        viewModel.inputPasswordLbl.set(accountDetails.password)
-        viewModel.inputFullName.set(accountDetails.name)
-        //viewModel.selectedYoB(accountDetails.yearOfBirth!!)
-        viewModel.onCheckedChanged(null, 2)
+    fun `validate toggle password field as hidden by default`() {
 
-        val createAccountResponse = Gson().fromJson<CreateAccountResponse>(TestUtils.readFile("create_account_response.json"))
-        val payload = viewModel.getCreateAccountPayload()
-        Mockito.`when`(repository.createAccount(payload)).thenReturn(createAccountAccountCall)
-        Mockito.`when`(createAccountAccountCall.enqueue(any()))
-            .then { invocation ->
-                val callback = invocation.arguments[0] as Callback<CreateAccountResponse>
-                callback.onResponse(createAccountAccountCall, Response.success(createAccountResponse))
-            }
-        viewModel.createAccountResponse.observeForever {
-            when(it) {
-                is Success -> {
-                    val response = viewModel.createAccountResponse.value as Success<CreateAccountResponse>
-                    assertEquals(createAccountResponse, response.data)
-                }
-            }
-        }
-        viewModel.createAccount()
-        Mockito.verify(repository).createAccount(payload)
-        Mockito.verify(createAccountAccountCall).enqueue(any())
+        viewModel.confirmationPasswordInputType.set(InputType.TYPE_CLASS_TEXT + InputType.TYPE_CLASS_DATETIME)
+        viewModel.togglePasswordVisible()
+        assertEquals(InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD,viewModel.confirmationPasswordInputType.get())
+
     }
-
-
-
-
 }

@@ -58,7 +58,6 @@ class CreateAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         binding.viewModel = viewModel
         binding.cgGender.setOnCheckedChangeListener(viewModel)
         binding.spinnerListener = this
-
         binding.etName.addTextChangedListener { text ->
             viewModel.validateName()
         }
@@ -66,7 +65,6 @@ class CreateAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         binding.etAyushmanBharatId.addTextChangedListener{text ->
             viewModel.validateAyushmanId()
         }
-
         binding.btnRegister.setOnClickListener {
             parentVM.redirectToConfirmAccountPage(
                 viewModel.inputFullName.get().orEmpty(),

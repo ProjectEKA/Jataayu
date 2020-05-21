@@ -51,7 +51,7 @@ class CreateAccountViewModelTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        viewModel = CreateAccountViewModel(repository, preferenceRepository, credentialsRepository)
+        viewModel = CreateAccountViewModel()
     }
 
     @After
@@ -151,9 +151,6 @@ class CreateAccountViewModelTest {
         assertEquals(1977, createAccountRequest.yearOfBirth)
     }
 
-
-
-
     @Test
     fun `test ayushman Id should return valid if id starts with letter P `() {
         viewModel.inputAyushmanIdLbl.set("PAYUSh123")
@@ -188,5 +185,37 @@ class CreateAccountViewModelTest {
         viewModel.inputAyushmanIdLbl.set("P123456IDK")
         viewModel.validateAyushmanId()
         assertFalse(!viewModel.showErrorAyushmanId.get())
+    }
+
+
+    @Test
+    fun `should create correct create account payload for entered inputs with ayushmanBharatID`() {
+        val username = "raj-bande1"
+        val password = "Vik2704"
+        val fullName = "Maabu"
+        val provider = "hegde"
+        val bharatId = "PAYUSh123"
+        viewModel.usernameProviderLbl.set(provider)
+        viewModel.inputUsernameLbl.set(username)
+        viewModel.inputPasswordLbl.set(password)
+        viewModel.inputFullName.set(fullName)
+        viewModel.inputAyushmanIdLbl.set(bharatId)
+        viewModel.selectedYoB(1977)
+        viewModel.onCheckedChanged(null, 2)
+        val createAccountRequest = viewModel.getCreateAccountPayload()
+        assertEquals(username + provider, createAccountRequest.userName)
+        assertEquals(password, createAccountRequest.password)
+        assertEquals(fullName, createAccountRequest.name)
+        assertEquals("O", createAccountRequest.gender)
+        assertEquals(1977, createAccountRequest.yearOfBirth)
+    }
+
+    @Test
+    fun `test years to populate of list of 120 years`() {
+
+        val yearsToPopulate = viewModel.getYearsToPopulate()
+        assertEquals("yyyy",yearsToPopulate[0])
+        assertEquals("2020",yearsToPopulate[1])
+        assertEquals("1901",yearsToPopulate[120])
     }
 }

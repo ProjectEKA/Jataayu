@@ -1,14 +1,10 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
-import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.user.account.R
-import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
-import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TYPE_AYUSHMAN_BHARAT_ID
 import android.text.InputType
@@ -100,8 +96,7 @@ class CreateAccountViewModel : BaseViewModel(), ChipGroup.OnCheckedChangeListene
         val years = arrayListOf<String>(YOB)
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
         for (year in currentYear downTo (currentYear - 120)) {
-            years.add(year.toString())
-        }
+            years.add(year.toString()) }
         return years
     }
 

@@ -48,8 +48,14 @@ class ConfirmAccountFragment : BaseFragment() {
         binding.etConfirmPassword.addTextChangedListener{text: Editable? ->
             viewModel.validateConfirmPassword()
         }
+        binding.etUsername.addTextChangedListener{text: Editable? ->
+            viewModel.validateConfirmPassword()
+        }
 
         viewModel.inputUsernameLbl.set(parentVM.fullName)
+        viewModel.inputFullName .set(parentVM.fullName)
+        viewModel.inputGender.set(parentVM.gender)
+        viewModel.selectedYoB.set(parentVM.yearOfBirth)
     }
 
 

@@ -11,24 +11,18 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ActivityCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.ui.fragment.ConfirmAccountFragment
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
-import `in`.projecteka.jataayu.user.account.ui.fragment.ProfileFragment
 import `in`.projecteka.jataayu.user.account.viewmodel.AccountCreationActivityViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.ConfirmAccountViewModel
-import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import androidx.appcompat.widget.AppCompatCheckedTextView
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
 
-    private val viewModel: AccountCreationActivityViewModel by viewModel()
+    private val parentVM: AccountCreationActivityViewModel by viewModel()
+    private val viewModel: ConfirmAccountViewModel by viewModel()
 
     override fun layoutId(): Int = R.layout.activity_create_account
 
@@ -41,7 +35,7 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
         initBindings()
         initToolbar()
         initObservers()
-        viewModel.redirectToCreateAccountPage();
+        parentVM.redirectToCreateAccountPage();
     }
 
     private fun initToolbar() {
@@ -52,33 +46,28 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
     }
 
     private fun initBindings() {
-        binding.viewModel = viewModel
-        viewModel.appBarTitle.set(getString(R.string.create_account))
+        binding.viewModel = parentVM
+        parentVM.appBarTitle.set(getString(R.string.create_account))
     }
 
     private fun initObservers() {
-        viewModel.currentPage.observe(this, Observer {
+        parentVM.currentPage.observe(this, Observer {
             when(it){
               AccountCreationActivityViewModel.ShowPage.FIRST_SCREEN ->
                   replaceFragment(CreateAccountFragment.newInstance(), R.id.create_account_fragment_container)
               AccountCreationActivityViewModel.ShowPage.SECOND_SCREEN ->
                   replaceFragment(ConfirmAccountFragment.newInstance(), R.id.create_account_fragment_container)
             }
-//            replaceFragment(when(it){
-//                AccountCreationActivityViewModel.ShowPage.FIRST_SCREEN ->
-//                    CreateAccountFragment.newInstance()
-//                AccountCreationActivityViewModel.ShowPage.SECOND_SCREEN ->
-//                    ConfirmAccountFragment.newInstance()
-//            },R.id.create_account_fragment_container)
         })
 
         viewModel.createAccountResponse.observe(this,
             Observer {
                 when (it) {
-                    is Loading -> viewModel.showProgress(it.isLoading)
+                    is Loading -> {parentVM.showProgress(it.isLoading)
+                        println(it)}
                     is Success -> {
-                        viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
-                        viewModel.preferenceRepository.isUserAccountCreated = true
+                        parentVM.credentialsRepository.accessToken = parentVM.getAuthTokenWithTokenType(it.data)
+                        parentVM.preferenceRepository.isUserAccountCreated = true
                         startProvider(this) {
                             putExtra(KEY_ACCOUNT_CREATED, true)
                         }

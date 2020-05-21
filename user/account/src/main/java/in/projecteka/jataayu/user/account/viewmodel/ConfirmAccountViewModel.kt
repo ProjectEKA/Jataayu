@@ -23,25 +23,12 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
                              val credentialsRepository: CredentialsRepository) : BaseViewModel(){
 
     companion object {
-
-//        private const val YOB = "yyyy"
-//        private const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
-        /*^                 # start-of-string
-        (?=.*[0-9])       # a digit must occur at least once
-        (?=.*[a-z])       # a lower case letter must occur at least once
-        (?=.*[A-Z])       # an upper case letter must occur at least once
-        (?=.*[@#$%^&+=])  # a special character must occur at least once
-        (?=\S+$)          # no whitespace allowed in the entire string
-        .{8,}             # anything, at least eight places though
-        $                 # end-of-string*/
+        private const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
         private const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
-//        const val ayushmanIdCriteria =  "^[P|p]([A-Z][0-9])*.{8}$"
         private const val DEFAULT_CHECKED_ID = -1
     }
 
     private var genderCheckId: Int = -1
-    private var selectedYoB: Int? = null
-
     val inputUsernameLbl = ObservableField<String>()
     val inputPasswordLbl = ObservableField<String>()
     val confirmationInputPasswordLbl = ObservableField<String>()
@@ -59,7 +46,9 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val showErrorAyushmanId = ObservableBoolean(false)
     val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
     val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
-    val inputFullName = ObservableField<String>()
+    var inputFullName = ObservableField<String>()
+    var inputGender = ObservableField<String>()
+    var selectedYoB = ObservableField<Int>()
     val showErrorName = ObservableBoolean(false)
 
 
@@ -72,6 +61,13 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
         val arePasswordEqual = (inputPasswordLbl.get() == confirmationInputPasswordLbl.get())
         showErrorConfirmPassword.set(!arePasswordEqual)
     }
+
+    fun validateUserName() {
+        if(inputUsernameLbl.get()?.isNotEmpty() == true)
+            inputUsernameLbl.get()?.let { showErrorUserName.set(!isValid(it, usernameCriteria)) }
+        validateFields()
+    }
+
 
     fun validateFields(): Boolean {
         val listOfEvents: List<Boolean> = listOf(
@@ -115,9 +111,14 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
 
 
     fun createAccount() {
+        if (validateFields()){
             val payload = getCreateAccountPayload()
+            println(payload)
             val call = repository.createAccount(payload)
-            createAccountResponse.fetch(call)
+            print(call)
+            val fetch = createAccountResponse.fetch(call)
+            print(fetch)
+        }
     }
 
     fun getAuthTokenWithTokenType(response: CreateAccountResponse?): String {
@@ -138,22 +139,14 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
             userName = "${inputUsernameLbl.get()}${usernameProviderLbl.get()}" ,
             password = inputPasswordLbl.get() ?: "",
             name = inputFullName.get() ?: "",
-            gender = getGender(),
-            yearOfBirth = selectedYoB,
+            gender = inputGender.get() ?: "",
+            yearOfBirth = (selectedYoB.get() ?: "") as Int,
             unverifiedIdentifiers = unverifiedIdentifiers)
     }
     fun onCheckedChanged(group: ChipGroup?, checkedId: Int) {
         genderCheckId = checkedId
         showErrorGender.set(genderCheckId == ConfirmAccountViewModel.DEFAULT_CHECKED_ID)
         validateFields()
-    }
-    private fun getGender(): String {
-        return when (genderCheckId) {
-            R.id.gender_chip_male -> PreferenceRepository.GENDER_MALE
-            R.id.gender_chip_female -> PreferenceRepository.GENDER_FEMALE
-            R.id.gender_chip_other -> PreferenceRepository.GENDER_OTHERS
-            else -> PreferenceRepository.GENDER_OTHERS
-        }
     }
 
 }
