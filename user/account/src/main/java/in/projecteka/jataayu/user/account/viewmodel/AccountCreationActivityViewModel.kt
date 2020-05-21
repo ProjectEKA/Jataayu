@@ -17,7 +17,7 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
 
     var ayushmanId = ""
     var fullName = ""
-    var yearOfBirth = 0
+    var yearOfBirth: Int? = null
     var gender = ""
     val currentPage = SingleLiveEvent<ShowPage>();
     val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
@@ -30,7 +30,7 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
     fun redirectToConfirmAccountPage(fullName: String, ayushmanId: String, yearOfBirth: Int?, gender: String){
         this.ayushmanId = ayushmanId
         this.fullName = fullName
-        this.yearOfBirth = yearOfBirth!!
+        this.yearOfBirth = yearOfBirth
         this.gender = gender
         currentPage.value = ShowPage.SECOND_SCREEN
     }

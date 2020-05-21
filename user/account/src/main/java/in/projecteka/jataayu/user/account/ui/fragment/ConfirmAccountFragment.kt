@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 
 class ConfirmAccountFragment : BaseFragment() {
@@ -38,6 +39,8 @@ class ConfirmAccountFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBindings()
+        val generatedCmID = generateCmId(removeCountryCode(viewModel.getMobileIdentifier()), parentVM.fullName)
+        viewModel.inputUsernameLbl.set(generatedCmID)
     }
 
     private fun initBindings() {
@@ -48,6 +51,7 @@ class ConfirmAccountFragment : BaseFragment() {
         binding.etConfirmPassword.addTextChangedListener{text: Editable? ->
             viewModel.validateConfirmPassword()
         }
+
         binding.etUsername.addTextChangedListener{text: Editable? ->
             viewModel.validateConfirmPassword()
         }
@@ -80,11 +84,15 @@ class ConfirmAccountFragment : BaseFragment() {
         })
     }
 
-    private fun generateCmId(mobile: String, name: String, suffix: String): String {
-        val rawCmId = mobile + "." + name.toUpperCase().take(3)
+    private fun generateCmId(mobile: String, name: String): String {
+        val rawCmId = mobile + "." + name.toUpperCase(Locale.ROOT).take(3)
         val digitSeq = cmIdToDigitSeq(rawCmId)
         val firstCheckDigit = generateCheckDigit(digitSeq)
         val secondCheckDigit = generateCheckDigit(digitSeq + firstCheckDigit)
-        return "$rawCmId.$firstCheckDigit$secondCheckDigit@$suffix"
+        return "$rawCmId.$firstCheckDigit$secondCheckDigit"
+    }
+
+    private fun removeCountryCode(mobileNumber: String) : String{
+        return mobileNumber.split("-")[1]
     }
 }

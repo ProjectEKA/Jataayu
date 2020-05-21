@@ -12,7 +12,6 @@ import `in`.projecteka.jataayu.user.account.databinding.ActivityCreateAccountBin
 import `in`.projecteka.jataayu.user.account.ui.fragment.ConfirmAccountFragment
 import `in`.projecteka.jataayu.user.account.ui.fragment.CreateAccountFragment
 import `in`.projecteka.jataayu.user.account.viewmodel.AccountCreationActivityViewModel
-import `in`.projecteka.jataayu.user.account.viewmodel.ConfirmAccountViewModel
 import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -21,8 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
 
-    private val parentVM: AccountCreationActivityViewModel by viewModel()
-    private val viewModel: ConfirmAccountViewModel by viewModel()
+    private val viewModel: AccountCreationActivityViewModel by viewModel()
 
     override fun layoutId(): Int = R.layout.activity_create_account
 
@@ -35,7 +33,7 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
         initBindings()
         initToolbar()
         initObservers()
-        parentVM.redirectToCreateAccountPage();
+        viewModel.redirectToCreateAccountPage();
     }
 
     private fun initToolbar() {
@@ -46,12 +44,12 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
     }
 
     private fun initBindings() {
-        binding.viewModel = parentVM
-        parentVM.appBarTitle.set(getString(R.string.create_account))
+        binding.viewModel = viewModel
+        viewModel.appBarTitle.set(getString(R.string.create_account))
     }
 
     private fun initObservers() {
-        parentVM.currentPage.observe(this, Observer {
+        viewModel.currentPage.observe(this, Observer {
             when(it){
               AccountCreationActivityViewModel.ShowPage.FIRST_SCREEN ->
                   replaceFragment(CreateAccountFragment.newInstance(), R.id.create_account_fragment_container)
@@ -63,11 +61,11 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
         viewModel.createAccountResponse.observe(this,
             Observer {
                 when (it) {
-                    is Loading -> {parentVM.showProgress(it.isLoading)
+                    is Loading -> {viewModel.showProgress(it.isLoading)
                         println(it)}
                     is Success -> {
-                        parentVM.credentialsRepository.accessToken = parentVM.getAuthTokenWithTokenType(it.data)
-                        parentVM.preferenceRepository.isUserAccountCreated = true
+                        viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
+                        viewModel.preferenceRepository.isUserAccountCreated = true
                         startProvider(this) {
                             putExtra(KEY_ACCOUNT_CREATED, true)
                         }

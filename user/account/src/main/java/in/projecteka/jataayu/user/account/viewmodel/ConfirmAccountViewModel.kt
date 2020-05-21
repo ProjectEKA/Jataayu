@@ -24,11 +24,17 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
 
     companion object {
         private const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
+        /*^                 # start-of-string
+        (?=.*[0-9])       # a digit must occur at least once
+        (?=.*[a-z])       # a lower case letter must occur at least once
+        (?=.*[A-Z])       # an upper case letter must occur at least once
+        (?=.*[@#$%^&+=])  # a special character must occur at least once
+        (?=\S+$)          # no whitespace allowed in the entire string
+        .{8,}             # anything, at least eight places though
+        $                 # end-of-string*/
         private const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
-        private const val DEFAULT_CHECKED_ID = -1
     }
 
-    private var genderCheckId: Int = -1
     val inputUsernameLbl = ObservableField<String>()
     val inputPasswordLbl = ObservableField<String>()
     val confirmationInputPasswordLbl = ObservableField<String>()
@@ -40,7 +46,6 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val inputAyushmanIdLbl = ObservableField<String>()
     val submitEnabled = ObservableBoolean(true)
     val showErrorUserName = ObservableBoolean(false)
-    val showErrorGender = ObservableBoolean(false)
     val showErrorPassword = ObservableBoolean(false)
     val showErrorConfirmPassword = ObservableBoolean(false)
     val showErrorAyushmanId = ObservableBoolean(false)
@@ -49,7 +54,6 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     var inputFullName = ObservableField<String>()
     var inputGender = ObservableField<String>()
     var selectedYoB = ObservableField<Int>()
-    val showErrorName = ObservableBoolean(false)
 
 
     fun validatePassword() {
@@ -60,6 +64,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     fun validateConfirmPassword() {
         val arePasswordEqual = (inputPasswordLbl.get() == confirmationInputPasswordLbl.get())
         showErrorConfirmPassword.set(!arePasswordEqual)
+        validateFields()
     }
 
     fun validateUserName() {
@@ -72,7 +77,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     fun validateFields(): Boolean {
         val listOfEvents: List<Boolean> = listOf(
             !showErrorUserName.get() && inputUsernameLbl.get()?.isNotEmpty() == true,
-            !showErrorPassword.get() && inputPasswordLbl.get()?.equals(confirmationInputPasswordLbl.get())!!
+            !showErrorPassword.get() && inputPasswordLbl.get().equals(confirmationInputPasswordLbl.get())
         )
 
         var isValid = listOfEvents.all { it == true }
@@ -121,8 +126,8 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
         }
     }
 
-    fun getAuthTokenWithTokenType(response: CreateAccountResponse?): String {
-        return "${response?.tokenType?.capitalize()} ${response?.accessToken}"
+    internal fun getMobileIdentifier() : String{
+       return preferenceRepository.mobileIdentifier.orEmpty();
     }
 
     fun getCreateAccountPayload(): CreateAccountRequest {
@@ -143,10 +148,4 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
             yearOfBirth = (selectedYoB.get() ?: "") as Int,
             unverifiedIdentifiers = unverifiedIdentifiers)
     }
-    fun onCheckedChanged(group: ChipGroup?, checkedId: Int) {
-        genderCheckId = checkedId
-        showErrorGender.set(genderCheckId == ConfirmAccountViewModel.DEFAULT_CHECKED_ID)
-        validateFields()
-    }
-
 }
