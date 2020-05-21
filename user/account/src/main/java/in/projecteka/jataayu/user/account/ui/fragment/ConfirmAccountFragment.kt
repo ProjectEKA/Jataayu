@@ -29,6 +29,7 @@ class ConfirmAccountFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = ConfirmAccountFragment()
+        private val ERROR_CODE_USER_ALREADY_EXISTS = 1019
     }
 
 
@@ -61,7 +62,7 @@ class ConfirmAccountFragment : BaseFragment() {
         }
 
         binding.etUsername.addTextChangedListener{text: Editable? ->
-            viewModel.validateConfirmPassword()
+            viewModel.validateUserName()
         }
 
         val generatedCmID = generateCmId(removeCountryCode(viewModel.getMobileIdentifier()), parentVM.fullName)
@@ -74,20 +75,18 @@ class ConfirmAccountFragment : BaseFragment() {
     private fun initObservers(){
         viewModel.createAccountResponse.observe(activity!!, Observer {
             when (it) {
-                is Loading -> viewModel.showProgress(it.isLoading)
+                is Loading -> parentVM.showProgress(it.isLoading)
                 is Success -> {
                     viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
                     viewModel.preferenceRepository.isUserAccountCreated = true
                     parentVM.cmId = viewModel.inputUsernameLbl.get().orEmpty()
                     parentVM.redirectToCreateAccountSuccessPage()
-
-//                    startProvider(context!!) {
-//                        putExtra(KEY_ACCOUNT_CREATED, true)
-//                    }
-//                    activity?.finish()
                 }
                 is PartialFailure ->
-                    activity?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
+                    if(it.error?.code == ERROR_CODE_USER_ALREADY_EXISTS)
+                        viewModel.usernameErrorLbl.set(R.string.user_already_exits)
+                    else
+                        activity?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
                 is Failure ->
                     activity?.showErrorDialog(it.error.localizedMessage)
             }

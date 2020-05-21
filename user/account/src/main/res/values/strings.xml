@@ -27,6 +27,7 @@
     <string name="action_logout">Logout</string>
     <string name="ayushman_bharat_id">Ayushman Bharat ID (optional)</string>
     <string name="ayushman_validation_hint">Should be 9 characters long\nShould start with P</string>
+    <string name="user_already_exits">This username is already in use. Please enter a different username</string>
 
 <!--    Profile-->
     <string name="consent_manager_id">Consent Manager ID</string>

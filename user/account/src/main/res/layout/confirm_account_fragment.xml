@@ -113,7 +113,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/content_margin_extra_extra_small"
-                        android:text="@string/username_validation_hint"
+                        android:text="@{viewModel.usernameErrorLbl}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cv_username"
                         app:toggledVisibility="@{viewModel.showErrorUserName}" />

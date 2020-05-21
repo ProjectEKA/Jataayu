@@ -15,6 +15,7 @@ import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TY
 import android.text.InputType
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import com.google.android.material.chip.ChipGroup
 import java.util.regex.Pattern
 
@@ -44,6 +45,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val usernameProviderLbl = ObservableField<String>()
     val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
     val inputAyushmanIdLbl = ObservableField<String>()
+    val usernameErrorLbl = ObservableInt()
     val submitEnabled = ObservableBoolean(false)
     val showErrorUserName = ObservableBoolean(false)
     val showErrorPassword = ObservableBoolean(false)
@@ -69,7 +71,10 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
 
     fun validateUserName() {
         if(inputUsernameLbl.get()?.isNotEmpty() == true)
-            inputUsernameLbl.get()?.let { showErrorUserName.set(!isValid(it, usernameCriteria)) }
+            inputUsernameLbl.get()?.let {
+                usernameErrorLbl.set(R.string.username_validation_hint)
+                showErrorUserName.set(!isValid(it, usernameCriteria))
+            }
         validateFields()
     }
 
@@ -119,11 +124,8 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     fun createAccount() {
         if (validateFields()){
             val payload = getCreateAccountPayload()
-            println(payload)
             val call = repository.createAccount(payload)
-            print(call)
-            val fetch = createAccountResponse.fetch(call)
-            print(fetch)
+            createAccountResponse.fetch(call)
         }
     }
 
