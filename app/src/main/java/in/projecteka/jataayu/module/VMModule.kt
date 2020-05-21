@@ -6,7 +6,6 @@ import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.*
 import `in`.projecteka.jataayu.ui.LauncherViewModel
 import `in`.projecteka.jataayu.ui.dashboard.DashboardViewModel
-import `in`.projecteka.jataayu.user.account.viewmodel.ChangePasswordViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.*
 import `in`.projecteka.resetpassword.viewmodel.ReadIdentifierFragmentViewModel
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordActivityViewModel
@@ -48,7 +47,7 @@ val viewModelModule = module {
     viewModel { GrantedConsentDetailsViewModel(get()) }
 
     //Provider Search
-    viewModel { ProviderSearchViewModel(get(), get(), get()) }
+    viewModel { ProviderSearchViewModel(get(), get(), get(), get()) }
     viewModel { ProviderActivityViewModel() }
 
     //User Verification
@@ -72,5 +71,6 @@ val viewModelModule = module {
     //Recover CMID
     viewModel { RecoverCmidActivityViewModel() }
     viewModel { ReadValuesFragmentViewModel(get(), get(), get()) }
-
+    viewModel { DisplayCmidFragmentViewModel() }
+    viewModel { NoMatchingRecordsFragmentViewModel() }
 }

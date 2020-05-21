@@ -1,14 +1,17 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
+import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
+import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.COUNTRY_CODE_SEPARATOR
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.INDIA_COUNTRY_CODE
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TYPE_AYUSHMAN_BHARAT_ID
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TYPE_MOBILE_NUMBER
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.google.android.material.chip.ChipGroup
@@ -35,6 +38,9 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
         const val ayushmanIdCriteria =  "^[P|p]([A-Z][0-9])*.{8}$"
         private const val DEFAULT_CHECKED_ID = -1
         private const val LENGTH_MOBILE_NUMBER = 10
+        private const val ERROR_CODE_ = 10
+        const val ERROR_CODE_NO_MATCHING_RECORDS = 1000
+        const val ERROR_CODE_MULTIPLE_MATCHING_RECORDS = 1001
     }
 
     private var genderCheckId: Int = -1
@@ -54,7 +60,7 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
     val showErrorMobile = ObservableBoolean(false)
 
 
-    val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
+    val recoverCmidResponse = PayloadLiveData<RecoverCmidResponse>()
 
 
     fun validateFields(): Boolean {
@@ -65,7 +71,7 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
             !showErrorMobile.get() && inputMobileNumber.get()?.isNotEmpty() == true
         )
 
-        var isValid = listOfEvents.all { it == true }
+        var isValid = listOfEvents.all { it }
 
         inputAyushmanIdLbl.get()?.let {
             if (inputAyushmanIdLbl.get()?.isNotEmpty() == true && showErrorAyushmanId.get()) {
@@ -77,6 +83,10 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
         return isValid
     }
 
+    fun recoverCmid() {
+        recoverCmidResponse.fetch(repository.recoverCmid(getRecoverCmidPayload()))
+    }
+
     fun createAccount() {
 
 //        val payload = getCreateAccountPayload()
@@ -84,22 +94,31 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
 //        createAccountResponse.fetch(call)
     }
 
-    fun getCreateAccountPayload() {
+    fun getRecoverCmidPayload(): RecoverCmidRequest {
 
-//        var unverifiedIdentifiers: List<UnverifiedIdentifier>? = null
-//        if (!inputAyushmanIdLbl.get().isNullOrEmpty()){
-//            if (!showErrorAyushmanId.get()) {
-//                unverifiedIdentifiers =
-//                    listOf(UnverifiedIdentifier(inputAyushmanIdLbl.get().toString().toUpperCase(), TYPE_AYUSHMAN_BHARAT_ID))
-//            }
-//        }
-//
-//        return CreateAccountRequest(
-//            userName = "${inputUsernameLbl.get()}${usernameProviderLbl.get()}" ,
-//            password = inputPasswordLbl.get() ?: "",
-//            name = inputFullName.get() ?: "",
-//            gender = getGender(),
-//            yearOfBirth = selectedYoB, unverifiedIdentifiers = unverifiedIdentifiers)
+        var unverifiedIdentifiers: List<UnverifiedIdentifier>? = null
+        var verifiedIdentifiers: List<Identifier>? = null
+
+        if (!inputAyushmanIdLbl.get().isNullOrEmpty()){
+            if (!showErrorAyushmanId.get()) {
+                unverifiedIdentifiers =
+                    listOf(UnverifiedIdentifier(inputAyushmanIdLbl.get().toString().toUpperCase(), TYPE_AYUSHMAN_BHARAT_ID))
+            }
+        }
+
+        if (!inputMobileNumber.get().isNullOrEmpty()){
+            if (!showErrorMobile.get()) {
+                verifiedIdentifiers =
+                    listOf(Identifier(inputMobileNumber.get().toString().toUpperCase(), TYPE_MOBILE_NUMBER, null))
+            }
+        }
+
+        return RecoverCmidRequest(
+            name = inputFullName.get() ?: "",
+            gender = getGender(),
+            yearOfBirth = selectedYoB,
+            verifiedIdentifiers = verifiedIdentifiers,
+            unverifiedIdentifiers = unverifiedIdentifiers)
     }
 
     internal fun getYearsToPopulate(): List<String> {

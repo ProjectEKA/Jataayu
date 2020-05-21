@@ -2,8 +2,8 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.model.LinkedAccountsResponse
 import `in`.projecteka.jataayu.core.model.MyProfile
-import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.extension.fromJson
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
@@ -94,7 +94,7 @@ class ProfileFragmentViewModelTest {
         `when`(preferenceRepository.pinCreated).thenReturn(true)
         viewModel.setConsentPinStatus()
         assertFalse(viewModel.showPinNotCreated.get())
-        assertEquals(R.string.edit, viewModel.pinCreateOrEdit.get())
+        assertEquals(R.string.update, viewModel.pinCreateOrEdit.get())
     }
 
     @Test

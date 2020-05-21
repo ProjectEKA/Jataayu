@@ -336,8 +336,8 @@
                         style="@style/Button"
                         android:layout_width="match_parent"
                         android:enabled="@{viewModel.submitEnabled}"
-                        android:onClick="@{() -> viewModel.createAccount()}"
-                        android:text="@string/register" />
+                        android:onClick="@{() -> viewModel.recoverCmid()}"
+                        android:text="@string/recover_cmid" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.core.widget.NestedScrollView>

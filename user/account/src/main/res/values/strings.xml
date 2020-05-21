@@ -54,4 +54,9 @@
 <!--    Recover CMID-->
     <string name="forgot_cmid">Forgot CM ID</string>
     <string name="forgot_cmid_title">Recover Consent Manager ID</string>
+    <string name="display_cmid_title">  is your Consent Manager ID. You could use this ID to login in the future</string>
+    <string name="back_to_login">Back to login</string>
+    <string name="no_matching_records_title">Sorry, We could not find a matching record.</string>
+    <string name="no_matching_records_description">Please review your input and try again.</string>
+    <string name="review">Review</string>
 </resources>

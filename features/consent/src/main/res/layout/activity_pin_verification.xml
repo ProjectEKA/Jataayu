@@ -4,26 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.ForgotPasswordActivity">
 
-    <data>
-        <variable
-            name="viewmodel"
-            type="in.projecteka.jataayu.user.account.viewmodel.ProfileActivityViewModel" />
-    </data>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <androidx.appcompat.widget.Toolbar
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/app_toolbar"
-            android:layout_height="@dimen/toolbar_size"
-            android:layout_width="match_parent"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:navigationIcon="?android:attr/homeAsUpIndicator"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title='@{viewmodel.title}' />
-
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_below="@+id/app_toolbar"
@@ -38,5 +18,4 @@
         android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-    </RelativeLayout>
 </layout>
