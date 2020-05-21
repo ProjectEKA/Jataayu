@@ -116,6 +116,10 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                         context?.showErrorDialog(it.error?.message)
                     }
                 }
+
+               is Failure -> {
+                    context?.showErrorDialog(it.error.localizedMessage)
+                }
             }
         })
         viewModel.consentDenyResponse.observe(this, Observer<PayloadResource<Void>> {
@@ -142,7 +146,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 }
                 is Failure -> {
                     context?.showAlertDialog(
-                        getString(R.string.failure), it.error?.message,
+                        getString(R.string.failure), it.error.message,
                         getString(android.R.string.ok)
                     )
                 }
@@ -162,7 +166,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
 
         with(binding) {
             this.consent = this@RequestedConsentDetailsFragment.consent
-            requestExpired = isExpiredOrGrantedOrDenied()
+            requestExpired = consent?.status == RequestStatus.EXPIRED
             isGrantedConsent = false
             cgRequestInfoTypes.removeAllViews()
         }
