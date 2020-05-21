@@ -65,7 +65,7 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
             when(it) {
                 is Loading -> viewModel.showProgress(it.isLoading)
                 is Success -> {
-                    parentViewModel.cmid.set(it.data?.cmId)
+                    parentViewModel.consentManagerId.set(it.data?.cmId)
                     parentViewModel.onDisplayCmidRequest()
                 }
                 is PartialFailure -> {
@@ -84,28 +84,6 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
                 }
             }
         })
-//        viewModel.generateOtpResponse.observe(this, Observer {
-//            when(it){
-//                is Loading -> viewModel.showProgress(it.isLoading)
-//                is Success -> {
-////                    parentViewModel.addedConsentManagerId.set(it.data?.otpMediumValue)
-//                    parentViewModel.sessionId = it.data?.sessionId
-//                    parentViewModel.onOtpFragmentRedirectRequest()
-//                }
-//                is PartialFailure -> {
-//                    activity?.showAlertDialog(
-//                        getString(R.string.failure), it.error?.message,
-//                        getString(android.R.string.ok)
-//                    )
-//                }
-//                is Failure -> {
-//                    activity?.showErrorDialog(it.error.localizedMessage)
-//                }
-//            }
-//        })
-//        viewModel.consentManagerIdField.observe(this, Observer {
-//            parentViewModel.consentManagerId = it
-//        })
     }
 
     private fun initBindings() {
@@ -124,14 +102,9 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
         binding.etMobileNumber.addTextChangedListener{ text ->
             viewModel.validateMobileNumber()
             }
-//        binding.etConsentManagerId.addTextChangedListener { text: Editable? ->
-//            viewModel.validateConsentManagerId(viewModel.inputConsentManagerId.get().toString())
-//        }
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (position != 0) {

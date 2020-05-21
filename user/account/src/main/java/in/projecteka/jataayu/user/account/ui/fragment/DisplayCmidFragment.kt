@@ -39,10 +39,10 @@ class DisplayCmidFragment : Fragment()  {
         super.onViewCreated(view, savedInstanceState)
         initBindings()
         initObservers()
-        parentViewModel.cmid.get()?.let {
+        parentViewModel.consentManagerId.get()?.let {
 
             val spannableTitle = SpannableStringBuilder()
-                .bold { append(parentViewModel.cmid.get()) }
+                .bold { append(parentViewModel.consentManagerId.get()) }
                 .append(SPACE + getString(R.string.display_cmid_title))
 
             viewModel.init(spannableTitle)

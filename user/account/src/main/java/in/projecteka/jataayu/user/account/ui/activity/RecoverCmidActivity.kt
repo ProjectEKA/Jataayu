@@ -15,10 +15,6 @@ class RecoverCmidActivity : BaseActivity<ActivityRecoverCmidBinding>() {
 
     private val viewmodel: RecoverCmidActivityViewModel by viewModel()
 
-    companion object {
-       const val snackbarMargin = 16
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()

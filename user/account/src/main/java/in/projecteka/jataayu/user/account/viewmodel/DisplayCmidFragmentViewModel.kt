@@ -22,8 +22,4 @@ class DisplayCmidFragmentViewModel() : BaseViewModel() {
     fun onBackToLoginClick() {
         redirectToEvent.value = Redirect.BACK_TO_LOGIN
     }
-
-    fun onReview(){
-        redirectToEvent.value = Redirect.REVIEW
-    }
 }

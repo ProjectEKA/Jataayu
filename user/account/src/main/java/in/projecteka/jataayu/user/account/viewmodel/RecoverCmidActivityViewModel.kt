@@ -6,19 +6,13 @@ import androidx.databinding.ObservableField
 
 class RecoverCmidActivityViewModel: BaseViewModel() {
 
-    var cmid = ObservableField<String>()
+    var consentManagerId = ObservableField<String>()
 
     enum class Show{
         READ_VALUES_SCREEN,
         DISPLAY_CMID_SCREEN,
         NO_OR_MULTIPLE_MATCHING_RECORDS,
     }
-
-    val addOtpFragmentEvent = SingleLiveEvent<Void>()
-    val addResetPasswordFragmentEvent = SingleLiveEvent<Void>()
-    var consentManagerId: String? = null
-    var sessionId: String? = null
-    var tempToken: String? = null
 
     val redirectTo: SingleLiveEvent<Show> = SingleLiveEvent()
 
@@ -33,13 +27,4 @@ class RecoverCmidActivityViewModel: BaseViewModel() {
     fun onReviewRequest() {
         redirectTo.value = Show.NO_OR_MULTIPLE_MATCHING_RECORDS
     }
-
-//    fun onOtpFragmentRedirectRequest() {
-//        redirectTo.value = Show.SECOND_SCREEN
-//    }
-
-//    fun onVerifyOtpRedirectRequest() {
-//        redirectTo.value = Show.THIRD_SECREEN
-//    }
-
 }

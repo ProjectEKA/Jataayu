@@ -1,6 +1,9 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
-import `in`.projecteka.jataayu.core.model.*
+import `in`.projecteka.jataayu.core.model.Identifier
+import `in`.projecteka.jataayu.core.model.RecoverCmidRequest
+import `in`.projecteka.jataayu.core.model.RecoverCmidResponse
+import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
@@ -25,20 +28,10 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
     companion object {
 
         private const val YOB = "yyyy"
-        private const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
-        /*^                 # start-of-string
-        (?=.*[0-9])       # a digit must occur at least once
-        (?=.*[a-z])       # a lower case letter must occur at least once
-        (?=.*[A-Z])       # an upper case letter must occur at least once
-        (?=.*[@#$%^&+=])  # a special character must occur at least once
-        (?=\S+$)          # no whitespace allowed in the entire string
-        .{8,}             # anything, at least eight places though
-        $                 # end-of-string*/
-        private const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
         const val ayushmanIdCriteria =  "^[P|p]([A-Z][0-9])*.{8}$"
         private const val DEFAULT_CHECKED_ID = -1
         private const val LENGTH_MOBILE_NUMBER = 10
-        private const val ERROR_CODE_ = 10
+        private const val YEARS_DURATION = 120
         const val ERROR_CODE_NO_MATCHING_RECORDS = 1000
         const val ERROR_CODE_MULTIPLE_MATCHING_RECORDS = 1001
     }
@@ -87,13 +80,6 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
         recoverCmidResponse.fetch(repository.recoverCmid(getRecoverCmidPayload()))
     }
 
-    fun createAccount() {
-
-//        val payload = getCreateAccountPayload()
-//        val call = repository.createAccount(payload)
-//        createAccountResponse.fetch(call)
-    }
-
     fun getRecoverCmidPayload(): RecoverCmidRequest {
 
         var unverifiedIdentifiers: List<UnverifiedIdentifier>? = null
@@ -124,7 +110,7 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
     internal fun getYearsToPopulate(): List<String> {
         val years = arrayListOf<String>(YOB)
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        for (year in currentYear downTo (currentYear - 120)) {
+        for (year in currentYear downTo (currentYear - YEARS_DURATION)) {
             years.add(year.toString())
         }
         return years
@@ -158,7 +144,7 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
     }
 
     fun validateMobileNumber() {
-        showErrorMobile.set(inputMobileNumber.get()?.isEmpty() == true || inputMobileNumber.get()?.length != 10)
+        showErrorMobile.set(inputMobileNumber.get()?.isEmpty() == true || inputMobileNumber.get()?.length != LENGTH_MOBILE_NUMBER)
         validateFields()
     }
 
@@ -167,10 +153,6 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
         val pattern = Pattern.compile(criteria)
         val matcher = pattern.matcher(text)
         return matcher.matches()
-    }
-
-    fun getAuthTokenWithTokenType(response: CreateAccountResponse?): String {
-        return "${response?.tokenType?.capitalize()} ${response?.accessToken}"
     }
 
     override fun onCheckedChanged(group: ChipGroup?, checkedId: Int) {
