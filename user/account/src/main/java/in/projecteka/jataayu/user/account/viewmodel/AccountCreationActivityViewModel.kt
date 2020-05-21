@@ -1,7 +1,5 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
@@ -19,12 +17,14 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
     var fullName = ""
     var yearOfBirth: Int? = null
     var gender = ""
-    val currentPage = SingleLiveEvent<ShowPage>();
+    var cmId = ""
+    val currentPage = SingleLiveEvent<ShowPage>()
+
 
     enum class ShowPage{
-        FIRST_SCREEN,
-        SECOND_SCREEN,
-        THIRD_SCREEN
+        ACCOUNT_INFO_SCREEN,
+        CONFIRM_ACCOUNT_SCREEN,
+        SUCCESS_SCREEN
     }
 
     fun redirectToConfirmAccountPage(fullName: String, ayushmanId: String, yearOfBirth: Int?, gender: String){
@@ -32,13 +32,13 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
         this.fullName = fullName
         this.yearOfBirth = yearOfBirth
         this.gender = gender
-        currentPage.value = ShowPage.SECOND_SCREEN
+        currentPage.value = ShowPage.CONFIRM_ACCOUNT_SCREEN
     }
 
     fun redirectToCreateAccountPage(){
-        currentPage.value = ShowPage.FIRST_SCREEN
+        currentPage.value = ShowPage.ACCOUNT_INFO_SCREEN
     }
     fun redirectToCreateAccountSuccessPage(){
-        currentPage.value = ShowPage.THIRD_SCREEN
+        currentPage.value = ShowPage.SUCCESS_SCREEN
     }
 }

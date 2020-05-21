@@ -11,7 +11,6 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ConfirmAccountFragmentBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.AccountCreationActivityViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.ConfirmAccountViewModel
-import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
@@ -29,7 +28,6 @@ class ConfirmAccountFragment : BaseFragment() {
     private lateinit var binding: ConfirmAccountFragmentBinding
 
     companion object {
-        const val KEY_ACCOUNT_CREATED = "account_created"
         fun newInstance() = ConfirmAccountFragment()
     }
 
@@ -80,6 +78,7 @@ class ConfirmAccountFragment : BaseFragment() {
                 is Success -> {
                     viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
                     viewModel.preferenceRepository.isUserAccountCreated = true
+                    parentVM.cmId = viewModel.inputUsernameLbl.get().orEmpty()
                     parentVM.redirectToCreateAccountSuccessPage()
 
 //                    startProvider(context!!) {

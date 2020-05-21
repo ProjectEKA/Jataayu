@@ -41,13 +41,12 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
     private fun initObservers() {
         viewModel.currentPage.observe(this, Observer {
             when(it){
-              AccountCreationActivityViewModel.ShowPage.FIRST_SCREEN ->
+              AccountCreationActivityViewModel.ShowPage.ACCOUNT_INFO_SCREEN ->
                   replaceFragment(CreateAccountFragment.newInstance(), R.id.create_account_fragment_container)
-              AccountCreationActivityViewModel.ShowPage.SECOND_SCREEN ->
+              AccountCreationActivityViewModel.ShowPage.CONFIRM_ACCOUNT_SCREEN ->
                   replaceFragment(ConfirmAccountFragment.newInstance(), R.id.create_account_fragment_container)
-                AccountCreationActivityViewModel.ShowPage.THIRD_SCREEN ->
+                AccountCreationActivityViewModel.ShowPage.SUCCESS_SCREEN ->
                     replaceFragment(SuccessPageFragment.newInstance(), R.id.create_account_fragment_container)
-
             }
         })
     }

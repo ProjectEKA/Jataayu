@@ -33,6 +33,7 @@ val viewModelModule = module {
     viewModel { AccountCreationActivityViewModel(get(), get(), get()) }
     viewModel { CreateAccountViewModel() }
     viewModel { ConfirmAccountViewModel(get(), get(), get()) }
+    viewModel { SuccessPageViewModel() }
 
     //Login
     viewModel { LoginViewModel() }

@@ -10,61 +10,72 @@
             type="in.projecteka.jataayu.user.account.viewmodel.SuccessPageViewModel" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/content_margin_extra_large"
-        android:paddingLeft="@dimen/content_padding_large"
-        android:paddingRight="@dimen/content_padding_large"
-        android:paddingStart="@dimen/content_padding_large"
-        android:paddingEnd="@dimen/content_padding_large">
+        android:clipToPadding="false"
+        android:padding="@dimen/content_margin_large">
 
-        <TextView
-            android:id="@+id/congrates"
-            style="@style/TextAppearance.Light"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin_medium"
-            android:text="@string/congratulation"
-            android:textSize="@dimen/text_size_large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="vertical"
+            android:paddingTop="@dimen/content_margin_extra_large"
+            android:paddingLeft="@dimen/content_padding_large"
+            android:paddingRight="@dimen/content_padding_large"
+            android:paddingStart="@dimen/content_padding_large"
+            android:paddingEnd="@dimen/content_padding_large">
 
-        <TextView
-            android:id="@+id/name_of_user"
-            style="@style/TextAppearance.Light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin_medium"
-            android:textStyle="bold"
-            android:text="@string/sample_name"
-            android:textSize="@dimen/text_size_large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                style="@style/TextAppearance.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/content_margin_medium"
+                android:text="@string/congratulations"
+                android:textSize="@dimen/text_size_large"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/cm_success-msg"
-            style="@style/TextAppearance.Light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin_medium"
-            android:text="@string/registration_success_message"
-            android:textSize="@dimen/text_size_large"
+            <TextView
+                style="@style/TextAppearance.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/content_margin_medium"
+                android:textStyle="bold"
+                android:text="@{viewModel.fullNameLbl}"
+                android:textSize="@dimen/text_size_large"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                style="@style/TextAppearance.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/content_margin_medium"
+                android:text="@string/registration_success_message"
+                android:textSize="@dimen/text_size_large"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-        <TextView
-            android:id="@+id/cm_info"
-            style="@style/TextAppearance.Light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin_medium"
-            android:text="@string/cm_id_info"
-            android:textSize="@dimen/text_size_large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_cm_id_info"
+                style="@style/TextAppearance.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/content_margin_medium"
+                android:text="@{viewModel.cmIdInfoLbl}"
+                android:textSize="@dimen/text_size_large"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_confirm_registration"
+            style="@style/Button"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:text="@string/confirm" />
+    </FrameLayout>
+
 </layout>
