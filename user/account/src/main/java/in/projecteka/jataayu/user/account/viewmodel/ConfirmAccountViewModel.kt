@@ -45,7 +45,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val usernameProviderLbl = ObservableField<String>()
     val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
     val inputAyushmanIdLbl = ObservableField<String>()
-    val usernameErrorLbl = ObservableInt()
+    val usernameErrorLbl = ObservableInt(R.string.username_validation_hint)
     val submitEnabled = ObservableBoolean(false)
     val showErrorUserName = ObservableBoolean(false)
     val showErrorPassword = ObservableBoolean(false)
@@ -61,11 +61,15 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     fun validatePassword() {
         if(inputPasswordLbl.get()?.isNotEmpty() == true)
             inputPasswordLbl.get()?.let { showErrorPassword.set(!isValid(it, passwordCriteria)) }
-        validateFields()
+        validateConfirmPassword()
     }
     fun validateConfirmPassword() {
-        val arePasswordEqual = (inputPasswordLbl.get() == confirmationInputPasswordLbl.get())
-        showErrorConfirmPassword.set(!arePasswordEqual)
+        if(confirmationInputPasswordLbl.get()?.isNotEmpty() == true){
+            confirmationInputPasswordLbl.get()?.let {
+                val arePasswordEqual = (inputPasswordLbl.get() == confirmationInputPasswordLbl.get())
+                showErrorConfirmPassword.set(!arePasswordEqual)
+            }
+        }
         validateFields()
     }
 

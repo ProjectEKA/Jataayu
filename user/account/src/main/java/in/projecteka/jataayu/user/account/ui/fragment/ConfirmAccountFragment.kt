@@ -65,11 +65,18 @@ class ConfirmAccountFragment : BaseFragment() {
             viewModel.validateUserName()
         }
 
-        val generatedCmID = generateCmId(removeCountryCode(viewModel.getMobileIdentifier()), parentVM.fullName)
         viewModel.inputFullName = parentVM.fullName
         viewModel.inputGender = parentVM.gender
         viewModel.selectedYoB = parentVM.yearOfBirth
-        viewModel.inputUsernameLbl.set(generatedCmID)
+        viewModel.inputAyushmanIdLbl.set(parentVM.ayushmanId)
+        populateCmId()
+    }
+
+    private fun populateCmId(){
+        var cmId = viewModel.inputAyushmanIdLbl.get().orEmpty();
+        if(cmId.isEmpty())
+            cmId = generateCmId(removeCountryCode(viewModel.getMobileIdentifier()), parentVM.fullName)
+        viewModel.inputUsernameLbl.set(cmId)
     }
 
     private fun initObservers(){
