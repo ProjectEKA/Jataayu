@@ -150,7 +150,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:text="@{linkSelected}"
-                tools:text="@string/link_accounts" />
+                tools:text="@string/link_records" />
         </FrameLayout>
         <include
             android:id="@+id/progress_bar_layout"
