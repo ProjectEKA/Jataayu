@@ -19,7 +19,6 @@ class CreateAccountViewModel : BaseViewModel(), ChipGroup.OnCheckedChangeListene
 
     companion object {
         private const val YOB = "yyyy"
-        private const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
         /*^                 # start-of-string
         (?=.*[0-9])       # a digit must occur at least once
         (?=.*[a-z])       # a lower case letter must occur at least once
@@ -41,17 +40,6 @@ class CreateAccountViewModel : BaseViewModel(), ChipGroup.OnCheckedChangeListene
     val showErrorAyushmanId = ObservableBoolean(false)
     val showErrorGender = ObservableBoolean(false)
     val submitEnabled = ObservableBoolean(false)
-    val redirectTo: SingleLiveEvent<AccountCreationActivityViewModel.ShowPage> = SingleLiveEvent()
-    val inputUsernameLbl = ObservableField<String>()
-    val inputPasswordLbl = ObservableField<String>()
-    val usernameProviderLbl = ObservableField<String>()
-    val showErrorPassword = ObservableBoolean(false)
-    val showErrorUserName = ObservableBoolean(false)
-    val confirmationInputPasswordLbl = ObservableField<String>()
-    val passwordInputType = ObservableInt(hiddenPasswordInputType())
-    val inputPasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
-    val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
-    val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
 
 
     fun validateFields(): Boolean {
@@ -71,25 +59,6 @@ class CreateAccountViewModel : BaseViewModel(), ChipGroup.OnCheckedChangeListene
 
         submitEnabled.set(isValid)
         return isValid
-    }
-
-    fun getCreateAccountPayload(): CreateAccountRequest {
-
-        var unverifiedIdentifiers: List<UnverifiedIdentifier>? = null
-        if (!inputAyushmanIdLbl.get().isNullOrEmpty()){
-            if (!showErrorAyushmanId.get()) {
-                unverifiedIdentifiers =
-                    listOf(UnverifiedIdentifier(inputAyushmanIdLbl.get().toString().toUpperCase(), TYPE_AYUSHMAN_BHARAT_ID))
-            }
-        }
-
-        return CreateAccountRequest(
-            userName = "${inputUsernameLbl.get()}${usernameProviderLbl.get()}" ,
-            password = inputPasswordLbl.get() ?: "",
-            name = inputFullName.get() ?: "",
-            gender = getGender(),
-            yearOfBirth = selectedYoB,
-            unverifiedIdentifiers = unverifiedIdentifiers)
     }
 
     internal fun getYearsToPopulate(): List<String> {
@@ -138,8 +107,5 @@ class CreateAccountViewModel : BaseViewModel(), ChipGroup.OnCheckedChangeListene
         genderCheckId = checkedId
         showErrorGender.set(genderCheckId == DEFAULT_CHECKED_ID)
         validateFields()
-    }
-    private fun hiddenPasswordInputType(): Int {
-        return InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD
     }
 }
