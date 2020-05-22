@@ -73,7 +73,7 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
         val careContextsCount = viewModel.patientDiscoveryResponse.value?.patient?.careContexts?.count() ?: 0
         updateLinkAccountButton( careContextsCount)
         binding.hideNoLinkingAccountView = careContextsCount > 0
-        binding.noLinkingAccounts = getString(R.string.link_accounts_alreday_done)
+        binding.noLinkingAccounts = getString(R.string.link_records_alreday_done)
 
 
         genericRecyclerViewAdapter = GenericRecyclerViewAdapter(
@@ -109,7 +109,7 @@ class PatientAccountsFragment : BaseFragment(), ItemClickCallback, PatientAccoun
 
     override fun onVisible() {
         super.onVisible()
-        (activity as? ProviderActivity)?.updateTitle(getString(R.string.link_accounts))
+        (activity as? ProviderActivity)?.updateTitle(getString(R.string.link_records))
     }
 
     override fun onLinkAccountsClick(view: View) {

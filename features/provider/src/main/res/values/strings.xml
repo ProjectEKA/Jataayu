@@ -9,7 +9,7 @@
     <string name="link_provider">Link provider</string>
     <string name="fetch_record">Fetch Record</string>
     <string name="select_accounts">Select the accounts to link</string>
-    <string name="link_accounts">Link accounts</string>
+    <string name="link_records">Link records</string>
     <string name="link_your_id">Link your ID</string>
     <string name="verification">Verification</string>
     <string name="looking_up_info">We are looking up for\nyour information\n\nThis may take up a few seconds&#8230;</string>
@@ -29,5 +29,5 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="gender">Gender</string>
-    <string name="link_accounts_alreday_done">Your all accounts are already linked</string>
+    <string name="link_records_alreday_done">Your all records are already linked</string>
 </resources>
