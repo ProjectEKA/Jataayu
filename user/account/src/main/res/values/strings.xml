@@ -50,6 +50,7 @@
     <string name="create">Create</string>
     <string name="consent_placeholder">1234</string>
     <string name="consent_pin_not_created">Consent PIN not created</string>
+    <string name="update">Update</string>
 
 <!--    Recover CMID-->
     <string name="forgot_cmid">Forgot CM ID</string>
@@ -59,5 +60,4 @@
     <string name="no_matching_records_title">Sorry, We could not find a matching record.</string>
     <string name="no_matching_records_description">Please review your input and try again.</string>
     <string name="review">Review</string>
-    <string name="update">Update</string>
 </resources>

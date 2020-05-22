@@ -1,10 +1,10 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
+import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.network.utils.partialFailure
 import `in`.projecteka.jataayu.presentation.BaseViewModel
-import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
@@ -86,7 +86,7 @@ class ProfileFragmentViewModel(val repository: UserAccountsRepository,
 
     fun setConsentPinStatus(){
         if (preferenceRepository.pinCreated) {
-            pinCreateOrEdit.set(R.string.edit)
+            pinCreateOrEdit.set(R.string.update)
             showPinNotCreated.set(false)
         }
     }

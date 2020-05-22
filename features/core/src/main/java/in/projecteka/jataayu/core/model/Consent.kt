@@ -24,7 +24,7 @@ data class Consent(
     @SerializedName("hiTypes") val hiTypes: ArrayList<String>,
     @SerializedName("permission") @Bindable val permission: Permission,
     @SerializedName("status") var status: RequestStatus,
-    @SerializedName("lastUpdated") private var lastUpdated: String = createdAt,
+    @SerializedName("lastUpdated") private var lastUpdated: String,
     @SerializedName("careContexts") val careContexts : List<CareReference>?,
     @SerializedName("consentManager") val consentManager: ConsentManager? = null
     ) : BaseObservable(), IDataBindingModel, Cloneable {
@@ -83,17 +83,17 @@ data class Consent(
 
         when(status) {
             GRANTED -> {
-                relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(createdAt)
+                relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(lastUpdated)
                 showDetails = false
                 baseString = R.string.granted_timespan
             }
             REVOKED -> {
-                relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(createdAt)
+                relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(lastUpdated)
                 showDetails = true
                 baseString = R.string.revoked_timespan
             }
             EXPIRED -> {
-                relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(createdAt)
+                relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(lastUpdated)
                 showDetails = true
                 baseString = R.string.expired_timespan
             }
@@ -103,9 +103,34 @@ data class Consent(
                 baseString = R.string.denied_timespan
             }
             else -> {
-                createdAt.let { relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(createdAt) }
+                createdAt.let { relativeTimeSpan = DateTimeUtils.getRelativeTimeSpan(lastUpdated) }
                 showDetails = true
                 baseString = R.string.requested_timespan
+            }
+        }
+    }
+
+    companion object  {
+        fun getNoConsentMessageResourceId(status: RequestStatus): Int {
+            return when(status) {
+                GRANTED -> {
+                    R.string.no_granted_consents
+                }
+                REVOKED -> {
+                    R.string.no_revoked_consents
+                }
+                EXPIRED -> {
+                    R.string.no_expired_consents
+                }
+                DENIED -> {
+                    R.string.no_denied_consents
+                }
+                REQUESTED -> {
+                    R.string.no_new_consent_requests
+                }
+                ALL -> {
+                    R.string.no_consents
+                }
             }
         }
     }

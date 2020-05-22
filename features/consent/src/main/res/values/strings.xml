@@ -17,8 +17,6 @@
     <string name="deny">deny</string>
     <string name="grant_request">Grant consent</string>
     <string name="consent_expiry">Consent expiry</string>
-    <string name="no_new_consent_requests">No new consent requests</string>
-    <string name="no_granted_consents">No granted consents</string>
     <string name="loading_requests">We are loading your consent requests\n\nThis may take up a few seconds&#8230;</string>
     <string name="loading_linked_accounts">We are loading your accounts\n\nThis may take up a few seconds&#8230;</string>
 

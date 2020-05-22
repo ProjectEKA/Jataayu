@@ -5,6 +5,7 @@ import `in`.projecteka.jataayu.consent.callback.PaginationEventCallback
 import `in`.projecteka.jataayu.consent.listners.PaginationScrollListener
 import `in`.projecteka.jataayu.consent.model.RevokeConsentRequest
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
+import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
 import `in`.projecteka.jataayu.core.model.HipHiuNameResponse
 import `in`.projecteka.jataayu.core.model.RequestStatus
@@ -47,12 +48,11 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
     get() = _consentArtifactList
 
 
+
     private val _currentStatus = MutableLiveData<RequestStatus>(GRANTED)
     val currentStatus : LiveData<RequestStatus>
     get() = _currentStatus
 
-//    val noConsentMessage: ObservableField<String>
-//    get() = getEmptyConsentMesage()
 
 
     val paginationScrollListener: PaginationScrollListener = PaginationScrollListener(this)
@@ -107,6 +107,10 @@ class GrantedConsentListViewModel(private val repository: ConsentRepository,
     fun updateConsentArtifactList(response: ConsentArtifactResponse) {
         paginationScrollListener.updateTotalSize(response.size)
         _consentArtifactList.value = response
+    }
+
+    fun getNoConsentMessage(): Int {
+        return Consent.getNoConsentMessageResourceId(currentStatus.value!!)
     }
 
 }

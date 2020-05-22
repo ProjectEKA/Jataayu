@@ -27,15 +27,15 @@ class RecoverCmidActivityViewModelTest {
         assertEquals(viewModel.redirectTo.value, RecoverCmidActivityViewModel.Show.READ_VALUES_SCREEN)
     }
 
-//    @Test
-//    fun `should set redirect value to SECOND`() {
-//        viewModel.onOtpFragmentRedirectRequest()
-//        assertEquals(viewModel.redirectTo.value, ResetPasswordActivityViewModel.Show.SECOND_SCREEN)
-//    }
-//
-//    @Test
-//    fun `should set redirect value to THIRD`() {
-//        viewModel.onVerifyOtpRedirectRequest()
-//        assertEquals(viewModel.redirectTo.value, ResetPasswordActivityViewModel.Show.THIRD_SECREEN)
-//    }
+    @Test
+    fun `should set redirect value to display cmid screen`() {
+        viewModel.onDisplayCmidRequest()
+        assertEquals(viewModel.redirectTo.value, RecoverCmidActivityViewModel.Show.DISPLAY_CMID_SCREEN)
+    }
+
+    @Test
+    fun `should set redirect value to no matching records screen`() {
+        viewModel.onReviewRequest()
+        assertEquals(viewModel.redirectTo.value, RecoverCmidActivityViewModel.Show.NO_OR_MULTIPLE_MATCHING_RECORDS)
+    }
 }

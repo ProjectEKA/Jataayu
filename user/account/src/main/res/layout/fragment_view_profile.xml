@@ -408,7 +408,7 @@
                         android:enabled="@{viewModel.preferenceRepository.loginMode.equalsIgnoreCase(@string/otp) ? false : true}"
                         android:onClick="@{() -> viewModel.redirectChangePassword()}"
                         android:padding="@dimen/content_padding_extra_large"
-                        android:text="@string/edit"
+                        android:text="@string/update"
                         android:textSize="@dimen/text_size_small"
                         app:layout_constraintBottom_toBottomOf="@+id/cv_password"
                         app:layout_constraintLeft_toRightOf="@id/cv_password"

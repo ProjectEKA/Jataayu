@@ -9,7 +9,6 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.user.account.R
-import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.COUNTRY_CODE_SEPARATOR
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.INDIA_COUNTRY_CODE
@@ -22,8 +21,7 @@ import java.util.*
 import java.util.regex.Pattern
 
 class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository,
-                             val preferenceRepository: PreferenceRepository,
-                             val credentialsRepository: CredentialsRepository) : BaseViewModel(), ChipGroup.OnCheckedChangeListener {
+                             val preferenceRepository: PreferenceRepository) : BaseViewModel(), ChipGroup.OnCheckedChangeListener {
 
     companion object {
 
@@ -95,7 +93,7 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
         if (!inputMobileNumber.get().isNullOrEmpty()){
             if (!showErrorMobile.get()) {
                 verifiedIdentifiers =
-                    listOf(Identifier(inputMobileNumber.get().toString().toUpperCase(), TYPE_MOBILE_NUMBER, null))
+                    listOf(Identifier(countryCode.get() + inputMobileNumber.get().toString(), TYPE_MOBILE_NUMBER, null))
             }
         }
 

@@ -77,8 +77,9 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                         viewModel.updateConsentArtifactList(it)
                         val hiuList = it.getArtifacts().map { consent -> consent.hiu }
                         getNamesOf(hiuList)
-                        binding.hideRequestsList = it.getArtifacts().isNullOrEmpty()
+                        binding.noNewConsentsMessage = getString(viewModel.getNoConsentMessage())
                         binding.hideFilter = false
+                        binding.hideRequestsList = it.getArtifacts().isNullOrEmpty()
                     }
                     parentViewModel.showRefreshing(false)
                     viewModel.isLoadingMore.set(View.INVISIBLE)
@@ -142,7 +143,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     private fun initBindings() {
         binding.viewModel = viewModel
-        binding.noNewConsentsMessage = getString(R.string.no_granted_consents)
         binding.listener = this
         binding.hideRequestsList = true
         binding.hideFilter = true
@@ -169,7 +169,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     }
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
-        consentsListAdapter.updateData(requests.reversed())
+        consentsListAdapter.updateData(requests)
     }
 
 
@@ -232,4 +232,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun setupScrollListener() {
         binding.rvConsents.addOnScrollListener(viewModel.paginationScrollListener)
     }
+
+
 }

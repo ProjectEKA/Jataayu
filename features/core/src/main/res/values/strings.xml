@@ -23,4 +23,10 @@
     <string name="registered_successfully">Registered Successfully</string>
     <string name="otp_limit_exceeded">OTP request limit exceeded. Please try again after some time.</string>
     <string name="recover_cmid">Recover CM ID</string>
+    <string name="no_new_consent_requests">No new consent requests</string>
+    <string name="no_granted_consents">No granted consents</string>
+    <string name="no_revoked_consents">No Revoked Consents</string>
+    <string name="no_expired_consents">No Expired Consents</string>
+    <string name="no_denied_consents">No Denied Consents</string>
+    <string name="no_consents">No Consents</string>
 </resources>
