@@ -102,20 +102,11 @@ class ConfirmAccountViewModelTest {
     }
 
     @Test
-    fun `validate confirmPassword if pattern match`() {
-
-        viewModel.inputPasswordLbl.set("As@12345")
-        viewModel.confirmationInputPasswordLbl.set("As@12345")
-        viewModel.validateConfirmPassword()
-        assertTrue(viewModel.showErrorConfirmPassword.get())
-    }
-    @Test
-    fun `invalidate confirmPassword if pattern does not match`() {
-
+    fun `invalidate confirmPassword if does not match with password`() {
         viewModel.inputPasswordLbl.set("As@12345")
         viewModel.confirmationInputPasswordLbl.set("Aa@12345")
         viewModel.validateConfirmPassword()
-        assertFalse(viewModel.showErrorConfirmPassword.get())
+        assertTrue(viewModel.showErrorConfirmPassword.get())
     }
 
     @Test
