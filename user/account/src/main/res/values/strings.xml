@@ -8,7 +8,6 @@
     <string name="patient_details">Patient details</string>
     <string name="create_username">Create Username</string>
     <string name="create_password">Create Password</string>
-    <string name="confirm_password">Confirm Password</string>
     <string name="full_name">Full Name</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
