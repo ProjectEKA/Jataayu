@@ -38,4 +38,5 @@
     <color name="error_message_color">#D90000</color>
     <color name="password_match_color">#329536</color>
     <color name="accountlock_error_message">#99000000</color>
+    <color name="error_hint_color">#99000000</color>
 </resources>

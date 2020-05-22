@@ -12,7 +12,6 @@ import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentListViewModel
 import `in`.projecteka.jataayu.core.ConsentScopeType
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
-import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
 import `in`.projecteka.jataayu.network.utils.*
 import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
@@ -78,8 +77,9 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                         viewModel.updateConsentArtifactList(it)
                         val hiuList = it.getArtifacts().map { consent -> consent.hiu }
                         getNamesOf(hiuList)
-                        binding.hideRequestsList = it.getArtifacts().isNullOrEmpty()
+                        binding.noNewConsentsMessage = getString(viewModel.getNoConsentMessage())
                         binding.hideFilter = false
+                        binding.hideRequestsList = it.getArtifacts().isNullOrEmpty()
                     }
                     parentViewModel.showRefreshing(false)
                     viewModel.isLoadingMore.set(View.INVISIBLE)
@@ -90,24 +90,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                         getString(string.ok))
                 }
             }
-
         })
-
-        viewModel.grantedConsentDetailsResponse.observe(
-            this,
-            Observer<PayloadResource<List<GrantedConsentDetailsResponse>>> { payload ->
-                when (payload) {
-                    is Success -> {
-                        payload.data?.firstOrNull()?.consentDetail?.let {
-                            viewModel.revokeConsent(it.id)
-                        }
-                    }
-
-                    is Loading -> {
-                        viewModel.showProgress(payload.isLoading)
-                    }
-                }
-            })
 
         viewModel.revokeConsentResponse.observe(viewLifecycleOwner, Observer<PayloadResource<Void>> {
             when (it) {
@@ -160,7 +143,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     private fun initBindings() {
         binding.viewModel = viewModel
-        binding.noNewConsentsMessage = getString(R.string.no_granted_consents)
         binding.listener = this
         binding.hideRequestsList = true
         binding.hideFilter = true
@@ -187,7 +169,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     }
 
     private fun renderConsentRequests(requests: List<Consent>, selectedSpinnerPosition: Int) {
-        consentsListAdapter.updateData(requests.reversed())
+        consentsListAdapter.updateData(requests)
     }
 
 
@@ -214,6 +196,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
 
     override fun askForConsentPin(iDataBindingModel: IDataBindingModel) {
         consentToRevoke = (iDataBindingModel as Consent)
+
         val intent = Intent(context, PinVerificationActivity::class.java)
         intent.putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_REVOKE.ordinal)
         startActivityForResult(intent, REQUEST_CODE_PIN_VERIFICATION)
@@ -235,7 +218,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_PIN_VERIFICATION) {
             if (resultCode == Activity.RESULT_OK) {
-                viewModel.getGrantedConsentDetails(consentToRevoke.id)
+                viewModel.revokeConsent(consentToRevoke.id)
             }
         }
     }
@@ -249,4 +232,6 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun setupScrollListener() {
         binding.rvConsents.addOnScrollListener(viewModel.paginationScrollListener)
     }
+
+
 }

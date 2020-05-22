@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.ConfirmPinFragmentBinding
+import `in`.projecteka.jataayu.consent.viewmodel.CreatePinActivityViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.UserVerificationViewModel
 import `in`.projecteka.jataayu.core.ConsentScopeType
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
@@ -16,6 +17,7 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import `in`.projecteka.jataayu.presentation.wobble
 import `in`.projecteka.jataayu.util.extension.setTitle
+import `in`.projecteka.jataayu.util.extension.showShortToast
 import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.os.Bundle
@@ -25,12 +27,14 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val PIN = "PIN"
 
 class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpChangeHandler {
     private lateinit var binding: ConfirmPinFragmentBinding
+    private val parentViewmodel: CreatePinActivityViewModel by sharedViewModel()
 
     companion object {
         fun newInstance(otp: String): ConfirmPinFragment {
@@ -58,16 +62,31 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
     }
 
     private fun initObservers() {
+
+        viewModel.updatePinResponse.observe(this, Observer {
+            showShortToast(getString(R.string.pin_updated))
+            activity?.finish()
+        })
+
         viewModel.createPinResponse.observe(this, Observer {
 
             when (it) {
                 is Loading -> viewModel.showProgress(it.isLoading, R.string.creating_pin)
                 is Success -> {
-                    activity?.let {
-                        arguments?.let { bundle ->
-                            bundle.getString(PIN)?.let { pin ->
-                                if (binding.etPin.text.toString() == pin) {
-                                    viewModel.verifyUser(binding.etPin.text.toString(), ConsentScopeType.SCOPE_GRAND)
+                    if (parentViewmodel.scopeType.get() == ConsentScopeType.SCOPE_PIN_VERIFY) {
+                        showShortToast(getString(R.string.pin_created))
+                        viewModel.preferenceRepository.pinCreated = true
+                        activity?.finish()
+                    } else {
+                        activity?.let {
+                            arguments?.let { bundle ->
+                                bundle.getString(PIN)?.let { pin ->
+                                    if (binding.etPin.text.toString() == pin) {
+                                        viewModel.verifyUser(
+                                            binding.etPin.text.toString(),
+                                            parentViewmodel.scopeType.get()!!
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -127,7 +146,11 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
         arguments?.let { bundle ->
             bundle.getString(PIN)?.let { pin ->
                 if (confirmedPin == pin) {
-                    viewModel.createPin(confirmedPin)
+                    if (parentViewmodel.scopeType.get() == ConsentScopeType.SCOPE_PIN_VERIFY && viewModel.preferenceRepository.pinCreated) {
+                        viewModel.updatePin(confirmedPin)
+                    } else {
+                        viewModel.createPin(confirmedPin)
+                    }
                 } else {
                     binding.lblInvalidPin.visibility = VISIBLE
                     binding.etPin.setText("")

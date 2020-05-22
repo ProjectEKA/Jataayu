@@ -28,6 +28,15 @@
         <variable
             name="clickHandler"
             type="in.projecteka.jataayu.provider.ui.handler.PatientAccountsScreenHandler" />
+        <variable
+            name="linkSelected"
+            type="String" />
+        <variable
+            name="noLinkingAccounts"
+            type="String" />
+        <variable
+            name="hideNoLinkingAccountView"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,6 +47,18 @@
         android:clipToPadding="false"
         android:padding="@dimen/content_margin_medium">
 
+        <TextView
+            android:id="@+id/lbl_no_new_requests"
+            style="@style/TextAppearance.ListItemHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:visibility="gone"
+            android:text="@{noLinkingAccounts}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:toggledVisibility="@{!hideNoLinkingAccountView}"/>
 
         <TextView
             android:id="@+id/lbl_we_found_following"
@@ -95,6 +116,7 @@
             android:text="@string/select_accounts"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
+            app:toggledVisibility="@{hideNoLinkingAccountView}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_reference_number" />
@@ -127,8 +149,8 @@
                 android:onClick="@{clickHandler::onLinkAccountsClick}"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
-                android:text="@string/link_selected"
-                tools:text="@string/link_accounts" />
+                android:text="@{linkSelected}"
+                tools:text="@string/link_records" />
         </FrameLayout>
         <include
             android:id="@+id/progress_bar_layout"

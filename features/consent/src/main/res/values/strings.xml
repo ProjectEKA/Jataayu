@@ -8,6 +8,7 @@
     <string name="new_request">New Request</string>
     <string name="granted_consent">Granted Consent</string>
     <string name="denied_consent">Denied Consent</string>
+    <string name="revoked_consent">Revoked Consent</string>
     <string name="expired_consent">Expired Consent</string>
     <string name="edit_request">Edit request</string>
     <string name="confirm_request">Confirm request</string>
@@ -16,8 +17,6 @@
     <string name="deny">deny</string>
     <string name="grant_request">Grant consent</string>
     <string name="consent_expiry">Consent expiry</string>
-    <string name="no_new_consent_requests">No new consent requests</string>
-    <string name="no_granted_consents">No granted consents</string>
     <string name="loading_requests">We are loading your consent requests\n\nThis may take up a few seconds&#8230;</string>
     <string name="loading_linked_accounts">We are loading your accounts\n\nThis may take up a few seconds&#8230;</string>
 
@@ -68,4 +67,6 @@
     <string name="consent_revoked">Consent Revoked Successfully</string>
     <string name="blocked_user_exceed_limit">You have exceeded the number of  attempts. Please try again after sometime.</string>
     <string name="consent_expiry_message">Cannot process the request as the consent request has expired</string>
+    <string name="pin_updated">Consent PIN changed successfully</string>
+    <string name="pin_created">Consent PIN created successfully</string>
 </resources>

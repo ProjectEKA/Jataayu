@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.GrantedConsentDetailsFragmentBinding
+import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.viewmodel.GrantedConsentDetailsViewModel
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
@@ -13,7 +14,6 @@ import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.util.extension.setTitle
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -99,7 +99,7 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
 
     override fun onVisible() {
         super.onVisible()
-        setTitle(R.string.granted_consent)
+        (activity as? ConsentDetailsActivity)?.binding?.title = getTitle()
     }
 
     override fun onStop() {
@@ -117,6 +117,15 @@ class GrantedConsentDetailsFragment : BaseFragment(), ItemClickCallback {
 
         if (viewModel.linkedAccountsResponse.value == null) {
             viewModel.getLinkedAccounts()
+        }
+    }
+
+    private fun getTitle(): String {
+        return when(consent.status) {
+            RequestStatus.REVOKED -> getString(R.string.revoked_consent)
+            RequestStatus.GRANTED -> getString(R.string.granted_consent)
+            RequestStatus.EXPIRED ->  getString(R.string.expired_consent)  //if (DateTimeUtils.isDateExpired(consent.permission.dataEraseAt))
+            else ->  { getString(R.string.grant_request) }
         }
     }
 

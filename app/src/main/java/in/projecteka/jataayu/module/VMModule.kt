@@ -37,7 +37,7 @@ val viewModelModule = module {
 
     //Login
     viewModel { LoginViewModel() }
-    viewModel { ConsentManagerIDInputViewModel(get()) }
+    viewModel { ConsentManagerIDInputViewModel(get(), get()) }
     viewModel { PasswordInputViewModel(get(), get(), get()) }
     viewModel { LoginOtpViewModel(get(), get(), get()) }
 
@@ -50,18 +50,22 @@ val viewModelModule = module {
     viewModel { GrantedConsentDetailsViewModel(get()) }
 
     //Provider Search
-    viewModel { ProviderSearchViewModel(get(), get(), get()) }
+    viewModel { ProviderSearchViewModel(get(), get(), get(), get()) }
     viewModel { ProviderActivityViewModel() }
 
     //User Verification
-    viewModel { UserVerificationViewModel(get(), get(), get()) }
+    viewModel { UserVerificationViewModel(get(), get(), get(), get()) }
     viewModel { PinVerificationViewModel() }
+    viewModel { CreatePinActivityViewModel() }
 
     //Forgot Password
     viewModel { ResetPasswordActivityViewModel() }
     viewModel { ReadIdentifierFragmentViewModel(get()) }
     viewModel { ResetPasswordOtpVerificationViewModel(get()) }
     viewModel { ResetPasswordFragmentViewModel(get()) }
+
+    //Change Password
+    viewModel { ChangePasswordViewModel(get()) }
 
     //Profile
     viewModel { ProfileActivityViewModel()}
