@@ -13,9 +13,9 @@
         android:id="@+id/app_toolbar"
         android:layout_height="@dimen/toolbar_size"
         android:layout_width="match_parent"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:navigationIcon="?android:attr/homeAsUpIndicator"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@{title}" />
+<!--    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+<!--    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
 
 </layout>

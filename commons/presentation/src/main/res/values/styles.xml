@@ -2,7 +2,6 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -95,6 +94,9 @@
         <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 
+
+<!--    Text styles -->
+
     <style name="TextAppearance">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/black</item>
@@ -162,6 +164,10 @@
     <style name="TextAppearance.Light" parent="TextAppearance.ListItemSubHeader">
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
+
+
+
+<!--    Widget styles-->
 
     <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
         <item name="fontFamily">sans-serif</item>
