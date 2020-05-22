@@ -16,7 +16,6 @@ import android.text.InputType
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
-import com.google.android.material.chip.ChipGroup
 import java.util.regex.Pattern
 
 class ConfirmAccountViewModel(private val repository: UserAccountsRepository,

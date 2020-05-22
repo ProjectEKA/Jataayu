@@ -2,7 +2,6 @@ package `in`.projecteka.jataayu.user.account.ui.fragment
 
 
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.AccountCreationActivityViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
@@ -20,10 +19,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListener{
 
-    //private val disposables = CompositeDisposable()
-    //    private var isCriteriaMatch: Boolean = true
-    //    private var selectedYob: Int? = null
-    //    private var ayushmanId: String? = null
     private val viewModel: CreateAccountViewModel by viewModel()
     private val parentVM: AccountCreationActivityViewModel by sharedViewModel()
     private lateinit var binding: FragmentCreateAccountBinding
@@ -44,16 +39,17 @@ class CreateAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         super.onViewCreated(view, savedInstanceState)
         initSpinner()
         initBindings()
-//        initObservers()
     }
+
     private fun initSpinner() {
-        val arrayAdapter = ArrayAdapter<String>(
+        val arrayAdapter = ArrayAdapter(
             context!!,
             android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, viewModel.getYearsToPopulate())
         binding.spinnerYob.adapter = arrayAdapter
         arrayAdapter.notifyDataSetChanged()
         binding.spinnerYob.setSelection(0)
     }
+
     private fun initBindings() {
         binding.viewModel = viewModel
         binding.cgGender.setOnCheckedChangeListener(viewModel)
