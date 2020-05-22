@@ -111,7 +111,7 @@ data class Consent(
     }
 
     companion object  {
-        fun getNoConsentMessageResourceId(status: RequestStatus): Int {
+        fun getNoConsentMessageResourceId(status: RequestStatus, consentType: ConsentType): Int {
             return when(status) {
                 GRANTED -> {
                     R.string.no_granted_consents
@@ -120,7 +120,10 @@ data class Consent(
                     R.string.no_revoked_consents
                 }
                 EXPIRED -> {
-                    R.string.no_expired_consents
+                    when(consentType) {
+                        ConsentType.REQUESTS -> R.string.no_expired_consent_requests
+                        ConsentType.ARTIFACTS -> R.string.no_expired_consents
+                    }
                 }
                 DENIED -> {
                     R.string.no_denied_consents
@@ -129,9 +132,17 @@ data class Consent(
                     R.string.no_new_consent_requests
                 }
                 ALL -> {
-                    R.string.no_consents
+                    when(consentType) {
+                        ConsentType.REQUESTS -> R.string.no_consent_requests
+                        ConsentType.ARTIFACTS -> R.string.no_consents
+                    }
                 }
             }
         }
     }
+}
+
+enum class ConsentType {
+    REQUESTS,
+    ARTIFACTS
 }
