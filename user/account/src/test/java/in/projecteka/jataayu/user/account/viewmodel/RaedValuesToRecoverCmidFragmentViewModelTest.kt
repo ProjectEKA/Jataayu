@@ -19,7 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 
 @RunWith(MockitoJUnitRunner::class)
-class RaedValuesToRecoveerCmidFragmentViewModelTest {
+class RaedValuesToRecoverCmidFragmentViewModelTest {
 
     private lateinit var viewModel: ReadValuesFragmentViewModel
 
