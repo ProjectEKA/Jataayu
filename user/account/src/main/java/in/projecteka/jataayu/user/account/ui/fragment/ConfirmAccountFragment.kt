@@ -91,7 +91,7 @@ class ConfirmAccountFragment : BaseFragment() {
                 }
                 is PartialFailure ->
                     if(it.error?.code == ERROR_CODE_USER_ALREADY_EXISTS)
-                        viewModel.usernameErrorLbl.set(R.string.user_already_exits)
+                        viewModel.showUserAlreadyExistsError()
                     else
                         activity?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
                 is Failure ->

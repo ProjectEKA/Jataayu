@@ -128,4 +128,11 @@ class ConfirmAccountViewModelTest {
         assertEquals(InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD,viewModel.confirmationPasswordInputType.get())
 
     }
+
+    @Test
+    fun `shows username already exists message on error label`() {
+        viewModel.showUserAlreadyExistsError()
+        assertEquals(`in`.projecteka.jataayu.user.account.R.string.user_already_exits,  viewModel.usernameErrorLbl.get())
+        assertEquals(true, viewModel.showErrorUserName.get())
+    }
 }

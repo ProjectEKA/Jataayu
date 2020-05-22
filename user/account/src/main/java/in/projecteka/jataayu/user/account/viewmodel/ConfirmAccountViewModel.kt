@@ -159,4 +159,9 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
             yearOfBirth = selectedYoB,
             unverifiedIdentifiers = unverifiedIdentifiers)
     }
+
+    internal fun showUserAlreadyExistsError() {
+        usernameErrorLbl.set(R.string.user_already_exits)
+        showErrorUserName.set(true)
+    }
 }
