@@ -4,6 +4,8 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
+import `in`.projecteka.resetpassword.model.GenerateOTPRequest
+import `in`.projecteka.resetpassword.model.GenerateOTPResponse
 import `in`.projecteka.resetpassword.model.VerifyOTPRequest
 import `in`.projecteka.resetpassword.model.VerifyOTPResponse
 import `in`.projecteka.resetpassword.repository.ResetPasswordRepository
@@ -25,6 +27,7 @@ class ResetPasswordOtpVerificationViewModel(val resetPasswordRepository: ResetPa
 
     val onClickValidateEvent = SingleLiveEvent<Void>()
     val verifyOtpResponse = PayloadLiveData<VerifyOTPResponse>()
+    val generateOtpResponse = PayloadLiveData<GenerateOTPResponse>()
 
     private var tempToken: String? = null
 
@@ -42,6 +45,9 @@ class ResetPasswordOtpVerificationViewModel(val resetPasswordRepository: ResetPa
 
     fun onClickValidate() {
         onClickValidateEvent.call()
+    }
+    fun generateOtp(consentManagerId: String) {
+        generateOtpResponse.fetch(resetPasswordRepository.generateOtp(GenerateOTPRequest(consentManagerId)))
     }
 
     fun verifyOtp(sessionId: String, otp: String) {
