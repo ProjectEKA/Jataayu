@@ -80,6 +80,13 @@
         <item name="android:textColor">@color/outline_button_text_color_selector</item>
     </style>
 
+
+
+
+    <style name="SuffixStyle" parent="TextInputEditTextStyle">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="Button.Negative" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:drawablePadding">@dimen/content_padding_medium</item>
         <item name="icon">@drawable/ic_deny</item>
@@ -98,6 +105,12 @@
 <!--    Text styles -->
 
     <style name="TextAppearance">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextAppearance.Links">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">sans-serif</item>
@@ -243,4 +256,66 @@
     </style>
 
     <color name="labelTextColor">#464646</color>
+
+<!--    NHS styles-->
+
+    <style name="TextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/text_input_layout_height</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="PasswordTextInputLayoutStyle" parent="TextInputLayoutStyle">
+        <item name="endIconMode">password_toggle</item>
+    </style>
+
+    <style name="TextInputEditTextStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="singleLine">true</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="PasswordTextInputEditTextStyle" parent="TextInputEditTextStyle">
+        <item name="android:inputType">textPassword</item>
+        <item name="android:drawableLeft">@drawable/ic_password</item>
+        <item name="android:drawableStart">@drawable/ic_password</item>
+        <item name="android:drawablePadding">@dimen/content_margin_small</item>
+    </style>
+
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:elevation">@dimen/cardview_elevation</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:drawablePadding">@dimen/content_margin_small</item>
+        <item name="android:textSize">@dimen/text_size_extra_medium</item>
+        <item name="backgroundTint">@color/button_color_selector</item>
+        <item name="cornerRadius">@dimen/button_corner_radius_new</item>
+        <item name="android:stateListAnimator">@animator/button_state_list_anim</item>
+        <item name="android:textColor">@color/button_text_color_selector</item>
+    </style>
+
+    <style name="NcgNhsTitleStyle">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_extra_large</item>
+        <item name="android:text">@string/national_cancer_grid</item>
+    </style>
+
+    <style name="TextLinkStyle">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:padding">@dimen/content_margin_medium</item>
+    </style>
+
+
 </resources>

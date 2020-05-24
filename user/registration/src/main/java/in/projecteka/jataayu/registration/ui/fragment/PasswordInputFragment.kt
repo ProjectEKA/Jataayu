@@ -36,11 +36,6 @@ class PasswordInputFragment : Fragment() {
     }
 
     private fun initObserver() {
-
-        viewModel.onPasswordVisibilityToggleEvent.observe(viewLifecycleOwner, Observer {
-            binding.etPassword.setSelection(it)
-        })
-
         binding.btnLogin.setOnClickListener {
             viewModel.onLoginClicked(loginViewModel.cmId)
         }

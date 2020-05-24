@@ -8,6 +8,7 @@
     <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_extra_small">12sp</dimen>
+    <dimen name="text_size_extra_medium">18sp</dimen>
 
     <dimen name="toolbar_title_text_size">26sp</dimen>
 
@@ -25,6 +26,7 @@
     <dimen name="content_margin_large">18dp</dimen>
     <dimen name="content_margin_extra_large">20dp</dimen>
     <dimen name="content_margin_extra_extra_large">24dp</dimen>
+    <dimen name="content_margin_extra_extra_extra_large">32dp</dimen>
     <dimen name="content_margin_extra_extra_small">8dp</dimen>
     <dimen name="content_margin_36">36dp</dimen>
 
@@ -38,6 +40,7 @@
     <dimen name="button_height">56dp</dimen>
     <dimen name="edittext_height">40dp</dimen>
     <dimen name="button_corner_radius">2dp</dimen>
+    <dimen name="button_corner_radius_new">4dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
@@ -61,5 +64,8 @@
     <dimen name="prefix_margin">40dp</dimen>
     <dimen name="edit_text_height_large">56dp</dimen>
     <dimen name="otp_et_dimen">40dp</dimen>
+
+
+    <dimen name="text_input_layout_height">56dp</dimen>
 
 </resources>

@@ -50,12 +50,12 @@
                 android:visibility="@{viewModel.accountLockBlockDividerEnable}"
                 android:layout_marginTop="24dp"
                 android:background="#14212121"
-                app:layout_constraintTop_toTopOf="@id/tv_welcome"
+                app:layout_constraintTop_toTopOf="@id/tv_title"
                 tools:ignore="MissingConstraints"
                 tools:layout_editor_absoluteX="1dp" />
 
             <TextView
-                android:id="@+id/tv_welcome"
+                android:id="@+id/tv_title"
                 style="@style/TextAppearance.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
