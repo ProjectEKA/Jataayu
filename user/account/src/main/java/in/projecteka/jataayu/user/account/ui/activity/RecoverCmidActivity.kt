@@ -34,23 +34,28 @@ class RecoverCmidActivity : BaseActivity<ActivityRecoverCmidBinding>() {
 
             when(it){
                 RecoverCmidActivityViewModel.Show.READ_VALUES_SCREEN -> {
-                   supportActionBar?.show()
                     addFragment(
                         ReadValuesToRecoverCmidFragment.newInstance(),
                         R.id.fragment_container
                     )
                 }
                 RecoverCmidActivityViewModel.Show.DISPLAY_CMID_SCREEN -> {
-                    supportActionBar?.hide()
                     addFragment(DisplayCmidFragment.newInstance(),R.id.fragment_container)
                 }
                 RecoverCmidActivityViewModel.Show.NO_OR_MULTIPLE_MATCHING_RECORDS -> {
-                    supportActionBar?.hide()
                     addFragment(NoMatchingRecordsFragment.newInstance(),R.id.fragment_container)
                 }
 
             }
         })
+    }
+
+    fun updateActionbar(show: Boolean){
+        if (show){
+            supportActionBar?.show()
+        } else {
+            supportActionBar?.hide()
+        }
     }
 
     override fun layoutId(): Int =

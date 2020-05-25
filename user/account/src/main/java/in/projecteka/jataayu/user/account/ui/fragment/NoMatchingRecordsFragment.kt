@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.projecteka.jataayu.user.account.databinding.FragmentNoMatchingRecordsBinding
+import `in`.projecteka.jataayu.user.account.ui.activity.RecoverCmidActivity
 import `in`.projecteka.jataayu.user.account.viewmodel.NoMatchingRecordsFragmentViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.RecoverCmidActivityViewModel
 import android.os.Bundle
@@ -40,10 +41,16 @@ class NoMatchingRecordsFragment : Fragment()  {
     private fun initObservers() {
         viewModel.redirectToReviewEvent.observe(this, Observer {
             fragmentManager?.popBackStack()
+            (activity as RecoverCmidActivity).updateActionbar(true)
         })
     }
 
     private fun initBindings() {
         binding.viewModel = viewModel
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as RecoverCmidActivity).updateActionbar(false)
     }
 }

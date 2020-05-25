@@ -114,4 +114,6 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
         }
     }
 
+
+
 }

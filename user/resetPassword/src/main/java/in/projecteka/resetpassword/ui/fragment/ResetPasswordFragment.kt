@@ -9,8 +9,12 @@ import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.util.extension.showLongToast
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
+import `in`.projecteka.jataayu.util.startDashboard
+import `in`.projecteka.jataayu.util.startLogin
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordActivityViewModel
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordFragmentViewModel
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +25,7 @@ import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ResetPasswordFragment : Fragment() {
+class ResetPasswordFragment() : Fragment() {
 
     private lateinit var binding: FragmentResetPasswordBinding
     private val viewModel: ResetPasswordFragmentViewModel by viewModel()
@@ -61,7 +65,17 @@ class ResetPasswordFragment : Fragment() {
                 is Loading -> viewModel.showProgress(it.isLoading)
                 is Success -> {
                     showLongToast(getString(R.string.password_changed))
-                    activity?.finish()
+                    if(viewModel.preferenceRepository.loginMode == "OTP"){
+                        viewModel.onLoginSuccess(it.data!!)
+                        startDashboard(activity!!) {
+                            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        }
+                    }
+                    else {
+                       startLogin(activity!!){
+                           flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                       }
+                    }
                 }
                 is PartialFailure -> {
                     activity?.showAlertDialog(

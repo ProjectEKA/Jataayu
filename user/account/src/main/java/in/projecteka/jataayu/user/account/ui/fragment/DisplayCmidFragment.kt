@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentDisplayCmidBinding
+import `in`.projecteka.jataayu.user.account.ui.activity.RecoverCmidActivity
 import `in`.projecteka.jataayu.user.account.viewmodel.DisplayCmidFragmentViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.RecoverCmidActivityViewModel
 import android.os.Bundle
@@ -51,9 +52,7 @@ class DisplayCmidFragment : Fragment()  {
 
     private fun initObservers() {
         viewModel.redirectToEvent.observe(this, Observer {
-            if (it == DisplayCmidFragmentViewModel.Redirect.REVIEW) {
-               fragmentManager?.popBackStack()
-            } else if (it == DisplayCmidFragmentViewModel.Redirect.BACK_TO_LOGIN){
+            if (it == DisplayCmidFragmentViewModel.Redirect.BACK_TO_LOGIN){
                 activity!!.finish()
             }
         })
@@ -61,5 +60,10 @@ class DisplayCmidFragment : Fragment()  {
 
     private fun initBindings() {
         binding.viewModel = viewModel
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as RecoverCmidActivity).updateActionbar(false)
     }
 }

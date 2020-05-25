@@ -3,7 +3,6 @@ package `in`.projecteka.resetpassword.ui.activity
 import `in`.projecteka.forgotpassword.R
 import `in`.projecteka.forgotpassword.databinding.ActivityResetPasswordBinding
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
-import `in`.projecteka.resetpassword.ui.fragment.ReadIdentifierFragment
 import `in`.projecteka.resetpassword.ui.fragment.ResetPasswordFragment
 import `in`.projecteka.resetpassword.ui.fragment.ResetPasswordOtpFragment
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordActivityViewModel
@@ -21,6 +20,10 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (intent.hasExtra("consent_id")){
+            viewmodel.consentManagerId = intent.getStringExtra("consent_id")
+        }
         initObservers()
         viewmodel.init()
     }
@@ -28,11 +31,9 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
     private fun initObservers() {
         viewmodel.redirectTo.observe(this, Observer {
             addFragment(when(it){
-                ResetPasswordActivityViewModel.Show.FIRST_SCREEN ->
-                    ReadIdentifierFragment.newInstance()
-                ResetPasswordActivityViewModel.Show.SECOND_SCREEN ->
+                ResetPasswordActivityViewModel.Show.OTP_VERIFICATION_SCREEN ->
                     ResetPasswordOtpFragment.newInstance()
-                ResetPasswordActivityViewModel.Show.THIRD_SECREEN ->
+                ResetPasswordActivityViewModel.Show.SET_PASSWORD_SCREEN ->
                     ResetPasswordFragment.newInstance()
 
             },R.id.fragment_container)

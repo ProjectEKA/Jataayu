@@ -1,10 +1,13 @@
 package `in`.projecteka.resetpassword.viewmodel
 
 import `in`.projecteka.forgotpassword.R
+import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
+import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.resetpassword.model.ResetPasswordRequest
 import `in`.projecteka.resetpassword.model.ResetPasswordResponse
 import `in`.projecteka.resetpassword.repository.ResetPasswordRepository
@@ -14,7 +17,7 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import java.util.regex.Pattern
 
-class ResetPasswordFragmentViewModel(val resetPasswordRepository: ResetPasswordRepository): BaseViewModel() {
+class ResetPasswordFragmentViewModel(val resetPasswordRepository: ResetPasswordRepository, val preferenceRepository: PreferenceRepository, val credentialsRepository: CredentialsRepository): BaseViewModel() {
     val inputConfirmPasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
     val createPasswordInputType = ObservableInt(hiddenPasswordInputType())
     val confirmPasswordInputType = ObservableInt(hiddenPasswordInputType())
@@ -99,5 +102,12 @@ class ResetPasswordFragmentViewModel(val resetPasswordRepository: ResetPasswordR
 
     fun resetPassword() {
         resetPasswordResponse.fetch(resetPasswordRepository.resetPassword(ResetPasswordRequest(inputConfirmPasswordLbl.get().toString()), tempToken?:""))
+    }
+
+    fun onLoginSuccess(response: ResetPasswordResponse) {
+        credentialsRepository.accessToken =
+            "${response.tokenType.capitalize()} ${response.accessToken}"
+        preferenceRepository.isUserLoggedIn = true
+        credentialsRepository.refreshToken = response.refreshToken
     }
 }
