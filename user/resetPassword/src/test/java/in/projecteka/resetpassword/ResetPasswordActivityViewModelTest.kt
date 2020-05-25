@@ -28,14 +28,14 @@ class ResetPasswordActivityViewModelTest {
     }
 
     @Test
-    fun `should set redirect value to SECOND`() {
-        viewModel.onOtpFragmentRedirectRequest()
-        assertEquals(viewModel.redirectTo.value, ResetPasswordActivityViewModel.Show.SECOND_SCREEN)
+    fun `should set redirect value to OTP Screen`() {
+        viewModel.init()
+        assertEquals(viewModel.redirectTo.value, ResetPasswordActivityViewModel.Show.OTP_VERIFICATION_SCREEN)
     }
 
     @Test
     fun `should set redirect value to THIRD`() {
         viewModel.onVerifyOtpRedirectRequest()
-        assertEquals(viewModel.redirectTo.value, ResetPasswordActivityViewModel.Show.THIRD_SECREEN)
+        assertEquals(viewModel.redirectTo.value, ResetPasswordActivityViewModel.Show.SET_PASSWORD_SCREEN)
     }
 }

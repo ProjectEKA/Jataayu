@@ -39,7 +39,6 @@ val viewModelModule = module {
     viewModel { LoginViewModel() }
     viewModel { ConsentManagerIDInputViewModel(get(), get()) }
     viewModel { PasswordInputViewModel(get(), get(), get()) }
-    viewModel { LoginOtpViewModel(get(), get(), get()) }
 
     //Consent
     viewModel { ConsentHostFragmentViewModel() }
@@ -60,9 +59,8 @@ val viewModelModule = module {
 
     //Forgot Password
     viewModel { ResetPasswordActivityViewModel() }
-    viewModel { ReadIdentifierFragmentViewModel(get()) }
     viewModel { ResetPasswordOtpVerificationViewModel(get()) }
-    viewModel { ResetPasswordFragmentViewModel(get()) }
+    viewModel { ResetPasswordFragmentViewModel(get(),get(),get()) }
 
     //Change Password
     viewModel { ChangePasswordViewModel(get()) }
