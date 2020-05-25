@@ -151,12 +151,16 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
         }
 
         return CreateAccountRequest(
-            userName = "${inputUsernameLbl.get()}${usernameProviderLbl.get()}" ,
+            userName = getCmId(),
             password = inputPasswordLbl.get() ?: "",
             name = inputFullName.orEmpty(),
             gender = inputGender.orEmpty(),
             yearOfBirth = selectedYoB,
             unverifiedIdentifiers = unverifiedIdentifiers)
+    }
+
+    internal fun getCmId(): String{
+        return "${inputUsernameLbl.get()}${usernameProviderLbl.get()}"
     }
 
     internal fun showUserAlreadyExistsError() {

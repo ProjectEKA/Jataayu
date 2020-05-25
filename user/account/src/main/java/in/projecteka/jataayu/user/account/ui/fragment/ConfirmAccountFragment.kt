@@ -86,7 +86,7 @@ class ConfirmAccountFragment : BaseFragment() {
                 is Success -> {
                     viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
                     viewModel.preferenceRepository.isUserAccountCreated = true
-                    parentVM.cmId = viewModel.inputUsernameLbl.get().orEmpty()
+                    parentVM.cmId = viewModel.getCmId()
                     parentVM.redirectToCreateAccountSuccessPage()
                 }
                 is PartialFailure ->
