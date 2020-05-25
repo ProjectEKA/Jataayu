@@ -50,4 +50,5 @@
     <string name="consent_placeholder">1234</string>
     <string name="consent_pin_not_created">Consent PIN not created</string>
     <string name="update">Update</string>
+    <string name="dummy_password">12345678910</string>
 </resources>

@@ -11,7 +11,6 @@ import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import java.util.*
 
 class ProfileFragmentViewModel(val repository: UserAccountsRepository,
                                val preferenceRepository: PreferenceRepository,
@@ -40,27 +39,19 @@ class ProfileFragmentViewModel(val repository: UserAccountsRepository,
 
     fun yearOfBirth(): String{
         val yob = preferenceRepository.yearOfBirth
-        if (yob == 0) return ""
-        else return yob.toString()
+        return if (yob == 0) " "
+        else yob.toString()
+    }
+
+    fun ayushmanBharatId(): String {
+        val ayushmanId = preferenceRepository.ayushmanBharatId
+        return if (ayushmanId == null) " "
+        else ayushmanId
     }
 
     fun init() {
         isEditMode.value = false
         setConsentPinStatus()
-    }
-
-
-    internal fun getYearsToPopulate(): List<String> {
-        val years = arrayListOf<String>(YOB)
-        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        for (year in currentYear downTo (currentYear - 120)) {
-            years.add(year.toString())
-        }
-        return years
-    }
-
-    fun selectedYoB(yob: Int){
-        this.yob = yob
     }
 
     fun logout() {

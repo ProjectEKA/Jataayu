@@ -51,8 +51,8 @@
     </style>
 
     <style name="FAB" parent="@style/Widget.Design.FloatingActionButton">
-        <item name="backgroundTint">@color/colorPrimary</item>
-        <item name="backgroundColor">@color/colorPrimary</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="backgroundColor">@color/colorAccent</item>
         <item name="iconTint">@color/white</item>
         <item name="android:shadowColor">@color/colorPrimary</item>
     </style>
@@ -83,8 +83,9 @@
 
 
 
-    <style name="SuffixStyle" parent="TextInputEditTextStyle">
+    <style name="PrefixStyle">
         <item name="android:textColor">@color/black</item>
+        <item name="android:layout_gravity">center_vertical</item>
     </style>
 
     <style name="Button.Negative" parent="Widget.MaterialComponents.Button.OutlinedButton">
@@ -263,6 +264,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">@dimen/text_input_layout_height</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="prefixTextAppearance">@style/PrefixStyle</item>
     </style>
 
     <style name="PasswordTextInputLayoutStyle" parent="TextInputLayoutStyle">
@@ -273,6 +275,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:cursorVisible">false</item>
         <item name="android:layout_gravity">center</item>
         <item name="singleLine">true</item>
         <item name="android:textSize">@dimen/text_size_large</item>
@@ -285,6 +288,11 @@
         <item name="android:drawablePadding">@dimen/content_margin_small</item>
     </style>
 
+    <style name="MobileNumberTextInputEditTextStyle" parent="TextInputEditTextStyle">
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">10</item>
+    </style>
+
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_height">@dimen/button_height</item>
         <item name="android:layout_width">match_parent</item>
@@ -295,7 +303,11 @@
         <item name="backgroundTint">@color/button_color_selector</item>
         <item name="cornerRadius">@dimen/button_corner_radius_new</item>
         <item name="android:stateListAnimator">@animator/button_state_list_anim</item>
-        <item name="android:textColor">@color/button_text_color_selector</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_marginLeft">@dimen/content_margin_medium</item>
+        <item name="android:layout_marginStart">@dimen/content_margin_medium</item>
+        <item name="android:layout_marginRight">@dimen/content_margin_medium</item>
+        <item name="android:layout_marginEnd">@dimen/content_margin_medium</item>
     </style>
 
     <style name="NcgNhsTitleStyle">

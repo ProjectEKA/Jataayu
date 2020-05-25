@@ -29,16 +29,7 @@ class RegistrationActivity : BaseActivity<RegistrationActivityBinding>() {
         binding.viewModel = viewModel
         viewModel.redirectToRegistrationScreen()
         initObservers()
-        initToolbar()
     }
-
-    private fun initToolbar() {
-        setSupportActionBar(binding.appToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        binding.appToolbar.setNavigationOnClickListener { onBackPressed() }
-    }
-
     private fun initObservers() {
         viewModel.redirectTo.observe(this, Observer {
             when (it) {
