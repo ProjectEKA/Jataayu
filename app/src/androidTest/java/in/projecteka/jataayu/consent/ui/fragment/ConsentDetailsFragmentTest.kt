@@ -9,7 +9,6 @@ import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.filters.LargeTest
 import androidx.test.runner.AndroidJUnit4
 import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.displayed
-import br.com.concretesolutions.kappuccino.assertions.VisibilityAssertions.notDisplayed
 import com.google.gson.Gson
 import okhttp3.mockwebserver.MockWebServer
 import org.greenrobot.eventbus.EventBus
@@ -22,7 +21,7 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class ConsentDetailsFragmentTest{
+class ConsentDetailsFragmentTest {
 
     @get:Rule
     var activityRule: IntentsTestRule<TestsOnlyActivity> =
@@ -34,35 +33,41 @@ class ConsentDetailsFragmentTest{
 
     private lateinit var webServer: MockWebServer
 
+
     @Before
     @Throws(Exception::class)
     fun setup() {
-
         webServer = MockWebServer()
         webServer.start(8080)
-
         webServer.dispatcher =
             MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
-        Thread.sleep(5000)
-
         readConsentAndLaunchFragment("consent_requested.json")
-        activityRule.activity.addFragment(RequestedConsentDetailsFragment(), R.id.fragment_container)
+        activityRule.activity.addFragment(
+            RequestedConsentDetailsFragment(),
+            R.id.fragment_container
+        )
     }
 
     private fun readConsentAndLaunchFragment(fileName: String) {
-        consent =  Gson().fromJson<Consent>(AssetReaderUtil.asset(activityRule.activity.applicationContext, fileName), Consent::class.java)!!
+        consent = Gson().fromJson<Consent>(
+            AssetReaderUtil.asset(
+                activityRule.activity.applicationContext,
+                fileName
+            ), Consent::class.java
+        )!!
 
         EventBus.getDefault().postSticky(consent)
     }
 
     @Test
-    fun shouldShowButtonsButtonIfStatusIsRequested(){
-        displayed{
+    fun shouldShowButtonsButtonIfStatusIsRequested() {
+        displayed {
             id(R.id.btn_edit)
             text("Edit")
         }
 
-        displayed { id(R.id.btn_grant)
+        displayed {
+            id(R.id.btn_grant)
             text("Grant consent")
         }
 
@@ -73,8 +78,8 @@ class ConsentDetailsFragmentTest{
     }
 
     @Test
-    fun shouldRenderConsentDetails(){
-        Thread.sleep(3000)
+    fun shouldRenderConsentDetails() {
+
         displayed {
             id(R.id.tv_requester_name)
             text("Dr. Lakshmi")
@@ -82,7 +87,7 @@ class ConsentDetailsFragmentTest{
 
         displayed {
             id(R.id.tv_requester_organization)
-            text("AIMS")
+            text("Max Health Care")
         }
 
         displayed {
@@ -102,7 +107,7 @@ class ConsentDetailsFragmentTest{
 
         displayed {
             id(R.id.tv_expiry)
-            text("05 PM, 30 Jan, 2030")
+            text("05 PM, 30 Jan, 3020")
         }
 
         displayed {
@@ -110,33 +115,41 @@ class ConsentDetailsFragmentTest{
             text("Condition")
             text("DiagnosticReport")
             text("Observation")
-            }
+        }
 
-        displayed { id(R.id.disclaimer)
-        text("By granting this consent, you also agree to let Dr. Lakshmi view your health information from all the linked accounts.")}
+        displayed {
+            id(R.id.disclaimer)
+            text("By granting this consent, you also agree to let Dr. Lakshmi view your health information from all the linked accounts.")
+        }
     }
 
     @Test
-    fun shouldNotShowButtonsForExpiredConsent(){
+    fun shouldShowButtonsForExpiredConsent() {
 
         readConsentAndLaunchFragment("consent_expired.json")
-        activityRule.activity.replaceFragment(RequestedConsentDetailsFragment(), R.id.fragment_container)
+        activityRule.activity.replaceFragment(
+            RequestedConsentDetailsFragment(),
+            R.id.fragment_container
+        )
 
-        notDisplayed { id(R.id.btn_edit)
-        text("Edit")}
+        displayed {
+            id(R.id.btn_edit)
+            text("Edit")
+        }
 
-        notDisplayed { id(R.id.btn_grant)
+        displayed {
+            id(R.id.btn_grant)
             text("Grant consent")
         }
 
-        notDisplayed {
+        displayed {
             id(R.id.btn_deny)
             text("deny")
         }
     }
 
     @After
-    fun tearDown(){
+    fun tearDown() {
         webServer.shutdown()
     }
-    }
+}

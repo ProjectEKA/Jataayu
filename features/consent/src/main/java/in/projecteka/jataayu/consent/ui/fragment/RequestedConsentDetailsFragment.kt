@@ -72,6 +72,9 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         initObservers()
         binding.clickHandler = this
         binding.viewModel = viewModel
+        getNameOf(consent.hiu) {
+            renderUi()
+        }
     }
 
     private fun initObservers() {
@@ -116,6 +119,10 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                         context?.showErrorDialog(it.error?.message)
                     }
                 }
+
+               is Failure -> {
+                    context?.showErrorDialog(it.error.localizedMessage)
+                }
             }
         })
         viewModel.consentDenyResponse.observe(this, Observer<PayloadResource<Void>> {
@@ -142,7 +149,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 }
                 is Failure -> {
                     context?.showAlertDialog(
-                        getString(R.string.failure), it.error?.message,
+                        getString(R.string.failure), it.error.message,
                         getString(android.R.string.ok)
                     )
                 }
@@ -162,7 +169,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
 
         with(binding) {
             this.consent = this@RequestedConsentDetailsFragment.consent
-            requestExpired = isExpiredOrGrantedOrDenied()
+            consentDenied = consent?.status == RequestStatus.DENIED
             isGrantedConsent = false
             cgRequestInfoTypes.removeAllViews()
         }
@@ -218,9 +225,6 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     override fun onVisible() {
         super.onVisible()
         (activity as? ConsentDetailsActivity)?.updateTitle(getTitle())
-        getNameOf(consent.hiu) {
-            renderUi()
-        }
     }
 
 
@@ -228,7 +232,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         return when(consent.status) {
             RequestStatus.DENIED -> getString(R.string.denied_consent)
             RequestStatus.GRANTED -> getString(R.string.granted_consent)
-            RequestStatus.EXPIRED ->  getString(R.string.expired_consent)  //if (DateTimeUtils.isDateExpired(consent.permission.dataEraseAt))
+            RequestStatus.EXPIRED ->  getString(R.string.expired_consent)
             else ->  { getString(R.string.new_request) }
         }
     }
@@ -262,6 +266,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             startActivityForResult(intent, 301)
         } else {
             val intent = Intent(context, CreatePinActivity::class.java)
+            intent.putExtra(KEY_SCOPE_TYPE, ConsentScopeType.SCOPE_GRAND.ordinal)
             startActivityForResult(intent, 201)
         }
     }

@@ -4,6 +4,7 @@ import android.content.Context
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -15,25 +16,30 @@ class MockServerDispatcher {
     inner class RequestDispatcher(private val context: Context) : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
 
-            val successResponse = MockResponse().setResponseCode(200)
+            Timber.d("url is ${request.path}")
+            val mockResponse = MockResponse().setResponseCode(200)
             return when {
-                request.path!!.startsWith("/providers?name=H") -> successResponse.setBody(
+                request.path == "/providers/10000005" -> mockResponse.setBody(
+                    AssetReaderUtil.asset(context, "provider_info_by_id_response.json"))
+                    .setBodyDelay(0, TimeUnit.MILLISECONDS)
+
+                request.path!!.startsWith("/providers?name=H") -> mockResponse.setBody(
                     AssetReaderUtil.asset(context, "health_insurance_providers.json")
                 )
 
-                request.path!!.startsWith("/requests") -> successResponse.setBody(
+                request.path!!.startsWith("/requests") -> mockResponse.setBody(
                     AssetReaderUtil.asset(context, "consent_list_response.json")
-                ).setBodyDelay(300, TimeUnit.MILLISECONDS)
+                ).setBodyDelay(0, TimeUnit.MILLISECONDS)
 
-                request.path!!.startsWith("/consent-requests") -> successResponse.setBody(
+                request.path!!.startsWith("/consent-requests") -> mockResponse.setBody(
                     AssetReaderUtil.asset(context, "consent-requests.json")
-                ).setBodyDelay(300, TimeUnit.MILLISECONDS)
+                ).setBodyDelay(0, TimeUnit.MILLISECONDS)
 
-                request.path!!.startsWith("/patients/links") -> successResponse.setBody(
+                request.path!!.startsWith("/patients/links") -> mockResponse.setBody(
                     AssetReaderUtil.asset(context, "linked_accounts.json"))
-                    .setBodyDelay(300, TimeUnit.MILLISECONDS)
+                    .setBodyDelay(0, TimeUnit.MILLISECONDS)
 
-                else -> successResponse.setBody(emptyProvidersResponse)
+                else -> mockResponse.setResponseCode(404)
             }
         }
     }
