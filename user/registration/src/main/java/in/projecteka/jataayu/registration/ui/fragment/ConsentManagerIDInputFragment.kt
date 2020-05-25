@@ -33,6 +33,7 @@ class ConsentManagerIDInputFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         binding = ConsentManagerIdInputFragmentBinding.inflate(inflater)
         binding.viewModel = viewModel
+        binding.etCmId.requestFocus()
         initObservers()
         return binding.root
     }

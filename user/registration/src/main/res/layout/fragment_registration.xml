@@ -17,7 +17,7 @@
         android:clipToPadding="false"
         tools:context=".ui.fragment.RegistrationFragment">
 
-        <TextView
+        <ImageView
             app:layout_constraintBottom_toTopOf="@+id/til_mobile_number"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -34,7 +34,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:hint="@string/mobile_number"
-            android:focusableInTouchMode="true"
             app:layout_constraintTop_toTopOf="parent"
             app:prefixText="@{viewModel.countryCode}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -42,6 +41,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:hint="99999 99999"
                 android:inputType="number"
+                android:id="@+id/tie_mobile_number"
                 android:maxLength="10"
                 android:text="@={viewModel.mobileNumberText}"
                 app:onValueChanged="@{viewModel}"

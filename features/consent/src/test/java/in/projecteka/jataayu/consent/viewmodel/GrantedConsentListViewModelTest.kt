@@ -186,6 +186,30 @@ class ConsentListViewModelTest {
         assertEquals(RequestStatus.GRANTED, consentViewModel.currentStatus.value)
     }
 
+    @Test
+    fun `should return empty messages when granted consents are empty`() {
+        consentViewModel.updateFilterSelectedItem(0)
+        assertEquals(R.string.no_granted_consents, consentViewModel.getNoConsentMessage())
+    }
+
+    @Test
+    fun `should return empty messages when expired consents are empty`() {
+        consentViewModel.updateFilterSelectedItem(2)
+        assertEquals(R.string.no_expired_consents, consentViewModel.getNoConsentMessage())
+    }
+
+    @Test
+    fun `should return empty messages when revoked consents are empty`() {
+        consentViewModel.updateFilterSelectedItem(1)
+        assertEquals(R.string.no_revoked_consents, consentViewModel.getNoConsentMessage())
+    }
+
+    @Test
+    fun `should return empty messages when consents are empty`() {
+        consentViewModel.updateFilterSelectedItem(3)
+        assertEquals(R.string.no_consents, consentViewModel.getNoConsentMessage())
+    }
+
     private fun dummyGrantedConsentsList(): List<Consent>? {
         return getData("granted_consents.json")
     }
