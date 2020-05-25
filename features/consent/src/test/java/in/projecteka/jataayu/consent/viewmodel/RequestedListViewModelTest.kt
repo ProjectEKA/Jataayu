@@ -178,6 +178,31 @@ class RequestedConsentListViewModelTest {
     }
 
 
+    @Test
+    fun `should return empty messages when active consents are empty`() {
+        requestedListViewModel.updateFilterSelectedItem(0)
+        assertEquals(R.string.no_new_consent_requests, requestedListViewModel.getNoConsentMessage())
+    }
+
+    @Test
+    fun `should return empty messages when expired consents are empty`() {
+        requestedListViewModel.updateFilterSelectedItem(1)
+        assertEquals(R.string.no_expired_consent_requests, requestedListViewModel.getNoConsentMessage())
+    }
+
+    @Test
+    fun `should return empty messages when denied consents are empty`() {
+        requestedListViewModel.updateFilterSelectedItem(2)
+        assertEquals(R.string.no_denied_consents, requestedListViewModel.getNoConsentMessage())
+    }
+
+    @Test
+    fun `should return empty messages when consents are empty`() {
+        requestedListViewModel.updateFilterSelectedItem(3)
+        assertEquals(R.string.no_consent_requests, requestedListViewModel.getNoConsentMessage())
+    }
+
+
     private fun dummyRequestedConsentsList(): List<Consent>? {
         return getData("requested_consents.json")
     }
