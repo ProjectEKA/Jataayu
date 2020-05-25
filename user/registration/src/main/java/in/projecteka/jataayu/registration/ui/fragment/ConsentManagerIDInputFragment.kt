@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ConsentManagerIdInputFragmentBinding
 import `in`.projecteka.jataayu.registration.viewmodel.ConsentManagerIDInputViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
+import `in`.projecteka.jataayu.util.startRecoverCmid
 import `in`.projecteka.jataayu.util.startForgotPassword
 import `in`.projecteka.jataayu.util.startRegistration
 import android.os.Bundle
@@ -46,7 +47,7 @@ class ConsentManagerIDInputFragment : Fragment() {
         })
 
         viewModel.onForgetCMIDButtonClickEvent.observe(viewLifecycleOwner, Observer {
-
+            startRecoverCmid(activity!!)
         })
 
         viewModel.onNextButtonClickEvent.observe(viewLifecycleOwner, Observer {

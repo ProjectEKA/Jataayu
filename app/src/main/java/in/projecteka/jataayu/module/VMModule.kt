@@ -68,4 +68,9 @@ val viewModelModule = module {
     viewModel { ProfileActivityViewModel()}
     viewModel { ProfileFragmentViewModel(get(), get(), get()) }
 
+    //Recover CMID
+    viewModel { RecoverCmidActivityViewModel() }
+    viewModel { ReadValuesFragmentViewModel(get(), get()) }
+    viewModel { DisplayCmidFragmentViewModel() }
+    viewModel { NoMatchingRecordsFragmentViewModel() }
 }

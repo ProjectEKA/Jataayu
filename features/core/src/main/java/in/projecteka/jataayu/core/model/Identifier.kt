@@ -6,5 +6,5 @@ data class Identifier(
 
     @SerializedName("value") val value: String,
     @SerializedName("type") val type: String,
-    @SerializedName("system") val system: String
+    @SerializedName("system") val system: String?
 )
