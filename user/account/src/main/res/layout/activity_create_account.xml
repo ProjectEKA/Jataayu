@@ -35,8 +35,7 @@
             android:layout_height="match_parent"
             android:layout_below="@id/app_toolbar"
             android:background="@color/white"
-            android:clipToPadding="false"
-            android:paddingTop="@dimen/content_margin_36">
+            android:clipToPadding="false">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/scroll_view"
@@ -67,24 +66,13 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/lbl_username"
-                        style="@style/TextAppearance.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin_medium"
-                        android:text="@string/account_details"
-                        android:textSize="@dimen/text_size_large"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_title" />
-
-                    <TextView
                         android:id="@+id/lbl_create_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/content_margin_extra_small"
                         android:text="@string/create_username"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_username" />
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_title" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cv_username"
@@ -226,27 +214,24 @@
                         app:layout_constraintTop_toBottomOf="@+id/cv_password"
                         app:toggledVisibility="@{viewModel.showErrorPassword}" />
 
-                    <TextView
-                        android:id="@+id/lbl_patient_details"
-                        style="@style/TextAppearance.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin_36"
-                        android:text="@string/patient_details"
-                        android:textSize="@dimen/text_size_large"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/password_error_text" />
-
-                    <TextView
-                        android:id="@+id/lbl_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_marginTop="@dimen/content_margin_extra_small"
-                        android:text="@string/full_name"
+                        android:hint="@string/full_name"
+                        android:id="@+id/til_full_name"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_patient_details" />
+                        app:layout_constraintTop_toBottomOf="@+id/password_error_text"
+                        style="@style/TextInputLayoutStyle">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_name"
+                            error_text='@{@string/should_not_be_empty}'
+                            android:digits="@string/alphabets_and_space_only"
+                            android:text="@={viewModel.inputFullName}"
+                            toggle_error="@{viewModel.showErrorName}"
+                            style="@style/TextInputEditTextStyle"/>
 
-                    <com.google.android.material.card.MaterialCardView
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!--<com.google.android.material.card.MaterialCardView
                         android:id="@+id/cv_first_name"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/edit_text_height_large"
@@ -254,7 +239,7 @@
                         app:cardElevation="@dimen/content_padding_medium"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_name">
+                        app:layout_constraintTop_toBottomOf="@+id/til_full_name">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -266,6 +251,8 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_name"
                                 error_text='@{@string/should_not_be_empty}'
+                                android:digits="@string/alphabets_and_space_only"
+                                android:text="@={viewModel.inputFullName}"
                                 toggle_error="@{viewModel.showErrorName}"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -274,17 +261,15 @@
                                 android:layout_weight=".7"
                                 android:background="@color/white"
                                 android:cursorVisible="true"
-                                android:digits="@string/alphabets_and_space_only"
                                 android:focusable="true"
                                 android:focusableInTouchMode="true"
                                 android:singleLine="true"
-                                android:text="@={viewModel.inputFullName}"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_medium" />
 
                         </LinearLayout>
 
-                    </com.google.android.material.card.MaterialCardView>
+                    </com.google.android.material.card.MaterialCardView>-->
 
                     <TextView
                         android:id="@+id/lbl_first_name_hint"
@@ -293,9 +278,8 @@
                         android:layout_marginTop="12dp"
                         android:hint="@string/name_hint"
                         android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="@id/cv_first_name"
-                        app:layout_constraintStart_toStartOf="@id/cv_first_name"
-                        app:layout_constraintTop_toBottomOf="@id/cv_first_name" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/til_full_name" />
 
                     <TextView
                         android:id="@+id/lbl_gender"
@@ -380,15 +364,21 @@
                         app:layout_constraintTop_toBottomOf="@+id/tv_err_gender"
                         app:onItemSelected="@{spinnerListener}" />
 
-                    <TextView
-                        android:id="@+id/lbl_ayushman_bharat_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_marginTop="@dimen/content_margin_extra_small"
-                        android:text="@string/ayushman_bharat_id"
+                        android:hint="@string/ayushman_bharat_id"
+                        android:id="@+id/til_ayushman_id"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/spinner_yob" />
+                        app:layout_constraintTop_toBottomOf="@+id/spinner_yob"
+                        style="@style/TextInputLayoutStyle">
 
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:text="@={viewModel.inputAyushmanIdLbl}"
+                            android:id="@+id/et_ayushman_bharat_id"
+                            android:inputType="textCapCharacters"
+                            style="@style/TextInputEditTextStyle"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+<!--
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cv_ayushman_bharat_id"
                         android:layout_width="0dp"
@@ -397,7 +387,7 @@
                         app:cardElevation="@dimen/content_padding_medium"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_ayushman_bharat_id">
+                        app:layout_constraintTop_toBottomOf="@+id/til_ayushman_id">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -412,22 +402,20 @@
                                 android:layout_height="match_parent"
                                 android:layout_gravity="start"
                                 android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
-                                android:inputType="textCapCharacters"
                                 android:layout_weight=".7"
-                                android:text="@={viewModel.inputAyushmanIdLbl}"
                                 android:background="@color/white"/>
-                                <!--app:onValueChanged="@{ayushmanIdChangeWatcher}"
+                                &lt;!&ndash;app:onValueChanged="@{ayushmanIdChangeWatcher}"
                                 android:cursorVisible="true"
                                 android:digits="@string/alphabets_and_space_only"
                                 android:focusable="true"
                                 android:focusableInTouchMode="true"
                                 android:singleLine="true"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_medium" />-->
+                                android:textSize="@dimen/text_size_medium" />&ndash;&gt;
 
                         </LinearLayout>
 
-                    </com.google.android.material.card.MaterialCardView>
+                    </com.google.android.material.card.MaterialCardView>-->
                     <TextView
                         android:id="@+id/ayushman_error_text"
                         style="@style/TextAppearance.ErrorMessage"
@@ -438,7 +426,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:toggledVisibility="@{viewModel.showErrorAyushmanId}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/cv_ayushman_bharat_id" />
+                        app:layout_constraintTop_toBottomOf="@+id/til_ayushman_id" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.core.widget.NestedScrollView>

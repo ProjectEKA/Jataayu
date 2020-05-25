@@ -209,7 +209,7 @@
         <item name="android:textColor">@color/chip_text_color_selector</item>
     </style>
 
-    <style name="Otp" parent="Widget.AppCompat.EditText">
+    <style name="Otp">
         <item name="android:background">@drawable/rounded_corners_selector</item>
         <item name="android:cursorVisible">true</item>
         <item name="android:digits">1234567890</item>
@@ -306,10 +306,6 @@
         <item name="cornerRadius">@dimen/button_corner_radius_new</item>
         <item name="android:stateListAnimator">@animator/button_state_list_anim</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:layout_marginLeft">@dimen/content_margin_medium</item>
-        <item name="android:layout_marginStart">@dimen/content_margin_medium</item>
-        <item name="android:layout_marginRight">@dimen/content_margin_medium</item>
-        <item name="android:layout_marginEnd">@dimen/content_margin_medium</item>
     </style>
 
     <style name="NcgNhsTitleStyle">

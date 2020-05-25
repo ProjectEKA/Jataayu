@@ -19,6 +19,15 @@
         android:orientation="vertical"
         android:padding="@dimen/content_margin_medium">
 
+        <ImageView
+            android:id="@+id/img_logo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/NcgNhsTitleStyle"/>
+
 
         <TextView
             android:id="@+id/lbl_otp_info"
@@ -35,7 +44,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_logo"
             app:layout_constraintVertical_bias="0.1" />
 
         <TextView
@@ -55,12 +64,11 @@
         <TextView
             android:id="@+id/lbl_enter_otp"
             style="@style/TextAppearance.ListItemSubHeader"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/toolbar_size"
             android:gravity="center_horizontal"
-            android:text="@string/enter_six_digit_otp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/enter_otp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number"
             tools:text="Enter 6 digit OTP" />
@@ -68,11 +76,10 @@
         <in.projecteka.jataayu.presentation.ui.view.OtpEditText
             android:id="@+id/et_otp"
             style="@style/Otp"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/edittext_height"
             android:layout_marginTop="@dimen/content_margin_extra_small"
             android:text="@={viewModel.otpText}"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lbl_enter_otp"
@@ -92,7 +99,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_continue"
-            style="@style/Button.Secondary"
+            style="@style/ButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_marginTop="@dimen/content_margin_extra_extra_large"
@@ -119,11 +126,14 @@
             android:onClick="@{() -> viewModel.onClickResend()}"
             android:text="Resend OTP"
             />
+
         <include
             android:id="@+id/progress_bar_layout"
-            app:showProgress="@{viewModel.showProgress}"
+            layout="@layout/progress_layout"
             app:message="@{viewModel.showProgressMessage}"
-            layout="@layout/progress_layout"/>
+            app:showProgress="@{viewModel.showProgress}"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="16dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

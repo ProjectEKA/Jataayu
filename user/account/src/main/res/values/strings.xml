@@ -2,7 +2,7 @@
     <string name="app_name">account</string>
     <string name="no_linked_accounts">No linked Accounts</string>
     <string name="my_linked_accounts">My linked accounts (%d)</string>    <string name="title_activity_account_creation">AccountCreationActivity</string>
-    <string name="create_account_title">Creating your account would take less than a minute</string>
+    <string name="create_account_title">Enter your Details</string>
     <string name="create_account">Create Account</string>
     <string name="ncg">\@ncg</string>
     <string name="patient_details">Patient details</string>

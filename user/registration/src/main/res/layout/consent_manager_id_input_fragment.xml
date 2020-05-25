@@ -18,8 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:padding="@dimen/content_margin_medium">
+            android:clipToPadding="false">
 
             <ImageView
                 android:id="@+id/tv_title"
@@ -30,6 +29,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginLeft="@dimen/content_margin_medium"
+                android:layout_marginStart="@dimen/content_margin_medium"
+                android:layout_marginRight="@dimen/content_margin_medium"
+                android:layout_marginEnd="@dimen/content_margin_medium"
                 app:layout_constraintVertical_bias="0.4"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -61,10 +64,15 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_next"
                 style="@style/ButtonStyle"
+                android:layout_marginLeft="@dimen/content_margin_medium"
+                android:layout_marginStart="@dimen/content_margin_medium"
+                android:layout_marginRight="@dimen/content_margin_medium"
+                android:layout_marginEnd="@dimen/content_margin_medium"
                 android:layout_marginTop="@dimen/content_margin_extra_extra_extra_large"
                 android:enabled="@{viewModel.nextEnabled}"
                 android:onClick="@{()-> viewModel.onNextButtonClicked()}"
                 android:text="@string/next"
+
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/til_username" />
