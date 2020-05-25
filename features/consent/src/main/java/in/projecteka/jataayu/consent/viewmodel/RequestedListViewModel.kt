@@ -5,10 +5,7 @@ import `in`.projecteka.jataayu.consent.callback.PaginationEventCallback
 import `in`.projecteka.jataayu.consent.listners.PaginationScrollListener
 import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
-import `in`.projecteka.jataayu.core.model.Consent
-import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
-import `in`.projecteka.jataayu.core.model.HipHiuNameResponse
-import `in`.projecteka.jataayu.core.model.RequestStatus
+import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.network.utils.isLoading
@@ -96,7 +93,7 @@ class RequestedListViewModel(private val repository: ConsentRepository) : BaseVi
     }
 
     fun getNoConsentMessage(): Int {
-        return Consent.getNoConsentMessageResourceId(currentStatus.value!!)
+        return Consent.getNoConsentMessageResourceId(currentStatus.value!!, ConsentType.REQUESTS)
     }
 
 }
