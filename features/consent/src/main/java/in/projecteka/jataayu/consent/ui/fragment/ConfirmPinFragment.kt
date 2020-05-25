@@ -83,7 +83,7 @@ class ConfirmPinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpC
                                 bundle.getString(PIN)?.let { pin ->
                                     if (binding.etPin.text.toString() == pin) {
                                         viewModel.verifyUser(
-                                            binding.etPin.text.toString(),
+                                                binding.etPin.text.toString(),
                                             parentViewmodel.scopeType.get()!!
                                         )
                                     }

@@ -16,6 +16,7 @@ interface UserAccountsRepository {
     fun logout(refreshToken: String): Call<Void>
     fun getProviderBy(providerIdList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse>
     fun getLoginMode(userName: String): Call<LoginType>
+    fun recoverCmid(recoverCmidRequest: RecoverCmidRequest): Call<RecoverCmidResponse>
 }
 
 class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) :
@@ -47,6 +48,10 @@ class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) :
 
     override fun getLoginMode(userName: String): Call<LoginType> {
         return userAccountApis.getLoginMode(userName)
+    }
+
+    override fun recoverCmid(recoverCmidRequest: RecoverCmidRequest): Call<RecoverCmidResponse> {
+        return userAccountApis.recoverCmid(recoverCmidRequest)
     }
 
     private var providerLiveDataCount = 0

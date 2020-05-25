@@ -26,6 +26,10 @@
         <activity
             android:label="EditConsentPin"
             android:name=".ui.activity.EditConsentPinActivity"/>
+        <activity
+            android:label="RecoverCmid"
+            android:name=".ui.activity.RecoverCmidActivity">
+        </activity>
     </application>
 
 </manifest>

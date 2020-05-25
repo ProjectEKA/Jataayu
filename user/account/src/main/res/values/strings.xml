@@ -16,6 +16,7 @@
     <string name="year_of_birth_optional">Year of birth (optional)</string>
     <string name="username_validation_hint">Minimum length 3\nIt may contain . and -</string>
     <string name="password_validation_hint">Minimum length 8\nIt must contain one capital letter, one small letter, one number\nIt must also contain one special character</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="alphabets_and_space_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890</string>
     <string name="account_details">Account details</string>
     <string name="should_not_be_empty">Should not be empty</string>
@@ -25,6 +26,7 @@
     <string name="action_logout">Logout</string>
     <string name="ayushman_bharat_id">Ayushman Bharat ID (optional)</string>
     <string name="ayushman_validation_hint">Should be 9 characters long\nShould start with P</string>
+    <string name="user_already_exits">This username is already in use. Please enter a different username</string>
     <string name="old_password">Old Password</string>
     <string name="change_password">Change Password</string>
     <string name="confirm_password">Confirm New Password</string>
@@ -35,6 +37,7 @@
     <string name="password_changed">Password changed successfully.</string>
     <string name="password_criteria">New password didn’t meet the criteria</string>
     <string name="otp">OTP</string>
+    <string name="mobile_number_error">Mobile number should be 10 digits long</string>
 
 <!--    Profile-->
     <string name="consent_manager_id">Consent Manager ID</string>
@@ -51,4 +54,18 @@
     <string name="consent_pin_not_created">Consent PIN not created</string>
     <string name="update">Update</string>
     <string name="dummy_password">12345678910</string>
+
+<!--    Recover CMID-->
+    <string name="forgot_cmid">Forgot CM ID</string>
+    <string name="forgot_cmid_title">Recover Consent Manager ID</string>
+    <string name="display_cmid_title">  is your Consent Manager ID. You could use this ID to login in the future</string>
+    <string name="back_to_login">Back to login</string>
+    <string name="no_matching_records_title">Sorry, We could not find a matching record.</string>
+    <string name="no_matching_records_description">Please review your input and try again.</string>
+    <string name="review">Review</string>
+
+<!--    Confirmation Texts-->
+    <string name="congratulations">Congratulations</string>
+    <string name="registration_success_message">You are successfully registered into  the application</string>
+    <string name="cm_id_info">is your Consent manager ID. You could use this ID to login in future</string>
 </resources>

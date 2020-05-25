@@ -104,7 +104,6 @@ class LoginViewModelTest {
         verify(redirectEventObserver).onChanged(R.layout.password_input_fragment)
     }
 
-
     @Test
     fun `should trigger login response event when response updated`() {
         loginViewModel.loginResponseSuccessEvent.call()

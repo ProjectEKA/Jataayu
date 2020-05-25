@@ -3,6 +3,9 @@ package `in`.projecteka.jataayu.registration.viewmodel
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.COUNTRY_CODE_SEPARATOR
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.INDIA_COUNTRY_CODE
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.MOBILE_IDENTIFIER_TYPE
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -12,6 +15,7 @@ import androidx.databinding.ObservableField
 class RegistrationFragmentViewModel : BaseViewModel(), TextWatcher, View.OnFocusChangeListener {
 
     companion object {
+
         private const val INDIA_COUNTRY_CODE = "+91"
         private const val COUNTRY_CODE_SEPARATOR = "-"
         private const val MOBILE_IDENTIFIER_TYPE = "mobile"
@@ -19,7 +23,7 @@ class RegistrationFragmentViewModel : BaseViewModel(), TextWatcher, View.OnFocus
     }
 
     val continueButtonEnabled = ObservableBoolean()
-    val countryCode = ObservableField<String>("$INDIA_COUNTRY_CODE$COUNTRY_CODE_SEPARATOR")
+    val countryCode = ObservableField<String>("${INDIA_COUNTRY_CODE}$COUNTRY_CODE_SEPARATOR")
     val mobileNumberText = ObservableField<String>()
     val mobileNumberEditTextHint = ObservableField<String>()
 
