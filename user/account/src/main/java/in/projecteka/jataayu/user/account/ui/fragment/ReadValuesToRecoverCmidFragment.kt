@@ -109,6 +109,8 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (position != 0) {
             viewModel.selectedYoB((view as AppCompatCheckedTextView).text.toString().toInt())
+        } else {
+            viewModel.selectedYoB(null)
         }
     }
 

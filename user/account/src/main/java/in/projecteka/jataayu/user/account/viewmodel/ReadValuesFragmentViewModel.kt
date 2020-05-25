@@ -80,7 +80,7 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
 
     fun getRecoverCmidPayload(): RecoverCmidRequest {
 
-        var unverifiedIdentifiers: List<UnverifiedIdentifier>? = null
+        var unverifiedIdentifiers: List<UnverifiedIdentifier>? = emptyList()
         var verifiedIdentifiers: List<Identifier>? = null
 
         if (!inputAyushmanIdLbl.get().isNullOrEmpty()){
@@ -123,7 +123,7 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
         }
     }
 
-    fun selectedYoB(yob: Int) {
+    fun selectedYoB(yob: Int?) {
         selectedYoB = yob
     }
 

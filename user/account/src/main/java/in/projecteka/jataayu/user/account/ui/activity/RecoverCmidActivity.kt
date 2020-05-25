@@ -31,16 +31,25 @@ class RecoverCmidActivity : BaseActivity<ActivityRecoverCmidBinding>() {
 
     private fun initObservers() {
         viewmodel.redirectTo.observe(this, Observer {
-            addFragment(when(it){
-                RecoverCmidActivityViewModel.Show.READ_VALUES_SCREEN ->
-                    ReadValuesToRecoverCmidFragment.newInstance()
-                RecoverCmidActivityViewModel.Show.DISPLAY_CMID_SCREEN ->
-                    DisplayCmidFragment.newInstance()
+
+            when(it){
+                RecoverCmidActivityViewModel.Show.READ_VALUES_SCREEN -> {
+                   supportActionBar?.show()
+                    addFragment(
+                        ReadValuesToRecoverCmidFragment.newInstance(),
+                        R.id.fragment_container
+                    )
+                }
+                RecoverCmidActivityViewModel.Show.DISPLAY_CMID_SCREEN -> {
+                    supportActionBar?.hide()
+                    addFragment(DisplayCmidFragment.newInstance(),R.id.fragment_container)
+                }
                 RecoverCmidActivityViewModel.Show.NO_OR_MULTIPLE_MATCHING_RECORDS -> {
-                    NoMatchingRecordsFragment.newInstance()
+                    supportActionBar?.hide()
+                    addFragment(NoMatchingRecordsFragment.newInstance(),R.id.fragment_container)
                 }
 
-            },R.id.fragment_container)
+            }
         })
     }
 

@@ -19,6 +19,7 @@
                     android:padding="@dimen/content_margin_medium">
 
                     <ImageView
+                        app:layout_constraintTop_toTopOf="parent"
                         android:id="@+id/img"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -49,8 +50,7 @@
                         android:layout_marginTop="@dimen/toolbar_size"
                         android:textSize="@dimen/text_size_large"
                         app:layout_constraintTop_toBottomOf="@+id/lbl_title"
-                        android:textStyle="bold"
-                        android:text="@string/no_matching_records_title"
+                        android:text="@string/no_matching_records_description"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
