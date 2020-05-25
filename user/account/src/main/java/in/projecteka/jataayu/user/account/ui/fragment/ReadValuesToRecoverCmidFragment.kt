@@ -66,7 +66,7 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
                 is Loading -> viewModel.showProgress(it.isLoading)
                 is Success -> {
                     parentViewModel.consentManagerId.set(it.data?.cmId)
-                    parentViewModel.onDisplayCmidRequest()
+                    parentViewModel.onOTPRequest()
                 }
                 is PartialFailure -> {
                     if (it.error?.code == ReadValuesFragmentViewModel.ERROR_CODE_NO_MATCHING_RECORDS ||

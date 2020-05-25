@@ -62,6 +62,8 @@
     <string name="no_matching_records_title">Sorry, We could not find a matching record.</string>
     <string name="no_matching_records_description">Please review your input and try again.</string>
     <string name="review">Review</string>
+    <string name="validate">Validate</string>
+    <string name="resend_otp">Resend</string>
 
 <!--    Confirmation Texts-->
     <string name="congratulations">Congratulations</string>

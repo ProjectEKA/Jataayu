@@ -10,6 +10,7 @@ class RecoverCmidActivityViewModel: BaseViewModel() {
 
     enum class Show{
         READ_VALUES_SCREEN,
+        OTP_SCREEN,
         DISPLAY_CMID_SCREEN,
         NO_OR_MULTIPLE_MATCHING_RECORDS,
     }
@@ -26,5 +27,9 @@ class RecoverCmidActivityViewModel: BaseViewModel() {
 
     fun onReviewRequest() {
         redirectTo.value = Show.NO_OR_MULTIPLE_MATCHING_RECORDS
+    }
+
+    fun onOTPRequest() {
+        redirectTo.value = Show.OTP_SCREEN
     }
 }
