@@ -18,6 +18,7 @@ class PasswordInputFragment : Fragment() {
 
     companion object {
         fun newInstance() = PasswordInputFragment()
+        const val KEY_CONSENT_ID = "consent_id"
     }
 
     private val loginViewModel: LoginViewModel by sharedViewModel()
@@ -57,7 +58,9 @@ class PasswordInputFragment : Fragment() {
         })
 
         viewModel.onClickForgotPasswordEvent.observe(viewLifecycleOwner, Observer {
-            activity?.let { startForgotPassword(it) }
+            startForgotPassword(activity!!) {
+                putExtra(KEY_CONSENT_ID, loginViewModel.cmId)
+            }
         })
     }
 
