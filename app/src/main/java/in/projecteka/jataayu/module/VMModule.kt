@@ -7,7 +7,6 @@ import `in`.projecteka.jataayu.registration.viewmodel.*
 import `in`.projecteka.jataayu.ui.LauncherViewModel
 import `in`.projecteka.jataayu.ui.dashboard.DashboardViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.*
-import `in`.projecteka.resetpassword.viewmodel.ReadIdentifierFragmentViewModel
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordActivityViewModel
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordFragmentViewModel
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordOtpVerificationViewModel
