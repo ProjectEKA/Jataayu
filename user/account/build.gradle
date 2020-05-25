@@ -1,6 +1,8 @@
 import dependancies.Modules
 
 apply from: rootProject.file("android-library-commons.gradle")
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     buildTypes {
@@ -14,4 +16,7 @@ android {
 
 dependencies {
     api project(Modules.core)
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 }

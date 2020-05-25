@@ -17,11 +17,13 @@
     <string name="to">to</string>
     <string name="from">From</string>
     <string name="register">Register</string>
+    <string name="confirm">Confirm</string>
     <string name="username">Username</string>
     <string name="show">Show</string>
     <string name="hide">Hide</string>
     <string name="registered_successfully">Registered Successfully</string>
     <string name="otp_limit_exceeded">OTP request limit exceeded. Please try again after some time.</string>
+    <string name="exceeded_otp_attempt_limit">You have exceeded the invalid attempts limit, Please try later </string>
     <string name="no_new_consent_requests">No New Consent Requests</string>
     <string name="no_consent_requests">No Consent Requests</string>
     <string name="no_granted_consents">No Granted Consents</string>
