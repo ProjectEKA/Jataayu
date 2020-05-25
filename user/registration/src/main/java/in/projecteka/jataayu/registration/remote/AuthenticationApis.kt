@@ -15,10 +15,4 @@ interface AuthenticationApis {
 
     @POST("sessions")
     fun login(@Body loginRequest: LoginRequest): Call<CreateAccountResponse>
-
-    @POST("otpsession/verify")
-    fun generateOtp(@Body body: LoginOTPSessionRequest): Call<LoginOTPSessionResponse>
-
-    @POST("otpsession/permit")
-    fun loginOTP(@Body body: LoginOTPRequest): Call<CreateAccountResponse>
 }

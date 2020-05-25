@@ -104,11 +104,6 @@ class LoginViewModelTest {
         verify(redirectEventObserver).onChanged(R.layout.password_input_fragment)
     }
 
-    @Test
-    fun `should trigger to redirect even when current fragment is replaced by otp fragment`() {
-        loginViewModel.replaceFragment(R.layout.login_otp_fragment)
-        verify(redirectEventObserver).onChanged(R.layout.login_otp_fragment)
-    }
 
     @Test
     fun `should trigger login response event when response updated`() {

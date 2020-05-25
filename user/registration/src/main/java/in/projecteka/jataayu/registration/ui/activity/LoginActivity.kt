@@ -3,7 +3,6 @@ package `in`.projecteka.jataayu.registration.ui.activity
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ActivityLoginBinding
 import `in`.projecteka.jataayu.registration.ui.fragment.ConsentManagerIDInputFragment
-import `in`.projecteka.jataayu.registration.ui.fragment.LoginOtpFragment
 import `in`.projecteka.jataayu.registration.ui.fragment.PasswordInputFragment
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.util.startDashboard
@@ -32,7 +31,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         viewModel.redirectLiveEvent.observe(this, Observer {
             when(it) {
                 R.layout.password_input_fragment -> replaceFragment(PasswordInputFragment.newInstance(), R.id.fragment_container)
-                R.layout.login_otp_fragment -> replaceFragment(LoginOtpFragment.newInstance(), R.id.fragment_container)
             }
         })
 

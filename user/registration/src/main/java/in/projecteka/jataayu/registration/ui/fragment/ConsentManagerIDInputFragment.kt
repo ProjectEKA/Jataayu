@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ConsentManagerIdInputFragmentBinding
 import `in`.projecteka.jataayu.registration.viewmodel.ConsentManagerIDInputViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
+import `in`.projecteka.jataayu.util.startForgotPassword
 import `in`.projecteka.jataayu.util.startRegistration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -61,7 +62,9 @@ class ConsentManagerIDInputFragment : Fragment() {
                     activity?.showErrorDialog(it.error?.message)
                 } else {
                     when(loginMode?.response) {
-                        LoginMode.OTP -> loginViewModel.replaceFragment(R.layout.login_otp_fragment)
+                        LoginMode.OTP ->   startForgotPassword(activity!!) {
+                            putExtra(PasswordInputFragment.KEY_CONSENT_ID, loginViewModel.cmId)
+                        }
                         LoginMode.PASSWORD -> loginViewModel.replaceFragment(R.layout.password_input_fragment)
                         else -> {}
                     }

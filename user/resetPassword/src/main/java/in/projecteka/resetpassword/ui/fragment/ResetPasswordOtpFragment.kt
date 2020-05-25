@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.Success
+import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordActivityViewModel
@@ -55,12 +56,31 @@ class ResetPasswordOtpFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         initObservers()
+        viewModel.generateOtp(parentViewModel.consentManagerId)
         parentViewModel.tempToken?.let {
             viewModel.init(it)
         }
     }
 
     private fun initObservers() {
+        viewModel.generateOtpResponse.observe(this, Observer {
+            when(it){
+                is Loading -> viewModel.showProgress(it.isLoading)
+                is Success -> {
+                    parentViewModel.sessionId = it.data?.sessionId
+                    showSnackbar(String.format(getString(R.string.otp_sent_msg), parentViewModel.consentManagerId))
+                }
+                is PartialFailure -> {
+                    activity?.showAlertDialog(
+                        getString(R.string.failure), it.error?.message,
+                        getString(android.R.string.ok)
+                    )
+                }
+                is Failure -> {
+                    activity?.showErrorDialog(it.error.localizedMessage)
+                }
+            }
+        })
         viewModel.onClickValidateEvent.observe(this, Observer {
             parentViewModel.sessionId?.let {
                 viewModel.verifyOtp(
@@ -69,11 +89,15 @@ class ResetPasswordOtpFragment : BaseFragment() {
                 )
             }
         })
+
         viewModel.verifyOtpResponse.observe(this, Observer {
             when (it) {
-
                 is Loading -> viewModel.showProgress(it.isLoading)
-
+                is Success -> {
+                    parentViewModel.tempToken = it.data?.temporaryToken
+                    parentViewModel.onVerifyOtpRedirectRequest()
+                    if (snackbar.isShown) snackbar.dismiss()
+                }
                 is PartialFailure -> {
                     if (it.error?.code == ERROR_CODE_INVALID_OTP || it.error?.code == ERROR_CODE_OTP_EXPIRED) {
                         viewModel.otpText.set(null)
@@ -91,12 +115,6 @@ class ResetPasswordOtpFragment : BaseFragment() {
                         }
                     )
                 }
-                is Success -> {
-                    parentViewModel.tempToken = it.data?.temporaryToken
-                    parentViewModel.onVerifyOtpRedirectRequest()
-                    if (snackbar.isShown) snackbar.dismiss()
-                }
-
                 is Failure -> {
                     activity?.showErrorDialog(it.error.localizedMessage)
                 }
@@ -116,11 +134,6 @@ class ResetPasswordOtpFragment : BaseFragment() {
             textView?.maxLines = 10
         }
         if (!snackbar.isShown) snackbar.show()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        showSnackbar(String.format(getString(R.string.otp_sent_msg), parentViewModel.consentManagerId))
     }
 
     override fun onPause() {

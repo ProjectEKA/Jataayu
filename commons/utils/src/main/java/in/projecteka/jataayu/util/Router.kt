@@ -55,7 +55,7 @@ fun startDashboard(context: Context, intentDefinition: IntentDefinition? = null)
 }
 
 fun startForgotPassword(context: Context, intentDefinition: IntentDefinition? = null) {
-    context.startActivity(defaultIntentDefinition(context, ACTIVITY_FORGOT_PASSWORD))
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_FORGOT_PASSWORD,intentDefinition))
 }
 
 fun startChangePassword(context: Context) {
