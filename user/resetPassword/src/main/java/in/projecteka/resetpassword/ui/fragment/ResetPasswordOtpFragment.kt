@@ -37,6 +37,7 @@ class ResetPasswordOtpFragment : BaseFragment() {
         private const val ERROR_CODE_INVALID_OTP = 1003
         private const val ERROR_CODE_OTP_EXPIRED = 1004
         const val EXCEEDED_INVALID_ATTEMPT_LIMIT = 1035
+        const val ERROR_CODE_OTP_LIMIT_EXCEEDED = 1029
         fun newInstance() = ResetPasswordOtpFragment()
         private lateinit var snackbar: Snackbar
     }
@@ -64,6 +65,19 @@ class ResetPasswordOtpFragment : BaseFragment() {
     }
 
     private fun initObservers() {
+
+        viewModel.onClickValidateEvent.observe(this, Observer {
+            parentViewModel.sessionId?.let {
+                viewModel.verifyOtp(
+                    it,
+                    viewModel.otpText.get().toString()
+                )
+            }
+        })
+        viewModel.onClickResendEvent.observe(viewLifecycleOwner, Observer {
+            viewModel.generateOtp(parentViewModel.consentManagerId)
+        })
+
         viewModel.generateOtpResponse.observe(this, Observer {
             when(it){
                 is Loading -> viewModel.showProgress(it.isLoading)
@@ -72,22 +86,16 @@ class ResetPasswordOtpFragment : BaseFragment() {
                     showSnackbar(String.format(getString(R.string.otp_sent_msg), parentViewModel.consentManagerId))
                 }
                 is PartialFailure -> {
-                    activity?.showAlertDialog(
-                        getString(R.string.failure), it.error?.message,
-                        getString(android.R.string.ok)
-                    )
+                    viewModel.otpText.set(null)
+                    if (it.error?.code == ERROR_CODE_OTP_LIMIT_EXCEEDED) {
+                        viewModel.errorLbl.set(getString(R.string.otp_limit_exceeded))
+                    } else {
+                        viewModel.errorLbl.set(it.error?.message)
+                    }
                 }
                 is Failure -> {
                     activity?.showErrorDialog(it.error.localizedMessage)
                 }
-            }
-        })
-        viewModel.onClickValidateEvent.observe(this, Observer {
-            parentViewModel.sessionId?.let {
-                viewModel.verifyOtp(
-                    it,
-                    viewModel.otpText.get().toString()
-                )
             }
         })
 
