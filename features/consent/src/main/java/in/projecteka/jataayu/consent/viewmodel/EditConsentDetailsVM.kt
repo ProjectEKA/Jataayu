@@ -104,7 +104,7 @@ class EditConsentDetailsVM(private val repository: ConsentRepository) : ViewMode
     fun checkEditValid() {
         val careContexts = linkedAccounts.flatMap { it.careContexts }
         val selectableItemsCount = careContexts.count()
-        val selectionCount = careContexts.count { it.contextChecked }
+        val selectionCount = careContexts.count { it.contextChecked == true }
         allProvidersChecked.set(selectableItemsCount == selectionCount)
         saveEnabled.set(selectionCount > 0)
     }
