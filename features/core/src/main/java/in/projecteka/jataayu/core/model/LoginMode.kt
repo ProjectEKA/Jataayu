@@ -10,7 +10,7 @@ data class LoginType(
 
 
 
-enum class LoginMode(val loginMode: String) {
+enum class LoginMode(val mode: String) {
     @SerializedName("OTP")
     OTP("OTP"),
     @SerializedName("CREDENTIAL")

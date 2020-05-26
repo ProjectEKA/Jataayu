@@ -3,8 +3,8 @@ package `in`.projecteka.jataayu.registration.viewmodel
 import `in`.projecteka.jataayu.core.model.LoginMode
 import `in`.projecteka.jataayu.core.model.LoginType
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
-import `in`.projecteka.jataayu.network.model.APIResponse
-import `in`.projecteka.jataayu.network.utils.*
+import `in`.projecteka.jataayu.network.utils.PayloadLiveData
+import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
@@ -12,11 +12,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 
 
-class ConsentManagerIDInputViewModel(private val userAccountsRepository: UserAccountsRepository, preferenceRepository: PreferenceRepository) : BaseViewModel(), TextWatcher {
+class ConsentManagerIDInputViewModel(private val userAccountsRepository: UserAccountsRepository, private val preferenceRepository: PreferenceRepository) : BaseViewModel(), TextWatcher {
 
     val onRegisterButtonClickEvent = SingleLiveEvent<Void>()
     val onNextButtonClickEvent = SingleLiveEvent<Void>()
@@ -25,26 +23,13 @@ class ConsentManagerIDInputViewModel(private val userAccountsRepository: UserAcc
     val inputUsernameLbl = ObservableField<String>()
     val nextEnabled = ObservableBoolean(false)
 
-   private val loginModeLiveDataResponse = PayloadLiveData<LoginType>()
+    //avoid on change call on back button press
+    var isLoginModeHasLoaded: Boolean = false
+    private set
 
-    val loginMode: LiveData<APIResponse<out LoginMode>?> = Transformations.map(loginModeLiveDataResponse) {
-        when(it) {
-            is Success -> {
-                preferenceRepository.loginMode = it.data?.loginMode?.name
-                APIResponse(it.data?.loginMode, null)
-            }
-            is PartialFailure -> {
-                APIResponse(null, it.error)
-            }
-            is Failure -> {
-                APIResponse(null, APIResponse.getError(it.error))
-            }
-            is Loading -> {
-                showProgress(it.isLoading)
-                null
-            }
-        }
-    }
+
+    val loginModeLiveDataResponse = PayloadLiveData<LoginType>()
+
 
     fun onNextButtonClicked() {
         onNextButtonClickEvent.call()
@@ -59,6 +44,7 @@ class ConsentManagerIDInputViewModel(private val userAccountsRepository: UserAcc
     }
 
     fun fetchLoginMode(cmId: String) {
+        isLoginModeHasLoaded = false
         loginModeLiveDataResponse.fetch(userAccountsRepository.getLoginMode(cmId))
     }
 
@@ -67,5 +53,10 @@ class ConsentManagerIDInputViewModel(private val userAccountsRepository: UserAcc
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         nextEnabled.set(inputUsernameLbl.get()?.isNotEmpty() == true)
+    }
+
+     fun onLoginModeResponseSuccess(loginMode: LoginMode) {
+         preferenceRepository.loginMode = loginMode.mode
+         isLoginModeHasLoaded = true
     }
 }
