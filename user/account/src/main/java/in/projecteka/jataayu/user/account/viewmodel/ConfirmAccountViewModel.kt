@@ -3,11 +3,11 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
+import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
-import `in`.projecteka.jataayu.user.account.R
-import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
@@ -42,7 +42,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val confirmationPasswordInputType = ObservableField(hiddenPasswordInputType())
     val inputPasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
     val usernameProviderLbl = ObservableField<String>()
-    val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
+    val usernameProviderLblId = ObservableField<Int>(R.string.cm_config_provider)
     val inputAyushmanIdLbl = ObservableField<String>()
     val usernameErrorLbl = ObservableInt(R.string.username_validation_hint)
     val submitEnabled = ObservableBoolean(false)

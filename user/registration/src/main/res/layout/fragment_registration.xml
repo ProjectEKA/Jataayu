@@ -37,15 +37,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:prefixText="@{viewModel.countryCode}"
             app:layout_constraintBottom_toBottomOf="parent"
-            style="@style/TextInputLayoutStyle">
+            style="@style/MobileNumberTextInputLayoutTextStyle">
             <com.google.android.material.textfield.TextInputEditText
-                android:hint="99999 99999"
                 android:inputType="number"
                 android:id="@+id/tie_mobile_number"
                 android:maxLength="10"
                 android:text="@={viewModel.mobileNumberText}"
                 app:onValueChanged="@{viewModel}"
-                style="@style/TextInputEditTextStyle"/>
+                style="@style/MobileNumberTextInputEditTextStyle">
+                <requestFocus android:value="true"/>
+
+            </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--<com.google.android.material.card.MaterialCardView

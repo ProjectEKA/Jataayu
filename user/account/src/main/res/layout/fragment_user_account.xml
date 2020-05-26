@@ -35,7 +35,6 @@
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     android:minHeight="@dimen/collapsed_toolbar_size"
-                    app:collapsedTitleGravity="center_horizontal"
                     app:collapsedTitleTextAppearance="@style/Toolbar"
                     app:contentScrim="@color/colorPrimary"
                     app:expandedTitleGravity="center_horizontal"

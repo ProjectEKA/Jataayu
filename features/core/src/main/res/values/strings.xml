@@ -33,4 +33,5 @@
     <string name="no_expired_consent_requests">No Expired Consent Requests</string>
     <string name="no_denied_consents">No Denied Consent Requests</string>
     <string name="no_consents">No Consents</string>
+    <string name="new_password">Enter New Password</string>
 </resources>

@@ -23,10 +23,7 @@
             android:id="@+id/app_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_size"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="?android:attr/homeAsUpIndicator"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:title='@{@string/create_account}' />
 
         <FrameLayout

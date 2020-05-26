@@ -64,7 +64,7 @@
                         android:onClick="@{() -> viewModel.onReview()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_width="match_parent"
-                        android:text="@string/review" />
+                        android:text="@string/try_again" />
                     <include
                         android:id="@+id/progress_bar"
                         layout="@layout/progress_layout"

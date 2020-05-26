@@ -25,7 +25,7 @@
 
     <color name="button_background_color" tools:override="true">@color/colorPrimaryNcg</color>
     <color name="button_text_color" tools:override="true">@color/white</color>
-    <color name="bottom_bar_bg_color">#E8EDE8</color>
+    <color name="bottom_bar_bg_color">#ECFFDE</color>
     
     <color name="light_grey_background">#FAFAFA</color>
     <color name="grey_background">#EDEDED</color>

@@ -15,7 +15,5 @@
         android:layout_width="match_parent"
         app:navigationIcon="?android:attr/homeAsUpIndicator"
         app:title="@{title}" />
-<!--    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
-<!--    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
 
 </layout>

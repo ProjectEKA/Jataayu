@@ -38,7 +38,6 @@ class RegistrationFragment : BaseFragment() {
             parentVM.requestVerification(it)
         })
 //        binding.tieMobileNumber.onFocusChangeListener = viewModel
-        binding.tieMobileNumber.requestFocus()
     }
 
     override fun onVisible() {

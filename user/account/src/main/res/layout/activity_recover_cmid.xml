@@ -4,19 +4,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.ForgotPasswordActivity">
 
+    <data>
+        <variable
+            name="title"
+            type="String" />
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/app_toolbar"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="@dimen/toolbar_size"
-        android:layout_width="match_parent"
+        android:id="@+id/app_toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:navigationIcon="?android:attr/homeAsUpIndicator"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title='@{@string/forgot_cmid}' />
+        android:layout_height="@dimen/toolbar_size"
+        android:layout_width="match_parent"
+        app:title='@{title}' />
 
     <FrameLayout
         android:layout_marginTop="@dimen/toolbar_size"

@@ -32,6 +32,7 @@
                 android:layout_marginLeft="@dimen/content_margin_medium"
                 android:layout_marginStart="@dimen/content_margin_medium"
                 android:layout_marginRight="@dimen/content_margin_medium"
+                app:suffixText="@{viewModel.providerName}"
                 android:layout_marginEnd="@dimen/content_margin_medium"
                 app:layout_constraintVertical_bias="0.4"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -40,7 +41,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:id="@+id/til_username"
                 android:hint="@string/consent_manager_id"
-                style="@style/CmidTextInputLayoutStyle">
+                style="@style/TextInputLayoutStyle">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:drawableStart="@drawable/ic_username"
@@ -48,17 +49,9 @@
                     style="@style/TextInputEditTextStyle"
                     android:id="@+id/et_cm_id"
                     app:onValueChanged="@{viewModel}"
-                    android:text="@={viewModel.inputUsernameLbl}"
-                    />
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_provider_name"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_gravity="end"-->
-<!--                    android:drawablePadding="@dimen/content_margin_medium"-->
-<!--                    android:text="@string/cm_config_provider"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textSize="@dimen/text_size_medium" />-->
+                    android:text="@={viewModel.inputUsernameLbl}">
+                    <requestFocus android:value="true"/>
+                </com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton

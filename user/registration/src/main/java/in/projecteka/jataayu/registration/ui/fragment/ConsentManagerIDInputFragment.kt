@@ -6,8 +6,8 @@ import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ConsentManagerIdInputFragmentBinding
 import `in`.projecteka.jataayu.registration.viewmodel.ConsentManagerIDInputViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
-import `in`.projecteka.jataayu.util.startRecoverCmid
 import `in`.projecteka.jataayu.util.startForgotPassword
+import `in`.projecteka.jataayu.util.startRecoverCmid
 import `in`.projecteka.jataayu.util.startRegistration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -34,10 +34,14 @@ class ConsentManagerIDInputFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = ConsentManagerIdInputFragmentBinding.inflate(inflater)
-        binding.viewModel = viewModel
-        binding.etCmId.requestFocus()
+        initBindings()
         initObservers()
+        viewModel.init(getString(R.string.cm_config_provider))
         return binding.root
+    }
+
+    private fun initBindings() {
+        binding.viewModel = viewModel
     }
 
 

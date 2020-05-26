@@ -145,9 +145,8 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         binding.inEditMode = false
         UiUtils.hideKeyboard(activity as Activity)
         selectedProvider = iDataBindingModel as ProviderInfo
-        binding.tvSelectedProvider.text = selectedProvider.nameCityPair()
+        binding.selectedProviderName = selectedProvider.nameCityPair()
         viewModel.selectedProviderName = selectedProvider.nameCityPair()
-        binding.tvSearchProviderLabel.text = getString(R.string.we_will_be_sending_info_to)
         binding.svProvider.clearFocus()
         binding.tvSelectedProvider.postDelayed({ binding.tvSelectedProvider.requestFocus() }, 100)
         binding.btnSearch.text = getString(R.string.fetch_record)
@@ -177,7 +176,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     override fun onClearTextButtonClick(view: View) {
-        binding.svProvider.text.clear()
+        binding.svProvider.text?.clear()
         binding.inEditMode = true
         updateViewDetailsVisibility()
     }
@@ -227,7 +226,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         })
 
         viewModel.myProfile.observe(this, Observer { profile ->
-            binding.setSex(
+            binding.setGender(
                 if(profile.gender == "M") {
                     getString(R.string.male)
                 } else {

@@ -19,15 +19,17 @@
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="alphabets_and_space_only">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890</string>
     <string name="account_details">Account details</string>
+    <string name="set_a_password">Set a password</string>
     <string name="should_not_be_empty">Should not be empty</string>
     <string name="please_select_gender">Please select gender</string>
     <string name="name_hint">Can be your first name middle name last name</string>
+    <string name="consent_manager_id_hint">You could edit this to a memorable ID</string>
     <string name="action_profile">Profile</string>
     <string name="action_logout">Logout</string>
     <string name="ayushman_bharat_id">Ayushman Bharat ID (optional)</string>
     <string name="ayushman_validation_hint">Should be 9 characters long\nShould start with P</string>
     <string name="user_already_exits">This username is already in use. Please enter a different username</string>
-    <string name="old_password">Old Password</string>
+    <string name="old_password">Enter Old Password</string>
     <string name="change_password">Change Password</string>
     <string name="confirm_password">Confirm New Password</string>
     <string name="wrong_old_password_error">Password is invalid</string>
@@ -62,7 +64,7 @@
     <string name="back_to_login">Back to login</string>
     <string name="no_matching_records_title">Sorry, We could not find a matching record.</string>
     <string name="no_matching_records_description">Please review your input and try again.</string>
-    <string name="review">Review</string>
+    <string name="try_again">Try again</string>
 
 <!--    Confirmation Texts-->
     <string name="congratulations">Congratulations</string>

@@ -74,6 +74,7 @@
             android:id="@+id/tv_selected_provider"
             android:layout_width="match_parent"
             style="@style/TextAppearance.Heavy"
+            android:layout_marginTop="@dimen/content_margin_extra_extra_small"
             android:layout_height="wrap_content"
             android:text="@{selectedProviderName}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -107,20 +108,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_patient_name"
             tools:text="ABXXX0111" />
 
-        <TextView
-            android:id="@+id/lbl_select_account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin_medium"
-            android:drawablePadding="@dimen/content_padding_small"
-            android:text="@string/select_accounts"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold"
-            app:toggledVisibility="@{hideNoLinkingAccountView}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_reference_number" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSearchResults"
             android:layout_width="0dp"
@@ -129,7 +116,7 @@
             app:layout_constraintBottom_toTopOf="@id/button_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_select_account"
+            app:layout_constraintTop_toBottomOf="@+id/tv_reference_number"
             tools:layout_editor_absoluteX="1dp"
             tools:listitem="@layout/patient_account_result_item" />
 
@@ -144,7 +131,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:enabled="@{canLinkAccounts, default=true}"
-                style="@style/Button"
+                style="@style/ButtonStyle"
                 android:focusable="@{canLinkAccounts}"
                 android:onClick="@{clickHandler::onLinkAccountsClick}"
                 android:foreground="?android:attr/selectableItemBackground"

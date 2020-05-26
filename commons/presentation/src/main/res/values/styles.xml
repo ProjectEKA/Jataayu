@@ -20,8 +20,11 @@
         <item name="tabIndicatorColor">@color/colorPrimary</item>
         <item name="tabIndicatorHeight">@dimen/tab_indictor_height</item>
         <item name="tabBackground">@color/white</item>
+        <item name="background">@color/white</item>
         <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
         <item name="tabSelectedTextColor">@color/colorPrimary</item>
+        <item name="elevation">10dp</item>
+        <item name="android:elevation">10dp</item>
     </style>
 
     <!-- for text -->
@@ -170,6 +173,7 @@
 
     <style name="TextAppearance.Light" parent="TextAppearance.ListItemSubHeader">
         <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
 
@@ -194,6 +198,7 @@
         <item name="chipIconVisible">true</item>
         <item name="textStartPadding">10dp</item>
         <item name="chipStrokeWidth">1dp</item>
+        <item name="chipCornerRadius">4dp</item>
         <item name="chipStrokeColor">@color/colorPrimary</item>
     </style>
 
@@ -204,9 +209,13 @@
     <style name="Chip.ChoiceCustomized" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/chip_bg_color_selector</item>
         <item name="chipStrokeWidth">1dp</item>
-        <item name="android:padding">@dimen/content_margin_extra_large</item>
+        <item name="chipStartPadding">@dimen/content_margin_medium</item>
+        <item name="chipEndPadding">@dimen/content_margin_medium</item>
         <item name="chipStrokeColor">@color/colorPrimary</item>
         <item name="android:textColor">@color/chip_text_color_selector</item>
+        <item name="chipCornerRadius">4dp</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_width">wrap_content</item>
     </style>
 
     <style name="Otp">
@@ -262,10 +271,7 @@
         <item name="suffixTextColor">@color/black</item>
         <item name="suffixTextAppearance">@style/SuffixStyle</item>
         <item name="singleLine">true</item>
-    </style>
-
-    <style name="CmidTextInputLayoutStyle" parent="TextInputLayoutStyle">
-        <item name="suffixText">@string/cm_config_provider</item>
+        <item name="android:layout_marginTop">@dimen/content_margin_medium</item>
     </style>
 
     <style name="PasswordTextInputLayoutStyle" parent="TextInputLayoutStyle">
@@ -281,6 +287,11 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="MobileNumberTextInputLayoutTextStyle" parent="TextInputLayoutStyle">
+        <item name="placeholderText">99999 99999</item>
+        <item name="placeholderTextAppearance">@style/PlaceHolderTextStyle</item>
     </style>
 
     <style name="PasswordTextInputEditTextStyle" parent="TextInputEditTextStyle">
@@ -326,6 +337,10 @@
     </style>
 
     <style name="PrefixStyle">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="PlaceHolderTextStyle">
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
