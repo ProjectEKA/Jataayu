@@ -22,12 +22,12 @@ class ResetPasswordOtpVerificationViewModel(val resetPasswordRepository: ResetPa
 
     val errorLbl = ObservableField<String>()
     val otpText = ObservableField<String>()
-    val mobileNumberText = ObservableField<String>()
     val submitEnabled = ObservableBoolean()
 
     val onClickValidateEvent = SingleLiveEvent<Void>()
     val verifyOtpResponse = PayloadLiveData<VerifyOTPResponse>()
     val generateOtpResponse = PayloadLiveData<GenerateOTPResponse>()
+    val onClickResendEvent = SingleLiveEvent<Void>()
 
     private var tempToken: String? = null
 
@@ -46,6 +46,11 @@ class ResetPasswordOtpVerificationViewModel(val resetPasswordRepository: ResetPa
     fun onClickValidate() {
         onClickValidateEvent.call()
     }
+
+    fun onClickResend(){
+         onClickResendEvent.call()
+    }
+
     fun generateOtp(consentManagerId: String) {
         generateOtpResponse.fetch(resetPasswordRepository.generateOtp(GenerateOTPRequest(consentManagerId)))
     }
