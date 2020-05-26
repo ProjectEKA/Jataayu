@@ -3,9 +3,14 @@ package `in`.projecteka.jataayu.registration.viewmodel
 import `in`.projecteka.jataayu.core.model.LoginMode
 import `in`.projecteka.jataayu.core.model.LoginType
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
-import `in`.projecteka.jataayu.network.model.APIResponse
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PayloadResource
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import org.junit.After
@@ -15,7 +20,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import retrofit2.Call
@@ -49,7 +53,11 @@ class ConsentManagerIDInputViewModelTest {
     private lateinit var loginModeResponseCall: Call<LoginType>
 
     @Mock
-    private lateinit var loginModeResponseObserver: Observer<APIResponse<out LoginMode>?>
+    private lateinit var loginModeResponseObserver: Observer<in PayloadResource<LoginType>>
+
+
+    @Mock
+    private lateinit var lifecycleOwner: LifecycleOwner
 
     @Before
     fun setUp() {
@@ -63,14 +71,17 @@ class ConsentManagerIDInputViewModelTest {
         consentManagerIDInputViewModel.onForgetCMIDButtonClickEvent.observeForever(
             forgotPasswordObserver
         )
-        consentManagerIDInputViewModel.loginMode.observeForever(loginModeResponseObserver)
+        val lifecycleRegistry = LifecycleRegistry(lifecycleOwner)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        `when`(lifecycleOwner.lifecycle).thenReturn(lifecycleRegistry)
 
+        consentManagerIDInputViewModel.loginModeLiveDataResponse.observe(lifecycleOwner, loginModeResponseObserver)
 
     }
 
     @After
     fun tearDown() {
-        Mockito.verifyNoMoreInteractions(registerEventObserver)
+        verifyNoMoreInteractions(registerEventObserver)
     }
 
     @Test
@@ -140,11 +151,22 @@ class ConsentManagerIDInputViewModelTest {
         }
 
         consentManagerIDInputViewModel.fetchLoginMode(cmId)
+        assertFalse(consentManagerIDInputViewModel.isLoginModeHasLoaded)
         verify(userAccountRepository).getLoginMode(cmId)
+        verify(loginModeResponseObserver, times(1)).onChanged(Loading(true, null))
         verify(loginModeResponseCall).enqueue(ArgumentMatchers.any())
-        verify(loginModeResponseObserver, times(2)).onChanged(null)
-        verify(loginModeResponseObserver, times(1)).onChanged(APIResponse(passwordLoginMode.loginMode, null))
+        verify(loginModeResponseObserver, times(1)).onChanged(Loading(false))
+        verify(loginModeResponseObserver, times(1)).onChanged(Success(LoginType(LoginMode.PASSWORD)))
 
+    }
+
+    @Test
+    fun `should update login mode loaded to true on login mode success`() {
+
+        val loginModeJsonResponse = """{"loginMode": "CREDENTIAL"}"""
+        val passwordLoginMode = Gson().fromJson(loginModeJsonResponse, LoginType::class.java)
+        consentManagerIDInputViewModel.onLoginModeResponseSuccess(passwordLoginMode.loginMode)
+        assertTrue(consentManagerIDInputViewModel.isLoginModeHasLoaded)
     }
 
 }

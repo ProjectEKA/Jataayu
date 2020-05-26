@@ -1,6 +1,10 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
 import `in`.projecteka.jataayu.core.model.LoginMode
+import `in`.projecteka.jataayu.network.utils.Failure
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PartialFailure
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ConsentManagerIdInputFragmentBinding
@@ -31,12 +35,19 @@ class ConsentManagerIDInputFragment : Fragment() {
 
     private lateinit var binding: ConsentManagerIdInputFragmentBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = ConsentManagerIdInputFragmentBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         initObservers()
-        return binding.root
     }
 
 
@@ -47,31 +58,45 @@ class ConsentManagerIDInputFragment : Fragment() {
         })
 
         viewModel.onForgetCMIDButtonClickEvent.observe(viewLifecycleOwner, Observer {
-            startRecoverCmid(activity!!)
+            activity?.let { startRecoverCmid(it) }
         })
 
         viewModel.onNextButtonClickEvent.observe(viewLifecycleOwner, Observer {
-            loginViewModel.updateConsentManagerID(viewModel.inputUsernameLbl.get()!!, resources.getString(R.string.cm_config_provider))
+            loginViewModel.updateConsentManagerID(
+                viewModel.inputUsernameLbl.get()!!,
+                resources.getString(R.string.cm_config_provider)
+            )
             viewModel.fetchLoginMode(loginViewModel.cmId)
         })
 
+        viewModel.loginModeLiveDataResponse.observe(viewLifecycleOwner, Observer {
 
-
-        viewModel.loginMode.observe(viewLifecycleOwner, Observer { loginMode ->
-            if (loginMode?.isLoading == true) return@Observer
-            loginMode.let {
-                if(it?.hasErrors() == true) {
-                    activity?.showErrorDialog(it.error?.message)
-                } else {
-                    when(loginMode?.response) {
-                        LoginMode.OTP ->   startForgotPassword(activity!!) {
-                            putExtra(PasswordInputFragment.KEY_CONSENT_ID, loginViewModel.cmId)
+            when (it) {
+                is Success -> {
+                    if (!viewModel.isLoginModeHasLoaded) {
+                        val loginMode = it.data!!.loginMode
+                        viewModel.onLoginModeResponseSuccess(loginMode)
+                        if (loginMode == LoginMode.OTP) {
+                            startForgotPassword(activity!!) {
+                                putExtra(PasswordInputFragment.KEY_CONSENT_ID, loginViewModel.cmId)
+                            }
+                        } else if (loginMode == LoginMode.PASSWORD) {
+                            loginViewModel.replaceFragment(R.layout.password_input_fragment)
                         }
-                        LoginMode.PASSWORD -> loginViewModel.replaceFragment(R.layout.password_input_fragment)
-                        else -> {}
                     }
                 }
+
+                is PartialFailure -> {
+                    context?.showErrorDialog(it.error?.message)
+                }
+                is Failure -> {
+                    context?.showErrorDialog(it.error.message)
+                }
+                is Loading -> {
+                    viewModel.showProgress(it.isLoading)
+                }
             }
+
         })
     }
 }
