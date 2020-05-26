@@ -61,7 +61,7 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
 
     private fun initObservers() {
 
-        viewModel.recoverCmidResponse.observe(this, Observer {
+        viewModel.recoverCmidResponse.observe(viewLifecycleOwner, Observer {
             when(it) {
                 is Loading -> viewModel.showProgress(it.isLoading)
                 is Success -> {
