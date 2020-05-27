@@ -495,21 +495,6 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-                <com.google.android.material.button.MaterialButton
-                    app:layout_constraintTop_toBottomOf="@+id/details_layout"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:id="@+id/btn_search"
-                    style="@style/ButtonStyle"
-                    android:layout_marginTop="30dp"
-                    android:layout_width="match_parent"
-                    android:clickable="@{!inEditMode}"
-                    android:enabled="@{!inEditMode}"
-                    android:onClick="@{clickHandler::onSearchButtonClick}"
-                    android:text="@string/fetch_record"
-                    tools:text="@string/fetch_record" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
@@ -523,7 +508,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             >
-
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_search"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:clickable="@{!inEditMode}"
+                android:enabled="@{!inEditMode}"
+                android:onClick="@{clickHandler::onSearchButtonClick}"
+                android:text="@string/fetch_record"
+                tools:text="@string/fetch_record" />
         </FrameLayout>
 
 

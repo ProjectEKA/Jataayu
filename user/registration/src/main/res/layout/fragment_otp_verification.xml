@@ -21,7 +21,7 @@
         android:padding="@dimen/content_margin_medium">
 
         <ImageView
-            app:layout_constraintBottom_toTopOf="@+id/lbl_enter_otp"
+            app:layout_constraintBottom_toTopOf="@+id/lble"
             android:id="@+id/img_logo"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -16,6 +16,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:padding="@dimen/content_margin_medium"
             android:layout_height="match_parent"
             android:background="@color/white"
             android:clipToPadding="false">
@@ -31,11 +32,9 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
+                    android:paddingTop="60dp"
                     android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:paddingLeft="@dimen/content_margin_large"
-                    android:paddingRight="@dimen/content_margin_large"
-                    android:paddingBottom="@dimen/content_margin_36">
+                    android:clipToPadding="false">
 
                     <TextView
                         android:id="@+id/lbl_title"
@@ -192,18 +191,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.core.widget.NestedScrollView>
-
-            <FrameLayout
-                android:id="@+id/button_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:padding="@dimen/content_margin_large"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-
-            </FrameLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

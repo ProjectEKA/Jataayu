@@ -21,16 +21,8 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBindings()
-        initToolbar()
         initObservers()
         viewModel.redirectToCreateAccountPage();
-    }
-
-    private fun initToolbar() {
-        setSupportActionBar(binding.appToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        binding.appToolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
     private fun initBindings() {
