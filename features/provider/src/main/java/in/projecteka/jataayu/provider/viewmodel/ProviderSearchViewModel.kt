@@ -55,18 +55,21 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
 
     fun linkPatientAccounts(listCareContexts: List<CareContext>, responseCallback: ResponseCallback) {
 
-        var linkedAccounts = ArrayList<CareContext>()
+        val linkedAccounts = ArrayList<CareContext>()
 
         listCareContexts.forEach {
-                if (it.contextChecked){
+                if (it.contextChecked == true){
                 linkedAccounts.add(it)
             }
         }
 
+        linkedAccounts.forEach { it.contextChecked = null }
+        linkedAccounts.forEach { it.display = null }
+
         val discoveryResponse = patientDiscoveryResponse.value
         val selectedAccountsResponse = LinkPatientAccountRequest(
             uuidRepository.generateUUID(), Patient(discoveryResponse?.patient?.referenceNumber!!,
-            discoveryResponse.patient.display, linkedAccounts, discoveryResponse.patient?.matchedBy!!),
+            null, linkedAccounts, null),
         discoveryResponse.transactionId)
 
         providerRepository.linkPatientAccounts(selectedAccountsResponse!!).observeOn(linkAccountsResponse, responseCallback)

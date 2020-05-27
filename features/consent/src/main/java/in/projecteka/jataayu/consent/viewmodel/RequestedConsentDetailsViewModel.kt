@@ -47,7 +47,7 @@ class RequestedConsentDetailsViewModel(private val repository: ConsentRepository
         links.forEach { link ->
             val careReferences = ArrayList<CareReference>()
             link.careContexts.forEach { careContext ->
-                if (careContext.contextChecked) careReferences.add(newCareReference(link, careContext))
+                if (careContext.contextChecked == true) careReferences.add(newCareReference(link, careContext))
             }
 
             if (careReferences.isNotEmpty()) {

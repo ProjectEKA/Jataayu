@@ -1,7 +1,11 @@
 package `in`.projecteka.jataayu.registration.repository
 
+import `in`.projecteka.jataayu.registration.model.VerifyIdentifierRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.registration.model.*
+import `in`.projecteka.jataayu.registration.model.LoginRequest
+import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
+import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
+import `in`.projecteka.jataayu.registration.model.VerifyIdentifierResponse
 import `in`.projecteka.jataayu.registration.remote.AuthenticationApis
 import retrofit2.Call
 

@@ -73,4 +73,5 @@ val viewModelModule = module {
     viewModel { ReadValuesFragmentViewModel(get(), get()) }
     viewModel { DisplayCmidFragmentViewModel() }
     viewModel { NoMatchingRecordsFragmentViewModel() }
+    viewModel { RecoverCmidOtpFragmentViewModel(get()) }
 }

@@ -1,7 +1,12 @@
 package `in`.projecteka.resetpassword.repository
 
+import `in`.projecteka.jataayu.core.model.GenerateOTPResponse
+import `in`.projecteka.jataayu.core.model.VerifyOTPRequest
+import `in`.projecteka.resetpassword.model.GenerateOTPRequest
+import `in`.projecteka.resetpassword.model.ResetPasswordRequest
+import `in`.projecteka.resetpassword.model.ResetPasswordResponse
+import `in`.projecteka.resetpassword.model.VerifyOTPResponse
 import `in`.projecteka.resetpassword.remote.ResetPasswordApis
-import `in`.projecteka.resetpassword.model.*
 import retrofit2.Call
 
 interface ResetPasswordRepository {

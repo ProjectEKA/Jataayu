@@ -1,5 +1,4 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
-
 import `in`.projecteka.jataayu.core.model.LoginMode
 import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
