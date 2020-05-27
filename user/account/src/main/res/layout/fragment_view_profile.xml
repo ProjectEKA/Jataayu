@@ -247,7 +247,7 @@
                     android:id="@+id/btn_logout"
                     android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:layout_height="wrap_content"
-                    style="@style/Button"
+                    style="@style/ButtonStyle"
                     android:onClick="@{() -> viewModel.logout()}"
                     android:padding="@dimen/content_margin_medium"
                     android:layout_width="match_parent"

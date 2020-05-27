@@ -321,7 +321,7 @@
     </style>
 
 <!--   End TextInputEdittext and TextInputLayout styles -->
-    
+
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_height">@dimen/button_height</item>
         <item name="android:layout_width">match_parent</item>

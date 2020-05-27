@@ -221,7 +221,7 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/ayushman_error_text"
-                        style="@style/Button"
+                        style="@style/ButtonStyle"
                         android:layout_width="match_parent"
                         android:enabled="@{viewModel.submitEnabled}"
                         android:onClick="@{() -> viewModel.recoverCmid()}"

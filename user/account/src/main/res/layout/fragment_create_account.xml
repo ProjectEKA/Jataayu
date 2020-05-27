@@ -185,7 +185,7 @@
                         app:layout_constraintRight_toRightOf="parent"
                         android:id="@+id/btn_register"
                         android:layout_marginTop="30dp"
-                        style="@style/Button"
+                        style="@style/ButtonStyle"
                         android:layout_width="match_parent"
                         android:enabled="@{viewModel.submitEnabled}"
                         android:text="@string/register" />

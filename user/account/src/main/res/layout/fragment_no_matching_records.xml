@@ -56,7 +56,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_register"
-                        style="@style/Button"
+                        style="@style/ButtonStyle"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

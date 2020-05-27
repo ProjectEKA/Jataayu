@@ -270,7 +270,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_save"
-                style="@style/Button"
+                style="@style/ButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_gravity="center_vertical"
                 android:baselineAligned="false"
