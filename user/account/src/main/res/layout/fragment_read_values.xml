@@ -108,28 +108,36 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/til_mobile_number"
                         app:toggledVisibility="@{viewModel.showErrorMobile}" />
-
-                    <TextView
-                        android:id="@+id/lbl_yob"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin_extra_extra_large"
-                        android:text="@string/year_of_birth_optional"
+                    
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_yob"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_err_mobile" />
+                        android:hint="@string/year_of_birth_optional"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_err_mobile"
+                        style="@style/TextInputLayoutStyle">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:text=" "
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            style="@style/TextInputEditTextStyle"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/spinner_yob"
-                        android:layout_width="wrap_content"
+                        app:layout_constraintTop_toTopOf="@+id/til_yob"
+                        app:layout_constraintBottom_toBottomOf="@+id/til_yob"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawSelectorOnTop="true"
                         android:layout_marginTop="@dimen/content_padding_small"
+                        android:paddingLeft="@dimen/content_margin_medium"
                         android:spinnerMode="dropdown"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_yob"
                         android:text="yyyy"
                         android:textColor="@color/colorPrimary"
-                        app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        android:hint="@string/year_of_birth_optional"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_err_mobile"
                         app:onItemSelected="@{spinnerListener}" />
 
                     <TextView
@@ -139,7 +147,7 @@
                         android:layout_marginTop="@dimen/content_margin_extra_small"
                         android:text="@string/gender"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/spinner_yob" />
+                        app:layout_constraintTop_toBottomOf="@+id/til_yob" />
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/cg_gender"
