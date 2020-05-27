@@ -321,18 +321,15 @@
     </style>
 
 <!--   End TextInputEdittext and TextInputLayout styles -->
-
-
+    
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_height">@dimen/button_height</item>
         <item name="android:layout_width">match_parent</item>
-<!--        <item name="android:elevation">@dimen/cardview_elevation</item>-->
         <item name="android:fontFamily">@font/poppins_medium</item>
         <item name="android:drawablePadding">@dimen/content_margin_small</item>
         <item name="android:textSize">@dimen/text_size_extra_medium</item>
         <item name="backgroundTint">@color/button_color_selector</item>
         <item name="cornerRadius">@dimen/button_corner_radius_new</item>
-<!--        <item name="android:stateListAnimator">@animator/button_state_list_anim</item>-->
         <item name="android:textColor">@color/white</item>
     </style>
 
