@@ -36,6 +36,7 @@ class ResetPasswordOtpFragment : BaseFragment() {
     companion object {
         private const val ERROR_CODE_INVALID_OTP = 1003
         private const val ERROR_CODE_OTP_EXPIRED = 1004
+        private const val ERROR_CODE_ACCOUNT_LOCKED = 1031
         const val EXCEEDED_INVALID_ATTEMPT_LIMIT = 1035
         const val ERROR_CODE_OTP_LIMIT_EXCEEDED = 1029
         fun newInstance() = ResetPasswordOtpFragment()
@@ -100,6 +101,7 @@ class ResetPasswordOtpFragment : BaseFragment() {
         })
 
         viewModel.verifyOtpResponse.observe(this, Observer {
+            viewModel.showAccountLockedError.set(false)
             when (it) {
                 is Loading -> viewModel.showProgress(it.isLoading)
                 is Success -> {
@@ -125,6 +127,9 @@ class ResetPasswordOtpFragment : BaseFragment() {
                             else -> it.error?.message
                         }
                     )
+                    if(it.error?.code == ERROR_CODE_ACCOUNT_LOCKED){
+                        viewModel.showAccountLockedError.set(true)
+                    }
                 }
                 is Failure -> {
                     activity?.showErrorDialog(it.error.localizedMessage)
