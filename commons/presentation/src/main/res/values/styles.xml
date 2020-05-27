@@ -273,6 +273,7 @@
         <item name="suffixTextAppearance">@style/SuffixStyle</item>
         <item name="singleLine">true</item>
         <item name="android:layout_marginTop">@dimen/content_margin_medium</item>
+        <item name="fontFamily">@font/poppins</item>
     </style>
 
     <style name="PasswordTextInputLayoutStyle" parent="TextInputLayoutStyle">
@@ -288,6 +289,7 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:singleLine">true</item>
+        <item name="fontFamily">@font/poppins</item>
     </style>
 
     <style name="MobileNumberTextInputLayoutTextStyle" parent="TextInputLayoutStyle">
