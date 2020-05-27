@@ -24,6 +24,7 @@ class ResetPasswordOtpVerificationViewModel(val resetPasswordRepository: ResetPa
     val otpText = ObservableField<String>()
     val mobileNumberText = ObservableField<String>()
     val submitEnabled = ObservableBoolean()
+    val showAccountLockedError = ObservableBoolean(false)
 
     val onClickValidateEvent = SingleLiveEvent<Void>()
     val verifyOtpResponse = PayloadLiveData<VerifyOTPResponse>()
