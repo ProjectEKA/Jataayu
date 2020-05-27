@@ -34,11 +34,11 @@ class ProviderActivity : BaseActivity<BaseActivityBinding>() {
     }
 
     fun showPatientsAccounts() {
-        addFragment(PatientAccountsFragment.newInstance(),R.id.fragment_container)
+        addFragment(PatientAccountsFragment.newInstance(),R.id.fragment_container, false)
     }
 
     fun showVerifyOtpScreen() {
-        addFragment(VerifyOtpFragment.newInstance(),R.id.fragment_container)
+        replaceFragment(VerifyOtpFragment.newInstance(),R.id.fragment_container, false)
     }
 
      fun updateTitle(title: String) {

@@ -107,18 +107,26 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         }
     }
 
-    open fun replaceFragment(fragment: Fragment, containerId: Int) {
-        supportFragmentManager.beginTransaction()
+    open fun replaceFragment(fragment: Fragment, containerId: Int, addToBackStack: Boolean = true) {
+        val transaction = supportFragmentManager.beginTransaction()
             .replace(containerId, fragment)
-            .addToBackStack(fragment.javaClass.name)
-            .commit()
+
+        if(addToBackStack) {
+            transaction.addToBackStack(fragment.javaClass.name)
+        }
+
+        transaction.commit()
     }
 
-    open fun addFragment(fragment: Fragment, containerId: Int) {
-        supportFragmentManager.beginTransaction()
+    open fun addFragment(fragment: Fragment, containerId: Int, addToBackStack: Boolean = true) {
+        val transaction = supportFragmentManager.beginTransaction()
             .add(containerId, fragment)
-            .addToBackStack(fragment.javaClass.name)
-            .commit()
+
+        if (addToBackStack) {
+            transaction.addToBackStack(fragment.javaClass.name)
+        }
+
+        transaction.commit()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
