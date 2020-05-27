@@ -1,32 +1,22 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
-import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
-import `in`.projecteka.jataayu.network.utils.fetch
-import `in`.projecteka.jataayu.util.TestUtils
-import `in`.projecteka.jataayu.util.extension.fromJson
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
-import android.text.InputType
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
 import junit.framework.Assert.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
 import retrofit2.Callback
-import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
 class ConfirmAccountViewModelTest {
@@ -107,26 +97,6 @@ class ConfirmAccountViewModelTest {
         viewModel.confirmationInputPasswordLbl.set("Aa@12345")
         viewModel.validateConfirmPassword()
         assertTrue(viewModel.showErrorConfirmPassword.get())
-    }
-
-    @Test
-    fun `validate hidden password field and toggle it `() {
-
-       viewModel.confirmationPasswordInputType.set(InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD)
-        viewModel.togglePasswordVisible()
-        assertEquals(InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,viewModel.confirmationPasswordInputType.get())
-        viewModel.togglePasswordVisible()
-        assertEquals(InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD,viewModel.confirmationPasswordInputType.get())
-
-    }
-
-    @Test
-    fun `validate toggle password field as hidden by default`() {
-
-        viewModel.confirmationPasswordInputType.set(InputType.TYPE_CLASS_TEXT + InputType.TYPE_CLASS_DATETIME)
-        viewModel.togglePasswordVisible()
-        assertEquals(InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD,viewModel.confirmationPasswordInputType.get())
-
     }
 
     @Test
