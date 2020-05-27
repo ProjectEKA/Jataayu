@@ -1,12 +1,12 @@
 package `in`.projecteka.resetpassword.viewmodel
 
+import `in`.projecteka.jataayu.core.model.GenerateOTPResponse
+import `in`.projecteka.jataayu.core.model.VerifyOTPRequest
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.resetpassword.model.GenerateOTPRequest
-import `in`.projecteka.resetpassword.model.GenerateOTPResponse
-import `in`.projecteka.resetpassword.model.VerifyOTPRequest
 import `in`.projecteka.resetpassword.model.VerifyOTPResponse
 import `in`.projecteka.resetpassword.repository.ResetPasswordRepository
 import android.text.Editable
@@ -51,7 +51,12 @@ class ResetPasswordOtpVerificationViewModel(val resetPasswordRepository: ResetPa
     }
 
     fun verifyOtp(sessionId: String, otp: String) {
-        verifyOtpResponse.fetch(resetPasswordRepository.verifyOtp(VerifyOTPRequest(sessionId, otp)))
+        verifyOtpResponse.fetch(resetPasswordRepository.verifyOtp(
+            VerifyOTPRequest(
+                sessionId,
+                otp
+            )
+        ))
     }
 
     fun init(tempToken: String) {

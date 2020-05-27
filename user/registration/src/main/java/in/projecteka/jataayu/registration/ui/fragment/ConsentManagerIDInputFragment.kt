@@ -6,8 +6,8 @@ import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ConsentManagerIdInputFragmentBinding
 import `in`.projecteka.jataayu.registration.viewmodel.ConsentManagerIDInputViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
-import `in`.projecteka.jataayu.util.startRecoverCmid
 import `in`.projecteka.jataayu.util.startForgotPassword
+import `in`.projecteka.jataayu.util.startRecoverCmid
 import `in`.projecteka.jataayu.util.startRegistration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -54,6 +54,7 @@ class ConsentManagerIDInputFragment : Fragment() {
             loginViewModel.updateConsentManagerID(viewModel.inputUsernameLbl.get()!!, resources.getString(R.string.cm_config_provider))
             viewModel.fetchLoginMode(loginViewModel.cmId)
         })
+
 
 
         viewModel.loginMode.observe(viewLifecycleOwner, Observer { loginMode ->
