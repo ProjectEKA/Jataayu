@@ -13,7 +13,7 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="logging_in">Logging In&#8230;</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="account_lock">Your account has been locked due invalid attempts. Please try again after sometime.</string>
+    <string name="account_lock">Your account has been locked due to invalid attempts. Please try again after sometime.</string>
     <string name="next">Next</string>
     <string name="consent_manager_id">Consent Manager ID</string>
     <string name="forgot_consent_manger_id">Forgot Consent Manger ID?</string>
