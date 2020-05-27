@@ -32,7 +32,7 @@
     <color name="grey_light">#F6F6F6</color>
     <color name="grey_light_landing">#F0F0F0</color>
     <color name="rounded_grey_background" tools:override="true">#C4C4C4</color>
-    <color name="disabled_button_bg" tools:ignore="MissingDefaultResource">#C4C4C4</color>
+    <color name="disabled_button_bg" tools:ignore="MissingDefaultResource">@color/disabledButtonNhs</color>
     <color name="secondary_button_text_color" tools:override="true">@color/colorPrimaryNcg</color>
     <color name="deny_button_text_color" tools:override="true">@color/red</color>
 
@@ -49,4 +49,6 @@
     <color name="colorPrimaryNhs">#296200</color>
     <color name="colorPrimaryDarkNhs">#28530B</color>
     <color name="colorAccentNhs">#FF9933</color>
+    <color name="disabledButtonNhs">#66296200</color>
+    <color name="disabledButtonNcg">#C4C4C4</color>
 </resources>

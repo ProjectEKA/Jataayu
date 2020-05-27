@@ -104,7 +104,7 @@
     <style name="TextAppearance">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@font/poppins</item>
     </style>
 
     <style name="TextAppearance.Links">
@@ -130,7 +130,7 @@
     <style name="TextAppearance.Heavy" parent="TextAppearance">
         <item name="android:letterSpacing">0.03</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="TextAppearance.ListItemHeader" parent="TextAppearance.Heavy">
@@ -139,7 +139,7 @@
 
     <style name="TextAppearance.Title" parent="TextAppearance">
         <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">@font/poppins_light</item>
     </style>
 
     <style name="TextAppearance.ListItemSubHeader" parent="TextAppearance">
@@ -168,11 +168,11 @@
 
     <style name="ConsentRequestHiuDetails" parent="TextAppearance.ListItemSubHeader">
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="TextAppearance.Light" parent="TextAppearance.ListItemSubHeader">
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">@font/poppins_light</item>
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
 
@@ -181,7 +181,7 @@
 <!--    Widget styles-->
 
     <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/poppins_black</item>
         <item name="android:textSize">@dimen/text_size_extra_small</item>
         <item name="itemBackground">@drawable/bottom_nav_tab_bg_color</item>
         <item name="tabIndicatorHeight">@dimen/tab_indictor_height</item>
@@ -266,6 +266,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">@dimen/text_input_layout_height</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="textAppearanceCaption">@style/TextAppearance</item>
         <item name="prefixTextAppearance">@style/PrefixStyle</item>
         <item name="prefixTextColor">@color/black</item>
         <item name="suffixTextColor">@color/black</item>
