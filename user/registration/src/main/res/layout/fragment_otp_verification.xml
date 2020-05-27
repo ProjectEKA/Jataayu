@@ -11,6 +11,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -20,6 +21,7 @@
         android:padding="@dimen/content_margin_medium">
 
         <ImageView
+            app:layout_constraintBottom_toTopOf="@+id/lbl_enter_otp"
             android:id="@+id/img_logo"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -30,47 +32,16 @@
 
 
         <TextView
-            android:id="@+id/lbl_otp_info"
-            style="@style/TextAppearance.Light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/fab_margin_bottom"
-            android:layout_marginTop="@dimen/content_margin_extra_small"
-            android:layout_marginEnd="@dimen/fab_margin_bottom"
-            android:gravity="center"
-            android:text="@{viewModel.otpMessageLbl}"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_logo"
-            app:layout_constraintVertical_bias="0.1" />
-
-        <TextView
-            android:id="@+id/tv_mobile_number"
-            style="@style/TextAppearance.Heavy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin_extra_small"
-            android:gravity="center"
-            android:text="@{viewModel.mobileNumberText}"
-            android:textSize="@dimen/text_size_large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_otp_info"
-            tools:text="98XXXXXX10" />
-
-        <TextView
             android:id="@+id/lbl_enter_otp"
             style="@style/TextAppearance.ListItemSubHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/toolbar_size"
+            android:layout_marginBottom="@dimen/content_margin_small"
             android:gravity="center_horizontal"
             android:text="@string/enter_otp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/et_otp"
             tools:text="Enter 6 digit OTP" />
 
         <in.projecteka.jataayu.presentation.ui.view.OtpEditText
@@ -80,9 +51,12 @@
             android:layout_height="@dimen/edittext_height"
             android:layout_marginTop="@dimen/content_margin_extra_small"
             android:text="@={viewModel.otpText}"
-            app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_enter_otp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_goneMarginTop="@dimen/content_margin_large"
             app:onValueChanged="@{viewModel}" />
 
@@ -115,6 +89,7 @@
         </com.google.android.material.button.MaterialButton>
 
         <TextView
+            style="@style/TextLinkStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/btn_continue"

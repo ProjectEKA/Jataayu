@@ -335,6 +335,7 @@
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:padding">@dimen/content_margin_medium</item>
+        <item name="fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="PrefixStyle">
@@ -348,6 +349,5 @@
     <style name="SuffixStyle" parent="TextAppearance">
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
-
 
 </resources>
