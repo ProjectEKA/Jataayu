@@ -93,8 +93,6 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_continue"
             style="@style/ButtonStyle"
-            android:layout_height="@dimen/button_height"
-            android:layout_width="match_parent"
             android:layout_marginLeft="@dimen/content_margin_medium"
             android:layout_marginStart="@dimen/content_margin_medium"
             android:layout_marginRight="@dimen/content_margin_medium"

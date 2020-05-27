@@ -47,8 +47,6 @@ class ConsentManagerIDInputFragment : Fragment() {
     private fun initBindings() {
         binding.viewModel = viewModel
     }
-
-
     private fun initObservers() {
 
         viewModel.onRegisterButtonClickEvent.observe(viewLifecycleOwner, Observer {
