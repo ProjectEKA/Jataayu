@@ -133,7 +133,7 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
     private fun initSpinner(selectedPosition: Int) {
         val arrayAdapter = ArrayAdapter<String>(
             context!!,
-            layout.simple_dropdown_item_1line, android.R.id.text1,
+            R.layout.layout_spinner_item, android.R.id.text1,
             viewModel.populateFilterItems(resources)
         )
         binding.spRequestFilter.adapter = arrayAdapter

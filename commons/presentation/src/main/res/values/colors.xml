@@ -51,4 +51,5 @@
     <color name="colorAccentNhs">#FF9933</color>
     <color name="disabledButtonNhs">#66296200</color>
     <color name="disabledButtonNcg">#C4C4C4</color>
+    <color name="grantButtonColor">#4CAF50</color>
 </resources>

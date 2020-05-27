@@ -33,7 +33,6 @@
             android:layout_marginEnd="@dimen/fab_margin_bottom"
             android:gravity="center"
             android:text="@string/user_verification_label"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

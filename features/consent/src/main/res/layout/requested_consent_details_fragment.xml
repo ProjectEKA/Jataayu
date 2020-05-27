@@ -284,13 +284,13 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_grant"
-                style="@style/ButtonStyle"
+                style="@style/Button.Positive"
                 android:layout_width="0dp"
+                android:drawableLeft="@drawable/ic_grant"
                 android:layout_height="@dimen/button_height"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="6dp"
                 android:layout_weight=".7"
-                android:drawableStart="@drawable/ic_grant"
                 android:onClick="@{clickHandler::onGrantConsent}"
                 android:text="@string/grant_request" />
         </LinearLayout>
