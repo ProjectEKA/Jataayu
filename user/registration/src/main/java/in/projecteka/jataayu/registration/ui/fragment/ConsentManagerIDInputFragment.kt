@@ -95,6 +95,7 @@ class ConsentManagerIDInputFragment : Fragment() {
                     viewModel.showProgress(it.isLoading)
                 }
             }
+
         })
     }
 }
