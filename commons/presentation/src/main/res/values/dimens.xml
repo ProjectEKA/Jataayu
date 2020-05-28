@@ -29,6 +29,8 @@
     <dimen name="content_margin_extra_extra_extra_large">32dp</dimen>
     <dimen name="content_margin_extra_extra_small">8dp</dimen>
     <dimen name="content_margin_36">36dp</dimen>
+    <dimen name="content_margin_40">40dp</dimen>
+    <dimen name="content_margin_48">48dp</dimen>
 
     <dimen name="toolbar_elevation">8dp</dimen>
 

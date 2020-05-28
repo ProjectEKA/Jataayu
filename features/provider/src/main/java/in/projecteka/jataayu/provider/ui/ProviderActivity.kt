@@ -8,6 +8,7 @@ import `in`.projecteka.jataayu.provider.ui.fragment.ProviderSearchFragment
 import `in`.projecteka.jataayu.provider.ui.fragment.VerifyOtpFragment
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderActivityViewModel
 import android.os.Bundle
+import android.view.View
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProviderActivity : BaseActivity<BaseActivityBinding>() {
@@ -38,6 +39,7 @@ class ProviderActivity : BaseActivity<BaseActivityBinding>() {
     }
 
     fun showVerifyOtpScreen() {
+        binding.baseToolbar.appToolbar.visibility = View.GONE
         replaceFragment(VerifyOtpFragment.newInstance(),R.id.fragment_container, false)
     }
 
