@@ -8,6 +8,8 @@
         style="?android:attr/dropDownItemStyle"
         android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
         android:singleLine="true"
+        android:textSize="@dimen/text_size_medium"
+        android:fontFamily="@font/poppins_medium"
         android:textColor="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"

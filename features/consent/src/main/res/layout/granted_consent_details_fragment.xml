@@ -30,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/content_margin_medium"
+            android:scrollbars="none"
             android:background="@drawable/grey_background_with_border"
             android:fadingEdgeLength="@dimen/content_margin_large"
             android:requiresFadingEdge="vertical"

@@ -5,7 +5,7 @@
     <string name="tab_requests">requests</string>
     <string name="tab_consents">My consents</string>
 
-    <string name="new_request">New Request</string>
+    <string name="new_request">Consent Request</string>
     <string name="granted_consent">Granted Consent</string>
     <string name="denied_consent">Denied Consent</string>
     <string name="revoked_consent">Revoked Consent</string>

@@ -16,22 +16,28 @@
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
     </style>
 
-    <style name="AppTabLayout" parent="Widget.Design.TabLayout">
+<!--    tab layout styles-->
+
+    <style name="AppTabLayout">
         <item name="tabIndicatorColor">@color/colorPrimary</item>
         <item name="tabIndicatorHeight">@dimen/tab_indictor_height</item>
         <item name="tabBackground">@color/white</item>
         <item name="background">@color/white</item>
         <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
         <item name="tabSelectedTextColor">@color/colorPrimary</item>
+        <item name="tabTextColor">@color/black</item>
         <item name="elevation">10dp</item>
-        <item name="android:elevation">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/tab_layout_height</item>
     </style>
 
-    <!-- for text -->
-    <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textColor">@color/black</item>
+    <style name="AppTabTextAppearance">!-- parent="TextAppearance.Design.Tab"-->>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
     </style>
+
+<!--    END tab layout styles-->
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -83,33 +89,33 @@
         <item name="android:textColor">@color/outline_button_text_color_selector</item>
     </style>
 
-
-    <style name="Button.Negative" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="PositiveOrNegativeButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
         <item name="android:drawablePadding">@dimen/content_padding_medium</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:stateListAnimator">@animator/button_state_list_anim</item>
+    </style>
+
+
+    <style name="Button.Negative" parent="@style/PositiveOrNegativeButtonStyle">
         <item name="icon">@drawable/ic_deny</item>
         <item name="iconTint">@color/red</item>
         <item name="strokeColor">@color/red</item>
-        <item name="android:stateListAnimator">@animator/button_state_list_anim</item>
         <item name="android:textColor">@color/deny_button_text_color</item>
         <item name="backgroundTint">@color/white</item>
         <item name="rippleColor">@color/negative_button_ripple_color</item>
-        <item name="android:fontFamily">@font/poppins_medium</item>
-        <item name="cornerRadius">@dimen/button_corner_radius</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 
-    <style name="Button.Positive" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="Button.Positive" parent="@style/PositiveOrNegativeButtonStyle">
         <item name="android:drawablePadding">@dimen/content_padding_medium</item>
         <item name="icon">@drawable/ic_grant</item>
-        <item name="iconTint">@color/grantButtonColor</item>
+        <item name="iconTint">@color/white</item>
         <item name="strokeColor">#296200</item>
-        <item name="android:stateListAnimator">@animator/button_state_list_anim</item>
         <item name="android:textColor">@color/white</item>
         <item name="backgroundTint">@color/grantButtonColor</item>
         <item name="rippleColor">@color/grantButtonColor</item>
-        <item name="android:fontFamily">@font/poppins_medium</item>
-        <item name="cornerRadius">@dimen/button_corner_radius</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 
 
@@ -128,11 +134,13 @@
     <style name="TextAppearance.AllCaps.Active" parent="TextAppearance.AllCaps">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="TextAppearance.AllCaps.Inactive" parent="TextAppearance.AllCaps">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_size_extra_small</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="TextAppearance.Heavy" parent="TextAppearance">
@@ -189,7 +197,6 @@
 <!--    Widget styles-->
 
     <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
-        <item name="fontFamily">@font/poppins_black</item>
         <item name="android:textSize">@dimen/text_size_extra_small</item>
         <item name="itemBackground">@drawable/bottom_nav_tab_bg_color</item>
         <item name="tabIndicatorHeight">@dimen/tab_indictor_height</item>
@@ -339,7 +346,7 @@
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_height">@dimen/button_height</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:fontFamily">@font/poppins</item>
         <item name="android:drawablePadding">@dimen/content_margin_small</item>
         <item name="android:textSize">@dimen/text_size_extra_medium</item>
         <item name="backgroundTint">@color/button_color_selector</item>
@@ -364,6 +371,5 @@
         <item name="android:padding">@dimen/content_margin_medium</item>
         <item name="fontFamily">@font/poppins_medium</item>
     </style>
-
     <!--  *************************   END NHS styles ************************* -->
 </resources>
