@@ -161,26 +161,6 @@
                         android:textColor="@color/colorPrimary"
                         app:onItemSelected="@{spinnerListener}" />
 
-
-                    <!--<androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/spinner_yob"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/content_margin_medium"
-                        android:layout_marginTop="@dimen/content_margin_extra_small"
-                        android:drawSelectorOnTop="true"
-                        android:drawableRight="@drawable/ic_calendar"
-                        android:drawablePadding="@dimen/content_margin_large"
-                        android:spinnerMode="dropdown"
-                        android:text="yyyy"
-                        android:textColor="@color/colorPrimary"
-                        app:layout_constraintLeft_toRightOf="@+id/lbl_yob"
-                        app:layout_constraintStart_toEndOf="@+id/lbl_yob"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_err_gender"
-                        app:onItemSelected="@{spinnerListener}" />-->
-
-
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_marginTop="@dimen/content_margin_extra_small"
                         app:layout_constraintStart_toStartOf="parent"

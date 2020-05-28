@@ -140,28 +140,6 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-       <!-- <TextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/search_edittext_height"
-            android:layout_marginStart="@dimen/content_margin_medium"
-            android:layout_marginTop="@dimen/content_margin_medium"
-            android:layout_marginEnd="@dimen/content_margin_medium"
-            android:background="@color/gray"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="start|center_vertical"
-            android:padding="@dimen/content_padding_medium"
-            android:paddingStart="@dimen/content_margin_extra_large"
-            android:paddingEnd="@dimen/content_margin_extra_large"
-            android:popupElevation="0dp"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceListItem"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            tools:text="Max Hospital, Kochi"
-            tools:visibility="gone" />-->
-
         <com.google.android.material.textfield.TextInputLayout
             app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/cv_autocomplete"
@@ -184,27 +162,6 @@
             </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
-<!--
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/search_edittext_height"
-            android:layout_marginStart="@dimen/content_margin_medium"
-            android:layout_marginEnd="@dimen/content_margin_medium"
-            android:background="@drawable/rounded_corners_selector"
-            android:transitionName="search"
-            app:cardElevation="@dimen/content_padding_medium">
-
-            <ImageView
-                android:id="@+id/iv_clear_results"
-                android:layout_width="@dimen/clear_button_dimensions"
-                android:layout_height="@dimen/clear_button_dimensions"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="@dimen/content_margin_extra_large"
-                android:background="@drawable/ic_clear_all"
-                android:onClick="@{clickHandler::onClearTextButtonClick}"
-                android:visibility="@{clearButtonVisibility}"
-                tools:visibility="visible" />
-        </com.google.android.material.card.MaterialCardView>-->
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
