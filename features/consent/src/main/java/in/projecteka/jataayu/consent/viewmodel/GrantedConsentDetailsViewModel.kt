@@ -40,7 +40,7 @@ class GrantedConsentDetailsViewModel(private val repository: ConsentRepository) 
                     items.add(linkedHip)
                     count++
                     val careContextsList = arrayListOf<LinkedCareContext>()
-                    link.careContexts.forEach { careContextsList.add(LinkedCareContext(it.referenceNumber, it.display)) }
+                    link.careContexts.forEach { careContextsList.add(LinkedCareContext(it.referenceNumber, it.display ?: "")) }
                     (careContextsList).forEach { linkedAccountCareContext ->
                         (grantedConsent.consentDetail.careContexts)?.forEach { grantedAccountCareContext ->
                             grantedAccountCareContext.careContextReference.toString()

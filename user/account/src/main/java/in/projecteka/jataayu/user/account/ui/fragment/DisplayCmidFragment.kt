@@ -40,10 +40,10 @@ class DisplayCmidFragment : Fragment()  {
         super.onViewCreated(view, savedInstanceState)
         initBindings()
         initObservers()
-        parentViewModel.consentManagerId.get()?.let {
+        parentViewModel.recoverCmidResponse?.let {
 
             val spannableTitle = SpannableStringBuilder()
-                .bold { append(parentViewModel.consentManagerId.get()) }
+                .bold { append(it.cmId) }
                 .append(SPACE + getString(R.string.display_cmid_title))
 
             viewModel.init(spannableTitle)
@@ -51,7 +51,7 @@ class DisplayCmidFragment : Fragment()  {
     }
 
     private fun initObservers() {
-        viewModel.redirectToEvent.observe(this, Observer {
+        viewModel.redirectToEvent.observe(viewLifecycleOwner, Observer {
             if (it == DisplayCmidFragmentViewModel.Redirect.BACK_TO_LOGIN){
                 activity!!.finish()
             }

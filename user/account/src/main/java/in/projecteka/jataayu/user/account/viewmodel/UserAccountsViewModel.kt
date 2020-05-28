@@ -2,13 +2,13 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.R
 import `in`.projecteka.jataayu.core.model.*
+import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
-import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.util.extension.liveDataOf
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
@@ -127,7 +127,7 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
                 link.referenceNumber,
                 link.display,
                 link.careContexts.map { careContext ->
-                    LinkedCareContext(careContext.referenceNumber, careContext.display)
+                    LinkedCareContext(careContext.referenceNumber, careContext.display ?: "")
                 },
                 R.id.childItemsList,
                 false

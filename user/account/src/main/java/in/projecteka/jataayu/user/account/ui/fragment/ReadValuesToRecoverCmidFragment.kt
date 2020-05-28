@@ -24,7 +24,7 @@ import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedListener  {
+class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var binding: FragmentReadValuesBinding
     private val viewModel: ReadValuesFragmentViewModel by viewModel()
@@ -52,7 +52,9 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
     private fun initSpinner() {
         val arrayAdapter = ArrayAdapter<String>(
             activity!!,
-            android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, viewModel.getYearsToPopulate()
+            android.R.layout.simple_spinner_dropdown_item,
+            android.R.id.text1,
+            viewModel.getYearsToPopulate()
         )
         binding.spinnerYob.adapter = arrayAdapter
         arrayAdapter.notifyDataSetChanged()
@@ -65,12 +67,12 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
             when(it) {
                 is Loading -> viewModel.showProgress(it.isLoading)
                 is Success -> {
-                    parentViewModel.consentManagerId.set(it.data?.cmId)
-                    parentViewModel.onDisplayCmidRequest()
+                    parentViewModel.onOTPRequest(viewModel.getRecoverCmidPayload(),it.data!!)
                 }
                 is PartialFailure -> {
                     if (it.error?.code == ReadValuesFragmentViewModel.ERROR_CODE_NO_MATCHING_RECORDS ||
-                        it.error?.code == ReadValuesFragmentViewModel.ERROR_CODE_MULTIPLE_MATCHING_RECORDS){
+                        it.error?.code == ReadValuesFragmentViewModel.ERROR_CODE_MULTIPLE_MATCHING_RECORDS
+                    ) {
                         parentViewModel.onReviewRequest()
                     } else {
                         activity?.showAlertDialog(
@@ -95,13 +97,13 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
             viewModel.validateName()
         }
 
-        binding.etAyushmanBharatId.addTextChangedListener{text ->
+        binding.etAyushmanBharatId.addTextChangedListener { text ->
             viewModel.validateAyushmanId()
         }
 
-        binding.tieMobileNumber.addTextChangedListener{ text ->
+        binding.tieMobileNumber.addTextChangedListener { text ->
             viewModel.validateMobileNumber()
-            }
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -113,7 +115,4 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
             viewModel.selectedYoB(null)
         }
     }
-
-
-
 }

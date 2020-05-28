@@ -27,6 +27,7 @@ class UnauthorisedUserRedirectInterceptor(private val context: Context, private 
             "${baseUrl}otpsession/permit",
             "${baseUrl}patients/profile/update-password",
             "${baseUrl}patients/link/${requestURL.pathSegments.last()}",
+            "${baseUrl}patients/profile/recovery-confirm",
             "${baseUrl}sessions" -> {
                 response
             }

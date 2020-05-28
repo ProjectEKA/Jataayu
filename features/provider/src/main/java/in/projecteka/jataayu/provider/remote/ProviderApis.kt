@@ -11,13 +11,16 @@ interface ProviderApis {
     @GET("providers")
     fun getProviders(@Query("name") name: String): Call<List<ProviderInfo>>
 
-    @POST("patients/discover/carecontexts")
+//    @POST("patients/discover/carecontexts")
+    @POST("v1/care-contexts/discover")
     fun getPatientAccounts(@Body request: Request): Call<PatientDiscoveryResponse>
 
-    @POST("patients/link")
+//    @POST("patients/link")
+    @POST("v1/links/link/init")
     fun linkPatientAccounts(@Body linkPatientAccountRequest: LinkPatientAccountRequest): Call<LinkAccountsResponse>
 
-    @POST("patients/link/{referenceNumber}")
+//    @POST("patients/link/{referenceNumber}")
+    @POST("v1/links/link/confirm/{referenceNumber}")
     fun verifyOtp(@Path("referenceNumber") referenceNumber: String, @Body otp: Otp): Call<SuccessfulLinkingResponse>
 
     @GET("providers/{provider-id}")

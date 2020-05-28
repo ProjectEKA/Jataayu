@@ -25,6 +25,9 @@ interface UserAccountApis {
     @GET("patients/profile/loginmode")
     fun getLoginMode(@Query("userName") userName: String): Call<LoginType>
 
-    @POST("patients/recover-cmid")
-    fun recoverCmid(@Body recoverCmidRequest: RecoverCmidRequest): Call<RecoverCmidResponse>
+    @POST("patients/profile/recovery-confirm")
+    fun recoverCmid(@Body verifyOTPRequest: VerifyOTPRequest): Call<RecoverCmidResponse>
+
+    @POST("patients/profile/recovery-init")
+    fun generateOTPForRecoverCMID(@Body recoverCmidRequest: RecoverCmidRequest): Call<GenerateOTPResponse>
 }

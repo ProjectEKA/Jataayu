@@ -1,22 +1,24 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
+import `in`.projecteka.jataayu.core.model.GenerateOTPResponse
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
-import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
 class RaedValuesToRecoverCmidFragmentViewModelTest {
@@ -29,17 +31,12 @@ class RaedValuesToRecoverCmidFragmentViewModelTest {
     @Mock
     private lateinit var preferenceRepository: PreferenceRepository
 
-    @Mock
-    private lateinit var credentialsRepository: CredentialsRepository
-
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var createAccountAccountCall: Call<CreateAccountResponse>
+    private lateinit var generateOTPResponseCall: Call<GenerateOTPResponse>
 
-    @Mock
-    private lateinit var responseCallback: Callback<CreateAccountResponse>
 
     @Before
     fun setup() {
@@ -49,7 +46,7 @@ class RaedValuesToRecoverCmidFragmentViewModelTest {
 
     @After
     fun tearDown() {
-        Mockito.verifyNoMoreInteractions(repository, createAccountAccountCall)
+        Mockito.verifyNoMoreInteractions(repository, generateOTPResponseCall)
         Mockito.validateMockitoUsage()
     }
 
@@ -138,5 +135,32 @@ class RaedValuesToRecoverCmidFragmentViewModelTest {
         assertEquals(ayushmanId.toUpperCase(), recoverCmidRequest.unverifiedIdentifiers?.get(0)?.value)
         assertEquals("O", recoverCmidRequest.gender)
         assertEquals(1977, recoverCmidRequest.yearOfBirth)
+    }
+
+    @Test
+    fun `should return the session and trigger the otp when cm id found`() {
+        val fullName = "Anu"
+        val mobile = "9876543210"
+        val ayushmanId = "PAyush123"
+        viewModel.inputFullName.set(fullName)
+        viewModel.inputMobileNumber.set(mobile)
+        viewModel.inputAyushmanIdLbl.set(ayushmanId)
+        viewModel.selectedYoB(1977)
+        viewModel.onCheckedChanged(null, 2)
+        val recoverCmidRequest = viewModel.getRecoverCmidPayload()
+
+        val generateOtpResponseJson =
+            """{"sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6","otpMedium": "MOBILE","otpMediumValue": 9999999999,"expiryInMinutes": 5}"""
+        val generateOtpResponse = Gson().fromJson(generateOtpResponseJson, GenerateOTPResponse::class.java)
+        Mockito.`when`(repository.generateOTPForRecoverCMID(recoverCmidRequest)).thenReturn(generateOTPResponseCall)
+        Mockito.`when`(generateOTPResponseCall.enqueue(Mockito.any())).then {
+            val callback = it.arguments[0] as Callback<GenerateOTPResponse>
+            callback.onResponse(generateOTPResponseCall, Response.success(generateOtpResponse))
+        }
+
+        viewModel.recoverCmid()
+        Mockito.verify(repository).generateOTPForRecoverCMID(recoverCmidRequest)
+        Mockito.verify(generateOTPResponseCall).enqueue(any())
+
     }
 }

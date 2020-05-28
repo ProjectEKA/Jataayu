@@ -1,8 +1,8 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
+import `in`.projecteka.jataayu.core.model.GenerateOTPResponse
 import `in`.projecteka.jataayu.core.model.Identifier
 import `in`.projecteka.jataayu.core.model.RecoverCmidRequest
-import `in`.projecteka.jataayu.core.model.RecoverCmidResponse
 import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
@@ -51,7 +51,7 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
     val showErrorMobile = ObservableBoolean(false)
 
 
-    val recoverCmidResponse = PayloadLiveData<RecoverCmidResponse>()
+    val recoverCmidResponse = PayloadLiveData<GenerateOTPResponse>()
 
 
     fun validateFields(): Boolean {
@@ -75,7 +75,7 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
     }
 
     fun recoverCmid() {
-        recoverCmidResponse.fetch(repository.recoverCmid(getRecoverCmidPayload()))
+        recoverCmidResponse.fetch(repository.generateOTPForRecoverCMID(getRecoverCmidPayload()))
     }
 
     fun getRecoverCmidPayload(): RecoverCmidRequest {
