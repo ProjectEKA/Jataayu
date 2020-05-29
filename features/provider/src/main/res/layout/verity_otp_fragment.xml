@@ -44,7 +44,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/lbl_enter_otp"
-            style="@style/NcgNhsTitleStyle"/>
+            style="@style/Logo"/>
 
         <TextView
             android:id="@+id/lbl_enter_otp"
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.button.MaterialButton
-            style="@style/ButtonStyle"
+            style="@style/Button"
             android:id="@+id/btn_continue"
             android:enabled="@{viewModel.setEnableButton}"
             android:onClick="@{clickHandler::onSubmitOtp}"

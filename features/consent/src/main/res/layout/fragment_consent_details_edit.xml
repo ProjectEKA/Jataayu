@@ -42,7 +42,7 @@
 
                 <TextView
                     android:id="@+id/tv_requester_name"
-                    style="@style/ConsentRequestHiuDetails"
+                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.modifiedConsent.requester.name}"
@@ -51,7 +51,7 @@
 
                 <TextView
                     android:id="@+id/tv_requester_organization"
-                    style="@style/ConsentRequestHiuDetails"
+                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -73,7 +73,7 @@
 
                 <TextView
                     android:id="@+id/tv_purpose_of_request"
-                    style="@style/ConsentRequestHiuDetails"
+                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.modifiedConsent.purpose.text}"
@@ -102,7 +102,7 @@
 
                 <TextView
                     android:id="@+id/tv_requests_info_from"
-                    style="@style/DatePickerStyle"
+                    style="@style/Button.DatePicker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{()->viewModel.onDateClicked(viewModel.FROM_DATE_DATEPICKER_ID)}"
@@ -126,7 +126,7 @@
 
                 <TextView
                     android:id="@+id/tv_requests_info_to"
-                    style="@style/DatePickerStyle"
+                    style="@style/Button.DatePicker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{()-> viewModel.onDateClicked(viewModel.TO_DATE_DATEPICKER_ID)}"
@@ -170,7 +170,7 @@
 
                 <TextView
                     android:id="@+id/tv_expiry_date"
-                    style="@style/DatePickerStyle"
+                    style="@style/Button.DatePicker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{()->viewModel.onDateClicked(viewModel.EXPIRY_DATE_DATEPICKER_ID)}"
@@ -182,7 +182,7 @@
 
                 <TextView
                     android:id="@+id/tv_expiry_time"
-                    style="@style/DatePickerStyle"
+                    style="@style/Button.DatePicker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/content_margin_large"
@@ -271,7 +271,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_save"
-                style="@style/ButtonStyle"
+                style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_gravity="center_vertical"
                 android:baselineAligned="false"

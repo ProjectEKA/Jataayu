@@ -42,7 +42,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_register"
-                        style="@style/ButtonStyle"
+                        style="@style/Button"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginBottom="@dimen/content_margin_extra_extra_large"

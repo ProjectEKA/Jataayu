@@ -52,7 +52,7 @@
                         android:layout_marginTop="@dimen/content_margin_extra_small"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/lbl_title"
-                        style="@style/TextInputLayoutStyle">
+                        style="@style/TextInputLayout">
 
                         <com.google.android.material.textfield.TextInputEditText
                             error_text='@{@string/should_not_be_empty}'
@@ -60,7 +60,7 @@
                             android:text="@={viewModel.inputFullName}"
                             toggle_error="@{viewModel.showErrorName}"
                             android:id="@+id/et_name"
-                            style="@style/TextInputEditTextStyle"/>
+                            style="@style/TextInputEditText"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -133,14 +133,14 @@
                         android:layout_marginTop="@dimen/content_margin_medium"
                         android:hint="@string/year_of_birth_optional"
                         app:layout_constraintTop_toBottomOf="@+id/tv_err_gender"
-                        style="@style/TextInputLayoutStyle">
+                        style="@style/TextInputLayout">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:clickable="false"
                             android:text=" "
-                            style="@style/TextInputEditTextStyle"/>
+                            style="@style/TextInputEditText"/>
 
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -167,13 +167,13 @@
                         android:hint="@string/ayushman_bharat_id"
                         android:id="@+id/til_ayushman_id"
                         app:layout_constraintTop_toBottomOf="@+id/til_yob"
-                        style="@style/TextInputLayoutStyle">
+                        style="@style/TextInputLayout">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_ayushman_bharat_id"
                             android:inputType="textCapCharacters"
                             android:text="@={viewModel.inputAyushmanIdLbl}"
-                            style="@style/TextInputEditTextStyle"/>
+                            style="@style/TextInputEditText"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -196,7 +196,7 @@
                         app:layout_constraintRight_toRightOf="parent"
                         android:id="@+id/btn_register"
                         android:layout_marginTop="30dp"
-                        style="@style/ButtonStyle"
+                        style="@style/Button"
                         android:layout_width="match_parent"
                         android:enabled="@{viewModel.submitEnabled}"
                         android:text="@string/register" />
