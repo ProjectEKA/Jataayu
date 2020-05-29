@@ -101,7 +101,7 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
             viewModel.validateAyushmanId()
         }
 
-        binding.etMobileNumber.addTextChangedListener { text ->
+        binding.tieMobileNumber.addTextChangedListener { text ->
             viewModel.validateMobileNumber()
         }
     }

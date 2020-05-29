@@ -12,10 +12,9 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/app_toolbar"
         android:layout_height="@dimen/toolbar_size"
+        style="@style/Toolbar"
         android:layout_width="match_parent"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:navigationIcon="?android:attr/homeAsUpIndicator"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@{title}" />
 
 </layout>

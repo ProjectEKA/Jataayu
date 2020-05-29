@@ -42,7 +42,7 @@
             name="yearOfBirth"
             type="String" />
         <variable
-            name="sex"
+            name="gender"
             type="String" />
         <variable
             name="ayushmanId"
@@ -57,137 +57,122 @@
         android:id="@+id/provider_search_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="@dimen/content_margin_medium"
         android:background="@color/white"
         tools:context="in.projecteka.jataayu.provider.ui.ProviderActivity">
 
         <TextView
-            android:id="@+id/tv_lets_begin_adding_health_record_label"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_lets_begin_adding_health_record_label_1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin_large"
-            android:drawablePadding="@dimen/content_padding_small"
-            android:padding="@dimen/content_padding_medium"
-            android:paddingStart="@dimen/content_margin_extra_large"
-            android:paddingEnd="@dimen/content_margin_extra_large"
-            android:text="@string/let_s_begin_by_adding_your_health_records_to_id"
+            android:textStyle="normal"
+            style="@style/TextAppearance.Light"
+            android:text="@string/let_s_begin_by_adding_your_health_records_to_id_1"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_lets_begin_adding_health_record_label_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/content_padding_large"
+            android:textStyle="normal"
+            android:drawableRight="@drawable/ic_info"
+            style="@style/TextAppearance.Light"
+            android:text="@string/let_s_begin_by_adding_your_health_records_to_id_2"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_lets_begin_adding_health_record_label_1"/>
+
 
         <TextView
             android:id="@+id/tv_search_provider_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin_large"
+            android:layout_marginTop="@dimen/content_margin_medium"
             android:drawablePadding="@dimen/content_padding_small"
-            android:padding="@dimen/content_padding_medium"
-            android:paddingStart="@dimen/content_margin_extra_large"
-            android:paddingEnd="@dimen/content_margin_extra_large"
             android:text="@string/search_health_information_provider"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_lets_begin_adding_health_record_label" />
-
-        <TextView
-            android:id="@+id/tv_selected_provider"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/search_edittext_height"
-            android:layout_marginStart="@dimen/content_margin_medium"
-            android:layout_marginTop="@dimen/content_margin_medium"
-            android:layout_marginEnd="@dimen/content_margin_medium"
-            android:background="@color/gray"
-            android:clickable="true"
-            android:drawableEnd="@drawable/ic_clear_provider"
-            android:drawablePadding="@dimen/content_padding_medium"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="start|center_vertical"
-            android:onClick="@{clickHandler::onClearSelectionClick}"
-            android:padding="@dimen/content_padding_medium"
-            android:paddingStart="@dimen/content_margin_extra_large"
-            android:paddingEnd="@dimen/content_margin_extra_large"
-            android:popupElevation="0dp"
-            android:singleLine="true"
-            android:text="@{selectedProviderName}"
-            android:textAppearance="?android:attr/textAppearanceListItem"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_search_provider_label"
-            app:selected="@{!inEditMode}"
-            app:toggledVisibility="@{!inEditMode}"
-            tools:text="Max Hospital, Kochi"
-            tools:visibility="gone" />
+            app:layout_constraintTop_toBottomOf="@id/tv_lets_begin_adding_health_record_label_2" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_autocomplete"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/search_edittext_height"
-            android:layout_marginStart="@dimen/content_margin_medium"
-            android:layout_marginEnd="@dimen/content_margin_medium"
-            android:background="@drawable/rounded_corners_selector"
-            android:transitionName="search"
-            app:cardElevation="@dimen/content_padding_medium"
+            android:id="@+id/cv_selected_provider"
+            android:layout_width="0dp"
+            app:toggledVisibility="@{!inEditMode}"
+            android:layout_marginTop="@dimen/content_margin_extra_small"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/content_padding_small"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_search_provider_label">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/content_margin_medium">
+
+                <EditText
+                    app:selected="@{!inEditMode}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:drawableEnd="@drawable/ic_cancel"
+                    android:drawablePadding="@dimen/content_padding_medium"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_medium"
+                    android:cursorVisible="false"
+                    android:id="@+id/tv_selected_provider"
+                    android:onClick="@{clickHandler::onClearSelectionClick}"
+                    android:text="@{selectedProviderName}"
+                    style="@style/TextInputEditTextStyle"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/cv_autocomplete"
+            android:layout_marginTop="0dp"
+            style="@style/TextInputLayoutStyle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_search_provider_label"
             app:toggledVisibility="@{inEditMode}"
             tools:visibility="visible">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/sv_provider"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/search_edittext_height"
-                android:clickable="true"
-                android:background="@color/white"
-                android:drawableStart="@drawable/ic_search"
-                android:drawablePadding="@dimen/content_padding_extra_large"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
+                android:drawableLeft="@drawable/ic_search_new"
                 android:imeOptions="actionSearch"
                 android:importantForAutofill="no"
                 android:inputType="textAutoComplete|textAutoCorrect"
-                android:padding="@dimen/content_padding_medium"
-                android:paddingStart="@dimen/content_margin_extra_large"
-                android:paddingEnd="@dimen/content_margin_extra_large"
-                android:popupElevation="0dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_small"
                 app:onValueChanged="@{textWatcher}"
-                tools:ignore="RtlHardcoded">
+                tools:ignore="RtlHardcoded"
+                style="@style/TextInputEditTextStyle">
+            </com.google.android.material.textfield.TextInputEditText>
 
-                <requestFocus android:value="true" />
-            </EditText>
-
-            <ImageView
-                android:id="@+id/iv_clear_results"
-                android:layout_width="@dimen/clear_button_dimensions"
-                android:layout_height="@dimen/clear_button_dimensions"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="@dimen/content_margin_extra_large"
-                android:background="@drawable/ic_clear_all"
-                android:onClick="@{clickHandler::onClearTextButtonClick}"
-                android:visibility="@{clearButtonVisibility}"
-                tools:visibility="visible" />
-        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="cv_autocomplete,tv_selected_provider" />
+            app:constraint_referenced_ids="cv_autocomplete,cv_selected_provider" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/content_margin_medium"
-            android:layout_marginEnd="@dimen/content_margin_medium"
             app:cardElevation="@dimen/content_padding_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -199,7 +184,6 @@
                 android:id="@+id/no_results_found_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray"
                 android:orientation="vertical"
                 android:paddingStart="@dimen/content_margin_extra_large"
                 android:paddingEnd="@dimen/content_margin_extra_large"
@@ -243,7 +227,6 @@
             android:layout_height="0dp"
             android:isScrollContainer="true"
             android:measureAllChildren="true"
-            android:padding="@dimen/content_padding_extra_large"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toTopOf="@id/button_bar"
             app:layout_constraintEnd_toEndOf="parent"
@@ -273,9 +256,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/content_margin_large"
                         android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_medium"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
+                        android:lineSpacingExtra="4dp"
                         android:text="@string/sending_health_information"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
@@ -291,9 +272,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/text_size_small"
                         android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_medium"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_padding_extra_large"
                         android:text="@string/verified_mobile_number"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/black"
@@ -307,9 +285,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_medium"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
                         android:text="@{mobile}"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/black"
@@ -319,40 +294,17 @@
                         app:layout_constraintTop_toBottomOf="@id/lbl_mobile_number"
                         tools:text="98765 43210" />
 
-                    <TextView
-                        android:id="@+id/lbl_patient_id"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/text_size_medium"
-                        android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_medium"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
-                        android:text="@string/your_patient_id_or_hospital_registration_no_or_enrollment_no"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_medium"
+                    <com.google.android.material.textfield.TextInputLayout
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:id="@+id/til_patient_id"
+                        android:hint="@string/patient_id"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_mobile_number" />
-
-                    <EditText
-                        android:id="@+id/et_patient_id"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/search_edittext_height"
-                        android:layout_marginStart="@dimen/content_margin_extra_large"
-                        android:layout_marginTop="@dimen/content_margin_medium"
-                        android:layout_marginEnd="@dimen/content_margin_extra_large"
-                        android:background="@color/gray"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:padding="@dimen/content_padding_medium"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
-                        android:popupElevation="0dp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_small"
-                        app:layout_constraintTop_toBottomOf="@id/lbl_patient_id" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_mobile_number"
+                        style="@style/TextInputLayoutStyle">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_patient_id"
+                            style="@style/TextInputEditTextStyle"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:id="@+id/lbl_patient_profile_details"
@@ -360,15 +312,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/text_size_medium"
                         android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_medium"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
                         android:text="@string/patient_additional_details"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/et_patient_id" />
+                        app:layout_constraintTop_toBottomOf="@id/til_patient_id" />
 
                     <TextView
                         android:id="@+id/view_details"
@@ -376,11 +325,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/text_size_medium"
                         android:drawableRight="@drawable/ic_arrow_right"
-
                         android:drawablePadding="@dimen/content_margin_extra_large"
-                        android:padding="@dimen/content_padding_medium"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
                         android:text="@string/view_details"
                         android:textAllCaps="true"
                         android:textColor="@color/colorPrimary"
@@ -393,22 +338,19 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
+                    android:id="@+id/details_layout"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/addition_info_view_holder"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:toggledVisibility="@{viewModel.isViewDetailsEnabled}"
-                    >
+                    app:toggledVisibility="@{viewModel.isViewDetailsEnabled}">
 
                     <TextView
                         android:id="@+id/full_name_lbl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_extra_small"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
+                        android:layout_marginTop="@dimen/content_margin_medium"
                         android:text="@string/full_name"
                         android:textColor="@color/gray_title"
                         android:textSize="@dimen/text_size_small"
@@ -423,9 +365,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_extra_small"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
                         android:textSize="@dimen/text_size_medium"
                         app:layout_constraintTop_toBottomOf="@id/full_name_lbl"
                         app:layout_constraintStart_toStartOf="parent"
@@ -438,9 +377,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/gray_title"
                         android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_extra_small"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
+                        android:layout_marginTop="@dimen/content_margin_medium"
                         android:text="@string/year_of_birth"
                         android:textSize="@dimen/text_size_small"
                         app:layout_constraintTop_toBottomOf="@id/full_name"
@@ -454,9 +391,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_extra_small"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
                         android:textSize="@dimen/text_size_medium"
                         app:layout_constraintTop_toBottomOf="@id/year_of_birth_lbl"
                         app:layout_constraintStart_toStartOf="parent"
@@ -464,14 +398,12 @@
                         />
 
                     <TextView
-                        android:id="@+id/sex_lbl"
+                        android:id="@+id/gender_lbl"
                         android:textColor="@color/gray_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_medium"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
+                        android:layout_marginTop="@dimen/content_margin_medium"
                         android:text="@string/gender"
                         android:textSize="@dimen/text_size_small"
                         app:layout_constraintTop_toBottomOf="@id/year_of_birth"
@@ -480,16 +412,13 @@
                         />
 
                     <TextView
-                        android:id="@+id/sex"
-                        android:text="@{sex}"
+                        android:id="@+id/gender"
+                        android:text="@{gender}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_extra_small"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
                         android:textSize="@dimen/text_size_medium"
-                        app:layout_constraintTop_toBottomOf="@id/sex_lbl"
+                        app:layout_constraintTop_toBottomOf="@id/gender_lbl"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         />
@@ -499,13 +428,11 @@
                         android:textColor="@color/gray_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/content_margin_medium"
                         android:drawablePadding="@dimen/content_padding_medium"
-                        android:padding="@dimen/content_padding_extra_small"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
                         android:text="@string/ayushman_bharat_id"
                         android:textSize="@dimen/text_size_small"
-                        app:layout_constraintTop_toBottomOf="@id/sex"
+                        app:layout_constraintTop_toBottomOf="@id/gender"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         />
@@ -515,15 +442,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/content_padding_small"
-                        android:padding="@dimen/content_padding_extra_small"
-                        android:paddingStart="@dimen/content_margin_extra_large"
-                        android:paddingEnd="@dimen/content_margin_extra_large"
                         android:textSize="@dimen/text_size_medium"
                         android:text="@{ayushmanId}"
                         app:layout_constraintTop_toBottomOf="@id/ayushman_bharat_id_lbl"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         />
+
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -541,9 +467,9 @@
             >
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_search"
-                style="@style/Button"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/content_margin_medium"
                 android:clickable="@{!inEditMode}"
                 android:enabled="@{!inEditMode}"
                 android:onClick="@{clickHandler::onSearchButtonClick}"

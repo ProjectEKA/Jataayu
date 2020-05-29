@@ -34,22 +34,18 @@ class ConsentManagerIDInputFragment : Fragment() {
 
     private lateinit var binding: ConsentManagerIdInputFragmentBinding
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         binding = ConsentManagerIdInputFragmentBinding.inflate(inflater)
+        initBindings()
+        initObservers()
+        viewModel.init(getString(R.string.cm_config_provider))
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun initBindings() {
         binding.viewModel = viewModel
-        initObservers()
     }
-
-
     private fun initObservers() {
 
         viewModel.onRegisterButtonClickEvent.observe(viewLifecycleOwner, Observer {
@@ -61,10 +57,7 @@ class ConsentManagerIDInputFragment : Fragment() {
         })
 
         viewModel.onNextButtonClickEvent.observe(viewLifecycleOwner, Observer {
-            loginViewModel.updateConsentManagerID(
-                viewModel.inputUsernameLbl.get()!!,
-                resources.getString(R.string.cm_config_provider)
-            )
+            loginViewModel.updateConsentManagerID(viewModel.inputUsernameLbl.get()!!, resources.getString(R.string.cm_config_provider))
             viewModel.fetchLoginMode(loginViewModel.cmId)
         })
 

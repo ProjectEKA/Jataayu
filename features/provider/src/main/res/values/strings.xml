@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
     <string name="app_name">Link Provider</string>
     <string name="no_results_found">No results found</string>
-    <string name="search_health_information_provider">Search by provider\'s name or location</string>
+    <string name="search_health_information_provider">Search by Hospital, Clinic or Lab Name</string>
     <string name="we_will_look_up">We will look up patient information based on</string>
     <string name="verified_mobile_number">Your verified mobile number</string>
     <string name="confirm_provider">Confirm provider</string>
     <string name="primary_identifier">Primary identifier</string>
     <string name="link_provider">Link provider</string>
-    <string name="fetch_record">Fetch Record</string>
+    <string name="fetch_record">Fetch Records</string>
     <string name="select_accounts">Select the accounts to link</string>
     <string name="link_records">Link records</string>
     <string name="link_your_id">Link your ID</string>
@@ -17,8 +17,9 @@
     <string name="we_will_be_sending_info_to">We will be sending following information to</string>
     <string name="we_found_following_accounts_with">We found following accounts with</string>
     <string name="otp_label_text">has sent an SMS with OTP to your registered mobile</string>
-    <string name="your_patient_id_or_hospital_registration_no_or_enrollment_no">Your Patient ID or Hospital Registration No or Enrollment No</string>
-    <string name="let_s_begin_by_adding_your_health_records_to_id">Let\'s begin by adding your health records to id</string>
+    <string name="patient_id">Patient ID</string>
+    <string name="let_s_begin_by_adding_your_health_records_to_id_1">Let\'s begin by adding your</string>
+    <string name="let_s_begin_by_adding_your_health_records_to_id_2">health records to ID</string>
     <string name="sending_health_information">We will be sending the following health information with the healthcare facility</string>
     <string name="patient_additional_details">We might also need to share patient\'s profile details</string>
     <string name="view_details">View Details</string>

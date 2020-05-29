@@ -25,6 +25,7 @@ class RecoverCmidActivity : BaseActivity<ActivityRecoverCmidBinding>() {
     }
 
     private fun initToolbar() {
+        binding.title = getString(R.string.forgot_cmid)
         setSupportActionBar(binding.appToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)

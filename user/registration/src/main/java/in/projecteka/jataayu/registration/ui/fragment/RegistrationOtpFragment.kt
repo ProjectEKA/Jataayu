@@ -7,12 +7,14 @@ import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.FragmentOtpVerificationBinding
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationVerificationViewModel
+import `in`.projecteka.jataayu.util.extension.showSnackbar
 import android.os.Bundle
-import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_otp_verification.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -46,11 +48,10 @@ class RegistrationOtpFragment : BaseFragment() {
         binding.viewModel = viewModel
         parentVM.appBarTitle.set(getString(R.string.verification))
 
-        viewModel.otpMessageLbl.set(
-            SpannableStringBuilder()
-                .append(getString(R.string.otp_sent))
-        )
         viewModel.mobileNumberText.set(parentVM.getIdentifierValue())
+
+        showSnackbar(container, String.format(getString(R.string.otp_sent_snackbar), viewModel.mobileNumberText.get()   ), Snackbar.LENGTH_LONG)
+
         initObservers()
     }
 

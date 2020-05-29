@@ -79,7 +79,6 @@ class PasswordInputViewModelTest {
             .fromJson(TestUtils.readFile("login_response.json"), CreateAccountResponse::class.java)
         passwordInputViewModel.createAccountResponse.observeForever(loginResponseObserver)
         passwordInputViewModel.onClickForgotPasswordEvent.observeForever(forgotPasswordClickObserver)
-        passwordInputViewModel.onPasswordVisibilityToggleEvent.observeForever(onPasswordVisibilityToggleEventObserver)
         passwordInputViewModel.errorDialogEvent.observeForever(errorDialogObserver)
     }
 
@@ -111,35 +110,6 @@ class PasswordInputViewModelTest {
     fun `should trigger forgot password event on click of forgot password button`() {
         passwordInputViewModel.onForgotPasswordClicked()
         verify(forgotPasswordClickObserver, times(1)).onChanged(null)
-    }
-
-    @Test
-    fun `should password visible label default value must be show`() {
-        assertEquals(R.string.show, passwordInputViewModel.inputPasswordVisibilityToggleLbl.get())
-    }
-
-    @Test
-    fun `should password input type should be hidden type`() {
-        assertEquals(passwordInputViewModel.passwordInputType.get(), hiddenPasswordInputType)
-    }
-
-    @Test
-    fun `should toggle password input type to visible when password is hidden`() {
-        passwordInputViewModel.inputPasswordLbl.set("ab")
-        passwordInputViewModel.togglePasswordVisible()
-        assertEquals(R.string.hide, passwordInputViewModel.inputPasswordVisibilityToggleLbl.get())
-        assertEquals(visiblePasswordInputType, passwordInputViewModel.passwordInputType.get())
-        verify(onPasswordVisibilityToggleEventObserver, times(1)).onChanged(passwordInputViewModel.inputPasswordLbl.get()!!.length)
-    }
-
-    @Test
-    fun `should toggle password input type to hidden when password is visible`() {
-        passwordInputViewModel.inputPasswordLbl.set("")
-        passwordInputViewModel.passwordInputType.set(visiblePasswordInputType)
-        passwordInputViewModel.togglePasswordVisible()
-        assertEquals(R.string.show, passwordInputViewModel.inputPasswordVisibilityToggleLbl.get())
-        assertEquals(hiddenPasswordInputType, passwordInputViewModel.passwordInputType.get())
-        verify(onPasswordVisibilityToggleEventObserver, times(1)).onChanged(0)
     }
 
     @Test

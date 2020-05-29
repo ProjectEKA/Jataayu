@@ -17,77 +17,55 @@
         android:clipToPadding="false"
         tools:context=".ui.fragment.RegistrationFragment">
 
-        <TextView
-            android:id="@+id/tv_mobile_number_title"
-            style="@style/TextAppearance.ListItemSubHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:text="@string/enter_mobile_number_to_verify"
+        <ImageView
+            app:layout_constraintBottom_toTopOf="@+id/til_mobile_number"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="@id/left_guideline"
-            app:layout_constraintTop_toTopOf="parent" />
+            style="@style/NcgNhsTitleStyle"/>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cv_mobile_number"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/content_margin_extra_small"
-            app:cardElevation="@dimen/content_padding_medium"
+        <com.google.android.material.textfield.TextInputLayout
             app:layout_constraintEnd_toEndOf="@id/right_guideline"
-            app:layout_constraintStart_toStartOf="@id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/tv_mobile_number_title">
+            android:id="@+id/til_mobile_number"
+            android:layout_marginLeft="@dimen/content_margin_medium"
+            android:layout_marginRight="@dimen/content_margin_medium"
+            android:layout_marginStart="@dimen/content_margin_medium"
+            android:layout_marginEnd="@dimen/content_margin_medium"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:hint="@string/mobile_number"
+            app:layout_constraintTop_toTopOf="parent"
+            app:prefixText="@{viewModel.countryCode}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/MobileNumberTextInputLayoutTextStyle">
+            <com.google.android.material.textfield.TextInputEditText
+                android:inputType="number"
+                android:id="@+id/tie_mobile_number"
+                android:maxLength="10"
+                android:text="@={viewModel.mobileNumberText}"
+                app:onValueChanged="@{viewModel}"
+                style="@style/MobileNumberTextInputEditTextStyle">
+                <requestFocus android:value="true"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/content_margin_medium">
-
-                <TextView
-                    android:id="@+id/tv_country_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_mobile"
-                    android:drawablePadding="@dimen/content_margin_medium"
-                    android:text="@{viewModel.countryCode}"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_small"
-                    tools:text="+xx - " />
-
-                <EditText
-                    android:id="@+id/et_mobile_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:cursorVisible="true"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:inputType="number"
-                    android:maxLength="10"
-                    android:text="@={viewModel.mobileNumberText}"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_small"
-                    app:onValueChanged="@{viewModel}" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_continue"
-            style="@style/Button.Secondary"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_height"
+            style="@style/ButtonStyle"
+            android:layout_marginLeft="@dimen/content_margin_medium"
+            android:layout_marginStart="@dimen/content_margin_medium"
+            android:layout_marginRight="@dimen/content_margin_medium"
+            android:layout_marginEnd="@dimen/content_margin_medium"
             android:layout_marginTop="30dp"
             android:enabled="@{viewModel.continueButtonEnabled}"
             android:onClick="@{()->viewModel.onContinueClicked()}"
-            android:text="@string/continue_text"
+            android:text="@string/send_otp"
             app:layout_constraintEnd_toEndOf="@id/right_guideline"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="@id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@id/cv_mobile_number" />
+            app:layout_constraintTop_toBottomOf="@id/til_mobile_number" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/left_guideline"

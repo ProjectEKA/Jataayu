@@ -10,21 +10,17 @@ import `in`.projecteka.jataayu.util.startChangePassword
 import `in`.projecteka.jataayu.util.startCreatePin
 import `in`.projecteka.jataayu.util.startLauncher
 import `in`.projecteka.jataayu.util.startPinVerification
-import android.R
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import androidx.appcompat.widget.AppCompatCheckedTextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class ProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class ProfileFragment : Fragment(){
 
     private lateinit var binding: FragmentViewProfileBinding
     private val viewModel: ProfileFragmentViewModel by viewModel()
@@ -46,7 +42,6 @@ class ProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         initBindings()
         initObservers()
         viewModel.init()
-        initSpinner()
         initGender()
     }
 
@@ -105,29 +100,6 @@ class ProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private fun initBindings() {
         binding.viewModel = viewModel
-        binding.spinnerListener = this
-    }
-
-    private fun initSpinner() {
-        val arrayAdapter = ArrayAdapter<String>(
-            activity!!,
-            R.layout.simple_spinner_dropdown_item, R.id.text1, viewModel.getYearsToPopulate()
-        )
-
-        binding.spinnerYob.adapter = arrayAdapter
-        arrayAdapter.notifyDataSetChanged()
-        binding.spinnerYob.setSelection(arrayAdapter.getPosition(viewModel.preferenceRepository.yearOfBirth.toString()))
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        view?.let {
-            if (position != 0) {
-                viewModel.selectedYoB((view as AppCompatCheckedTextView).text.toString().toInt())
-            }
-        }
     }
 
     override fun onResume() {

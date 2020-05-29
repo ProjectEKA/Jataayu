@@ -43,38 +43,6 @@ class ChangePasswordViewModel(val changePasswordRepository: ChangePasswordReposi
         this.tempToken = tempToken
     }
 
-    fun toggleConfirmPasswordVisible() {
-        val newInputType = when (confirmPasswordInputType.get()) {
-            visiblePasswordInputType() -> {
-                inputConfirmPasswordVisibilityToggleLbl.set(R.string.show)
-                hiddenPasswordInputType()
-            }
-            hiddenPasswordInputType() -> {
-                inputConfirmPasswordVisibilityToggleLbl.set(R.string.hide)
-                visiblePasswordInputType()
-            }
-            else -> hiddenPasswordInputType()
-        }
-        confirmPasswordInputType.set(newInputType)
-        onConfirmPasswordVisibilityToggleEvent.value = inputConfirmPasswordLbl.get()?.length ?: 0
-    }
-
-    fun toggleOldPasswordVisible() {
-        val newInputType = when (oldPasswordInputType.get()) {
-            visiblePasswordInputType() -> {
-                inputOldPasswordVisibilityToggleLbl.set(R.string.show)
-                hiddenPasswordInputType()
-            }
-            hiddenPasswordInputType() -> {
-                inputOldPasswordVisibilityToggleLbl.set(R.string.hide)
-                visiblePasswordInputType()
-            }
-            else -> hiddenPasswordInputType()
-        }
-        oldPasswordInputType.set(newInputType)
-        onOldPasswordVisibilityToggleEvent.value = inputOldPasswordLbl.get()?.length ?: 0
-    }
-
     private fun hiddenPasswordInputType(): Int {
         return InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD
     }

@@ -3,16 +3,15 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
+import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
-import `in`.projecteka.jataayu.user.account.R
-import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TYPE_AYUSHMAN_BHARAT_ID
-import android.text.InputType
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
@@ -38,11 +37,8 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val inputUsernameLbl = ObservableField<String>()
     val inputPasswordLbl = ObservableField<String>()
     val confirmationInputPasswordLbl = ObservableField<String>()
-    val passwordInputType = ObservableField(hiddenPasswordInputType())
-    val confirmationPasswordInputType = ObservableField(hiddenPasswordInputType())
-    val inputPasswordVisibilityToggleLbl = ObservableField<Int>(R.string.show)
     val usernameProviderLbl = ObservableField<String>()
-    val usernameProviderLblId = ObservableField<Int>(R.string.ncg)
+    val usernameProviderLblId = ObservableField<Int>(R.string.cm_config_provider)
     val inputAyushmanIdLbl = ObservableField<String>()
     val usernameErrorLbl = ObservableInt(R.string.username_validation_hint)
     val submitEnabled = ObservableBoolean(false)
@@ -50,7 +46,6 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val showErrorPassword = ObservableBoolean(false)
     val showErrorConfirmPassword = ObservableBoolean(false)
     val showErrorAyushmanId = ObservableBoolean(false)
-    val onPasswordVisibilityToggleEvent = SingleLiveEvent<Int>()
     val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
     var inputFullName: String? = ""
     var inputGender: String? = ""
@@ -91,29 +86,6 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
         var isValid = listOfEvents.all { it == true }
         submitEnabled.set(isValid)
         return isValid
-    }
-
-    fun togglePasswordVisible() {
-        val newInputType = when (confirmationPasswordInputType.get()) {
-            visiblePasswordInputType() -> {
-                inputPasswordVisibilityToggleLbl.set(R.string.show)
-                hiddenPasswordInputType()
-            }
-            hiddenPasswordInputType() -> {
-                inputPasswordVisibilityToggleLbl.set(R.string.hide)
-                visiblePasswordInputType()
-            }
-            else -> hiddenPasswordInputType()
-        }
-        confirmationPasswordInputType.set(newInputType)
-        onPasswordVisibilityToggleEvent.value = inputPasswordLbl.get()?.length ?: 0
-    }
-    private fun visiblePasswordInputType(): Int {
-        return InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-    }
-
-    private fun hiddenPasswordInputType(): Int {
-        return InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD
     }
 
     private fun isValid(text: String, criteria: String): Boolean {

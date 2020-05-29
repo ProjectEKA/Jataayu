@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.ViewModel
 
 class RegistrationVerificationViewModel : BaseViewModel(), TextWatcher {
 
@@ -16,7 +15,6 @@ class RegistrationVerificationViewModel : BaseViewModel(), TextWatcher {
         private val MOBILE_IDENTIFIER_TYPE = "mobile"
     }
 
-    val otpMessageLbl = ObservableField<CharSequence>()
     val errorLbl = ObservableField<String>()
     val otpText = ObservableField<String>()
     val mobileNumberText = ObservableField<String>()

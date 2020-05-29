@@ -50,6 +50,7 @@ class ConfirmAccountFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initBindings()
         initObservers()
+        viewModel.init(getString(R.string.cm_config_provider))
     }
 
     private fun initBindings() {
@@ -61,7 +62,7 @@ class ConfirmAccountFragment : BaseFragment() {
             viewModel.validateConfirmPassword()
         }
 
-        binding.etUsername.addTextChangedListener{text: Editable? ->
+        binding.etCmid.addTextChangedListener{text: Editable? ->
             viewModel.validateUserName()
         }
 
@@ -77,7 +78,7 @@ class ConfirmAccountFragment : BaseFragment() {
         if(cmId.isEmpty())
             cmId = generateCmId(removeCountryCode(viewModel.getMobileIdentifier()), parentVM.fullName)
         viewModel.inputUsernameLbl.set(cmId)
-    }
+        }
 
     private fun initObservers(){
         viewModel.createAccountResponse.observe(activity!!, Observer {
@@ -133,4 +134,8 @@ class ConfirmAccountFragment : BaseFragment() {
     private fun removeCountryCode(mobileNumber: String) : String{
         return mobileNumber.split("-")[1]
     }
+}
+
+private fun ConfirmAccountViewModel.init(label: String) {
+    usernameProviderLbl.set(label)
 }

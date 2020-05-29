@@ -2,6 +2,6 @@
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="action_profile">Profile</string>
     <string name="home">Home</string>
-    <string name="consents">Consent</string>
+    <string name="consents">Consents</string>
     <string name="account_linked_successfully">Account linked successfully</string>
 </resources>

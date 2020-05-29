@@ -7,7 +7,6 @@ import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.Success
-import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordActivityViewModel
@@ -150,10 +149,5 @@ class ResetPasswordOtpFragment : BaseFragment() {
             textView?.maxLines = 10
         }
         if (!snackbar.isShown) snackbar.show()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (snackbar.isShown) snackbar.dismiss()
     }
 }

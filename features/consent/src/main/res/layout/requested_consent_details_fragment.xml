@@ -36,6 +36,7 @@
             android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:scrollbars="none"
             android:layout_margin="@dimen/content_margin_medium"
             android:background="@drawable/grey_background_with_border"
             android:fadingEdgeLength="@dimen/content_margin_large"
@@ -278,19 +279,15 @@
                 android:layout_marginEnd="@dimen/content_padding_large"
                 android:layout_weight=".3"
                 android:onClick="@{clickHandler::onDenyConsent}"
-                android:text="@string/deny"
-                android:textColor="@color/red"
-                tools:textColor="@color/red" />
+                android:text="@string/deny"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_grant"
-                style="@style/Button"
+                style="@style/Button.Positive"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="6dp"
                 android:layout_weight=".7"
-                android:drawableStart="@drawable/ic_grant"
                 android:onClick="@{clickHandler::onGrantConsent}"
                 android:text="@string/grant_request" />
         </LinearLayout>

@@ -59,7 +59,6 @@
             android:drawSelectorOnTop="true"
             app:toggledVisibility="@{!hideFilter}"
             android:drawablePadding="6dp"
-            android:fontFamily="sans-serif-medium"
             app:onItemSelected="@{listener}"
             android:spinnerMode="dropdown"
             android:textColor="@color/colorPrimary"

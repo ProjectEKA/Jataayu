@@ -24,6 +24,9 @@
         tools:ignore="MissingDefaultResource">
 
         <include
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:navigationIcon="?android:attr/homeAsUpIndicator"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:id="@+id/base_toolbar"
             layout="@layout/default_toolbar"
             app:title="@{title}"/>

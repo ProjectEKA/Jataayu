@@ -21,6 +21,7 @@ class ConsentManagerIDInputViewModel(private val userAccountsRepository: UserAcc
     val onForgetCMIDButtonClickEvent = SingleLiveEvent<Void>()
 
     val inputUsernameLbl = ObservableField<String>()
+    val providerName = ObservableField<String>()
     val nextEnabled = ObservableBoolean(false)
 
     //avoid on change call on back button press
@@ -53,6 +54,10 @@ class ConsentManagerIDInputViewModel(private val userAccountsRepository: UserAcc
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         nextEnabled.set(inputUsernameLbl.get()?.isNotEmpty() == true)
+    }
+
+    fun init(provider: String) {
+        providerName.set(provider)
     }
 
      fun onLoginModeResponseSuccess(loginMode: LoginMode) {

@@ -16,10 +16,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:padding="@dimen/content_margin_medium"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:clipToPadding="false"
-            android:paddingTop="@dimen/content_margin_36">
+            android:clipToPadding="false">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/scroll_view"
@@ -32,71 +32,39 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
+                    android:paddingTop="60dp"
                     android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:paddingLeft="@dimen/content_margin_large"
-                    android:paddingRight="@dimen/content_margin_large"
-                    android:paddingBottom="@dimen/content_margin_36">
+                    android:clipToPadding="false">
 
                     <TextView
-                        android:id="@+id/lbl_username"
-                        style="@style/TextAppearance.Light"
+                        android:id="@+id/lbl_title"
+                        style="@style/TextAppearance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin_medium"
-                        android:text="@string/account_details"
+                        android:text="@string/create_account_title"
                         android:textSize="@dimen/text_size_large"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/lbl_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_full_name"
+                        android:hint="@string/full_name"
                         android:layout_marginTop="@dimen/content_margin_extra_small"
-                        android:text="@string/full_name"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_username" />
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_title"
+                        style="@style/TextInputLayoutStyle">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cv_first_name"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/edit_text_height_large"
-                        android:layout_marginTop="@dimen/content_margin_extra_small"
-                        app:cardElevation="@dimen/content_padding_medium"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_name">
+                        <com.google.android.material.textfield.TextInputEditText
+                            error_text='@{@string/should_not_be_empty}'
+                            android:digits="@string/alphabets_and_space_only"
+                            android:text="@={viewModel.inputFullName}"
+                            toggle_error="@{viewModel.showErrorName}"
+                            android:id="@+id/et_name"
+                            style="@style/TextInputEditTextStyle"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:clipToPadding="false"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/content_margin_medium">
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_name"
-                                error_text='@{@string/should_not_be_empty}'
-                                toggle_error="@{viewModel.showErrorName}"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="start"
-                                android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
-                                android:layout_weight=".7"
-                                android:background="@color/white"
-                                android:cursorVisible="true"
-                                android:digits="@string/alphabets_and_space_only"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true"
-                                android:singleLine="true"
-                                android:text="@={viewModel.inputFullName}"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_medium" />
 
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
 
                     <TextView
                         android:id="@+id/lbl_first_name_hint"
@@ -105,9 +73,10 @@
                         android:layout_marginTop="12dp"
                         android:hint="@string/name_hint"
                         android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="@id/cv_first_name"
-                        app:layout_constraintStart_toStartOf="@id/cv_first_name"
-                        app:layout_constraintTop_toBottomOf="@id/cv_first_name" />
+                        app:layout_constraintEnd_toEndOf="@id/til_full_name"
+                        app:layout_constraintStart_toStartOf="@id/til_full_name"
+                        app:layout_constraintTop_toBottomOf="@id/til_full_name"
+                        tools:ignore="NotSibling" />
 
                     <TextView
                         android:id="@+id/lbl_gender"
@@ -120,7 +89,7 @@
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/cg_gender"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         app:layout_constraintStart_toStartOf="parent"
@@ -130,29 +99,17 @@
                         <com.google.android.material.chip.Chip
                             android:id="@+id/gender_chip_male"
                             style="@style/Chip.ChoiceCustomized"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/button_height"
-                            android:layout_weight="1"
-                            android:text="@string/male"
-                            app:chipCornerRadius="@dimen/chip_corner_radius" />
+                            android:text="@string/male" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/gender_chip_female"
                             style="@style/Chip.ChoiceCustomized"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/button_height"
-                            android:layout_weight="1"
-                            android:text="@string/female"
-                            app:chipCornerRadius="@dimen/chip_corner_radius" />
+                            android:text="@string/female"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/gender_chip_other"
                             style="@style/Chip.ChoiceCustomized"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/button_height"
-                            android:layout_weight="1"
-                            android:text="@string/others"
-                            app:chipCornerRadius="@dimen/chip_corner_radius" />
+                            android:text="@string/others"/>
                     </com.google.android.material.chip.ChipGroup>
 
                     <TextView
@@ -166,72 +123,60 @@
                         app:layout_constraintTop_toBottomOf="@+id/cg_gender"
                         app:toggledVisibility="@{viewModel.showErrorGender}" />
 
-                    <TextView
-                        android:id="@+id/lbl_yob"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/content_margin_extra_extra_large"
-                        android:text="@string/year_of_birth_optional"
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_err_gender" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:id="@+id/til_yob"
+                        android:layout_marginTop="@dimen/content_margin_medium"
+                        android:hint="@string/year_of_birth_optional"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_err_gender"
+                        style="@style/TextInputLayoutStyle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:clickable="false"
+                            android:text=" "
+                            style="@style/TextInputEditTextStyle"/>
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <androidx.appcompat.widget.AppCompatSpinner
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/til_yob"
+                        app:layout_constraintBottom_toBottomOf="@+id/til_yob"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
                         android:id="@+id/spinner_yob"
-                        android:layout_width="wrap_content"
+                        android:layout_margin="@dimen/content_margin_medium"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/content_margin_medium"
-                        android:layout_marginTop="@dimen/content_margin_extra_small"
-                        android:drawSelectorOnTop="true"
-                        android:drawableRight="@drawable/ic_calendar"
-                        android:drawablePadding="@dimen/content_margin_large"
                         android:spinnerMode="dropdown"
                         android:text="yyyy"
                         android:textColor="@color/colorPrimary"
-                        app:layout_constraintLeft_toRightOf="@+id/lbl_yob"
-                        app:layout_constraintStart_toEndOf="@+id/lbl_yob"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_err_gender"
                         app:onItemSelected="@{spinnerListener}" />
 
-                    <TextView
-                        android:id="@+id/lbl_ayushman_bharat_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_marginTop="@dimen/content_margin_extra_small"
-                        android:text="@string/ayushman_bharat_id"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/spinner_yob" />
+                        android:hint="@string/ayushman_bharat_id"
+                        android:id="@+id/til_ayushman_id"
+                        app:layout_constraintTop_toBottomOf="@+id/til_yob"
+                        style="@style/TextInputLayoutStyle">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cv_ayushman_bharat_id"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/edit_text_height_large"
-                        android:layout_marginTop="@dimen/content_margin_extra_small"
-                        app:cardElevation="@dimen/content_padding_medium"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_ayushman_bharat_id">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_ayushman_bharat_id"
+                            android:inputType="textCapCharacters"
+                            android:text="@={viewModel.inputAyushmanIdLbl}"
+                            style="@style/TextInputEditTextStyle"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:clipToPadding="false"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/content_margin_medium">
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_ayushman_bharat_id"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="start"
-                                android:layout_marginEnd="@dimen/content_margin_extra_extra_small"
-                                android:inputType="textCapCharacters"
-                                android:layout_weight=".7"
-                                android:text="@={viewModel.inputAyushmanIdLbl}"
-                                android:background="@color/white"/>
-
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
                     <TextView
                         android:id="@+id/ayushman_error_text"
                         style="@style/TextAppearance.ErrorMessage"
@@ -239,30 +184,25 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/content_margin_extra_extra_small"
                         android:text="@string/ayushman_validation_hint"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:toggledVisibility="@{viewModel.showErrorAyushmanId}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/cv_ayushman_bharat_id" />
+                        app:layout_constraintTop_toBottomOf="@+id/til_ayushman_id" />
+
+                    <com.google.android.material.button.MaterialButton
+                        app:layout_constraintTop_toBottomOf="@+id/ayushman_error_text"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:id="@+id/btn_register"
+                        android:layout_marginTop="30dp"
+                        style="@style/ButtonStyle"
+                        android:layout_width="match_parent"
+                        android:enabled="@{viewModel.submitEnabled}"
+                        android:text="@string/register" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.core.widget.NestedScrollView>
-
-            <FrameLayout
-                android:id="@+id/button_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:padding="@dimen/content_margin_large"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_register"
-                    style="@style/Button"
-                    android:layout_width="match_parent"
-                    android:enabled="@{viewModel.submitEnabled}"
-                    android:text="@string/register" />
-            </FrameLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

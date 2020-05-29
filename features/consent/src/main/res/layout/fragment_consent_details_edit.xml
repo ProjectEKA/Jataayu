@@ -21,6 +21,7 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/edit_container"
             android:layout_width="match_parent"
+            android:scrollbars="none"
             android:layout_height="0dp"
             android:isScrollContainer="true"
             android:measureAllChildren="true"
@@ -270,7 +271,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_save"
-                style="@style/Button"
+                style="@style/ButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_gravity="center_vertical"
                 android:baselineAligned="false"
