@@ -59,14 +59,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         android:hint="@string/full_name"
                         app:layout_constraintTop_toBottomOf="@+id/lbl_title"
-                        style="@style/TextInputLayoutStyle">
+                        style="@style/TextInputLayout">
                         <com.google.android.material.textfield.TextInputEditText
                             error_text='@{@string/should_not_be_empty}'
                             android:id="@+id/et_name"
                             android:text="@={viewModel.inputFullName}"
                             android:digits="@string/alphabets_and_space_only"
                             toggle_error="@{viewModel.showErrorName}"
-                            style="@style/TextInputEditTextStyle"/>
+                            style="@style/TextInputEditText"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -86,15 +86,15 @@
                         app:layout_constraintTop_toBottomOf="@+id/lbl_first_name_hint"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:placeholderTextAppearance="@style/PrefixStyle"
+                        app:placeholderTextAppearance="@style/TextInputLayout.Prefix"
                         app:prefixText="@{viewModel.countryCode}"
-                        style="@style/MobileNumberTextInputLayoutTextStyle">
+                        style="@style/TextInputLayout.MobileNumber">
                         <com.google.android.material.textfield.TextInputEditText
                             android:inputType="number"
                             android:id="@+id/tie_mobile_number"
                             android:maxLength="10"
                             android:text="@={viewModel.inputMobileNumber}"
-                            style="@style/MobileNumberTextInputEditTextStyle"/>
+                            style="@style/TextInputEditText.MobileNumber"/>
 <!--                        app:onValueChanged="@{viewModel}"-->
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,12 +114,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         android:hint="@string/year_of_birth_optional"
                         app:layout_constraintTop_toBottomOf="@+id/tv_err_mobile"
-                        style="@style/TextInputLayoutStyle">
+                        style="@style/TextInputLayout">
                         <com.google.android.material.textfield.TextInputEditText
                             android:text=" "
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            style="@style/TextInputEditTextStyle"/>
+                            style="@style/TextInputEditText"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -202,12 +202,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         android:hint="@string/ayushman_bharat_id"
                         app:layout_constraintTop_toBottomOf="@+id/cg_gender"
-                        style="@style/TextInputLayoutStyle">
+                        style="@style/TextInputLayout">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_ayushman_bharat_id"
                             android:inputType="textCapCharacters"
                             android:text="@={viewModel.inputAyushmanIdLbl}"
-                            style="@style/TextInputEditTextStyle"/>
+                            style="@style/TextInputEditText"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -229,7 +229,7 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/ayushman_error_text"
-                        style="@style/ButtonStyle"
+                        style="@style/Button"
                         android:layout_width="match_parent"
                         android:enabled="@{viewModel.submitEnabled}"
                         android:onClick="@{() -> viewModel.recoverCmid()}"

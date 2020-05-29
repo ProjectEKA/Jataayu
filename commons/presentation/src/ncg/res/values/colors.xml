@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary">#296200</color>
+    <color name="colorPrimaryDark">#28530B</color>
+    <color name="colorAccent">#FF9933</color>
+    <color name="disabledButton">#66296200</color>
+    <color name="bottom_bar_bg_color">#ECFFDE</color>
+</resources>

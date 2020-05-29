@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="colorPrimary">@color/colorPrimaryNhs</color>
-    <color name="colorPrimaryDark">@color/colorPrimaryDarkNhs</color>
-    <color name="colorAccent">@color/colorAccentNhs</color>
+    <color name="colorPrimary">#296200</color>
+    <color name="colorPrimaryDark">#28530B</color>
+    <color name="colorAccent">#FF9933</color>
 
-<!--    NCG-->
-    <color name="colorPrimaryNcg">#006353</color>
-    <color name="colorPrimaryDarkNcg">#00463A</color>
-    <color name="colorAccentNcg">#006353</color>
-    <color name="rippleColorPrimary">#098570</color>
     <color name="textColorPrimary">#fff</color>
     <color name="textColorSecondary">#666666</color>
 
-    <color name="selected_tab_color">@color/colorPrimaryNcg</color>
+    <color name="rippleColorPrimary">#098570</color>
+
+    <color name="selected_tab_color">@color/colorPrimary</color>
     <color name="deselected_tab_color">@color/textColorSecondary</color>
-    <color name="deselected_text_color">#7e7e7e</color>
+    <color name="deselected_tab_text_color">#7e7e7e</color>
 
     <color name="gray">#F1F1F1</color>
     <color name="white">#FFF</color>
@@ -23,7 +20,7 @@
 
     <color name="chip_background">#DDDDDD</color>
 
-    <color name="button_background_color" tools:override="true">@color/colorPrimaryNcg</color>
+    <color name="button_background_color" tools:override="true">@color/colorPrimary</color>
     <color name="button_text_color" tools:override="true">@color/white</color>
     <color name="bottom_bar_bg_color">#ECFFDE</color>
     
@@ -32,8 +29,8 @@
     <color name="grey_light">#F6F6F6</color>
     <color name="grey_light_landing">#F0F0F0</color>
     <color name="rounded_grey_background" tools:override="true">#C4C4C4</color>
-    <color name="disabled_button_bg" tools:ignore="MissingDefaultResource">@color/disabledButtonNhs</color>
-    <color name="secondary_button_text_color" tools:override="true">@color/colorPrimaryNcg</color>
+    <color name="disabled_button_bg" tools:ignore="MissingDefaultResource">@color/disabledButton</color>
+    <color name="secondary_button_text_color" tools:override="true">@color/colorPrimary</color>
     <color name="deny_button_text_color" tools:override="true">@color/red</color>
 
     <color name="red">#C81800</color>
@@ -44,12 +41,6 @@
     <color name="password_match_color">#329536</color>
     <color name="accountlock_error_message">#99000000</color>
     <color name="error_hint_color">#99000000</color>
-
-<!--    NHS -->
-    <color name="colorPrimaryNhs">#296200</color>
-    <color name="colorPrimaryDarkNhs">#28530B</color>
-    <color name="colorAccentNhs">#FF9933</color>
-    <color name="disabledButtonNhs">#66296200</color>
-    <color name="disabledButtonNcg">#C4C4C4</color>
     <color name="grantButtonColor">#4CAF50</color>
+    <color name="labelTextColor">#464646</color>
 </resources>

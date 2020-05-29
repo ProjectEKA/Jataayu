@@ -28,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/NcgNhsTitleStyle"/>
+            style="@style/Logo"/>
 
 
         <TextView
@@ -73,7 +73,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_continue"
-            style="@style/ButtonStyle"
+            style="@style/Button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_marginTop="@dimen/content_margin_extra_extra_large"
@@ -89,7 +89,7 @@
         </com.google.android.material.button.MaterialButton>
 
         <TextView
-            style="@style/TextLinkStyle"
+            style="@style/TextAppearance.Link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/btn_continue"

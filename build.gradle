@@ -35,6 +35,19 @@ subprojects {
 
             //<editor-fold desc="android common DSL">
             android {
+                flavorDimensions "branding"
+                defaultPublishConfig "greenRelease"
+                publishNonDefault true
+
+                productFlavors {
+                    ncg {
+                        dimension "branding"
+                    }
+                    nhs {
+                        dimension "branding"
+                    }
+                }
+
                 buildToolsVersion Config.buildToolsVersion
                 compileSdkVersion Config.compileSdkVersion
 

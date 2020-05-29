@@ -66,7 +66,7 @@
 
                 <TextView
                     android:id="@+id/tv_requester_name"
-                    style="@style/ConsentRequestHiuDetails"
+                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{consent.requester.name}"
@@ -76,7 +76,7 @@
 
                 <TextView
                     android:id="@+id/tv_requester_organization"
-                    style="@style/ConsentRequestHiuDetails"
+                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -98,7 +98,7 @@
 
                 <TextView
                     android:id="@+id/tv_purpose_of_request"
-                    style="@style/ConsentRequestHiuDetails"
+                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{consent.purpose.text}"
@@ -128,7 +128,7 @@
 
                 <TextView
                     android:id="@+id/tv_requests_info_from"
-                    style="@style/ConsentRequestHiuDetails"
+                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/content_padding_medium"
@@ -150,7 +150,7 @@
 
                 <TextView
                     android:id="@+id/tv_requests_info_to"
-                    style="@style/ConsentRequestHiuDetails"
+                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/content_padding_medium"
@@ -190,7 +190,7 @@
 
                 <TextView
                     android:id="@+id/tv_expiry"
-                    style="@style/ConsentRequestHiuDetails"
+                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{consent.getConsentExpiry()}"
@@ -211,7 +211,7 @@
 
                 <TextView
                     android:id="@+id/disclaimer"
-                    style="@style/ConsentRequestHiuDetails"
+                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_large"
@@ -222,7 +222,7 @@
 
                 <TextView
                     android:id="@+id/tv_providers"
-                    style="@style/ConsentRequestHiuDetails"
+                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/content_margin_extra_large"

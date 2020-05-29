@@ -22,7 +22,7 @@
 
             <ImageView
                 android:id="@+id/tv_title"
-                style="@style/NcgNhsTitleStyle"
+                style="@style/Logo"
                 app:layout_constraintBottom_toTopOf="@+id/til_username"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -41,12 +41,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:id="@+id/til_username"
                 android:hint="@string/consent_manager_id"
-                style="@style/TextInputLayoutStyle">
+                style="@style/TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:drawableStart="@drawable/ic_username"
                     android:drawablePadding="@dimen/content_margin_medium"
-                    style="@style/TextInputEditTextStyle"
+                    style="@style/TextInputEditText"
                     android:id="@+id/et_cm_id"
                     app:onValueChanged="@{viewModel}"
                     android:text="@={viewModel.inputUsernameLbl}">
@@ -56,7 +56,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_next"
-                style="@style/ButtonStyle"
+                style="@style/Button"
                 android:layout_marginLeft="@dimen/content_margin_medium"
                 android:layout_marginStart="@dimen/content_margin_medium"
                 android:layout_marginRight="@dimen/content_margin_medium"
@@ -82,7 +82,7 @@
                     android:onClick="@{() -> viewModel.onForgotConsentManagerID()}"
                     android:text="@string/forgot_consent_manger_id"
                     android:paddingTop="30dp"
-                    style="@style/TextLinkStyle"
+                    style="@style/TextAppearance.Link"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
