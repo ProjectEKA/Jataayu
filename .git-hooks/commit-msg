@@ -20,7 +20,7 @@
 
 INPUT_FILE=$1
 COMMIT_MSG=`head -n1 $INPUT_FILE`
-PATTERN="^(\[EKA)-[[:digit:]]+].+"
+PATTERN="^(\[CM_APP)_[[:digit:]]+].+"
 if ! [[ "$COMMIT_MSG" =~ $PATTERN ]]; then
   echo "Inappropriate commit message, see example:"
   echo "[EKA-123] Imperative style commit message"

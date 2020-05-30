@@ -13,11 +13,10 @@ jobs:
           java-version: 1.8
       - name: Build with Gradle
         run: ./gradlew decodeKeystorePrebuildTask assembleDebug
-      - uses: actions/upload-artifact@v1
-        with:
-          name: debug-ncg-apk
-          path: app/build/outputs/apk/ncg/debug/app-ncg-debug.apk
-
+      - uses: actions/upload-artifact@v2
+          with:
+          name1: debug-nhs-apk
+          path1: app/build/outputs/apk/nhs/debug/app-nhs-debug.apk
   unit-test:
     runs-on: ubuntu-latest
     steps:
