@@ -19,19 +19,36 @@
 # This sample shows how to prevent push of commits where the log message starts
 # with "WIP" (work in progress).
 
-./gradlew testDebugUnitTest
+./gradlew testNcgDebugUnitTest
 TEST_RESULT=$?
 
 if ! [[ "$TEST_RESULT" =~ 0 ]]; then
-    echo "UNIT TESTS FAILED"
+    echo "NCG UNIT TESTS FAILED"
     exit 1
 fi
 
-./gradlew connectedDebugAndroidTest
+./gradlew testNhsDebugUnitTest
 TEST_RESULT=$?
 
 if ! [[ "$TEST_RESULT" =~ 0 ]]; then
-    echo "INTEGRATION TESTS FAILED"
+    echo "NHS UNIT TESTS FAILED"
+    exit 1
+fi
+
+
+./gradlew connectedNcgDebugAndroidTest
+TEST_RESULT=$?
+
+if ! [[ "$TEST_RESULT" =~ 0 ]]; then
+    echo "NCG INTEGRATION TESTS FAILED"
+    exit 1
+fi
+
+./gradlew connectedNhsDebugAndroidTest
+TEST_RESULT=$?
+
+if ! [[ "$TEST_RESULT" =~ 0 ]]; then
+    echo "NHS INTEGRATION TESTS FAILED"
     exit 1
 fi
 
