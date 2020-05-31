@@ -97,7 +97,7 @@ project.afterEvaluate {
     }
 }
 
-task moduleJacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+task moduleJacocoTestReport(type: JacocoReport, dependsOn: ['testNcgDebugUnitTest', 'createNcgDebugCoverageReport', 'testNhsDebugUnitTest', 'createNhsDebugCoverageReport']) {
 
     group "Reporting"
     description "Generate Jacoco coverage reports."
@@ -121,7 +121,8 @@ task moduleJacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest',
         javaSrc       << "$proj.projectDir/src/main/java"
         kotlinSrc     << "$proj.projectDir/src/main/java"
         execution     << fileTree(dir: proj.buildDir,
-                includes: ['jacoco/testDebugUnitTest.exec',
+                includes: ['jacoco/testNcgDebugUnitTest.exec',
+                           'jacoco/testNhsDebugUnitTest.exec',
                            'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'])
     }
 

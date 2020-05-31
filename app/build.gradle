@@ -64,7 +64,7 @@ task runGitHookSetup {
     }
 }
 
-task allTests(dependsOn: ['connectedDebugAndroidTest', 'testDebugUnitTest'])
+task allTests(dependsOn: ['connectedNcgDebugAndroidTest', 'testNcgDebugUnitTest', 'connectedNhsDebugAndroidTest', 'testNhsDebugUnitTest'])
 
 afterEvaluate {
     tasks['assemble'].dependsOn runGitHookSetup
