@@ -1,4 +1,4 @@
-name: GitHub Actions
+name: GitHub Actions1
 
 on: [push]
 
@@ -15,8 +15,8 @@ jobs:
         run: ./gradlew decodeKeystorePrebuildTask assembleDebug
       - uses: actions/upload-artifact@v1
         with:
-          name: debug-ncg-apk
-          path: app/build/outputs/apk/ncg/debug/app-ncg-debug.apk
+          name: debug-nhs-apk
+          path: app/build/outputs/apk/ncg/debug/app-nhs-debug.apk
   unit-test:
     runs-on: ubuntu-latest
     steps:
@@ -26,7 +26,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build with Gradle
-        run: ./gradlew testNcgDebugUnitTest
+        run: ./gradlew testNhsDebugUnitTest
 
   ui-test:
     runs-on: macOS-latest
@@ -47,4 +47,4 @@ jobs:
           target: ${{ matrix.target }}
           arch: x86_64
           profile: Nexus 6
-          script: ./gradlew connectedNcgDebugAndroidTest
+          script: ./gradlew connectedNhsDebugAndroidTest
