@@ -8,7 +8,6 @@ dependencies {
     api project(Modules.network)
     api project(Modules.presentation)
     api project(Modules.utils)
-    api project(Modules.logger)
 
     api Deps.GreenRobot.eventBus
 

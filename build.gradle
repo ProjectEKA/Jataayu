@@ -37,7 +37,6 @@ subprojects {
             android {
                 flavorDimensions "branding"
                 defaultPublishConfig "greenRelease"
-                publishNonDefault true
 
                 productFlavors {
                     ncg {

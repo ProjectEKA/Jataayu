@@ -1,2 +1,2 @@
-include ':app', ':commons:network', ':commons:utils', ':commons:presentation', ':addons:logger', ':features:provider', ':features:core', ':features:consent', ':user:account', ':user:registration', ':user:resetPassword'
+include ':app', ':commons:network', ':commons:utils', ':commons:presentation', ':features:provider', ':features:core', ':features:consent', ':user:account', ':user:registration', ':user:resetPassword'
 rootProject.name='Jataayu'
