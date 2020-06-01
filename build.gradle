@@ -36,16 +36,18 @@ subprojects {
             //<editor-fold desc="android common DSL">
             android {
                 flavorDimensions "branding"
-                defaultPublishConfig "greenRelease"
+                defaultPublishConfig "ncgRelease"
 
                 productFlavors {
                     ncg {
                         dimension "branding"
-                        resValue "string", "app_name", "Jataayu NCG"
+                        resValue "string", "application_name", "Jataayu NCG"
+//                        applicationId "com.ncg"
                     }
                     nhs {
                         dimension "branding"
-                        resValue "string", "app_name", "Jataayu NHS"
+                        resValue "string", "application_name", "Jataayu NHS"
+//                        applicationId "com.nhs"
                     }
                 }
 
