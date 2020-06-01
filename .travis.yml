@@ -46,7 +46,7 @@ before_script:
   - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
   - adb shell input keyevent 82 &
 script:
-  - ./gradlew testDebugUnitTest connectedDebugAndroidTest moduleJacocoTestReport -PdisablePreDex --stacktrace
+  - ./gradlew testNcgDebugUnitTest testNhsDebugUnitTest connectedNcgDebugAndroidTest connectedNhsDebugAndroidTest moduleJacocoTestReport -PdisablePreDex --stacktrace
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 

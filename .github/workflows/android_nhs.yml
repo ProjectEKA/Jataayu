@@ -1,0 +1,50 @@
+name: GitHub Actions Nhs
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Build with Gradle
+        run: ./gradlew decodeKeystorePrebuildTask assembleDebug
+      - uses: actions/upload-artifact@v1
+        with:
+          name: debug-nhs-apk
+          path: app/build/outputs/apk/nhs/debug/app-nhs-debug.apk
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Build with Gradle
+        run: ./gradlew testNhsDebugUnitTest
+
+  ui-test:
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        api-level: [23, 29]
+        target: [default] #[default, google_apis]
+        profile: [Pixel]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v1
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: x86_64
+          profile: Nexus 6
+          script: ./gradlew connectedNhsDebugAndroidTest

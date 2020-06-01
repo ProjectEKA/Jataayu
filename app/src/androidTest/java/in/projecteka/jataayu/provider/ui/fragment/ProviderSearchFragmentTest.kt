@@ -69,17 +69,17 @@ class ProviderSearchFragmentTest {
         }
     }
 
-    @Test
+   /* @Test
     fun shouldClearProviderNameTextOnClearButtonClick() {
         typeText("Some Really Long Provider Name") { id(sv_provider) }
-        displayed { id(iv_clear_results) }
-        ClickActions.click { id(iv_clear_results) }
+        displayed { id(cv_selected_provider) }
+        ClickActions.click { id(tv_selected_provider) }
         displayed {
             id(tv_search_provider_label)
             text(R.string.search_health_information_provider)
         }
-        VisibilityAssertions.notDisplayed { id(iv_clear_results) }
-    }
+        VisibilityAssertions.notDisplayed { id(tv_selected_provider) }
+    }*/
 
     @Test
     fun shouldSelectTheClickedProvider() {
@@ -92,7 +92,7 @@ class ProviderSearchFragmentTest {
             }
         }
 
-        VisibilityAssertions.notDisplayed { id(iv_clear_results) }
+//        VisibilityAssertions.notDisplayed { id(iv_clear_results) }
         VisibilityAssertions.notDisplayed { id(sv_provider) }
         displayed {
             id(tv_mobile_number)
@@ -112,7 +112,7 @@ class ProviderSearchFragmentTest {
             }
         }
         VisibilityAssertions.notDisplayed { id(tv_selected_provider) }
-        displayed { id(iv_clear_results) }
+//        displayed { id(iv_clear_results) }
         displayed {
             id(sv_provider)
             text("Health")

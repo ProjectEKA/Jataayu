@@ -1,7 +1,8 @@
 package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.R
-import `in`.projecteka.jataayu.R.id.*
+import `in`.projecteka.jataayu.R.id.btn_continue
+import `in`.projecteka.jataayu.R.id.tie_mobile_number
 import `in`.projecteka.jataayu.registration.ui.fragment.RegistrationFragment
 import `in`.projecteka.jataayu.ui.activity.TestsOnlyActivity
 import androidx.test.espresso.Espresso.onView
@@ -34,22 +35,14 @@ class RegistrationFragmentTest{
     fun shouldRenderUI(){
         displayed{
             allOf {
-                id(et_mobile_number)
+                id(tie_mobile_number)
                 text("")
             }
 
             allOf {
                 id(btn_continue)
-                text("CONTINUE")
+                text("Send OTP")
             }
-        }
-    }
-
-    @Test
-    fun shouldDisplayCountryCode(){
-        displayed {
-            id(tv_country_code)
-            text("+91-")
         }
     }
 
@@ -60,13 +53,13 @@ class RegistrationFragmentTest{
 
     @Test
     fun shouldDisableButtonForInvalidMobileNumberEntered(){
-        typeText("12345"){ id(et_mobile_number) }
+        typeText("12345"){ id(tie_mobile_number) }
         onView(withId(btn_continue)).check(matches(not(isEnabled())))
     }
 
     @Test
     fun shouldEnableButtonForValidMobileNumber(){
-        typeText("1234567890"){ id(R.id.et_mobile_number) }
+        typeText("1234567890"){ id(R.id.tie_mobile_number) }
         onView(withId(btn_continue)).check(matches(isEnabled()))
     }
 }
