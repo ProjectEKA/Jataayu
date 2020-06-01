@@ -121,8 +121,10 @@ task moduleJacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest',
         javaSrc       << "$proj.projectDir/src/main/java"
         kotlinSrc     << "$proj.projectDir/src/main/java"
         execution     << fileTree(dir: proj.buildDir,
-                includes: ['jacoco/testDebugUnitTest.exec',
-                           'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'])
+                includes: ['jacoco/testNcgDebugUnitTest.exec',
+                           'outputs/code_coverage/debugNcgAndroidTest/connected/**/*.ec',
+        'jacoco/testNhsDebugUnitTest.exec',
+         'outputs/code_coverage/debugNhsAndroidTest/connected/**/*.ec'])
     }
 
     print execution

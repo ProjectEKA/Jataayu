@@ -7,7 +7,7 @@
         android:name=".JataayuApp"
         android:allowBackup="true"
         android:icon="@drawable/jataayu_logo"
-        android:label="@string/app_name"
+        android:label="@string/application_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning, LockedOrientationActivity"
