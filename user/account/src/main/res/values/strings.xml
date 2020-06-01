@@ -74,4 +74,8 @@
     <string name="registration_success_message">You are successfully registered into  the application</string>
     <string name="cm_id_info">is your Consent manager ID. You could use this ID to login in future</string>
     <string name="otp_sent_msg">An OTP has been sent to mobile number linked with your account</string>
+
+
+    <string name="no_linked_records">No linked records</string>
+    <string name="let_s_start">Let\'s start by adding your accounts</string>
 </resources>

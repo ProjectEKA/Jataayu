@@ -110,13 +110,63 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <RelativeLayout
+                            android:id="@+id/rl_no_linked_records"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="18dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/my_linked_accounts"
+                            app:toggledVisibility="@{!viewModel.showRecords}">
+
+                        <ImageView
+                                android:id="@+id/imageView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_graphic_empty_state" />
+
+                        <TextView
+                                android:id="@+id/txt_no_link"
+                                style="@style/TextAppearance.No_linked_records"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@+id/imageView1"
+                                android:layout_alignRight="@+id/imageView1"
+                                android:layout_centerVertical="true"
+                                android:text="@string/no_linked_records"
+                                android:gravity="center"
+                                />
+
+                    </RelativeLayout>
+
+                    <TextView
+                            android:id="@+id/let_s_start"
+                            style="@style/TextAppearance.let_s_start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="48dp"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/let_s_start"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:drawableRight="@drawable/ic_vector_14"
+                            app:layout_constraintTop_toBottomOf="@id/rl_no_linked_records"
+                            tools:ignore="MissingConstraints"
+                            app:toggledVisibility="@{!viewModel.showRecords}"/>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_user_accounts"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/my_linked_accounts"
-                        tools:listitem="@layout/account_item" />
+                        tools:listitem="@layout/account_item"
+                        app:toggledVisibility="@{viewModel.showRecords}" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

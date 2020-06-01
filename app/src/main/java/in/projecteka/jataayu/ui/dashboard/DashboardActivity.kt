@@ -1,15 +1,19 @@
 package `in`.projecteka.jataayu.ui.dashboard
 
 import `in`.projecteka.jataayu.R
+import `in`.projecteka.jataayu.consent.ui.fragment.ConsentHostFragment
 import `in`.projecteka.jataayu.databinding.ActivityDashboardBinding
 import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
 
-    private val dashboardPagerAdapter by lazy { DashboardPagerAdapter(this) }
+    private val dashboardPagerAdapter by lazy { DashboardPagerAdapter(this, arrayListOf<Fragment>(
+        UserAccountsFragment.newInstance(viewModel), ConsentHostFragment.newInstance())) }
     private val viewModel: DashboardViewModel by viewModel()
     override fun layoutId(): Int = R.layout.activity_dashboard
 

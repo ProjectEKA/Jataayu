@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-internal class DashboardPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
-    val listOfFragments = arrayListOf<Fragment>(UserAccountsFragment.newInstance(), ConsentHostFragment.newInstance())
-
+internal class DashboardPagerAdapter(activity: FragmentActivity,private val listOfFragments: List<Fragment>) : FragmentStateAdapter(activity) {
     override fun createFragment(position: Int): Fragment = listOfFragments[position]
 
     override fun getItemCount(): Int = listOfFragments.size
