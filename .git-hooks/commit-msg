@@ -23,7 +23,7 @@ COMMIT_MSG=`head -n1 $INPUT_FILE`
 PATTERN="^(\[CM_APP)_[[:digit:]]+].+"
 if ! [[ "$COMMIT_MSG" =~ $PATTERN ]]; then
   echo "Inappropriate commit message, see example:"
-  echo "[EKA-123] Imperative style commit message"
+  echo "[CM_APP] Imperative style commit message"
   echo ""
   exit 1
 fi

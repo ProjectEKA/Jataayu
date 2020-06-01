@@ -41,9 +41,11 @@ subprojects {
                 productFlavors {
                     ncg {
                         dimension "branding"
+                        resValue "string", "app_name", "Jataayu NCG"
                     }
                     nhs {
                         dimension "branding"
+                        resValue "string", "app_name", "Jataayu NHS"
                     }
                 }
 
