@@ -67,7 +67,7 @@
     <string name="no_matching_records_description">Please review your input and try again.</string>
     <string name="try_again">Try again</string>
     <string name="validate">Validate</string>
-    <string name="resend_otp">Resend</string>
+    <string name="resend_otp">Resend OTP</string>
 
 <!--    Confirmation Texts-->
     <string name="congratulations">Congratulations!</string>

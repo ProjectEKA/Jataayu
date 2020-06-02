@@ -121,6 +121,7 @@
                     android:id="@+id/lbl_requests_information_from"
                     style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
+                    android:textSize="@dimen/text_size_medium"
                     android:layout_height="wrap_content"
                     android:text="@string/from"
                     app:layout_constraintStart_toStartOf="parent"
@@ -128,9 +129,11 @@
 
                 <TextView
                     android:id="@+id/tv_requests_info_from"
-                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold"
+                    style="@style/TextAppearance.Light"
                     android:layout_marginStart="@dimen/content_padding_medium"
                     android:text="@{consent.getPermissionStartDate()}"
                     app:layout_constraintLeft_toRightOf="@+id/lbl_requests_information_from"
@@ -138,6 +141,7 @@
                     tools:text="01 Jan, 2017" />
 
                 <TextView
+                    android:textSize="@dimen/text_size_medium"
                     android:id="@+id/lbl_requests_information_to"
                     style="@style/TextAppearance.Light"
                     android:layout_width="wrap_content"
@@ -150,8 +154,10 @@
 
                 <TextView
                     android:id="@+id/tv_requests_info_to"
-                    style="@style/TextAppearance.ConsentRequestHiuDetails"
                     android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    style="@style/TextAppearance.Light"
+                    android:textSize="@dimen/text_size_medium"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/content_padding_medium"
                     android:text="@{consent.permissionEndDate}"
