@@ -18,7 +18,7 @@ val viewModelModule = module {
     //Launcher
     viewModel { LauncherViewModel(get(), get()) }
     //Dashboard
-    viewModel { DashboardViewModel() }
+    viewModel { DashboardViewModel(get()) }
 
     //Registrations
     viewModel { RegistrationActivityViewModel(get(), get(), get()) }

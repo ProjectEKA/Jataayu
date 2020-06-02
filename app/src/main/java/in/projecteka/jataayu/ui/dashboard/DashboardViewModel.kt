@@ -2,16 +2,21 @@ package `in`.projecteka.jataayu.ui.dashboard
 
 import `in`.projecteka.jataayu.R
 import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.user.account.listener.UpdateProviderListener
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import android.view.MenuItem
+import androidx.databinding.ObservableBoolean
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class DashboardViewModel : BaseViewModel(), BottomNavigationView.OnNavigationItemSelectedListener {
+class DashboardViewModel(val preferenceRepository: PreferenceRepository) : BaseViewModel(), BottomNavigationView.OnNavigationItemSelectedListener, UpdateProviderListener {
 
     internal enum class Show {
         USER_ACCOUNT,
         CONSENT_HOME
     }
+
+    var showRecords = ObservableBoolean(false)
 
     internal val showFragmentEvent = SingleLiveEvent<Show>()
 
@@ -25,6 +30,10 @@ class DashboardViewModel : BaseViewModel(), BottomNavigationView.OnNavigationIte
             true
         }
         else -> false
+    }
+
+    override fun updateProvider(hasProvider: Boolean) {
+        showRecords.set(hasProvider)
     }
 
 }

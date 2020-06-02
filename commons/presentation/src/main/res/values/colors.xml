@@ -7,8 +7,6 @@
     <color name="textColorPrimary">#fff</color>
     <color name="textColorSecondary">#666666</color>
 
-    <color name="rippleColorPrimary">#098570</color>
-
     <color name="selected_tab_color">@color/colorPrimary</color>
     <color name="deselected_tab_color">@color/textColorSecondary</color>
     <color name="deselected_tab_text_color">#7e7e7e</color>
@@ -43,4 +41,5 @@
     <color name="error_hint_color">#99000000</color>
     <color name="grantButtonColor">#4CAF50</color>
     <color name="labelTextColor">#464646</color>
+    <color name="nolinkText">#3F3D56</color>
 </resources>

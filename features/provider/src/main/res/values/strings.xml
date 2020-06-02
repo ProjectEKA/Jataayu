@@ -26,7 +26,7 @@
     <string name="full_name">Full Name</string>
     <string name="year_of_birth">Year of Birth</string>
     <string name="sex">Sex</string>
-    <string name="ayushman_bharat_id">Ayushman Bharat ID</string>
+    <string name="ayushman_bharat_id">Ayushman Bharat ID (optional)</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="gender">Gender</string>

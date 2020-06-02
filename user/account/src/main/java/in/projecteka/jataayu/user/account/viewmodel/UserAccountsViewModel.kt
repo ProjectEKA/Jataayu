@@ -29,7 +29,9 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
 
     val patientId = ObservableField<String>()
     val patientName = ObservableField<String>()
-    val linksSize = ObservableInt()
+    val linksSize = ObservableInt(0)
+
+    var showRecords = ObservableBoolean(false)
 
     val userProfileResponse = MediatorLiveData<PayloadResource<*>>()
 
@@ -71,6 +73,10 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
                 }
             }
         })
+    }
+
+    fun showRecord(){
+        if (preferenceRepository.hasProviders) showRecords.set(true)
     }
 
     private fun saveProfileDetails(profile: MyProfile?) {
@@ -133,7 +139,11 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
                 false
             )
         }.also {
-            linksSize.set(it?.size ?: 0)
+            it?.let {
+                preferenceRepository.hasProviders = it.size > 0
+                linksSize.set(it.size ?: 0)
+                showRecord()
+            }
         }
     }
 
