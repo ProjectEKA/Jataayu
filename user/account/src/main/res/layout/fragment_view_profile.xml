@@ -41,7 +41,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:hint="@string/full_name"
-                    style="@style/TextInputLayoutStyle">
+                    style="@style/TextInputLayout">
                     <com.google.android.material.textfield.TextInputEditText
                         android:digits="@string/alphabets_and_space_only"
                         android:focusable="@{viewModel.isEditMode}"
@@ -49,7 +49,7 @@
                         android:cursorVisible="@{viewModel.isEditMode}"
                         android:text="@{viewModel.preferenceRepository.name}"
                         android:focusableInTouchMode="@{viewModel.isEditMode}"
-                        style="@style/TextInputEditTextStyle"/>
+                        style="@style/TextInputEditText"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -58,14 +58,14 @@
                     android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:hint="@string/consent_manager_id"
                     app:layout_constraintTop_toBottomOf="@+id/til_name"
-                    style="@style/TextInputLayoutStyle">
+                    style="@style/TextInputLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:focusable="@{viewModel.isEditMode}"
                         android:cursorVisible="@{viewModel.isEditMode}"
                         android:focusableInTouchMode="@{viewModel.isEditMode}"
                         android:text="@{viewModel.preferenceRepository.consentManagerId}"
-                        style="@style/TextInputEditTextStyle"/>
+                        style="@style/TextInputEditText"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,7 +76,7 @@
                     android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/til_consent_manager_id"
-                    style="@style/TextInputLayoutStyle">
+                    style="@style/TextInputLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:focusable="@{viewModel.isEditMode}"
@@ -84,7 +84,7 @@
                         android:cursorVisible="@{viewModel.isEditMode}"
                         android:focusableInTouchMode="@{viewModel.isEditMode}"
                         android:text="@{viewModel.preferenceRepository.countryCode + viewModel.preferenceRepository.mobileIdentifier}"
-                        style="@style/MobileNumberTextInputEditTextStyle"/>
+                        style="@style/TextInputEditText.MobileNumber"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -93,9 +93,9 @@
                     android:hint="@string/yob"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/til_mobile_number"
-                    style="@style/TextInputLayoutStyle">
+                    style="@style/TextInputLayout">
                     <com.google.android.material.textfield.TextInputEditText
-                        style="@style/TextInputEditTextStyle"
+                        style="@style/TextInputEditText"
                         android:cursorVisible="@{viewModel.isEditMode}"
                         android:focusable="@{viewModel.isEditMode}"
                         android:focusableInTouchMode="@{viewModel.isEditMode}"
@@ -152,9 +152,9 @@
                     android:hint="@string/ayushman_id"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cg_gender"
-                    style="@style/TextInputLayoutStyle">
+                    style="@style/TextInputLayout">
                     <com.google.android.material.textfield.TextInputEditText
-                        style="@style/TextInputEditTextStyle"
+                        style="@style/TextInputEditText"
                         android:cursorVisible="@{viewModel.isEditMode}"
                         android:focusable="@{viewModel.isEditMode}"
                         android:focusableInTouchMode="@{viewModel.isEditMode}"
@@ -169,14 +169,14 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/til_ayushman_id"
-                    style="@style/TextInputLayoutStyle">
+                    style="@style/TextInputLayout">
                     <com.google.android.material.textfield.TextInputEditText
                         android:text="@string/dummy_password"
                         android:cursorVisible="@{viewModel.isEditMode}"
                         android:minEms="8"
                         android:focusable="@{viewModel.isEditMode}"
                         android:focusableInTouchMode="@{viewModel.isEditMode}"
-                        style="@style/PasswordTextInputEditTextStyle"/>
+                        style="@style/TextInputEditText.Password"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,14 +205,14 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/til_password"
-                    style="@style/TextInputLayoutStyle">
+                    style="@style/TextInputLayout">
                 <com.google.android.material.textfield.TextInputEditText
                     android:text="@string/consent_placeholder"
                     android:minEms="8"
                     android:cursorVisible="@{viewModel.isEditMode}"
                     android:focusable="@{viewModel.isEditMode}"
                     android:focusableInTouchMode="@{viewModel.isEditMode}"
-                    style="@style/PasswordTextInputEditTextStyle"/>
+                    style="@style/TextInputEditText.Password"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -247,7 +247,7 @@
                     android:id="@+id/btn_logout"
                     android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:layout_height="wrap_content"
-                    style="@style/ButtonStyle"
+                    style="@style/Button"
                     android:onClick="@{() -> viewModel.logout()}"
                     android:padding="@dimen/content_margin_medium"
                     android:layout_width="match_parent"

@@ -58,14 +58,14 @@
                         app:suffixText="@{viewModel.usernameProviderLbl}"
                         android:id="@+id/til_consent_manager_id"
                         android:hint="@string/consent_manager_id"
-                        style="@style/TextInputLayoutStyle">
+                        style="@style/TextInputLayout">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:drawableStart="@drawable/ic_username"
                             android:id="@+id/et_cmid"
                             android:drawablePadding="@dimen/content_margin_medium"
                             android:text="@={viewModel.inputUsernameLbl}"
-                            style="@style/TextInputEditTextStyle">
+                            style="@style/TextInputEditText">
                             <requestFocus android:value="true"/>
                         </com.google.android.material.textfield.TextInputEditText>
 
@@ -96,12 +96,12 @@
                         android:hint="@string/create_password"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/username_error_text"
-                        style="@style/TextInputLayoutStyle">
+                        style="@style/TextInputLayout">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:text="@={viewModel.inputPasswordLbl}"
                             android:id="@+id/et_password"
-                            style="@style/PasswordTextInputEditTextStyle"/>
+                            style="@style/TextInputEditText.Password"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,11 +124,11 @@
                         app:layout_constraintStart_toStartOf="parent"
                         android:hint="@string/confirm_password"
                         app:layout_constraintTop_toBottomOf="@+id/password_error_text"
-                        style="@style/PasswordTextInputLayoutStyle">
+                        style="@style/TextInputLayout.Password">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_confirm_password"
                             android:text="@={viewModel.confirmationInputPasswordLbl}"
-                            style="@style/PasswordTextInputEditTextStyle"/>
+                            style="@style/TextInputEditText.Password"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -149,7 +149,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/confirm_password_error_text"
                         android:id="@+id/btn_confirm_registration"
-                        style="@style/ButtonStyle"
+                        style="@style/Button"
                         android:layout_marginTop="40dp"
                         android:layout_width="match_parent"
                         android:enabled="@{viewModel.submitEnabled}"

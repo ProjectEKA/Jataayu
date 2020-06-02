@@ -131,7 +131,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:enabled="@{canLinkAccounts, default=true}"
-                style="@style/ButtonStyle"
+                style="@style/Button"
                 android:focusable="@{canLinkAccounts}"
                 android:onClick="@{clickHandler::onLinkAccountsClick}"
                 android:foreground="?android:attr/selectableItemBackground"

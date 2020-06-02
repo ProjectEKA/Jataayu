@@ -134,34 +134,66 @@
                     android:id="@+id/tv_selected_provider"
                     android:onClick="@{clickHandler::onClearSelectionClick}"
                     android:text="@{selectedProviderName}"
-                    style="@style/TextInputEditTextStyle"/>
+                    style="@style/TextInputEditText"/>
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
+       <!--
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputLayout
-            app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/cv_autocomplete"
-            android:layout_marginTop="0dp"
-            style="@style/TextInputLayoutStyle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_search_provider_label"
             app:toggledVisibility="@{inEditMode}"
-            tools:visibility="visible">
 
-            <com.google.android.material.textfield.TextInputEditText
+        </RelativeLayout>-->
+
+
+        <LinearLayout
+            android:id="@+id/cv_autocomplete"
+            android:layout_width="0dp"
+            android:padding="@dimen/content_margin_extra_small"
+            android:layout_marginTop="@dimen/content_margin_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_search_provider_label"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <EditText
+                android:background="@color/transparent"
                 android:id="@+id/sv_provider"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins"
+                android:textSize="@dimen/text_size_medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/content_margin_extra_extra_large"
+                android:layout_marginRight="@dimen/content_margin_extra_extra_large"
+                android:layout_weight=".8"
                 android:drawableLeft="@drawable/ic_search_new"
                 android:imeOptions="actionSearch"
                 android:importantForAutofill="no"
                 android:inputType="textAutoComplete|textAutoCorrect"
                 app:onValueChanged="@{textWatcher}"
+                app:toggledVisibility="@{inEditMode}"
                 tools:ignore="RtlHardcoded"
-                style="@style/TextInputEditTextStyle">
-            </com.google.android.material.textfield.TextInputEditText>
+                tools:visibility="visible" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                android:id="@+id/iv_clear"
+                android:layout_width="@dimen/clear_button_dimensions"
+                android:layout_height="@dimen/clear_button_dimensions"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/ic_cancel"
+                android:onClick="@{clickHandler::onClearTextButtonClick}"
+                android:visibility="@{clearButtonVisibility}"
+                tools:visibility="visible" />
+
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
@@ -300,10 +332,10 @@
                         android:hint="@string/patient_id"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_mobile_number"
-                        style="@style/TextInputLayoutStyle">
+                        style="@style/TextInputLayout">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_patient_id"
-                            style="@style/TextInputEditTextStyle"/>
+                            style="@style/TextInputEditText"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -467,7 +499,7 @@
             >
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_search"
-                style="@style/ButtonStyle"
+                style="@style/Button"
                 android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:clickable="@{!inEditMode}"

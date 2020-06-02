@@ -32,7 +32,7 @@
         <ImageView
             android:layout_alignTop="@+id/img_main"
             android:layout_centerHorizontal="true"
-            style="@style/NcgNhsTitleStyle"/>
+            style="@style/Logo"/>
         <ImageView
             android:id="@+id/img_main"
             android:layout_centerHorizontal="true"

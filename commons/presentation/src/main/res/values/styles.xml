@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--Main app styles-->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -15,9 +16,19 @@
         <item name="android:textViewStyle">@style/TextAppearance</item>
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
     </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents" />
+    <style name="Logo">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:src">@drawable/logo</item>
+    </style>
+    <!--END Main app styles-->
 
-<!--    tab layout styles-->
-
+    <!--Tab layout styles-->
     <style name="AppTabLayout">
         <item name="tabIndicatorColor">@color/colorPrimary</item>
         <item name="tabIndicatorHeight">@dimen/tab_indictor_height</item>
@@ -30,22 +41,14 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/tab_layout_height</item>
     </style>
-
-    <style name="AppTabTextAppearance">!-- parent="TextAppearance.Design.Tab"-->>
+    <style name="AppTabTextAppearance">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textStyle">bold</item>
         <item name="textAllCaps">true</item>
     </style>
+    <!--END Tab layout styles-->
 
-<!--    END tab layout styles-->
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents" />
-
+    <!--Toolbar styles-->
     <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:fontFamily">@font/poppins_medium</item>
@@ -58,26 +61,25 @@
         <item name="android:textColorHint">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
+    <!--END Toolbar styles-->
 
+    <!--Button styles-->
+    <style name="Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:drawablePadding">@dimen/content_margin_small</item>
+        <item name="android:textSize">@dimen/text_size_extra_medium</item>
+        <item name="backgroundTint">@color/button_color_selector</item>
+        <item name="cornerRadius">@dimen/button_corner_radius_new</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
     <style name="FAB" parent="@style/Widget.Design.FloatingActionButton">
         <item name="backgroundTint">@color/colorAccent</item>
         <item name="backgroundColor">@color/colorAccent</item>
         <item name="iconTint">@color/white</item>
         <item name="android:shadowColor">@color/colorPrimary</item>
     </style>
-
-    <style name="Button" parent="Widget.MaterialComponents.Button">
-        <item name="android:layout_height">@dimen/button_height</item>
-        <item name="android:elevation">@dimen/cardview_elevation</item>
-        <item name="android:fontFamily">@font/poppins_medium</item>
-        <item name="android:drawablePadding">@dimen/content_margin_small</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="backgroundTint">@color/button_color_selector</item>
-        <item name="cornerRadius">@dimen/button_corner_radius</item>
-        <item name="android:stateListAnimator">@animator/button_state_list_anim</item>
-        <item name="android:textColor">@color/button_text_color_selector</item>
-    </style>
-
     <style name="Button.Secondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="backgroundTint">@color/white</item>
         <item name="android:fontFamily">@font/poppins_medium</item>
@@ -88,8 +90,7 @@
         <item name="rippleColor">@color/gray</item>
         <item name="android:textColor">@color/outline_button_text_color_selector</item>
     </style>
-
-    <style name="PositiveOrNegativeButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="Button.PositiveOrNegative" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_height">@dimen/button_height</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="cornerRadius">@dimen/button_corner_radius</item>
@@ -97,9 +98,7 @@
         <item name="android:fontFamily">@font/poppins_medium</item>
         <item name="android:stateListAnimator">@animator/button_state_list_anim</item>
     </style>
-
-
-    <style name="Button.Negative" parent="@style/PositiveOrNegativeButtonStyle">
+    <style name="Button.Negative" parent="@style/Button.PositiveOrNegative">
         <item name="icon">@drawable/ic_deny</item>
         <item name="iconTint">@color/red</item>
         <item name="strokeColor">@color/red</item>
@@ -107,8 +106,7 @@
         <item name="backgroundTint">@color/white</item>
         <item name="rippleColor">@color/negative_button_ripple_color</item>
     </style>
-
-    <style name="Button.Positive" parent="@style/PositiveOrNegativeButtonStyle">
+    <style name="Button.Positive" parent="@style/Button.PositiveOrNegative">
         <item name="android:drawablePadding">@dimen/content_padding_medium</item>
         <item name="icon">@drawable/ic_grant</item>
         <item name="iconTint">@color/white</item>
@@ -117,48 +115,58 @@
         <item name="backgroundTint">@color/grantButtonColor</item>
         <item name="rippleColor">@color/grantButtonColor</item>
     </style>
+    <style name="Button.DatePicker">
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="icon">@drawable/ic_calendar</item>
+        <item name="iconTint">@color/colorPrimary</item>
+        <item name="rippleColor">@color/colorPrimary</item>
+        <item name="android:drawablePadding">@dimen/content_padding_medium</item>
+        <item name="android:paddingStart">@dimen/content_margin_extra_small</item>
+        <item name="android:paddingTop">@dimen/content_margin_medium</item>
+        <item name="android:paddingEnd">@dimen/content_margin_extra_small</item>
+        <item name="android:paddingBottom">@dimen/content_margin_medium</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:elevation">@dimen/cardview_elevation</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:stateListAnimator">@animator/button_state_list_anim</item>
+    </style>
+    <!--END Positive and negative buttons-->
 
 
-<!--    Text styles -->
-
+    <!--Text appearance styles-->
     <style name="TextAppearance">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/poppins</item>
     </style>
-
     <style name="TextAppearance.AllCaps" parent="TextAppearance">
         <item name="android:textAllCaps">true</item>
     </style>
-
     <style name="TextAppearance.AllCaps.Active" parent="TextAppearance.AllCaps">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
-
     <style name="TextAppearance.AllCaps.Inactive" parent="TextAppearance.AllCaps">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_size_extra_small</item>
         <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
-
     <style name="TextAppearance.Heavy" parent="TextAppearance">
         <item name="android:letterSpacing">0.03</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
-
     <style name="TextAppearance.ListItemHeader" parent="TextAppearance.Heavy">
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
-
     <style name="TextAppearance.Title" parent="TextAppearance">
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:fontFamily">@font/poppins_light</item>
     </style>
-
-
     <style name="TextAppearance.No_linked_records" parent="TextAppearance">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/nolinkText</item>
@@ -172,12 +180,10 @@
         <item name="android:lineSpacingExtra">1sp</item>
         <item name="android:fontFamily">@font/poppins_light</item>
     </style>
-
     <style name="TextAppearance.ListItemSubHeader" parent="TextAppearance">
         <item name="android:letterSpacing">0.05</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
-
     <style name="TextAppearance.Label" parent="TextAppearance">
         <item name="android:letterSpacing">0.01</item>
         <item name="android:textColor">@color/labelTextColor</item>
@@ -185,32 +191,43 @@
         <item name="android:lineSpacingExtra">1sp</item>
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
-
     <style name="TextAppearance.ErrorMessage" parent="TextAppearance">
         <item name="android:textSize">@dimen/text_size_extra_small</item>
         <item name="android:textColor">@color/error_message_color</item>
     </style>
-
+    <style name="TextAppearance.Light" parent="TextAppearance.ListItemSubHeader">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+    <style name="TextAppearance.Link">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:padding">@dimen/content_margin_medium</item>
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+    <style name="TextAppearance.PlaceHolder">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+    <style name="TextAppearance.EditText.Suffix" parent="TextAppearance">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
     <style name="TextAppearance.AccountLockErrorMessage" parent="TextAppearance">
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textColor">@color/accountlock_error_message</item>
         <item name="android:letterSpacing">0.02</item>
     </style>
-
-    <style name="ConsentRequestHiuDetails" parent="TextAppearance.ListItemSubHeader">
+    <style name="TextAppearance.ConsentRequestHiuDetails" parent="TextAppearance.ListItemSubHeader">
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
+<!--END Text appearance styles-->
 
-    <style name="TextAppearance.Light" parent="TextAppearance.ListItemSubHeader">
-        <item name="android:fontFamily">@font/poppins_light</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
-    </style>
-
-
-
-<!--    Widget styles-->
-
+<!--Bottom nav styles-->
     <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
         <item name="android:textSize">@dimen/text_size_extra_small</item>
         <item name="itemBackground">@drawable/bottom_nav_tab_bg_color</item>
@@ -220,7 +237,9 @@
         <item name="itemTextAppearanceActive">@style/TextAppearance.AllCaps.Active</item>
         <item name="itemTextAppearanceInactive">@style/TextAppearance.AllCaps.Inactive</item>
     </style>
+    <!--END Bottom nav styles-->
 
+    <!--Chip styles-->
     <style name="Chip" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="chipIcon">@drawable/chip_selector</item>
         <item name="chipBackgroundColor">@color/white</item>
@@ -232,12 +251,10 @@
         <item name="chipStrokeColor">@color/colorPrimary</item>
         <item name="fontFamily">@font/poppins</item>
     </style>
-
     <style name="Chip.NonEditable" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="android:checkable">false</item>
         <item name="fontFamily">@font/poppins</item>
     </style>
-
     <style name="Chip.ChoiceCustomized" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/chip_bg_color_selector</item>
         <item name="chipStrokeWidth">1dp</item>
@@ -249,6 +266,66 @@
         <item name="android:layout_height">@dimen/button_height</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="fontFamily">@font/poppins</item>
+    </style>
+    <!--Chip styles-->
+
+    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="actionMenuTextColor">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.Slide">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
+
+    <!--EditText styles-->
+    <style name="TextInputLayout" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/text_input_layout_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="textAppearanceCaption">@style/TextAppearance</item>
+        <item name="prefixTextAppearance">@style/TextInputLayout.Prefix</item>
+        <item name="prefixTextColor">@color/black</item>
+        <item name="suffixTextColor">@color/black</item>
+        <item name="suffixTextAppearance">@style/TextAppearance.EditText.Suffix</item>
+        <item name="singleLine">true</item>
+        <item name="android:layout_marginTop">@dimen/content_margin_medium</item>
+        <item name="fontFamily">@font/poppins</item>
+    </style>
+    <style name="TextInputLayout.Password" parent="TextInputLayout">
+        <item name="endIconMode">password_toggle</item>
+    </style>
+
+    <style name="TextInputEditText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="hintTextColor">@color/button_text_color_selector</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:singleLine">true</item>
+        <item name="fontFamily">@font/poppins</item>
+    </style>
+    <style name="TextInputEditText.Password" parent="TextInputEditText">
+        <item name="android:inputType">textPassword</item>
+        <item name="android:drawableLeft">@drawable/ic_password</item>
+        <item name="android:drawableStart">@drawable/ic_password</item>
+        <item name="android:drawablePadding">@dimen/content_margin_small</item>
+    </style>
+    <style name="TextInputEditText.MobileNumber" parent="TextInputEditText">
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">10</item>
+    </style>
+
+    <style name="TextInputLayout.MobileNumber" parent="@style/TextInputLayout">
+        <item name="placeholderText">99999 99999</item>
+        <item name="placeholderTextAppearance">@style/TextAppearance.PlaceHolder</item>
     </style>
 
     <style name="Otp">
@@ -262,101 +339,10 @@
         <item name="android:maxLength">6</item>
         <item name="android:minEms">6</item>
     </style>
-
-    <style name="DatePickerStyle" parent="Button">
-        <item name="backgroundTint">@color/white</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="cornerRadius">@dimen/button_corner_radius</item>
-        <item name="icon">@drawable/ic_calendar</item>
-        <item name="iconTint">@color/colorPrimary</item>
-        <item name="rippleColor">@color/colorPrimary</item>
-        <item name="android:drawablePadding">@dimen/content_padding_medium</item>
-        <item name="android:paddingStart">@dimen/content_margin_extra_small</item>
-        <item name="android:paddingTop">@dimen/content_margin_medium</item>
-        <item name="android:paddingEnd">@dimen/content_margin_extra_small</item>
-        <item name="android:paddingBottom">@dimen/content_margin_medium</item>
-    </style>
-
-    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="actionMenuTextColor">@color/colorAccent</item>
-    </style>
-
-    <style name="AppTheme.Slide">
-        <item name="android:windowEnterAnimation">@anim/slide_up</item>
-        <item name="android:windowExitAnimation">@anim/slide_down</item>
-    </style>
-
-    <color name="labelTextColor">#464646</color>
-
-<!--  *************************   NHS styles ************************* -->
-
-<!--    TextInputEdittext and TextInputLayout styles-->
-
-    <style name="TextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">@dimen/text_input_layout_height</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="textAppearanceCaption">@style/TextAppearance</item>
-        <item name="prefixTextAppearance">@style/PrefixStyle</item>
-        <item name="prefixTextColor">@color/black</item>
-        <item name="suffixTextColor">@color/black</item>
-        <item name="suffixTextAppearance">@style/SuffixStyle</item>
-        <item name="singleLine">true</item>
-        <item name="android:layout_marginTop">@dimen/content_margin_medium</item>
-        <item name="fontFamily">@font/poppins</item>
-    </style>
-
-    <style name="PasswordTextInputLayoutStyle" parent="TextInputLayoutStyle">
-        <item name="endIconMode">password_toggle</item>
-    </style>
-
-    <style name="TextInputEditTextStyle">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:cursorVisible">true</item>
-        <item name="hintTextColor">@color/button_text_color_selector</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="android:singleLine">true</item>
-        <item name="fontFamily">@font/poppins</item>
-    </style>
-
-    <style name="MobileNumberTextInputLayoutTextStyle" parent="TextInputLayoutStyle">
-        <item name="placeholderText">99999 99999</item>
-        <item name="placeholderTextAppearance">@style/PlaceHolderTextStyle</item>
-    </style>
-
-    <style name="PasswordTextInputEditTextStyle" parent="TextInputEditTextStyle">
-        <item name="android:inputType">textPassword</item>
-        <item name="android:drawableLeft">@drawable/ic_password</item>
-        <item name="android:drawableStart">@drawable/ic_password</item>
-        <item name="android:drawablePadding">@dimen/content_margin_small</item>
-    </style>
-
-    <style name="MobileNumberTextInputEditTextStyle" parent="TextInputEditTextStyle">
-        <item name="android:inputType">number</item>
-        <item name="android:maxLength">10</item>
-    </style>
-
-    <style name="PrefixStyle">
+    <style name="TextInputLayout.Prefix">
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
-
-    <style name="PlaceHolderTextStyle">
-        <item name="android:textSize">@dimen/text_size_large</item>
-    </style>
-
-    <style name="SuffixStyle" parent="TextAppearance">
-        <item name="android:textSize">@dimen/text_size_large</item>
-    </style>
-
-<!--   End TextInputEdittext and TextInputLayout styles -->
+    <!--END EditText styles-->
 
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_height">@dimen/button_height</item>
@@ -367,12 +353,6 @@
         <item name="backgroundTint">@color/button_color_selector</item>
         <item name="cornerRadius">@dimen/button_corner_radius_new</item>
         <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="NcgNhsTitleStyle">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:src">@drawable/ic_national_cancer_grid</item>
     </style>
 
     <style name="TextLinkStyle">

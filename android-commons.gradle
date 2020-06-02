@@ -23,6 +23,7 @@ dependencies {
     api Deps.Rx.Android
     api Deps.MockWebServer.main
     api Deps.Testing.Helpers.apacheCommonsIo
+    api Deps.Logger.timber
 
     testImplementation Deps.Testing.jUnit
     testImplementation Deps.Testing.mockito

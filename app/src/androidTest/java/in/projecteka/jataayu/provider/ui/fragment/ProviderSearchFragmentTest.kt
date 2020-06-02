@@ -1,7 +1,7 @@
 package `in`.projecteka.jataayu.provider.ui.fragment
 
-import `in`.projecteka.featuresprovider.R.id.*
 import `in`.projecteka.jataayu.R
+import `in`.projecteka.jataayu.R.id.*
 import `in`.projecteka.jataayu.testUtil.MockServerDispatcher
 import `in`.projecteka.jataayu.ui.activity.TestsOnlyActivity
 import androidx.test.espresso.intent.rule.IntentsTestRule
@@ -38,7 +38,7 @@ class ProviderSearchFragmentTest {
         webServer.dispatcher = MockServerDispatcher().RequestDispatcher(activityRule.activity.applicationContext)
 
         val searchFragment = ProviderSearchFragment()
-        activityRule.activity.addFragment(searchFragment, R.id.fragment_container)
+        activityRule.activity.addFragment(searchFragment, fragment_container)
     }
 
     @After
@@ -46,7 +46,6 @@ class ProviderSearchFragmentTest {
     fun tearDown() {
         webServer.shutdown()
     }
-
     @Test
     fun shouldSearchProvidersByGivenName() {
         typeText("Health") { id(sv_provider) }
@@ -72,13 +71,13 @@ class ProviderSearchFragmentTest {
     @Test
     fun shouldClearProviderNameTextOnClearButtonClick() {
         typeText("Some Really Long Provider Name") { id(sv_provider) }
-        displayed { id(iv_clear_results) }
-        ClickActions.click { id(iv_clear_results) }
+        displayed { id(iv_clear) }
+        ClickActions.click { id(iv_clear) }
         displayed {
             id(tv_search_provider_label)
             text(R.string.search_health_information_provider)
         }
-        VisibilityAssertions.notDisplayed { id(iv_clear_results) }
+        VisibilityAssertions.notDisplayed { id(iv_clear) }
     }
 
     @Test
@@ -92,7 +91,6 @@ class ProviderSearchFragmentTest {
             }
         }
 
-        VisibilityAssertions.notDisplayed { id(iv_clear_results) }
         VisibilityAssertions.notDisplayed { id(sv_provider) }
         displayed {
             id(tv_mobile_number)
@@ -112,7 +110,7 @@ class ProviderSearchFragmentTest {
             }
         }
         VisibilityAssertions.notDisplayed { id(tv_selected_provider) }
-        displayed { id(iv_clear_results) }
+        displayed { id(iv_clear) }
         displayed {
             id(sv_provider)
             text("Health")

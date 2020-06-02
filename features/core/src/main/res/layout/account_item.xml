@@ -30,7 +30,7 @@
 
             <TextView
                 android:id="@+id/tv_hip_name"
-                style="@style/ConsentRequestHiuDetails"
+                style="@style/TextAppearance.ConsentRequestHiuDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@{linkedAccount.providerName}"
@@ -40,7 +40,7 @@
 
             <TextView
                 android:id="@+id/tv_patient_reference_number"
-                style="@style/ConsentRequestHiuDetails"
+                style="@style/TextAppearance.ConsentRequestHiuDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@{linkedAccount.patientReferenceId}"
