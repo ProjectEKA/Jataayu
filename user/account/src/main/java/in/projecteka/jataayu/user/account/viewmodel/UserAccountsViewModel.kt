@@ -75,7 +75,7 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
         })
     }
 
-    fun showHideRecord(){
+    fun showRecord(){
         if (preferenceRepository.hasProviders) showRecords.set(true)
     }
 
@@ -142,7 +142,7 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
             it?.let {
                 preferenceRepository.hasProviders = it.size > 0
                 linksSize.set(it.size ?: 0)
-                showHideRecord()
+                showRecord()
             }
         }
     }

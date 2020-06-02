@@ -154,7 +154,7 @@
                             android:layout_marginTop="20dp"
                             android:text="@string/let_s_start"
                             app:layout_constraintStart_toStartOf="parent"
-                            android:drawableRight="@drawable/ic_vector_14"
+                            android:drawableRight="@drawable/ic_add_records_arrow"
                             app:layout_constraintTop_toBottomOf="@id/rl_no_linked_records"
                             tools:ignore="MissingConstraints"
                             app:toggledVisibility="@{!viewModel.showRecords}"/>
