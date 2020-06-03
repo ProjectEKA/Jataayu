@@ -12,12 +12,14 @@ import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.repository.UUIDRepository
+import android.text.Editable
+import android.text.TextWatcher
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 
 class UserVerificationViewModel(private val userVerificationRepository: UserVerificationRepository,
                                 val credentialsRepository: CredentialsRepository,
-                                val uuidRepository: UUIDRepository, val preferenceRepository: PreferenceRepository) : BaseViewModel
-    () {
+                                val uuidRepository: UUIDRepository, val preferenceRepository: PreferenceRepository) : BaseViewModel(), TextWatcher {
 
     companion object {
         const val VALUE_SCOPE_GRAND = "consentrequest.approve"
@@ -25,6 +27,9 @@ class UserVerificationViewModel(private val userVerificationRepository: UserVeri
         const val VALUE_SCOPE_PIN_VERIFY = "profile.changepin"
         const val KEY_SCOPE_TYPE = "scope_type"
     }
+
+    val confirmEnabled = ObservableBoolean(false)
+    val inputPinLbl = ObservableField<String>()
 
     var scopeType = ObservableField<ConsentScopeType>(ConsentScopeType.SCOPE_GRAND)
 
@@ -50,5 +55,15 @@ class UserVerificationViewModel(private val userVerificationRepository: UserVeri
             scopeType = VALUE_SCOPE_REVOKE
         }
         userVerificationResponse.fetch(userVerificationRepository.verifyUser(UserVerificationRequest(uuidRepository.generateUUID(), pin, scopeType)))
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        confirmEnabled.set(inputPinLbl.get()?.length == PreferenceRepository.TRANSACTION_PIN_LENGTH-1)
     }
 }

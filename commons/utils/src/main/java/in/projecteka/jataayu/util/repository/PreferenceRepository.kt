@@ -17,6 +17,7 @@ interface PreferenceRepository {
         const val INDIA_COUNTRY_CODE = "+91"
         const val COUNTRY_CODE_SEPARATOR = "-"
         const val MOBILE_IDENTIFIER_TYPE = "mobile"
+        const val TRANSACTION_PIN_LENGTH = 4
     }
 
     var name: String?

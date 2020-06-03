@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data >
+    <data>
         <variable
             name="clickHandler"
             type="in.projecteka.jataayu.core.handler.OtpSubmissionClickHandler" />
@@ -15,6 +15,9 @@
         <variable
             name="otpChangeWatcher"
             type="in.projecteka.jataayu.core.handler.OtpChangeWatcher" />
+        <variable
+            name="viewmodel"
+            type="in.projecteka.jataayu.consent.viewmodel.CreatePinFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +54,9 @@
 
         <in.projecteka.jataayu.presentation.ui.view.OtpEditText
             android:id="@+id/et_pin"
+            app:onValueChanged="@{viewmodel}"
             style="@style/Otp"
+            android:text="@={viewmodel.inputPinLbl}"
             android:layout_width="200dp"
             android:layout_height="40dp"
             android:layout_marginTop="@dimen/content_padding_large"
@@ -64,10 +69,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_continue"
-            style="@style/Button.Secondary"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/button_height"
+            style="@style/Button"
             android:layout_marginTop="@dimen/content_margin_extra_extra_large"
+            android:enabled="@{viewmodel.continueEnabled}"
+            android:layout_marginLeft="@dimen/content_margin_medium"
+            android:layout_marginStart="@dimen/content_margin_medium"
+            android:layout_marginRight="@dimen/content_margin_medium"
+            android:layout_marginEnd="@dimen/content_margin_medium"
             android:text="@string/btn_continue"
             android:onClick="@{clickHandler::onSubmitOtp}"
             app:layout_constraintBottom_toBottomOf="parent"
