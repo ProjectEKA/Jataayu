@@ -117,8 +117,8 @@
                         style="@style/TextInputLayout">
                         <com.google.android.material.textfield.TextInputEditText
                             android:text=" "
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             style="@style/TextInputEditText"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
