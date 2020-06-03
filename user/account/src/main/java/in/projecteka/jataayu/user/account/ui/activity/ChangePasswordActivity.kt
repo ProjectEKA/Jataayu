@@ -11,6 +11,8 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ActivityChangePasswordBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.ChangePasswordViewModel
 import `in`.projecteka.jataayu.util.extension.showLongToast
+import `in`.projecteka.jataayu.util.startLogin
+import android.content.Intent
 import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
@@ -21,6 +23,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
     companion object {
         private const val ERROR_CODE_INVALID_OLD_PASSWORD = 1018
         private const val ERROR_CODE_NOT_MATCH_NEW_PASSWORD_CRITERIA = 1017
+        private const val ERROR_CODE_TEMPORARY_BLOCKED_USER = 1031
     }
     private val viewModel: ChangePasswordViewModel by viewModel()
 
@@ -59,9 +62,16 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
                     when (it.error?.code) {
                         ERROR_CODE_INVALID_OLD_PASSWORD -> {
                             viewModel.showErrorOldPassword.set(true)
+                            viewModel.showInvalidOldPasswordError.set(it.error?.message)
                             binding.etOldPassword.setText("")
                             binding.etCreatePassword.setText("")
                             binding.etConfirmPassword.setText("")
+                        }
+                        ERROR_CODE_TEMPORARY_BLOCKED_USER ->{
+                            showLongToast(getString(R.string.block_user_temporary))
+                            startLogin(this){
+                                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                            }
                         }
                         ERROR_CODE_NOT_MATCH_NEW_PASSWORD_CRITERIA -> {
                             showLongToast(getString(R.string.password_criteria))
