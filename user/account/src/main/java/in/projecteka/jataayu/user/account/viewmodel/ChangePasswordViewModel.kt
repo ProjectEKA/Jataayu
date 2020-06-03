@@ -25,6 +25,7 @@ class ChangePasswordViewModel(val changePasswordRepository: ChangePasswordReposi
     val inputOldPasswordLbl = ObservableField<String>()
     val inputCreatePasswordLbl = ObservableField<String>()
     val inputConfirmPasswordLbl = ObservableField<String>()
+    val showInvalidOldPasswordError = ObservableField<String>()
     val setConfirmButtonEnabled = ObservableBoolean(false)
     val showErrorCreatePassword = ObservableBoolean(false)
     val showErrorOldPassword = ObservableBoolean(false)
