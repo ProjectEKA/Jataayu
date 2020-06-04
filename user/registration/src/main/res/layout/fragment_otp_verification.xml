@@ -89,17 +89,16 @@
         </com.google.android.material.button.MaterialButton>
 
         <TextView
-            style="@style/TextAppearance.Link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin_36"
             app:layout_constraintTop_toBottomOf="@+id/btn_continue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="@dimen/content_margin_36"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/colorPrimary"
             android:onClick="@{() -> viewModel.onClickResend()}"
-            android:text="Resend OTP"
+            android:text="@string/resend_otp"
             />
 
         <include

@@ -18,6 +18,7 @@ class ResetPasswordOtpVerificationViewModel(val resetPasswordRepository: ResetPa
 
     companion object {
         const val OTP_LENGTH = 6
+        private const val ERROR_EMPTY = ""
     }
 
     val errorLbl = ObservableField<String>()
@@ -34,7 +35,7 @@ class ResetPasswordOtpVerificationViewModel(val resetPasswordRepository: ResetPa
 
     override fun afterTextChanged(s: Editable?) {
         if (otpText.get()?.isNotEmpty() == true) {
-            errorLbl.set("")
+            errorLbl.set(ERROR_EMPTY)
         }
     }
 
@@ -49,6 +50,7 @@ class ResetPasswordOtpVerificationViewModel(val resetPasswordRepository: ResetPa
     }
 
     fun onClickResend(){
+        errorLbl.set(ERROR_EMPTY)
          onClickResendEvent.call()
     }
 

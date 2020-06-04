@@ -28,7 +28,6 @@ class ConsentManagerIDInputViewModel(private val userAccountsRepository: UserAcc
     var isLoginModeHasLoaded: Boolean = false
     private set
 
-
     val loginModeLiveDataResponse = PayloadLiveData<LoginType>()
 
 

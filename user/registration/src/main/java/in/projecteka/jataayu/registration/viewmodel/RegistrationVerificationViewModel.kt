@@ -13,6 +13,7 @@ class RegistrationVerificationViewModel : BaseViewModel(), TextWatcher {
     companion object {
         const val OTP_LENGTH = 6
         private val MOBILE_IDENTIFIER_TYPE = "mobile"
+        private val ERROR_EMPTY = ""
     }
 
     val errorLbl = ObservableField<String>()
@@ -25,7 +26,7 @@ class RegistrationVerificationViewModel : BaseViewModel(), TextWatcher {
 
     override fun afterTextChanged(s: Editable?) {
         if (otpText.get()?.isNotEmpty() == true) {
-            errorLbl.set("")
+            errorLbl.set(ERROR_EMPTY)
         }
     }
 
@@ -40,6 +41,7 @@ class RegistrationVerificationViewModel : BaseViewModel(), TextWatcher {
     }
 
     fun onClickResend(){
+        errorLbl.set(ERROR_EMPTY)
         onClickResendEvent.value = RequestVerificationRequest(MOBILE_IDENTIFIER_TYPE, mobileNumberText.get().toString())
     }
 }

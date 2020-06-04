@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.consent.ui.fragment
 
 import `in`.projecteka.jataayu.consent.R
 import `in`.projecteka.jataayu.consent.databinding.CreatePinFragmentBinding
+import `in`.projecteka.jataayu.consent.viewmodel.CreatePinFragmentViewModel
 import `in`.projecteka.jataayu.core.handler.OtpChangeHandler
 import `in`.projecteka.jataayu.core.handler.OtpChangeWatcher
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
@@ -12,10 +13,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class CreatePinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpChangeHandler {
     private lateinit var binding : CreatePinFragmentBinding
+    private val viewModel: CreatePinFragmentViewModel by viewModel()
 
     companion object {
         fun newInstance() = CreatePinFragment()
@@ -35,6 +38,7 @@ class CreatePinFragment : BaseDialogFragment(), OtpSubmissionClickHandler, OtpCh
     }
 
     private fun initBindings() {
+        binding.viewmodel = viewModel
         binding.clickHandler = this
         binding.isOtpEntered = false
         binding.otpChangeWatcher = OtpChangeWatcher(4, this)

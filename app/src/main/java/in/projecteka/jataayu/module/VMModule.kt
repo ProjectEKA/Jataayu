@@ -55,6 +55,7 @@ val viewModelModule = module {
     viewModel { UserVerificationViewModel(get(), get(), get(), get()) }
     viewModel { PinVerificationViewModel() }
     viewModel { CreatePinActivityViewModel() }
+    viewModel { CreatePinFragmentViewModel() }
 
     //Forgot Password
     viewModel { ResetPasswordActivityViewModel() }
