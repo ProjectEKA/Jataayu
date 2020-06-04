@@ -73,7 +73,7 @@
                 app:layout_constraintVertical_bias="0.3"
                 tools:text="@string/enter_otp" />
 
-            <in.projecteka.jataayu.presentation.ui.view.OtpEditText
+            <in.projecteka.jataayu.presentation.ui.view.OtpOrPinEditText
                 android:id="@+id/et_otp"
                 style="@style/Otp"
                 android:layout_width="300dp"

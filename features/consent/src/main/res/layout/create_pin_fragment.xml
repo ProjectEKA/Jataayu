@@ -52,16 +52,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lbl_pin_info" />
 
-        <in.projecteka.jataayu.presentation.ui.view.OtpEditText
+        <in.projecteka.jataayu.presentation.ui.view.OtpOrPinEditText
             android:id="@+id/et_pin"
             app:onValueChanged="@{viewmodel}"
-            style="@style/Otp"
+            style="@style/Pin"
             android:text="@={viewmodel.inputPinLbl}"
             android:layout_width="200dp"
+            android:inputType="textPassword"
             android:layout_height="40dp"
             android:layout_marginTop="@dimen/content_padding_large"
-            android:maxLength="4"
-            android:minEms="4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"

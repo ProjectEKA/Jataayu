@@ -31,8 +31,6 @@ class UserVerificationViewModel(private val userVerificationRepository: UserVeri
     val confirmEnabled = ObservableBoolean(false)
     val inputPinLbl = ObservableField<String>()
 
-    var scopeType = ObservableField<ConsentScopeType>(ConsentScopeType.SCOPE_GRAND)
-
     internal var createPinResponse = PayloadLiveData<Void>()
     internal var updatePinResponse = PayloadLiveData<Void>()
     internal var userVerificationResponse = PayloadLiveData<UserVerificationResponse>()
@@ -64,6 +62,6 @@ class UserVerificationViewModel(private val userVerificationRepository: UserVeri
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        confirmEnabled.set(inputPinLbl.get()?.length == PreferenceRepository.TRANSACTION_PIN_LENGTH-1)
+        confirmEnabled.set(s?.length == PreferenceRepository.TRANSACTION_PIN_LENGTH)
     }
 }

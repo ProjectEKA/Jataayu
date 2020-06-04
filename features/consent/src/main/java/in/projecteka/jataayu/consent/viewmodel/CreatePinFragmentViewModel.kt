@@ -19,7 +19,7 @@ class CreatePinFragmentViewModel() : BaseViewModel(), TextWatcher {
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         Log.d("inputUsernameLbl","inputUsernameLbl.get()?.length : " + inputPinLbl.get()?.length)
-        continueEnabled.set(inputPinLbl.get()?.length == PreferenceRepository.TRANSACTION_PIN_LENGTH-1)
+        continueEnabled.set(s?.length == PreferenceRepository.TRANSACTION_PIN_LENGTH)
     }
 }
 

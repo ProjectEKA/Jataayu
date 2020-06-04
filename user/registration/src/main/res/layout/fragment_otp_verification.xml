@@ -44,7 +44,7 @@
             app:layout_constraintBottom_toTopOf="@+id/et_otp"
             tools:text="Enter 6 digit OTP" />
 
-        <in.projecteka.jataayu.presentation.ui.view.OtpEditText
+        <in.projecteka.jataayu.presentation.ui.view.OtpOrPinEditText
             android:id="@+id/et_otp"
             style="@style/Otp"
             android:layout_width="match_parent"

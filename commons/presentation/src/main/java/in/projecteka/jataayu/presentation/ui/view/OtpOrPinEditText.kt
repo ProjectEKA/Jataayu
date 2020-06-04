@@ -8,15 +8,16 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import java.util.*
 
-class OtpEditText : AppCompatEditText {
+class OtpOrPinEditText : AppCompatEditText {
     private var mSpace = 24f //24 dp by default, space between the lines
     private var mNumChars = 4f
     private var mLineSpacing = 8f //8dp by default, height of the text from our lines
     private var mLineStroke = 2f
     private var mLinesPaint: Paint? = null
     private var mClickListener: OnClickListener? = null
+    private var mShouldMask: Boolean = false
 
-    constructor(context: Context?) : super(context)
+    constructor(context: Context?) : super(context!!)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         init(context, attrs)
@@ -27,6 +28,20 @@ class OtpEditText : AppCompatEditText {
     }
 
     private fun init(context: Context, attrs: AttributeSet) {
+
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.OtpOrPinEditText,
+            0, 0).apply {
+
+            try {
+                mShouldMask = getBoolean(R.styleable.OtpOrPinEditText_shouldMask, false)
+            } finally {
+                recycle()
+            }
+        }
+
+
         val multi = context.resources.displayMetrics.density
         mLineStroke *= multi
         mLinesPaint = Paint(paint)
@@ -68,11 +83,32 @@ class OtpEditText : AppCompatEditText {
             canvas.drawLine(startX.toFloat(), bottomValue.toFloat(), startX + mCharSize, bottomValue.toFloat(), mLinesPaint!!)
             if (text!!.length > i) {
                 val middle = startX + mCharSize / 2
-                canvas.drawText(txt.toString(), i, i + 1, middle - textWidths[0] / 2, bottomValue - mLineSpacing, paint)
+                canvas.drawText(getTextToShow(text!!.toString()), i, i + 1, middle - textWidths[0] / 2, bottomValue - mLineSpacing, paint)
             }
             startX += if (mSpace < 0) { (mCharSize * 2).toInt() }
             else { (mCharSize + mSpace.toInt()).toInt() }
             i++
         }
     }
+
+    private fun getTextToShow(txt: String): String {
+        return if (mShouldMask){
+            getPattern(text = txt)
+        } else {
+            txt
+        }
+    }
+
+    fun getPattern(text: String): String {
+        var pattern: String = ""
+        var i: Int = 0
+        if (text.isNotEmpty()){
+            while (i < text.length) {
+                pattern += "*"
+                i++
+            }
+        }
+        return pattern
+    }
+
 }

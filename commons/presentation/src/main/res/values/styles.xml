@@ -339,6 +339,14 @@
         <item name="android:maxLength">6</item>
         <item name="android:minEms">6</item>
     </style>
+    <style name="Pin">
+        <item name="android:background">@drawable/rounded_corners_selector</item>
+        <item name="android:cursorVisible">true</item>
+        <item name="android:letterSpacing">2</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxLength">4</item>
+        <item name="android:minEms">4</item>
+    </style>
     <style name="TextInputLayout.Prefix">
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
