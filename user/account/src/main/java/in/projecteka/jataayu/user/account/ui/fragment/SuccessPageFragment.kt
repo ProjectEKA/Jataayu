@@ -4,7 +4,7 @@ import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.SuccessPageFragmentBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.AccountCreationActivityViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.SuccessPageViewModel
-import `in`.projecteka.jataayu.util.startProvider
+import `in`.projecteka.jataayu.util.startDashboard
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import androidx.fragment.app.Fragment
@@ -49,7 +49,7 @@ class SuccessPageFragment : Fragment() {
         binding.viewModel = viewModel
 
         binding.btnConfirmRegistration.setOnClickListener {
-            startProvider(activity!!) {
+            startDashboard(activity!!){
                 putExtra(KEY_ACCOUNT_CREATED, true)
             }
             activity?.finish()
