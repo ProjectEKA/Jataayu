@@ -66,12 +66,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_pin" />
 
+        <ImageButton
+            android:src="@{viewModel.shouldMask ? @drawable/ic_visibility_off : @drawable/ic_visibility_on}"
+            android:onClick="@{() -> viewModel.togglePasswordVisible()}"
+            android:layout_marginLeft="@dimen/content_margin_small"
+            android:layout_marginStart="@dimen/content_margin_small"
+            app:layout_constraintTop_toTopOf="@+id/et_pin"
+            app:layout_constraintBottom_toBottomOf="@+id/et_pin"
+            app:layout_constraintLeft_toRightOf="@+id/et_pin"
+            android:layout_marginTop="@dimen/content_padding_large"
+            android:id="@+id/img_btn_hide_or_show"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_enter_otp"
+            style="@style/ShowOrHide"/>
+
+
         <in.projecteka.jataayu.presentation.ui.view.OtpOrPinEditText
             android:id="@+id/et_pin"
             style="@style/OtpOrPin"
             android:layout_width="200dp"
             app:shouldMask="true"
             android:layout_height="40dp"
+            app:shouldMaskCharacters="@{viewModel.shouldMask}"
             android:layout_marginTop="@dimen/content_padding_large"
             app:onValueChanged="@{viewModel}"
             android:minEms="4"

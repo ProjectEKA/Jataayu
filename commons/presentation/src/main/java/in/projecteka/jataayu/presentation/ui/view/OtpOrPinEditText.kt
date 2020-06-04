@@ -15,7 +15,7 @@ class OtpOrPinEditText : AppCompatEditText {
     private var mLineStroke = 2f
     private var mLinesPaint: Paint? = null
     private var mClickListener: OnClickListener? = null
-    private var mShouldMask: Boolean = false
+    var mShouldMask: Boolean = false
     private lateinit var mMaskCharacter: String
     private var mMaskDefaultCharacter: String = "*"
 

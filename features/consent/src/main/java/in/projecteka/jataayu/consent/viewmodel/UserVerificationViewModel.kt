@@ -30,6 +30,7 @@ class UserVerificationViewModel(private val userVerificationRepository: UserVeri
 
     val confirmEnabled = ObservableBoolean(false)
     val inputPinLbl = ObservableField<String>()
+    var shouldMask = ObservableBoolean(true)
 
     internal var createPinResponse = PayloadLiveData<Void>()
     internal var updatePinResponse = PayloadLiveData<Void>()
@@ -63,5 +64,9 @@ class UserVerificationViewModel(private val userVerificationRepository: UserVeri
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         confirmEnabled.set(s?.length == PreferenceRepository.TRANSACTION_PIN_LENGTH)
+    }
+
+    fun togglePasswordVisible() {
+        shouldMask.set(!shouldMask.get())
     }
 }
