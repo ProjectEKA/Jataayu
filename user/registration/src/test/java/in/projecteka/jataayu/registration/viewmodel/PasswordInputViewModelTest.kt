@@ -102,7 +102,7 @@ class PasswordInputViewModelTest {
     @Test
     fun `should enable the login button if password is not empty`() {
         passwordInputViewModel.inputPasswordLbl.set("abc")
-        passwordInputViewModel.onTextChanged("abc", 1, 1, 3)
+        passwordInputViewModel.afterTextChanged(null)
         assertTrue(passwordInputViewModel.loginEnabled.get())
     }
 
