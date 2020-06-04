@@ -16,6 +16,8 @@ class OtpOrPinEditText : AppCompatEditText {
     private var mLinesPaint: Paint? = null
     private var mClickListener: OnClickListener? = null
     private var mShouldMask: Boolean = false
+    private lateinit var mMaskCharacter: String
+    private var mMaskDefaultCharacter: String = "*"
 
     constructor(context: Context?) : super(context!!)
 
@@ -36,6 +38,7 @@ class OtpOrPinEditText : AppCompatEditText {
 
             try {
                 mShouldMask = getBoolean(R.styleable.OtpOrPinEditText_shouldMask, false)
+                mMaskCharacter = getString(R.styleable.OtpOrPinEditText_maskCharacter) ?: mMaskDefaultCharacter
             } finally {
                 recycle()
             }
@@ -104,7 +107,7 @@ class OtpOrPinEditText : AppCompatEditText {
         var i: Int = 0
         if (text.isNotEmpty()){
             while (i < text.length) {
-                pattern += "*"
+                pattern += mMaskCharacter
                 i++
             }
         }

@@ -6,5 +6,6 @@
 
 <declare-styleable name="OtpOrPinEditText">
     <attr name="shouldMask" format="boolean" />
+    <attr name="maskCharacter" format="string" />
 </declare-styleable>
 </resources>

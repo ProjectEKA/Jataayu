@@ -68,11 +68,14 @@
 
         <in.projecteka.jataayu.presentation.ui.view.OtpOrPinEditText
             android:id="@+id/et_pin"
-            style="@style/Pin"
+            style="@style/OtpOrPin"
             android:layout_width="200dp"
+            app:shouldMask="true"
             android:layout_height="40dp"
             android:layout_marginTop="@dimen/content_padding_large"
             app:onValueChanged="@{viewModel}"
+            android:minEms="4"
+            android:maxLength="4"
             android:text="@={viewModel.inputPinLbl}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
