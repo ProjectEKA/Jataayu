@@ -111,21 +111,22 @@ class ResetPasswordOtpFragment : BaseFragment() {
                 is PartialFailure -> {
                     if (it.error?.code == ERROR_CODE_INVALID_OTP || it.error?.code == ERROR_CODE_OTP_EXPIRED || it.error?.code == EXCEEDED_INVALID_ATTEMPT_LIMIT) {
                         viewModel.otpText.set(null)
+                        viewModel.errorLbl.set(
+                            when (it.error?.code) {
+                                ERROR_CODE_INVALID_OTP -> {
+                                    getString(R.string.invalid_otp)
+                                }
+                                ERROR_CODE_OTP_EXPIRED -> {
+                                    getString(R.string.otp_expired)
+                                }
+                                EXCEEDED_INVALID_ATTEMPT_LIMIT -> {
+                                    getString(R.string.exceeded_otp_attempt_limit)
+                                }
+                                else -> it.error?.message
+                            }
+                        )
                     }
-                    viewModel.errorLbl.set(
-                        when (it.error?.code) {
-                            ERROR_CODE_INVALID_OTP -> {
-                                getString(R.string.invalid_otp)
-                            }
-                            ERROR_CODE_OTP_EXPIRED -> {
-                                getString(R.string.otp_expired)
-                            }
-                            EXCEEDED_INVALID_ATTEMPT_LIMIT -> {
-                                getString(R.string.exceeded_otp_attempt_limit)
-                            }
-                            else -> it.error?.message
-                        }
-                    )
+
                     if(it.error?.code == ERROR_CODE_ACCOUNT_LOCKED){
                         viewModel.showAccountLockedError.set(true)
                     }
