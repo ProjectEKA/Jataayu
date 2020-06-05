@@ -369,6 +369,7 @@
         <item name="fontFamily">@font/poppins_medium</item>
     </style>
     <style name="ShowOrHide" parent="Widget.AppCompat.ImageButton">
+        <item name="backgroundTint">@color/transparent</item>
         <item name="background">@color/transparent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
