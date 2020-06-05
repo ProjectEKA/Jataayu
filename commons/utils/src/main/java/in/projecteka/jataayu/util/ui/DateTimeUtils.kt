@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.util.ui
 
 import android.text.format.DateUtils
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,9 +24,15 @@ class DateTimeUtils {
         }
 
         fun getDate(utcDate: String): Date? {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+            var inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
             inputFormat.timeZone = TimeZone.getTimeZone("UTC")
-            return inputFormat.parse(utcDate)
+            return try {
+                inputFormat.parse(utcDate)
+            } catch (exception: ParseException) {
+                inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+                inputFormat.parse(utcDate)
+            }
         }
 
         fun getDateInUTCFormat(utcDate: String): Date? {
