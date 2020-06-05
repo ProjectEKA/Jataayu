@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.presentation.ui.view
 
 import `in`.projecteka.jataayu.presentation.R
+import `in`.projecteka.jataayu.util.extension.getString
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -17,7 +18,7 @@ class OtpOrPinEditText : AppCompatEditText {
     private var mClickListener: OnClickListener? = null
     var mShouldMask: Boolean = false
     private lateinit var mMaskCharacter: String
-    private var mMaskDefaultCharacter: String = "*"
+    private var mMaskDefaultCharacter: String = getString(R.string.mask_character)
 
     constructor(context: Context?) : super(context!!)
 
