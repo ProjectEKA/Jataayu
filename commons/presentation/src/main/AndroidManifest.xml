@@ -5,5 +5,11 @@
         <activity
             android:name=".ui.fragment.BaseActivity"
              />
+
+        <activity
+            android:name=".ui.IntroScreensActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:exported="false"/>
     </application>
 </manifest>
