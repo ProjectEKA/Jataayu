@@ -328,7 +328,9 @@
         <item name="placeholderTextAppearance">@style/TextAppearance.PlaceHolder</item>
     </style>
 
-    <style name="Otp">
+    <style name="OtpOrPin">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/edittext_height</item>
         <item name="android:background">@drawable/rounded_corners_selector</item>
         <item name="android:cursorVisible">true</item>
         <item name="android:digits">1234567890</item>
@@ -366,5 +368,11 @@
         <item name="android:padding">@dimen/content_margin_medium</item>
         <item name="fontFamily">@font/poppins_medium</item>
     </style>
-    <!--  *************************   END NHS styles ************************* -->
+    <style name="ShowOrHide" parent="Widget.AppCompat.ImageButton">
+        <item name="backgroundTint">@color/transparent</item>
+        <item name="background">@color/transparent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:src">@drawable/ic_visibility_off</item>
+    </style>
 </resources>

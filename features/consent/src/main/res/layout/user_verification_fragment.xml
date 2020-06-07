@@ -69,20 +69,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_pin" />
 
-        <in.projecteka.jataayu.presentation.ui.view.OtpEditText
-            android:id="@+id/et_pin"
-            style="@style/Otp"
-            android:layout_width="200dp"
-            app:onValueChanged="@{viewModel}"
-            android:layout_height="40dp"
+        <ImageButton
+            android:src="@{viewModel.shouldMask ? @drawable/ic_visibility_off : @drawable/ic_visibility_on}"
+            android:onClick="@{() -> viewModel.togglePasswordVisible()}"
+            android:layout_marginLeft="@dimen/content_margin_small"
+            android:layout_marginStart="@dimen/content_margin_small"
+            app:layout_constraintTop_toTopOf="@+id/et_pin"
+            app:layout_constraintBottom_toBottomOf="@+id/et_pin"
+            app:layout_constraintLeft_toRightOf="@+id/et_pin"
             android:layout_marginTop="@dimen/content_padding_large"
-            android:text="@={viewModel.inputPinLbl}"
-            android:maxLength="4"
-            android:minEms="4"
+            android:id="@+id/img_btn_hide_or_show"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_enter_otp"
+            style="@style/ShowOrHide"/>
+
+        <in.projecteka.jataayu.presentation.ui.view.OtpOrPinEditText
+            android:background="@drawable/rounded_corners_selector"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_width="200dp"
+            android:layout_marginLeft="@dimen/content_margin_extra_extra_large"
+            app:shouldMaskCharacters="@{viewModel.shouldMask}"
+            android:layout_marginRight="@dimen/content_margin_extra_extra_large"
+            android:layout_marginEnd="@dimen/content_margin_extra_extra_large"
+            android:layout_marginStart="@dimen/content_margin_extra_extra_large"
+            android:layout_marginTop="@dimen/content_padding_large"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_enter_otp" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/img_btn_hide_or_show"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_enter_otp"
+            android:minEms="4"
+            android:maxLength="4"
+            app:onValueChanged="@{viewModel}"
+            android:text="@={viewModel.inputPinLbl}"
+            android:id="@+id/et_pin"
+            style="@style/OtpOrPin"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_continue"

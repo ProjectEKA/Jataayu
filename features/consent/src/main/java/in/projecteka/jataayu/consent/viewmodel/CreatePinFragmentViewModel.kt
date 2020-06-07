@@ -11,6 +11,7 @@ import androidx.databinding.ObservableField
 class CreatePinFragmentViewModel() : BaseViewModel(), TextWatcher {
     val continueEnabled = ObservableBoolean(false)
     val inputPinLbl = ObservableField<String>()
+    var shouldMask = ObservableBoolean(true)
     override fun afterTextChanged(s: Editable?) {
     }
 
@@ -19,7 +20,11 @@ class CreatePinFragmentViewModel() : BaseViewModel(), TextWatcher {
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         Log.d("inputUsernameLbl","inputUsernameLbl.get()?.length : " + inputPinLbl.get()?.length)
-        continueEnabled.set(inputPinLbl.get()?.length == PreferenceRepository.TRANSACTION_PIN_LENGTH-1)
+        continueEnabled.set(s?.length == PreferenceRepository.TRANSACTION_PIN_LENGTH)
+    }
+
+    fun togglePasswordVisible() {
+        shouldMask.set(!shouldMask.get())
     }
 }
 
