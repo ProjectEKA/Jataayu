@@ -17,22 +17,23 @@ class DateTimeUtils {
             return outputFormat.format(date!!)
         }
 
-        fun getFormattedDate(format: String, utcDate: String): String {
-            val date = getDate(utcDate)
-            val outputFormat = SimpleDateFormat(DATE_FORMAT_YYYY_MM_DD, Locale.getDefault())
-            return outputFormat.format(date!!)
-        }
-
         fun getDate(utcDate: String): Date? {
-            var inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
-            inputFormat.timeZone = TimeZone.getTimeZone("UTC")
-            return try {
-                inputFormat.parse(utcDate)
-            } catch (exception: ParseException) {
-                inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            var parsedDate: Date? = null
+            val dateFormats = Arrays.asList(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                "yyyy-MM-dd'T'HH:mm:ss",
+                "yyyy-MM-dd'T'HH:mm"
+            )
+            for (dateFormat in dateFormats) {
+                val inputFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
                 inputFormat.timeZone = TimeZone.getTimeZone("UTC")
-                inputFormat.parse(utcDate)
+                parsedDate = try {
+                    inputFormat.parse(utcDate)
+                } catch (e: ParseException) {
+                    null
+                }
             }
+            return parsedDate
         }
 
         
