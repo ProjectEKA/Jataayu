@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.presentation.ui
 
 import `in`.projecteka.jataayu.presentation.R
 import `in`.projecteka.jataayu.presentation.databinding.ActivityIntroBinding
+import `in`.projecteka.jataayu.util.extension.showShortToast
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,35 +15,41 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 
 class IntroScreensActivity : BaseActivity<ActivityIntroBinding>(), OnPageChangeListener {
 
-//    var Layout_bars: LinearLayout? = null
-private lateinit var dots: Array<ImageView>
+    private lateinit var dots: Array<ImageView>
     private var layouts: Array<Int>? = null
-//    lateinit var bottomBars: Array<TextView>
-//
-//    var Skip: Button? = null
-//    var Next: Button? = null
-//    var vp: ViewPager? = null
-    var introAdapter: IntroScreensViewpagerAdapter? = null
+    private var introAdapter: IntroScreensViewpagerAdapter? = null
     lateinit var inflater: LayoutInflater
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        inflater = this@IntroScreensActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        layouts = arrayOf(R.layout.intro_screen1)
+        layouts = arrayOf(R.layout.intro_screen1, R.layout.intro_screen2, R.layout.intro_screen3, R.layout.intro_screen4)
 
         addBottomDots(0)
         introAdapter = IntroScreensViewpagerAdapter()
         binding.viewPager.adapter = introAdapter
         binding.viewPager.addOnPageChangeListener(this)
+
+        binding.btnNext.setOnClickListener(View.OnClickListener {
+            val current: Int = getItem(+1)
+            if (current < layouts!!.size) { // move to next screen
+                binding.viewPager.setCurrentItem(current)
+            } else {
+                showShortToast("launch login screen")
+            }
+        })
+    }
+
+    private fun getItem(i: Int): Int {
+        return binding.viewPager.currentItem + i
     }
 
     private fun addBottomDots(currentPage: Int) {
 
-        val colorActive = getColor(R.color.intro_dot_active)
-        val colorsInactive = getColor(R.color.intro_dot_inactive)
         val circleActive = getDrawable(R.drawable.circle_without_border)
         val circleInactive = getDrawable(R.drawable.circle_with_border)
+
+        binding.layoutDots.removeAllViews()
 
         dots = Array<ImageView>(4) {
             var circle = ImageView(this)
@@ -73,26 +80,17 @@ private lateinit var dots: Array<ImageView>
             return layouts?.size ?: 0
         }
 
-        override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
-            super.destroyItem(container, position, obj)
-            var view: View = obj as View
+        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+            var view: View = `object` as View
             container.removeView(view)
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
-//            return super.instantiateItem(container, position)
-//            layoutInflater =
-//                getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-//            return
-
              val view =
                 layoutInflater.inflate(layouts!![position], container, false)
             container.addView(view)
-
             return view
         }
-
     }
 
     override fun onPageScrollStateChanged(state: Int) {}

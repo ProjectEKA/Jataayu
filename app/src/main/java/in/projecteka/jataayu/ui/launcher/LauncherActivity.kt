@@ -43,6 +43,7 @@ class LauncherActivity : AppCompatActivity() {
         })
         viewModel.startIntroductionScreens.observe(this, Observer {
             startIntroScreens(this)
+            finish()
         })
     }
 
