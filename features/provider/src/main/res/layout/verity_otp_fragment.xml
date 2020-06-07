@@ -58,14 +58,12 @@
             app:layout_constraintBottom_toTopOf="@+id/et_otp"
             tools:text="Enter 6 digit OTP" />
 
-        <in.projecteka.jataayu.presentation.ui.view.OtpEditText
+        <in.projecteka.jataayu.presentation.ui.view.OtpOrPinEditText
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/et_otp"
-            style="@style/Otp"
+            style="@style/OtpOrPin"
             android:text="@={viewModel.otpText}"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/edittext_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintLeft_toLeftOf="parent"

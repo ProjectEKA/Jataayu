@@ -3,4 +3,9 @@
     <declare-styleable name="StateImageView">
         <attr name="expanded" format="boolean" />
     </declare-styleable>
+
+<declare-styleable name="OtpOrPinEditText">
+    <attr name="shouldMask" format="boolean" />
+    <attr name="maskCharacter" format="string" />
+</declare-styleable>
 </resources>
