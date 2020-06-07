@@ -16,7 +16,7 @@ class LauncherViewModel(private val preferenceRepository: PreferenceRepository,
     fun redirectIfNeeded() {
 
         when {
-            preferenceRepository.hasProviders || preferenceRepository.isUserLoggedIn -> {
+            preferenceRepository.isUserLoggedIn -> {
                 startDashboard.call()
             }
             preferenceRepository.isUserAccountCreated -> {

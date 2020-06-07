@@ -18,6 +18,9 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
     var yearOfBirth: Int? = null
     var gender = ""
     var cmId = ""
+    private set
+    var password: String? = null
+    private set
     val currentPage = SingleLiveEvent<ShowPage>()
 
 
@@ -38,7 +41,9 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
     fun redirectToCreateAccountPage(){
         currentPage.value = ShowPage.ACCOUNT_INFO_SCREEN
     }
-    fun redirectToCreateAccountSuccessPage(){
+    fun redirectToCreateAccountSuccessPage(cmId: String, password: String){
+        this.password = password
+        this.cmId = cmId
         currentPage.value = ShowPage.SUCCESS_SCREEN
     }
 }
