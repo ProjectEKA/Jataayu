@@ -70,7 +70,7 @@ data class Consent(
     }
 
     fun getLastUpdated(): Date? {
-        return DateTimeUtils.getDateInUTCFormat(lastUpdated)
+        return DateTimeUtils.getDate(lastUpdated)
     }
 
 
