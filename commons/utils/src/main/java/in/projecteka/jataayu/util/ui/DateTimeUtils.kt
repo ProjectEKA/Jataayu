@@ -12,9 +12,7 @@ class DateTimeUtils {
         private const val DATE_TIME_FORMAT_DD_MMM_YYYY_HH_A = "hh a, $DATE_FORMAT_DD_MM_YY"
         private const val TIME_FORMAT_HH_MM_A = "hh:mm a"
         fun getFormattedDate(utcDate: String): String {
-            val date = getDate(utcDate)
-            val outputFormat = SimpleDateFormat(DATE_FORMAT_DD_MM_YY, Locale.getDefault())
-            return outputFormat.format(date!!)
+            return getFormattedDateTime(utcDate,DATE_FORMAT_DD_MM_YY)
         }
 
         fun getDate(utcDate: String): Date? {
@@ -36,26 +34,26 @@ class DateTimeUtils {
             return parsedDate
         }
 
-        fun getDateInUTCFormat(utcDate: String): Date? {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
-            inputFormat.timeZone = TimeZone.getTimeZone("UTC")
-            return inputFormat.parse(utcDate)
-        }
-
         fun getRelativeTimeSpan(createdAt: String): String {
             return DateUtils.getRelativeTimeSpanString(getDate(createdAt)!!.time).toString()
         }
 
         fun getFormattedDateTime(utcDate: String): String {
-            val date = getDate(utcDate)
-            val outputFormat = SimpleDateFormat(DATE_TIME_FORMAT_DD_MMM_YYYY_HH_A, Locale.getDefault())
-            return outputFormat.format(date!!)
+            return getFormattedDateTime(utcDate,DATE_TIME_FORMAT_DD_MMM_YYYY_HH_A)
         }
 
         fun getFormattedTime(utcDate: String): String {
+            return getFormattedDateTime(utcDate,TIME_FORMAT_HH_MM_A)
+        }
+
+        private fun getFormattedDateTime(utcDate: String, format: String) :String{
             val date = getDate(utcDate)
-            val outputFormat = SimpleDateFormat(TIME_FORMAT_HH_MM_A, Locale.getDefault())
-            return outputFormat.format(date!!)
+            val outputFormat = SimpleDateFormat(format, Locale.getDefault())
+            val parseDate= date?.let {
+                outputFormat.format(it)
+            }
+
+            return parseDate ?: "Unable to parse Date"
         }
 
         fun getUtcDate(date: Date): String {
