@@ -18,6 +18,7 @@ interface UserAccountsRepository {
     fun getLoginMode(userName: String): Call<LoginType>
     fun recoverCmid(verifyOTPRequest: VerifyOTPRequest): Call<RecoverCmidResponse>
     fun generateOTPForRecoverCMID(recoverCmidRequest: RecoverCmidRequest): Call<GenerateOTPResponse>
+    fun login(username: String, password: String, grantType: String): Call<CreateAccountResponse>
 }
 
 class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) :
@@ -57,6 +58,14 @@ class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) :
 
     override fun generateOTPForRecoverCMID(recoverCmidRequest: RecoverCmidRequest): Call<GenerateOTPResponse> {
         return userAccountApis.generateOTPForRecoverCMID(recoverCmidRequest)
+    }
+
+    override fun login(
+        username: String,
+        password: String,
+        grantType: String
+    ): Call<CreateAccountResponse> {
+       return userAccountApis.login(LoginRequest(username, password, grantType) )
     }
 
     private var providerLiveDataCount = 0

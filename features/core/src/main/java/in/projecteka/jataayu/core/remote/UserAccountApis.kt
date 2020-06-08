@@ -30,4 +30,7 @@ interface UserAccountApis {
 
     @POST("patients/profile/recovery-init")
     fun generateOTPForRecoverCMID(@Body recoverCmidRequest: RecoverCmidRequest): Call<GenerateOTPResponse>
+
+    @POST("sessions")
+    fun login(@Body loginRequest: LoginRequest): Call<CreateAccountResponse>
 }

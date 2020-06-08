@@ -8,7 +8,6 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.user.account.R
-import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TYPE_AYUSHMAN_BHARAT_ID
@@ -18,8 +17,8 @@ import androidx.databinding.ObservableInt
 import java.util.regex.Pattern
 
 class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
-                             val preferenceRepository: PreferenceRepository,
-                             val credentialsRepository: CredentialsRepository) : BaseViewModel(){
+                              val preferenceRepository: PreferenceRepository,
+                              private val credentialsRepository: CredentialsRepository) : BaseViewModel(){
 
     companion object {
         private const val usernameCriteria = "^[a-zA-Z0-9.-]{3,150}$"
@@ -47,6 +46,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val showErrorConfirmPassword = ObservableBoolean(false)
     val showErrorAyushmanId = ObservableBoolean(false)
     val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
+    val createSessionResponse = PayloadLiveData<CreateAccountResponse>()
     var inputFullName: String? = ""
     var inputGender: String? = ""
     var selectedYoB: Int? = null
@@ -108,10 +108,6 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
        return preferenceRepository.mobileIdentifier.orEmpty();
     }
 
-    fun getAuthTokenWithTokenType(response: CreateAccountResponse?): String {
-        return "${response?.tokenType?.capitalize()} ${response?.accessToken}"
-    }
-
     fun getCreateAccountPayload(): CreateAccountRequest {
 
         var unverifiedIdentifiers: List<UnverifiedIdentifier>? = null
@@ -138,5 +134,17 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     internal fun showUserAlreadyExistsError() {
         usernameErrorLbl.set(R.string.user_already_exits)
         showErrorUserName.set(true)
+    }
+
+    fun onCreateAccountSuccess(response: CreateAccountResponse) {
+        credentialsRepository.accessToken =
+            "${response.tokenType.capitalize()} ${response.accessToken}"
+        preferenceRepository.isUserLoggedIn = true
+        credentialsRepository.refreshToken = response.refreshToken
+    }
+
+
+    fun createSession(userName: String, password: String) {
+        createSessionResponse.fetch(repository.login(userName, password, "password"))
     }
 }
