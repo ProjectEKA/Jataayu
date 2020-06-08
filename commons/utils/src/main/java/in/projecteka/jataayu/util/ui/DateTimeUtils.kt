@@ -35,7 +35,10 @@ class DateTimeUtils {
         }
 
         fun getRelativeTimeSpan(createdAt: String): String {
-            return DateUtils.getRelativeTimeSpanString(getDate(createdAt)!!.time).toString()
+            val relativeTimeSpan = getDate(createdAt)?.let {
+                DateUtils.getRelativeTimeSpanString(it.time).toString()
+            }
+            return relativeTimeSpan ?: "Unable to parse Date"
         }
 
         fun getFormattedDateTime(utcDate: String): String {
