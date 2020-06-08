@@ -20,7 +20,8 @@ class DateTimeUtils {
             val dateFormats = Arrays.asList(
                 "yyyy-MM-dd'T'HH:mm:ss.SSS",
                 "yyyy-MM-dd'T'HH:mm:ss",
-                "yyyy-MM-dd'T'HH:mm"
+                "yyyy-MM-dd'T'HH:mm",
+                "yyyy-MM-dd'T'HH"
             )
             for (dateFormat in dateFormats) {
                 val inputFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
@@ -38,7 +39,7 @@ class DateTimeUtils {
             val relativeTimeSpan = getDate(createdAt)?.let {
                 DateUtils.getRelativeTimeSpanString(it.time).toString()
             }
-            return relativeTimeSpan ?: "Unable to parse Date"
+            return relativeTimeSpan ?: "Something went wrong.Please update the consent expiry date and try again"
         }
 
         fun getFormattedDateTime(utcDate: String): String {
@@ -56,7 +57,7 @@ class DateTimeUtils {
                 outputFormat.format(it)
             }
 
-            return parseDate ?: "Unable to parse Date"
+            return parseDate ?: "Something went wrong.Please update the consent expiry date and try again"
         }
 
         fun getUtcDate(date: Date): String {
