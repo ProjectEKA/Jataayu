@@ -140,6 +140,8 @@ class EditConsentDetailsVM(private val repository: ConsentRepository) : ViewMode
             set(Calendar.MINUTE, timePair.second)
             modifiedConsent.permission.dataEraseAt = time.toUtc()
             expiryTimeLabel.set(modifiedConsent.getConsentExpiryTime())
+            val isDateExpire =DateTimeUtils.isDateExpired(time.toUtc())
+            saveEnabled.set(!isDateExpire)
         }
     }
 
