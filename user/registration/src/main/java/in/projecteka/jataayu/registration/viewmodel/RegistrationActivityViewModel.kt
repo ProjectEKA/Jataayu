@@ -1,11 +1,11 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
-import `in`.projecteka.jataayu.registration.model.VerifyIdentifierRequest
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.BaseViewModel
 import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
 import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
+import `in`.projecteka.jataayu.registration.model.VerifyIdentifierRequest
 import `in`.projecteka.jataayu.registration.model.VerifyIdentifierResponse
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
@@ -32,6 +32,7 @@ class RegistrationActivityViewModel(
     private var sessionId: String? = null
 
     internal val redirectTo = SingleLiveEvent<Show>()
+
 
     fun setup() {
         redirectTo.value = Show.REGISTRATION

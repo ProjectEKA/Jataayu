@@ -13,8 +13,8 @@ import `in`.projecteka.jataayu.registration.ui.fragment.RegistrationOtpFragment
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel.Show
 import `in`.projecteka.jataayu.util.startAccountCreation
-import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,10 +40,9 @@ class RegistrationActivity : BaseActivity<RegistrationActivityBinding>() {
                 }
                 Show.REGISTRATION -> replaceFragment(RegistrationFragment.newInstance(), R.id.fragment_container)
                 Show.NEXT -> {
-                    finish()
-                    startAccountCreation(this) {
-                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    }
+                    startAccountCreation(this)
+                    val backStackEntry = supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1)
+                    supportFragmentManager.popBackStack(backStackEntry.id, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 }
             }
         })
