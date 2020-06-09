@@ -20,7 +20,7 @@ class LauncherViewModel(private val preferenceRepository: PreferenceRepository,
             preferenceRepository.shouldShowIntro -> {
                 startIntroductionScreens.call()
             }
-            preferenceRepository.hasProviders || preferenceRepository.isUserLoggedIn -> {
+            preferenceRepository.isUserLoggedIn -> {
                 startDashboard.call()
             }
             preferenceRepository.isUserAccountCreated -> {
