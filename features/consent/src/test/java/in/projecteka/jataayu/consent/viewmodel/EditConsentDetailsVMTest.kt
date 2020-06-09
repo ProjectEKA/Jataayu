@@ -191,6 +191,6 @@ class EditConsentDetailsVMTest {
 
         verify(onTimePickerClickedObserver, times(1)).onChanged(ArgumentMatchers.anyString())
         assertEquals("11 AM", editConsentDetailsVM.expiryTimeLabel.get())
-        assertTrue(editConsentDetailsVM.saveEnabled.get())
+        assertFalse(editConsentDetailsVM.saveEnabled.get())
     }
 }
