@@ -49,50 +49,31 @@ class LauncherViewModelTest {
             assertTrue( "redirected to dashboard since user is already logged in", true)
         }
         launcherViewModel.redirectIfNeeded()
+        verify(preferenceRepository).shouldShowIntro
         verify(preferenceRepository).isUserLoggedIn
     }
 
-
     @Test
-    fun `should start provider screen if user has just created account`() {
+    fun `should start intro screens if user not seen intro screens`() {
 
-        `when`(preferenceRepository.isUserLoggedIn).thenReturn(false)
-        `when`(preferenceRepository.isUserAccountCreated).thenReturn(true)
+        `when`(preferenceRepository.shouldShowIntro).thenReturn(true)
 
-        launcherViewModel.startProvider.observeForever {
+        launcherViewModel.startIntroductionScreens.observeForever {
             assertTrue(true)
         }
         launcherViewModel.redirectIfNeeded()
-        verify(preferenceRepository).isUserLoggedIn
-        verify(preferenceRepository).isUserAccountCreated
+        verify(preferenceRepository).shouldShowIntro
     }
 
     @Test
-    fun `should start account creation screen if user has just registered account`() {
-
-        `when`(preferenceRepository.isUserLoggedIn).thenReturn(false)
-        `when`(preferenceRepository.isUserAccountCreated).thenReturn(false)
-        `when`(preferenceRepository.isUserRegistered).thenReturn(true)
-
-        launcherViewModel.startAccountCreation.observeForever {
-            assertTrue(true)
-        }
-        launcherViewModel.redirectIfNeeded()
-        verify(preferenceRepository).isUserLoggedIn
-        verify(preferenceRepository).isUserAccountCreated
-        verify(preferenceRepository).isUserRegistered
-    }
-
-    @Test
-    fun `should start login page if user don't have shared preferences`() {
+    fun `should start login page if user not logged in`() {
 
         launcherViewModel.startLogin.observeForever {
             assertTrue(true)
         }
         launcherViewModel.redirectIfNeeded()
 
+        verify(preferenceRepository).shouldShowIntro
         verify(preferenceRepository).isUserLoggedIn
-        verify(preferenceRepository).isUserAccountCreated
-        verify(preferenceRepository).isUserRegistered
     }
 }
