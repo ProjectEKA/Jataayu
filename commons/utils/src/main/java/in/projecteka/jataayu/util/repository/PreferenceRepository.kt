@@ -151,6 +151,5 @@ class PreferenceRepositoryImpl(private val sharedPreferences: SharedPreferences)
         ayushmanBharatId = null
         pan = null
         loginMode=null
-        shouldShowIntro = true
     }
 }
