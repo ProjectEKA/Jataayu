@@ -10,7 +10,7 @@ import androidx.viewpager.widget.ViewPager
 
 class IntroScreensActivityViewModel(val preferenceRepository: PreferenceRepository): BaseViewModel(), ViewPager.OnPageChangeListener {
     var btnText = ObservableField<Int>(R.string.next)
-    val addBottomDotsEvent = MutableLiveData<Int>()
+    val addBottomDotsEvent = SingleLiveEvent<Int>()
     val getStartedEvent = SingleLiveEvent<Void>()
     val setViewpagerCurrentItemEvent = SingleLiveEvent<Int>()
     var layouts: Array<Int>? = null
@@ -24,7 +24,7 @@ class IntroScreensActivityViewModel(val preferenceRepository: PreferenceReposito
 
     lateinit var dots: Array<ImageView>
 
-    fun init() {
+    fun initialSetup() {
         layoutParams.setMargins(16, 16, 16, 16)
         layouts = arrayOf(R.layout.intro_screen1, R.layout.intro_screen2, R.layout.intro_screen3, R.layout.intro_screen4)
         addBottomDotsEvent.value = 0
@@ -33,10 +33,14 @@ class IntroScreensActivityViewModel(val preferenceRepository: PreferenceReposito
 
     override fun onPageScrollStateChanged(state: Int) {}
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+//        addBottomDotsEvent.value = position
+    }
 
     override fun onPageSelected(position: Int) {
         addBottomDotsEvent.value = position
+
+        setViewpagerCurrentItemEvent.value = position
 
         if (position == (layouts?.size?.minus(1))){
             btnText.set(R.string.get_started)

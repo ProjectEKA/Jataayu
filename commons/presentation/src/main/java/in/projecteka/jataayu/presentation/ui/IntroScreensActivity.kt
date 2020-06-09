@@ -45,7 +45,7 @@ class IntroScreensActivity : BaseActivity<ActivityIntroBinding>() {
                 circle
             }
 
-            if (viewModel.dots!!.isNotEmpty()) viewModel.dots!![it]?.setImageDrawable(getDrawable(viewModel.circleActive))
+            if (!viewModel.dots!!.isNullOrEmpty()) viewModel.dots[it]?.setImageDrawable(getDrawable(viewModel.circleActive))
         })
 
         viewModel.setViewpagerCurrentItemEvent.observe(this, Observer {
@@ -57,7 +57,7 @@ class IntroScreensActivity : BaseActivity<ActivityIntroBinding>() {
             startLogin(this)
         })
 
-        viewModel.init()
+        viewModel.initialSetup()
     }
 
     override fun layoutId(): Int = R.layout.activity_intro

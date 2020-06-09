@@ -29,7 +29,7 @@ class IntroScreensActivityViewModelTest {
     fun setup() {
         MockitoAnnotations.initMocks(this)
         introScreensActivityViewModel = IntroScreensActivityViewModel(preferenceRepository)
-        introScreensActivityViewModel.init()
+        introScreensActivityViewModel.initialSetup()
     }
 
     @After
@@ -50,8 +50,9 @@ class IntroScreensActivityViewModelTest {
     }
 
     @Test
-    fun `should select first page`(){
+    fun `should select intro first page`(){
         introScreensActivityViewModel.onPageSelected(0)
+        assertEquals(0, introScreensActivityViewModel.setViewpagerCurrentItemEvent.value)
         introScreensActivityViewModel.addBottomDotsEvent.observeForever {
             assertEquals(0, it)
         }
@@ -59,8 +60,9 @@ class IntroScreensActivityViewModelTest {
     }
 
     @Test
-    fun `should select second page`(){
+    fun `should select intro second page`(){
         introScreensActivityViewModel.onPageSelected(1)
+        assertEquals(1, introScreensActivityViewModel.setViewpagerCurrentItemEvent.value)
         introScreensActivityViewModel.addBottomDotsEvent.observeForever {
             assertEquals(1, it)
         }
@@ -68,8 +70,9 @@ class IntroScreensActivityViewModelTest {
     }
 
     @Test
-    fun `should select third page`(){
+    fun `should select intro third page`(){
         introScreensActivityViewModel.onPageSelected(2)
+        assertEquals(2, introScreensActivityViewModel.setViewpagerCurrentItemEvent.value)
         introScreensActivityViewModel.addBottomDotsEvent.observeForever {
             assertEquals(2, it)
         }
@@ -77,8 +80,9 @@ class IntroScreensActivityViewModelTest {
     }
 
     @Test
-    fun `should select fourth page`(){
+    fun `should select intro fourth page`(){
         introScreensActivityViewModel.onPageSelected(3)
+        assertEquals(3, introScreensActivityViewModel.setViewpagerCurrentItemEvent.value)
         introScreensActivityViewModel.addBottomDotsEvent.observeForever {
             assertEquals(3, it)
         }
@@ -86,25 +90,25 @@ class IntroScreensActivityViewModelTest {
     }
 
     @Test
-    fun `should show first page initially`(){
+    fun `should show intro first page initially`(){
         assertEquals(0, introScreensActivityViewModel.setViewpagerCurrentItemEvent.value)
     }
 
     @Test
-    fun `should show second page on next button click from first page`(){
+    fun `should show intro second page on next button click from intro first page`(){
         introScreensActivityViewModel.onNextClick()
         assertEquals(1, introScreensActivityViewModel.setViewpagerCurrentItemEvent.value)
     }
 
     @Test
-    fun `should show third page on next button click from second page`(){
+    fun `should show intro third page on next button click from intro second page`(){
         introScreensActivityViewModel.onNextClick()
         introScreensActivityViewModel.onNextClick()
         assertEquals(2, introScreensActivityViewModel.setViewpagerCurrentItemEvent.value)
     }
 
     @Test
-    fun `should show fourth page on next button click from third page`(){
+    fun `should show intro fourth page on next button click from intro third page`(){
         introScreensActivityViewModel.onNextClick()
         introScreensActivityViewModel.onNextClick()
         introScreensActivityViewModel.onNextClick()
@@ -112,7 +116,7 @@ class IntroScreensActivityViewModelTest {
     }
 
     @Test
-    fun `should get started on next button click from fourth page`(){
+    fun `should get started on next button click from intro fourth page`(){
         introScreensActivityViewModel.onNextClick()
         introScreensActivityViewModel.onNextClick()
         introScreensActivityViewModel.onNextClick()
