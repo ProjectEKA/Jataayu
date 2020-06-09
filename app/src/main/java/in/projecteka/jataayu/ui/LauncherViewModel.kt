@@ -16,7 +16,7 @@ class LauncherViewModel(private val preferenceRepository: PreferenceRepository,
 
     fun redirectIfNeeded() {
         when {
-            preferenceRepository.firstTimeUser -> {
+            preferenceRepository.shouldShowIntro -> {
                 startIntroductionScreens.call()
             }
             preferenceRepository.hasProviders || preferenceRepository.isUserLoggedIn -> {

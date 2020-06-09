@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
+    <data>
+        <variable
+            name="viewModel"
+            type="in.projecteka.jataayu.presentation.IntroScreensActivityViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -9,6 +15,7 @@
 
 
         <androidx.viewpager.widget.ViewPager
+            app:OnPageChangeListener="@{viewModel}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -36,6 +43,8 @@
             android:layout_marginBottom="@dimen/content_margin_medium"
             android:paddingLeft="@dimen/content_margin_medium"
             android:paddingStart="@dimen/content_margin_medium"
+            android:text="@{viewModel.btnText}"
+            android:onClick="@{() -> viewModel.onNextClick()}"
             android:paddingEnd="@dimen/content_margin_medium"
             android:paddingRight="@dimen/content_margin_medium"
             app:layout_constraintRight_toRightOf="parent"
@@ -43,8 +52,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:id="@+id/btn_next"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Next"/>
+            android:layout_height="wrap_content"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

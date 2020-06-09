@@ -8,4 +8,6 @@
     <string name="consent_pin_api_integration">Consent pin API integration</string>
     <string name="default_progress_message">Loading...</string>
     <string name="national_cancer_grid">National\nCancer\nGrid</string>
+    <string name="next">Next</string>
+    <string name="get_started">Get Started</string>
 </resources>

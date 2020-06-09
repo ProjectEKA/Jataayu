@@ -1,74 +1,66 @@
 package `in`.projecteka.jataayu.presentation.ui
 
+import `in`.projecteka.jataayu.presentation.IntroScreensActivityViewModel
 import `in`.projecteka.jataayu.presentation.R
 import `in`.projecteka.jataayu.presentation.databinding.ActivityIntroBinding
-import `in`.projecteka.jataayu.util.extension.showShortToast
+import `in`.projecteka.jataayu.util.startLogin
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class IntroScreensActivity : BaseActivity<ActivityIntroBinding>(), OnPageChangeListener {
+class IntroScreensActivity : BaseActivity<ActivityIntroBinding>() {
 
-    private lateinit var dots: Array<ImageView>
-    private var layouts: Array<Int>? = null
     private var introAdapter: IntroScreensViewpagerAdapter? = null
     lateinit var inflater: LayoutInflater
-
+    private val viewModel: IntroScreensActivityViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        layouts = arrayOf(R.layout.intro_screen1, R.layout.intro_screen2, R.layout.intro_screen3, R.layout.intro_screen4)
 
-        addBottomDots(0)
+        initBindings()
+        initObservers()
+
         introAdapter = IntroScreensViewpagerAdapter()
         binding.viewPager.adapter = introAdapter
-        binding.viewPager.addOnPageChangeListener(this)
+    }
 
-        binding.btnNext.setOnClickListener(View.OnClickListener {
-            val current: Int = getItem(+1)
-            if (current < layouts!!.size) { // move to next screen
-                binding.viewPager.setCurrentItem(current)
-            } else {
-                showShortToast("launch login screen")
+    private fun initBindings() {
+        binding.viewModel = viewModel
+    }
+
+    private fun initObservers() {
+        viewModel.addBottomDotsEvent.observe(this, Observer {
+            binding.layoutDots.removeAllViews()
+            viewModel.dots = Array<ImageView>(4) {
+                var circle = ImageView(this)
+                circle.setImageDrawable(getDrawable(viewModel.circleInactive))
+                circle.layoutParams = viewModel.layoutParams
+                binding.layoutDots?.addView(circle)
+                circle
             }
+
+            if (viewModel.dots!!.isNotEmpty()) viewModel.dots!![it]?.setImageDrawable(getDrawable(viewModel.circleActive))
         })
+
+        viewModel.setViewpagerCurrentItemEvent.observe(this, Observer {
+            binding.viewPager.currentItem = it
+        })
+
+        viewModel.getStartedEvent.observe(this, Observer {
+            finish()
+            startLogin(this)
+        })
+
+        viewModel.init()
     }
 
-    private fun getItem(i: Int): Int {
-        return binding.viewPager.currentItem + i
-    }
-
-    private fun addBottomDots(currentPage: Int) {
-
-        val circleActive = getDrawable(R.drawable.circle_without_border)
-        val circleInactive = getDrawable(R.drawable.circle_with_border)
-
-        binding.layoutDots.removeAllViews()
-
-        dots = Array<ImageView>(4) {
-            var circle = ImageView(this)
-            circle.setImageDrawable(circleInactive)
-            val layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            layoutParams.setMargins(16, 16, 16, 16)
-            circle.layoutParams = layoutParams
-            binding.layoutDots?.addView(circle)
-            circle
-        }
-
-        if (dots!!.isNotEmpty()) dots!![currentPage]?.setImageDrawable(circleActive)
-    }
-
-    override fun layoutId(): Int =
-        R.layout.activity_intro
+    override fun layoutId(): Int = R.layout.activity_intro
 
     inner class IntroScreensViewpagerAdapter: PagerAdapter()  {
 
@@ -77,7 +69,7 @@ class IntroScreensActivity : BaseActivity<ActivityIntroBinding>(), OnPageChangeL
         }
 
         override fun getCount(): Int {
-            return layouts?.size ?: 0
+            return viewModel.layouts?.size ?: 0
         }
 
         override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
@@ -86,23 +78,9 @@ class IntroScreensActivity : BaseActivity<ActivityIntroBinding>(), OnPageChangeL
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
-             val view =
-                layoutInflater.inflate(layouts!![position], container, false)
+             val view = layoutInflater.inflate(viewModel.layouts!![position], container, false)
             container.addView(view)
             return view
-        }
-    }
-
-    override fun onPageScrollStateChanged(state: Int) {}
-
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-    override fun onPageSelected(position: Int) {
-        addBottomDots(position)
-        if (position == (layouts?.size?.minus(1))){
-            binding.btnNext.text = "GET STARTED"
-        } else {
-            binding.btnNext.text = "NEXT"
         }
     }
 }
