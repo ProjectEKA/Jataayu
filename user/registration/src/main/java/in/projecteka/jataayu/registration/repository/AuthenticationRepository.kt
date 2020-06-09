@@ -2,7 +2,7 @@ package `in`.projecteka.jataayu.registration.repository
 
 import `in`.projecteka.jataayu.registration.model.VerifyIdentifierRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.registration.model.LoginRequest
+import `in`.projecteka.jataayu.core.model.LoginRequest
 import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
 import `in`.projecteka.jataayu.registration.model.RequestVerificationResponse
 import `in`.projecteka.jataayu.registration.model.VerifyIdentifierResponse
@@ -21,7 +21,11 @@ class AuthenticationRepositoryImpl(private val authApi: AuthenticationApis) : Au
     }
 
     override fun login(username: String, password: String, grantType: String): Call<CreateAccountResponse> {
-        val loginRequest = LoginRequest(userName = username, password = password, grantType = grantType)
+        val loginRequest = LoginRequest(
+            userName = username,
+            password = password,
+            grantType = grantType
+        )
         return authApi.login(loginRequest)
     }
 

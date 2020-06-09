@@ -15,6 +15,7 @@ class LauncherViewModel(private val preferenceRepository: PreferenceRepository,
     val startIntroductionScreens = SingleLiveEvent<Void>()
 
     fun redirectIfNeeded() {
+
         when {
             preferenceRepository.shouldShowIntro -> {
                 startIntroductionScreens.call()

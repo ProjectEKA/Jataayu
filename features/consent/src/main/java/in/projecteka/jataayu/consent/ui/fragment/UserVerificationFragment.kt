@@ -24,6 +24,8 @@ import `in`.projecteka.jataayu.util.ui.UiUtils
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
+import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -121,6 +123,8 @@ class UserVerificationFragment : BaseDialogFragment(), OtpSubmissionClickHandler
         binding.clickHandler = this
         binding.isOtpEntered = false
         binding.otpChangeWatcher = OtpChangeWatcher(4, this)
+        binding.etPin.transformationMethod = PasswordTransformationMethod()
+        binding.etPin.inputType = InputType.TYPE_CLASS_TEXT + InputType.TYPE_TEXT_VARIATION_PASSWORD
     }
 
     override fun onVisible() {

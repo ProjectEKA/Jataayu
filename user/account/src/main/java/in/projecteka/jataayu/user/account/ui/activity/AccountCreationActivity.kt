@@ -37,8 +37,9 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
                   replaceFragment(CreateAccountFragment.newInstance(), R.id.create_account_fragment_container)
               AccountCreationActivityViewModel.ShowPage.CONFIRM_ACCOUNT_SCREEN ->
                   replaceFragment(ConfirmAccountFragment.newInstance(), R.id.create_account_fragment_container)
-                AccountCreationActivityViewModel.ShowPage.SUCCESS_SCREEN ->
-                    replaceFragment(SuccessPageFragment.newInstance(), R.id.create_account_fragment_container)
+                AccountCreationActivityViewModel.ShowPage.SUCCESS_SCREEN -> {
+                    replaceFragment(SuccessPageFragment.newInstance(), R.id.create_account_fragment_container, false)
+                }
             }
         })
     }

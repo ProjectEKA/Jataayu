@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.registration.remote
 
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
+import `in`.projecteka.jataayu.core.model.LoginRequest
 import `in`.projecteka.jataayu.registration.model.*
 import retrofit2.Call
 import retrofit2.http.Body

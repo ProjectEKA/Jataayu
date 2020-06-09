@@ -29,7 +29,7 @@ class ConfirmAccountFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = ConfirmAccountFragment()
-        private val ERROR_CODE_USER_ALREADY_EXISTS = 1019
+        private const val ERROR_CODE_USER_ALREADY_EXISTS = 1019
     }
 
 
@@ -74,26 +74,37 @@ class ConfirmAccountFragment : BaseFragment() {
     }
 
     private fun populateCmId(){
-        var cmId = viewModel.inputAyushmanIdLbl.get().orEmpty();
+        var cmId = viewModel.inputAyushmanIdLbl.get().orEmpty()
         if(cmId.isEmpty())
             cmId = generateCmId(removeCountryCode(viewModel.getMobileIdentifier()), parentVM.fullName)
         viewModel.inputUsernameLbl.set(cmId)
         }
 
     private fun initObservers(){
-        viewModel.createAccountResponse.observe(activity!!, Observer {
+        viewModel.createAccountResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Loading -> parentVM.showProgress(it.isLoading)
                 is Success -> {
-                    viewModel.credentialsRepository.accessToken = viewModel.getAuthTokenWithTokenType(it.data)
-                    viewModel.preferenceRepository.isUserAccountCreated = true
-                    parentVM.cmId = viewModel.getCmId()
-                    parentVM.redirectToCreateAccountSuccessPage()
+                   viewModel.createSession(viewModel.getCmId(), viewModel.inputPasswordLbl.get()!!)
                 }
                 is PartialFailure ->
                     if(it.error?.code == ERROR_CODE_USER_ALREADY_EXISTS)
                         viewModel.showUserAlreadyExistsError()
                     else
+                        activity?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
+                is Failure ->
+                    activity?.showErrorDialog(it.error.localizedMessage)
+            }
+        })
+
+        viewModel.createSessionResponse.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Loading -> parentVM.showProgress(it.isLoading)
+                is Success -> {
+                    viewModel.onCreateAccountSuccess(it.data!!)
+                    parentVM.redirectToCreateAccountSuccessPage(viewModel.getCmId() ,viewModel.inputPasswordLbl.get()!!)
+                }
+                is PartialFailure ->
                         activity?.showAlertDialog(getString(R.string.failure), it.error?.message, getString(android.R.string.ok))
                 is Failure ->
                     activity?.showErrorDialog(it.error.localizedMessage)

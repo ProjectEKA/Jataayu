@@ -41,34 +41,21 @@ class LauncherViewModelTest {
     }
 
     @Test
-    fun `should start dashboard screen if user already loggedIn but no providers`() {
+    fun `should start dashboard screen if user already loggedIn`() {
 
         `when`(preferenceRepository.isUserLoggedIn).thenReturn(true)
-        `when`(preferenceRepository.hasProviders).thenReturn(false)
 
         launcherViewModel.startDashboard.observeForever {
             assertTrue( "redirected to dashboard since user is already logged in", true)
         }
         launcherViewModel.redirectIfNeeded()
-        verify(preferenceRepository).hasProviders
         verify(preferenceRepository).isUserLoggedIn
     }
 
-    @Test
-    fun `should start dashboard screen if user has providers`() {
-
-        `when`(preferenceRepository.hasProviders).thenReturn(true)
-        launcherViewModel.startDashboard.observeForever {
-            assertTrue(true)
-        }
-        launcherViewModel.redirectIfNeeded()
-        verify(preferenceRepository).hasProviders
-    }
 
     @Test
     fun `should start provider screen if user has just created account`() {
 
-        `when`(preferenceRepository.hasProviders).thenReturn(false)
         `when`(preferenceRepository.isUserLoggedIn).thenReturn(false)
         `when`(preferenceRepository.isUserAccountCreated).thenReturn(true)
 
@@ -76,7 +63,6 @@ class LauncherViewModelTest {
             assertTrue(true)
         }
         launcherViewModel.redirectIfNeeded()
-        verify(preferenceRepository).hasProviders
         verify(preferenceRepository).isUserLoggedIn
         verify(preferenceRepository).isUserAccountCreated
     }
@@ -84,7 +70,6 @@ class LauncherViewModelTest {
     @Test
     fun `should start account creation screen if user has just registered account`() {
 
-        `when`(preferenceRepository.hasProviders).thenReturn(false)
         `when`(preferenceRepository.isUserLoggedIn).thenReturn(false)
         `when`(preferenceRepository.isUserAccountCreated).thenReturn(false)
         `when`(preferenceRepository.isUserRegistered).thenReturn(true)
@@ -93,7 +78,6 @@ class LauncherViewModelTest {
             assertTrue(true)
         }
         launcherViewModel.redirectIfNeeded()
-        verify(preferenceRepository).hasProviders
         verify(preferenceRepository).isUserLoggedIn
         verify(preferenceRepository).isUserAccountCreated
         verify(preferenceRepository).isUserRegistered
@@ -107,7 +91,6 @@ class LauncherViewModelTest {
         }
         launcherViewModel.redirectIfNeeded()
 
-        verify(preferenceRepository).hasProviders
         verify(preferenceRepository).isUserLoggedIn
         verify(preferenceRepository).isUserAccountCreated
         verify(preferenceRepository).isUserRegistered
