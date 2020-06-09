@@ -368,6 +368,12 @@
         <item name="android:padding">@dimen/content_margin_medium</item>
         <item name="fontFamily">@font/poppins_medium</item>
     </style>
+    <style name="IntroText">
+        <item name="fontFamily">@font/poppins_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
     <style name="ShowOrHide" parent="Widget.AppCompat.ImageButton">
         <item name="backgroundTint">@color/transparent</item>
         <item name="background">@color/transparent</item>

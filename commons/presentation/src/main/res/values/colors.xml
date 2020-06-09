@@ -42,4 +42,7 @@
     <color name="grantButtonColor">#4CAF50</color>
     <color name="labelTextColor">#464646</color>
     <color name="nolinkText">#3F3D56</color>
+    
+    <color name="intro_dot_active">@color/colorPrimary</color>
+    <color name="intro_dot_inactive">@color/white</color>
 </resources>

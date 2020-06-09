@@ -17,6 +17,7 @@ private const val ACTIVITY_PIN_VERIFICATION = "in.projecteka.jataayu.consent.ui.
 private const val ACTIVITY_CREATE_PIN = "in.projecteka.jataayu.consent.ui.activity.CreatePinActivity"
 private const val ACTIVITY_CHANGE_PASSWORD = "in.projecteka.jataayu.user.account.ui.activity.ChangePasswordActivity"
 private const val ACTIVITY_RECOVER_CMID = "in.projecteka.jataayu.user.account.ui.activity.RecoverCmidActivity"
+private const val ACTIVITY_INTRO_SCREENS = "in.projecteka.jataayu.presentation.ui.IntroScreensActivity"
 
 private fun defaultIntentDefinition(
     context: Context,
@@ -73,4 +74,8 @@ fun startCreatePin(context: Context, resultCode: Int? = null, intentDefinition: 
 
 fun startRecoverCmid(context: Context) {
     context.startActivity(defaultIntentDefinition(context, ACTIVITY_RECOVER_CMID))
+}
+
+fun startIntroScreens(context: Context){
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_INTRO_SCREENS))
 }

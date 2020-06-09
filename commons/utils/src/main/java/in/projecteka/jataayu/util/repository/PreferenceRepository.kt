@@ -48,6 +48,8 @@ interface PreferenceRepository {
 
     var loginMode : String?
 
+    var shouldShowIntro : Boolean
+
     fun resetPreferences()
 }
 
@@ -69,6 +71,7 @@ class PreferenceRepositoryImpl(private val sharedPreferences: SharedPreferences)
         private const val GENDER = "GENDER"
         private const val YEAR_OF_BIRTH = "YEAR_OF_BIRTH"
         private const val LOGIN_MODE = "LOGIN_MODE"
+        private const val SHOULD_SHOW_INTRO = "SHOULD_SHOW_INTRO"
     }
 
     override var pinCreated: Boolean
@@ -127,6 +130,12 @@ class PreferenceRepositoryImpl(private val sharedPreferences: SharedPreferences)
         get() = sharedPreferences.getString(LOGIN_MODE, null)
         set(value) = sharedPreferences.edit { putString(LOGIN_MODE, value) }
 
+
+    override var shouldShowIntro: Boolean
+        set(value) = sharedPreferences.edit { putBoolean(SHOULD_SHOW_INTRO, value) }
+        get() = sharedPreferences.getBoolean(SHOULD_SHOW_INTRO, true)
+
+
     override fun resetPreferences() {
         pinCreated = false
         name = null
@@ -142,5 +151,6 @@ class PreferenceRepositoryImpl(private val sharedPreferences: SharedPreferences)
         ayushmanBharatId = null
         pan = null
         loginMode=null
+        shouldShowIntro = true
     }
 }

@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.module
 
 import `in`.projecteka.jataayu.consent.viewmodel.*
+import `in`.projecteka.jataayu.presentation.IntroScreensActivityViewModel
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderActivityViewModel
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.*
@@ -75,4 +76,6 @@ val viewModelModule = module {
     viewModel { DisplayCmidFragmentViewModel() }
     viewModel { NoMatchingRecordsFragmentViewModel() }
     viewModel { RecoverCmidOtpFragmentViewModel(get()) }
+
+    viewModel { IntroScreensActivityViewModel(get()) }
 }

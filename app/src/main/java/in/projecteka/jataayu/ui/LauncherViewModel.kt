@@ -12,10 +12,14 @@ class LauncherViewModel(private val preferenceRepository: PreferenceRepository,
     val startDashboard = SingleLiveEvent<Void>()
     val startProvider = SingleLiveEvent<Void>()
     val startAccountCreation = SingleLiveEvent<Void>()
+    val startIntroductionScreens = SingleLiveEvent<Void>()
 
     fun redirectIfNeeded() {
 
         when {
+            preferenceRepository.shouldShowIntro -> {
+                startIntroductionScreens.call()
+            }
             preferenceRepository.isUserLoggedIn -> {
                 startDashboard.call()
             }

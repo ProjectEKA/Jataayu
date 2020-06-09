@@ -2,11 +2,8 @@ package `in`.projecteka.jataayu.ui.launcher
 
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import `in`.projecteka.jataayu.ui.LauncherViewModel
+import `in`.projecteka.jataayu.util.*
 import `in`.projecteka.jataayu.util.extension.showLongToast
-import `in`.projecteka.jataayu.util.startAccountCreation
-import `in`.projecteka.jataayu.util.startDashboard
-import `in`.projecteka.jataayu.util.startLogin
-import `in`.projecteka.jataayu.util.startProvider
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -42,6 +39,10 @@ class LauncherActivity : AppCompatActivity() {
         })
         viewModel.startAccountCreation.observe(this, Observer {
             startAccountCreation(this)
+            finish()
+        })
+        viewModel.startIntroductionScreens.observe(this, Observer {
+            startIntroScreens(this)
             finish()
         })
     }
