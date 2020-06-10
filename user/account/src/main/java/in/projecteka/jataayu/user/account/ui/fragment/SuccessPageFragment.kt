@@ -39,6 +39,7 @@ class SuccessPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBindings()
+        parentVM.appBarTitle.set(getString(R.string.confirmation))
 
         viewModel.fullNameLbl.set(parentVM.fullName)
         viewModel.cmIdInfoLbl.set(SpannableStringBuilder()

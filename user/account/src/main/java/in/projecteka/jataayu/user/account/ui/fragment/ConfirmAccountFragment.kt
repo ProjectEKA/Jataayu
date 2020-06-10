@@ -50,7 +50,11 @@ class ConfirmAccountFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initBindings()
         initObservers()
-        viewModel.init(getString(R.string.cm_config_provider))
+        viewModel.initialSetup(getString(R.string.cm_config_provider))
+    }
+
+    override fun onVisible() {
+        parentVM.appBarTitle.set(getString(R.string.set_a_password))
     }
 
     private fun initBindings() {
@@ -147,6 +151,4 @@ class ConfirmAccountFragment : BaseFragment() {
     }
 }
 
-private fun ConfirmAccountViewModel.init(label: String) {
-    usernameProviderLbl.set(label)
-}
+

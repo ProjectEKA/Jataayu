@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.user.account.ui.fragment
 
 
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.AccountCreationActivityViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
@@ -77,5 +78,10 @@ class CreateAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         if (position != 0) {
             viewModel.selectedYoB((view as AppCompatCheckedTextView).text.toString().toInt())
         }
+    }
+
+    override fun onVisible() {
+        super.onVisible()
+        parentVM.appBarTitle.set(getString(R.string.enter_your_details))
     }
 }

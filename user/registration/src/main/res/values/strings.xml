@@ -6,6 +6,7 @@
     <string name="otp_sent">We have sent an SMS with OTP to </string>
     <string name="otp_sent_snackbar">An OTP has been sent to mobile number %s</string>
     <string name="verification">Verification</string>
+    <string name="validate_otp">Validate OTP</string>
     <string name="welcome">Welcome</string>
     <string name="password">Password</string>
     <string name="ncg">\@ncg</string>

@@ -23,12 +23,6 @@ class LauncherViewModel(private val preferenceRepository: PreferenceRepository,
             preferenceRepository.isUserLoggedIn -> {
                 startDashboard.call()
             }
-            preferenceRepository.isUserAccountCreated -> {
-                startDashboard.call()
-            }
-            preferenceRepository.isUserRegistered -> {
-                startAccountCreation.call()
-            }
             else -> {
                 startLogin.call()
             }

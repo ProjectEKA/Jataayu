@@ -75,7 +75,7 @@
             style="@style/Button"
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
-            android:text="@string/confirm" />
+            android:text="@string/get_started" />
     </FrameLayout>
 
 </layout>

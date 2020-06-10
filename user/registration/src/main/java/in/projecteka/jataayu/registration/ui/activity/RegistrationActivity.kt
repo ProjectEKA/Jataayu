@@ -13,8 +13,8 @@ import `in`.projecteka.jataayu.registration.ui.fragment.RegistrationOtpFragment
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.RegistrationActivityViewModel.Show
 import `in`.projecteka.jataayu.util.startAccountCreation
-import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -24,12 +24,34 @@ class RegistrationActivity : BaseActivity<RegistrationActivityBinding>() {
 
     private val viewModel by viewModel<RegistrationActivityViewModel>()
 
+    private var shouldClearBackStack: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
         viewModel.redirectToRegistrationScreen()
         initObservers()
+        initToolbar()
     }
+
+    override fun onStop() {
+        if(shouldClearBackStack) {
+            // clear back stack without animation.
+            // mobile number fragment should display when user press the back from account creation
+            val backStackEntry = supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1)
+            supportFragmentManager.popBackStack(backStackEntry.id, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+        super.onStop()
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(binding.appToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        binding.appToolbar.setNavigationOnClickListener { onBackPressed() }
+    }
+
+
     private fun initObservers() {
         viewModel.redirectTo.observe(this, Observer {
             when (it) {
@@ -38,12 +60,12 @@ class RegistrationActivity : BaseActivity<RegistrationActivityBinding>() {
                     if(currentFragment is RegistrationFragment)
                         replaceFragment(RegistrationOtpFragment.newInstance(), R.id.fragment_container)
                 }
-                Show.REGISTRATION -> replaceFragment(RegistrationFragment.newInstance(), R.id.fragment_container)
+                Show.REGISTRATION -> {
+                    replaceFragment(RegistrationFragment.newInstance(), R.id.fragment_container)
+                }
                 Show.NEXT -> {
-                    finish()
-                    startAccountCreation(this) {
-                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    }
+                    shouldClearBackStack = true
+                    startAccountCreation(this)
                 }
             }
         })
