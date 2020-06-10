@@ -51,6 +51,7 @@ class ConfirmAccountFragment : BaseFragment() {
         initBindings()
         initObservers()
         viewModel.init(getString(R.string.cm_config_provider))
+        parentVM.appBarTitle.set(getString(R.string.set_a_password))
     }
 
     private fun initBindings() {

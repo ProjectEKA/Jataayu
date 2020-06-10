@@ -32,7 +32,7 @@ class RegistrationFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        val title = getString(R.string.register)
+        val title = getString(R.string.enter_mobile_number)
         parentVM.appBarTitle.set(title)
         viewModel.onContinueClicked.observe(this, Observer {
             parentVM.requestVerification(it)

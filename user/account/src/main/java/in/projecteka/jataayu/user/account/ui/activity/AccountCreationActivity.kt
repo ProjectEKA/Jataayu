@@ -26,9 +26,22 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
         viewModel.redirectToCreateAccountPage()
     }
 
+    override fun onBackPressed() {
+        if (viewModel.currentPage.value != SUCCESS_SCREEN) {
+            super.onBackPressed()
+        }
+    }
+
     private fun initBindings() {
+        initToolbar()
         binding.viewModel = viewModel
-        viewModel.appBarTitle.set(getString(R.string.create_account))
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(binding.appToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        binding.appToolbar.setNavigationOnClickListener { onBackPressed() }
     }
 
     private fun initObservers() {
@@ -40,6 +53,7 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
                   addFragment(ConfirmAccountFragment.newInstance(), R.id.create_account_fragment_container)
                 SUCCESS_SCREEN -> {
                     replaceFragment(SuccessPageFragment.newInstance(), R.id.create_account_fragment_container, false)
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
             }
         })

@@ -54,7 +54,7 @@ class LauncherViewModelTest {
     }
 
     @Test
-    fun `should start intro screens if user not seen intro screens`() {
+    fun `should show intro screens if user start application for the first time`() {
 
         `when`(preferenceRepository.shouldShowIntro).thenReturn(true)
 

@@ -24,12 +24,34 @@ class RegistrationActivity : BaseActivity<RegistrationActivityBinding>() {
 
     private val viewModel by viewModel<RegistrationActivityViewModel>()
 
+    private var shouldClearBackStack: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
         viewModel.redirectToRegistrationScreen()
         initObservers()
+        initToolbar()
     }
+
+    override fun onStop() {
+        if(shouldClearBackStack) {
+            // clear back stack without animation.
+            // mobile number fragment should display when user press the back from account creation
+            val backStackEntry = supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1)
+            supportFragmentManager.popBackStack(backStackEntry.id, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+        super.onStop()
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(binding.appToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        binding.appToolbar.setNavigationOnClickListener { onBackPressed() }
+    }
+
+
     private fun initObservers() {
         viewModel.redirectTo.observe(this, Observer {
             when (it) {
@@ -38,11 +60,12 @@ class RegistrationActivity : BaseActivity<RegistrationActivityBinding>() {
                     if(currentFragment is RegistrationFragment)
                         replaceFragment(RegistrationOtpFragment.newInstance(), R.id.fragment_container)
                 }
-                Show.REGISTRATION -> replaceFragment(RegistrationFragment.newInstance(), R.id.fragment_container)
+                Show.REGISTRATION -> {
+                    replaceFragment(RegistrationFragment.newInstance(), R.id.fragment_container)
+                }
                 Show.NEXT -> {
+                    shouldClearBackStack = true
                     startAccountCreation(this)
-                    val backStackEntry = supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1)
-                    supportFragmentManager.popBackStack(backStackEntry.id, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 }
             }
         })

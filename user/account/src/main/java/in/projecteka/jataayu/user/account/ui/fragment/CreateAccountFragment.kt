@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.user.account.ui.fragment
 
 
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentCreateAccountBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.AccountCreationActivityViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.CreateAccountViewModel
@@ -39,6 +40,7 @@ class CreateAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         super.onViewCreated(view, savedInstanceState)
         initSpinner()
         initBindings()
+        parentVM.appBarTitle.set(getString(R.string.enter_your_details))
     }
 
     private fun initSpinner() {

@@ -46,7 +46,7 @@ class RegistrationOtpFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        parentVM.appBarTitle.set(getString(R.string.verification))
+        parentVM.appBarTitle.set(getString(R.string.validate_otp))
 
         viewModel.mobileNumberText.set(parentVM.getIdentifierValue())
 

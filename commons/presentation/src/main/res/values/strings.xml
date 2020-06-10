@@ -11,4 +11,7 @@
     <string name="next">Next</string>
     <string name="get_started">Get Started</string>
     <string name="mask_character">&#8226;</string>
+    <string name="enter_mobile_number">Enter Mobile Number</string>
+    <string name="enter_your_details">Enter your Details</string>
+    <string name="confirmation">Confirmation</string>
 </resources>
