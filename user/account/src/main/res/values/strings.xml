@@ -77,6 +77,6 @@
 
 
     <string name="no_linked_records">No linked records</string>
-    <string name="let_s_start">Let\'s start by adding your accounts</string>
+    <string name="let_s_start">Let\'s start by adding your records</string>
     <string name="block_user_temporary">User blocked temporarily"</string>
 </resources>
