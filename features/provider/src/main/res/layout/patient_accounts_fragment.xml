@@ -48,12 +48,14 @@
         android:padding="@dimen/content_margin_medium">
 
         <TextView
+            android:gravity="center_horizontal"
             android:id="@+id/lbl_no_new_requests"
+            android:textSize="@dimen/text_size_medium"
             style="@style/TextAppearance.ListItemHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:visibility="gone"
             android:text="@{noLinkingAccounts}"
+            tools:text="@string/link_records_alreday_done"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -63,6 +65,7 @@
         <TextView
             android:id="@+id/lbl_we_found_following"
             android:layout_width="match_parent"
+            app:toggledVisibility="@{hideNoLinkingAccountView}"
             style="@style/TextAppearance.ListItemSubHeader"
             android:layout_height="wrap_content"
             android:text="@string/we_found_following_accounts_with"
@@ -73,6 +76,7 @@
         <TextView
             android:id="@+id/tv_selected_provider"
             android:layout_width="match_parent"
+            app:toggledVisibility="@{hideNoLinkingAccountView}"
             style="@style/TextAppearance.Heavy"
             android:layout_marginTop="@dimen/content_margin_extra_extra_small"
             android:layout_height="wrap_content"
@@ -86,6 +90,7 @@
             android:id="@+id/tv_patient_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:toggledVisibility="@{hideNoLinkingAccountView}"
             android:layout_marginTop="@dimen/content_margin_medium"
             android:text="@{name}"
             style="@style/TextAppearance.ListItemHeader"
@@ -98,6 +103,7 @@
         <TextView
             android:id="@+id/tv_reference_number"
             android:layout_width="match_parent"
+            app:toggledVisibility="@{hideNoLinkingAccountView}"
             style="@style/TextAppearance.ListItemSubHeader"
             android:layout_height="wrap_content"
             android:text="@{accountReferenceNumber}"
@@ -131,6 +137,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:enabled="@{canLinkAccounts, default=true}"
+                app:toggledVisibility="@{hideNoLinkingAccountView}"
                 style="@style/Button"
                 android:focusable="@{canLinkAccounts}"
                 android:onClick="@{clickHandler::onLinkAccountsClick}"
