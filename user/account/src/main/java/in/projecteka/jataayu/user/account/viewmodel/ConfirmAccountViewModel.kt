@@ -51,6 +51,9 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     var inputGender: String? = ""
     var selectedYoB: Int? = null
 
+    fun initialSetup(label: String) {
+        usernameProviderLbl.set(label)
+    }
 
     fun validatePassword() {
         if(inputPasswordLbl.get()?.isNotEmpty() == true)

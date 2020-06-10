@@ -53,6 +53,7 @@ class AccountCreationActivity : BaseActivity<ActivityCreateAccountBinding>() {
                   addFragment(ConfirmAccountFragment.newInstance(), R.id.create_account_fragment_container)
                 SUCCESS_SCREEN -> {
                     replaceFragment(SuccessPageFragment.newInstance(), R.id.create_account_fragment_container, false)
+                    // do not show back button
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
             }

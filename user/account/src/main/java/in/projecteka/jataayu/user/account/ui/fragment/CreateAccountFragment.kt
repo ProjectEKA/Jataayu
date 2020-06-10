@@ -40,7 +40,6 @@ class CreateAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         super.onViewCreated(view, savedInstanceState)
         initSpinner()
         initBindings()
-        parentVM.appBarTitle.set(getString(R.string.enter_your_details))
     }
 
     private fun initSpinner() {
@@ -79,5 +78,10 @@ class CreateAccountFragment : BaseFragment(), AdapterView.OnItemSelectedListener
         if (position != 0) {
             viewModel.selectedYoB((view as AppCompatCheckedTextView).text.toString().toInt())
         }
+    }
+
+    override fun onVisible() {
+        super.onVisible()
+        parentVM.appBarTitle.set(getString(R.string.enter_your_details))
     }
 }
