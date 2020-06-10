@@ -13,7 +13,6 @@
         <activity
             android:label="Login"
             android:name=".LoginActivity"
-            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
             android:configChanges="orientation"
             android:theme="@style/AppTheme.NoActionBar">
