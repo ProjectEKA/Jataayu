@@ -69,4 +69,5 @@
     <string name="consent_expiry_message">Cannot process the request as the consent request has expired</string>
     <string name="pin_updated">Consent PIN changed successfully</string>
     <string name="pin_created">Consent PIN created successfully</string>
+    <string name="error_msg_invalid_datetime">Please select a future date/time</string>
 </resources>

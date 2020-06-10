@@ -34,6 +34,7 @@ class EditConsentDetailsVM(private val repository: ConsentRepository) : ViewMode
 
     val allProvidersChecked = ObservableBoolean(true)
     val saveEnabled = ObservableBoolean(false)
+    val showErrorExpireTime = ObservableBoolean(false)
 
     val onAddChipsEvent = SingleLiveEvent<List<HiType>>()
     val onAddLinksEvent = SingleLiveEvent<List<Links>>()
@@ -138,8 +139,13 @@ class EditConsentDetailsVM(private val repository: ConsentRepository) : ViewMode
             time = DateTimeUtils.getDate(modifiedConsent.permission.dataEraseAt)
             set(Calendar.HOUR_OF_DAY, timePair.first)
             set(Calendar.MINUTE, timePair.second)
-            modifiedConsent.permission.dataEraseAt = time.toUtc()
-            expiryTimeLabel.set(modifiedConsent.getConsentExpiryTime())
+            time.toUtc().let {
+                modifiedConsent.permission.dataEraseAt = it
+                expiryTimeLabel.set(modifiedConsent.getConsentExpiryTime())
+                val isDateExpire =DateTimeUtils.isDateExpired(it)
+                saveEnabled.set(!isDateExpire)
+                showErrorExpireTime.set(isDateExpire)
+            }
         }
     }
 

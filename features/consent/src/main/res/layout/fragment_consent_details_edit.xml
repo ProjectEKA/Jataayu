@@ -195,6 +195,18 @@
                     tools:text="11 59 PM" />
 
                 <TextView
+                        android:id="@+id/lbl_invalid_datetime"
+                        style="@style/TextAppearance.ErrorMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="144dp"
+                        android:text="@string/error_msg_invalid_datetime"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_expiry_time"
+                        app:toggledVisibility="@{viewModel.showErrorExpireTime}"/>
+
+                <TextView
                     android:id="@+id/lbl_sub_title"
                     style="@style/TextAppearance.ListItemSubHeader"
                     android:layout_width="wrap_content"
@@ -204,7 +216,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_medium"
                     app:layout_constraintStart_toStartOf="@id/start_guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_expiry_time" />
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_invalid_datetime" />
 
                 <CheckBox
                     android:id="@+id/cb_link_all_providers"
