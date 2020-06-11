@@ -35,6 +35,6 @@ class DateTimeUtilsTest {
     }
     @Test
     fun parseDateShouldReturnErrorMessage() {
-        assertEquals("Something went wrong.Please update the consent expiry date and try again", DateTimeUtils.getFormattedDate("2020-01-06"))
+        assertEquals("unknown", DateTimeUtils.getFormattedDate("2020-01-06"))
     }
 }
