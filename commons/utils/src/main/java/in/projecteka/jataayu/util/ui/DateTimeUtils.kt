@@ -26,10 +26,11 @@ class DateTimeUtils {
             for (dateFormat in dateFormats) {
                 val inputFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
                 inputFormat.timeZone = TimeZone.getTimeZone("UTC")
-                parsedDate = try {
-                    inputFormat.parse(utcDate)
+                try {
+                    parsedDate = inputFormat.parse(utcDate)
+                    break
                 } catch (e: ParseException) {
-                    null
+                    parsedDate = null
                 }
             }
             return parsedDate
