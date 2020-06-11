@@ -40,7 +40,7 @@ class DateTimeUtils {
             val relativeTimeSpan = getDate(createdAt)?.let {
                 DateUtils.getRelativeTimeSpanString(it.time).toString()
             }
-            return relativeTimeSpan ?: "Something went wrong.Please update the consent expiry date and try again"
+            return relativeTimeSpan ?: "unknown"
         }
 
         fun getFormattedDateTime(utcDate: String): String {
@@ -58,7 +58,7 @@ class DateTimeUtils {
                 outputFormat.format(it)
             }
 
-            return parseDate ?: "Something went wrong.Please update the consent expiry date and try again"
+            return parseDate ?: "unknown"
         }
 
         fun getUtcDate(date: Date): String {
