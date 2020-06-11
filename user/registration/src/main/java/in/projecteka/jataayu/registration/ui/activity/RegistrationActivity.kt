@@ -6,7 +6,7 @@ import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
-import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.presentation.ui.activity.BaseActivity
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.RegistrationActivityBinding
 import `in`.projecteka.jataayu.registration.ui.fragment.RegistrationFragment
 import `in`.projecteka.jataayu.registration.ui.fragment.RegistrationOtpFragment

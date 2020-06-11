@@ -4,7 +4,7 @@ import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.network.model.APIResponse
 import `in`.projecteka.jataayu.network.model.Error
 import `in`.projecteka.jataayu.network.utils.*
-import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
 import `in`.projecteka.jataayu.registration.ui.activity.R

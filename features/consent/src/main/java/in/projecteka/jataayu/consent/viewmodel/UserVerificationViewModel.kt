@@ -8,7 +8,7 @@ import `in`.projecteka.jataayu.core.model.UserVerificationRequest
 import `in`.projecteka.jataayu.core.model.UserVerificationResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
-import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.repository.UUIDRepository

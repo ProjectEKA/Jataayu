@@ -1,4 +1,4 @@
-package `in`.projecteka.jataayu.presentation.ui
+package `in`.projecteka.jataayu.presentation.ui.activity
 
 import `in`.projecteka.jataayu.presentation.BuildConfig
 import `in`.projecteka.jataayu.presentation.databinding.NetworkPrefDialogBinding

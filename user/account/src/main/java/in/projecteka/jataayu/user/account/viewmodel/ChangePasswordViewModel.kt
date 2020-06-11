@@ -2,7 +2,7 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
-import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.model.ChangePasswordRequest
 import `in`.projecteka.jataayu.user.account.model.ChangePasswordResponse

@@ -6,7 +6,7 @@ import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
-import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.presentation.ui.activity.BaseActivity
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.ActivityChangePasswordBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.ChangePasswordViewModel

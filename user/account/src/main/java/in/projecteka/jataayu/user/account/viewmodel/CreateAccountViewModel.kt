@@ -1,16 +1,10 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
-import `in`.projecteka.jataayu.core.model.CreateAccountRequest
-import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
-import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.user.account.R
-import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
-import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TYPE_AYUSHMAN_BHARAT_ID
-import android.text.InputType
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
 import com.google.android.material.chip.ChipGroup
 import java.util.*
 import java.util.regex.Pattern

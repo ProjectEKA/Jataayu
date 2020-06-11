@@ -3,7 +3,7 @@ package `in`.projecteka.jataayu.provider.ui
 import `in`.projecteka.featuresprovider.R
 import `in`.projecteka.jataayu.core.ProviderLinkType
 import `in`.projecteka.jataayu.presentation.databinding.BaseActivityBinding
-import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.presentation.ui.activity.BaseActivity
 import `in`.projecteka.jataayu.provider.ui.fragment.PatientAccountsFragment
 import `in`.projecteka.jataayu.provider.ui.fragment.ProviderSearchFragment
 import `in`.projecteka.jataayu.provider.ui.fragment.VerifyOtpFragment
