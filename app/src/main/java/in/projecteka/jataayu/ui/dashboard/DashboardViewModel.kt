@@ -1,7 +1,7 @@
 package `in`.projecteka.jataayu.ui.dashboard
 
 import `in`.projecteka.jataayu.R
-import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.user.account.listener.UpdateProviderListener
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository

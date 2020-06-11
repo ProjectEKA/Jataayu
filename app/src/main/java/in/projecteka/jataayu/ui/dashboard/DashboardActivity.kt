@@ -3,7 +3,7 @@ package `in`.projecteka.jataayu.ui.dashboard
 import `in`.projecteka.jataayu.R
 import `in`.projecteka.jataayu.consent.ui.fragment.ConsentHostFragment
 import `in`.projecteka.jataayu.databinding.ActivityDashboardBinding
-import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.presentation.ui.activity.BaseActivity
 import `in`.projecteka.jataayu.user.account.ui.fragment.UserAccountsFragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment

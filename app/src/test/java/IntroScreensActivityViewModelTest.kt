@@ -1,6 +1,6 @@
 
 import `in`.projecteka.jataayu.R
-import `in`.projecteka.jataayu.presentation.IntroScreensActivityViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.IntroScreensActivityViewModel
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import org.junit.After
@@ -28,7 +28,10 @@ class IntroScreensActivityViewModelTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        introScreensActivityViewModel = IntroScreensActivityViewModel(preferenceRepository)
+        introScreensActivityViewModel =
+            IntroScreensActivityViewModel(
+                preferenceRepository
+            )
         introScreensActivityViewModel.initialSetup()
     }
 

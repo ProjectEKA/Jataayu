@@ -1,6 +1,6 @@
-package `in`.projecteka.jataayu.presentation.ui
+package `in`.projecteka.jataayu.presentation.ui.activity
 
-import `in`.projecteka.jataayu.presentation.IntroScreensActivityViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.IntroScreensActivityViewModel
 import `in`.projecteka.jataayu.presentation.R
 import `in`.projecteka.jataayu.presentation.databinding.ActivityIntroBinding
 import `in`.projecteka.jataayu.util.startLogin

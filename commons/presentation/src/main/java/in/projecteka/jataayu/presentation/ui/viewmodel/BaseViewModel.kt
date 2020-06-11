@@ -1,5 +1,6 @@
-package `in`.projecteka.jataayu.presentation
+package `in`.projecteka.jataayu.presentation.ui.viewmodel
 
+import `in`.projecteka.jataayu.presentation.R
 import androidx.annotation.StringRes
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField

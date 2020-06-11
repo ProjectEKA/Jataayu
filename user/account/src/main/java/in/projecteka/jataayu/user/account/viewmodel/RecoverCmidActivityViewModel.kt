@@ -3,7 +3,7 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 import `in`.projecteka.jataayu.core.model.GenerateOTPResponse
 import `in`.projecteka.jataayu.core.model.RecoverCmidRequest
 import `in`.projecteka.jataayu.core.model.RecoverCmidResponse
-import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 
 class RecoverCmidActivityViewModel: BaseViewModel() {

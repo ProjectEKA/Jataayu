@@ -5,7 +5,7 @@ import `in`.projecteka.jataayu.consent.ui.fragment.UserVerificationFragment
 import `in`.projecteka.jataayu.consent.viewmodel.PinVerificationViewModel
 import `in`.projecteka.jataayu.core.ConsentScopeType
 import `in`.projecteka.jataayu.presentation.databinding.BaseActivityBinding
-import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.presentation.ui.activity.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseDialogFragment
 import android.os.Bundle
 import org.koin.androidx.viewmodel.ext.android.viewModel

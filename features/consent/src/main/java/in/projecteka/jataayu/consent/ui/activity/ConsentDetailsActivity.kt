@@ -15,7 +15,7 @@ import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.databinding.BaseActivityBinding
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
-import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.presentation.ui.activity.BaseActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import android.content.Intent
 import android.net.Uri

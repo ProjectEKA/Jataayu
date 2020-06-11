@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="in.projecteka.jataayu.presentation.BaseViewModel" />
+            type="in.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel" />
         <variable
             name="isLoadingMore"
             type="int" />
