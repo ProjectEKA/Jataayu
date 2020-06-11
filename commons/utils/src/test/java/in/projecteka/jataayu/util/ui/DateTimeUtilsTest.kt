@@ -20,11 +20,6 @@ class DateTimeUtilsTest {
     }
 
     @Test
-    fun parseDateShouldParseDateWithoutMinutes() {
-        assertEquals("06 Jan, 2020", DateTimeUtils.getFormattedDate("2020-01-06T05Z"))
-    }
-
-    @Test
     fun parseDateShouldParseDateWithMinutes() {
         assertEquals("06 Jan, 2020", DateTimeUtils.getFormattedDate("2020-01-06T05:55Z"))
     }
@@ -33,6 +28,7 @@ class DateTimeUtilsTest {
     fun parseDateShouldParseDateWithMilliSeconds() {
         assertEquals("06 Jan, 2020", DateTimeUtils.getFormattedDate("2020-01-06T05:55:33.318Z"))
     }
+
     @Test
     fun parseDateShouldReturnErrorMessage() {
         assertEquals("unknown", DateTimeUtils.getFormattedDate("2020-01-06"))

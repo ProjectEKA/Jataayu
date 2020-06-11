@@ -20,8 +20,7 @@ class DateTimeUtils {
             val dateFormats = Arrays.asList(
                 "yyyy-MM-dd'T'HH:mm:ss.SSS",
                 "yyyy-MM-dd'T'HH:mm:ss",
-                "yyyy-MM-dd'T'HH:mm",
-                "yyyy-MM-dd'T'HH"
+                "yyyy-MM-dd'T'HH:mm"
             )
             for (dateFormat in dateFormats) {
                 val inputFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
