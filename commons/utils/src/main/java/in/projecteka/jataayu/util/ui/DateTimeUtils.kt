@@ -11,6 +11,7 @@ class DateTimeUtils {
         private const val DATE_FORMAT_YYYY_MM_DD = "yyyy-MM-dd"
         private const val DATE_TIME_FORMAT_DD_MMM_YYYY_HH_A = "hh a, $DATE_FORMAT_DD_MM_YY"
         private const val TIME_FORMAT_HH_MM_A = "hh:mm a"
+        private const val PARSING_DATE_ERROR_MESSAGE="unknown"
         fun getFormattedDate(utcDate: String): String {
             return getFormattedDateTime(utcDate,DATE_FORMAT_DD_MM_YY)
         }
@@ -39,7 +40,7 @@ class DateTimeUtils {
             val relativeTimeSpan = getDate(createdAt)?.let {
                 DateUtils.getRelativeTimeSpanString(it.time).toString()
             }
-            return relativeTimeSpan ?: "unknown"
+            return relativeTimeSpan ?: PARSING_DATE_ERROR_MESSAGE
         }
 
         fun getFormattedDateTime(utcDate: String): String {
@@ -57,7 +58,7 @@ class DateTimeUtils {
                 outputFormat.format(it)
             }
 
-            return parseDate ?: "unknown"
+            return parseDate ?: PARSING_DATE_ERROR_MESSAGE
         }
 
         fun getUtcDate(date: Date): String {
