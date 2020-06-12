@@ -14,4 +14,6 @@
     <string name="enter_mobile_number">Enter Mobile Number</string>
     <string name="enter_your_details">Enter your Details</string>
     <string name="confirmation">Confirmation</string>
+    <string name="no_internet_message">You have lost connection to the internet. This app is offline.</string>
+    <string name="button_retry">Retry</string>
 </resources>
