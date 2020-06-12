@@ -19,6 +19,7 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.extension.showSnackbar
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
@@ -197,7 +198,11 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     }
 
     override fun onGrantConsent(view: View) {
-        verifyAction()
+        if (viewModel.preferenceRepository.hasProviders) {
+            verifyAction()
+        } else {
+            showLongToast(getString(R.string.link_provider_msg))
+        }
     }
 
     private fun verifyAction() {

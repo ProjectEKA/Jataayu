@@ -12,7 +12,6 @@ import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
-import `in`.projecteka.jataayu.user.account.listener.UpdateProviderListener
 import `in`.projecteka.jataayu.user.account.ui.activity.ProfileActivity
 import `in`.projecteka.jataayu.user.account.viewmodel.UserAccountsViewModel
 import `in`.projecteka.jataayu.util.startProvider
@@ -33,13 +32,9 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
     private var listItems: List<IDataBindingModel> = emptyList()
     private val eventBusInstance = EventBus.getDefault()
 
-    private var updateProviderListener : UpdateProviderListener? = null
-
     companion object {
-        fun newInstance(updateProviderListener : UpdateProviderListener): UserAccountsFragment {
-            val userAccountFragment = UserAccountsFragment()
-            userAccountFragment.updateProviderListener = updateProviderListener
-            return userAccountFragment
+        fun newInstance(): UserAccountsFragment {
+            return UserAccountsFragment()
         }
         private const val VERIFIED_IDENTIFIER_MOBILE = "MOBILE"
     }
@@ -93,7 +88,6 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
         })*/
         viewModel.updateLinks.observe(this, Observer {
             listItems = it
-            updateProviderListener?.updateProvider(it.isNotEmpty())
             binding.rvUserAccounts.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment, it

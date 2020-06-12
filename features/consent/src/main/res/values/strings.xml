@@ -70,4 +70,5 @@
     <string name="pin_updated">Consent PIN changed successfully</string>
     <string name="pin_created">Consent PIN created successfully</string>
     <string name="error_msg_invalid_datetime">Please select a future date/time</string>
+    <string name="link_provider_msg">Please link the records with the visited hospitals to continue</string>
 </resources>
