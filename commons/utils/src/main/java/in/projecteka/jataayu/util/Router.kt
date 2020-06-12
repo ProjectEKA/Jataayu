@@ -17,7 +17,8 @@ private const val ACTIVITY_PIN_VERIFICATION = "in.projecteka.jataayu.consent.ui.
 private const val ACTIVITY_CREATE_PIN = "in.projecteka.jataayu.consent.ui.activity.CreatePinActivity"
 private const val ACTIVITY_CHANGE_PASSWORD = "in.projecteka.jataayu.user.account.ui.activity.ChangePasswordActivity"
 private const val ACTIVITY_RECOVER_CMID = "in.projecteka.jataayu.user.account.ui.activity.RecoverCmidActivity"
-private const val ACTIVITY_INTRO_SCREENS = "in.projecteka.jataayu.presentation.ui.IntroScreensActivity"
+private const val ACTIVITY_INTRO_SCREENS = "in.projecteka.jataayu.presentation.ui.activity.IntroScreensActivity"
+private const val ACTIVITY_NO_INTERNET_CONNECTION_SCREEN = "in.projecteka.jataayu.presentation.ui.activity.NoInternetConnectionActivity"
 
 fun defaultIntentDefinition(
     context: Context,
@@ -79,3 +80,9 @@ fun startRecoverCmid(context: Context) {
 fun startIntroScreens(context: Context){
     context.startActivity(defaultIntentDefinition(context, ACTIVITY_INTRO_SCREENS))
 }
+
+fun startNoInternetConnectionScreen(context: Context, intentDefinition: IntentDefinition? = null) {
+    context.applicationContext
+    context.startActivity(defaultIntentDefinition(context, ACTIVITY_NO_INTERNET_CONNECTION_SCREEN, intentDefinition))
+}
+

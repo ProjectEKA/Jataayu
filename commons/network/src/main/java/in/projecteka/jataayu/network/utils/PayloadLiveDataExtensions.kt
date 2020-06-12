@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.network.utils
 
+import `in`.projecteka.jataayu.network.interceptor.NoConnectivityException
 import `in`.projecteka.jataayu.network.model.Error
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import okhttp3.ResponseBody
@@ -36,10 +37,16 @@ fun <T> PayloadLiveData<T>.isLoading(): Boolean {
 }
 
 
+
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
+
     call.enqueue(object : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {
-            failure(t)
+            if (t is NoConnectivityException) {
+                loading(false)
+            } else {
+                failure(t)
+            }
         }
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
