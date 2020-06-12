@@ -1,6 +1,7 @@
 package `in`.projecteka.jataayu.network
 
 import `in`.projecteka.jataayu.network.interceptor.HostSelectionInterceptor
+import `in`.projecteka.jataayu.network.interceptor.NetworkConnectionInterceptor
 import `in`.projecteka.jataayu.network.interceptor.RequestInterceptor
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.CONNECT_TIMEOUT
@@ -11,6 +12,9 @@ import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
 import android.app.Application
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.Cache
@@ -27,8 +31,12 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-fun createNetworkClient(context: Application, credentialsRepository: CredentialsRepository,debug: Boolean = false) =
-    retrofitClient(getBaseUrl(context), httpClient(debug, context,credentialsRepository), gson())
+
+fun createNetworkClient(context: Application, credentialsRepository: CredentialsRepository,debug: Boolean = false): Retrofit  {
+
+    return retrofitClient(getBaseUrl(context), httpClient(debug, context,credentialsRepository), gson())
+}
+
 
 private fun getBaseUrl(context: Application): String {
     return if (isTestingMode(context)) MOCK_WEB_SERVER_TEST_URL else context.getBaseUrl()
@@ -82,6 +90,7 @@ private fun httpClient(debug: Boolean, context: Context, credentialsRepository: 
     }
     addInvalidSessionRedirectInterceptor(context, context.getBaseUrl(), clientBuilder)
     addResponseCacheInterceptor(clientBuilder, context)
+    addNoInternetConnectionInterceptor(context, clientBuilder)
     return clientBuilder.build()
 }
 
@@ -99,6 +108,10 @@ private fun addRequestResponseLogger(
 
 private fun addInvalidSessionRedirectInterceptor(context: Context, baseUrl: String, clientBuilder: OkHttpClient.Builder) {
     clientBuilder.addInterceptor(UnauthorisedUserRedirectInterceptor(context, baseUrl))
+}
+
+private fun addNoInternetConnectionInterceptor(context: Context, clientBuilder: OkHttpClient.Builder) {
+    clientBuilder.addInterceptor(NetworkConnectionInterceptor(context))
 }
 
 private fun addResponseCacheInterceptor(
@@ -121,4 +134,18 @@ private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient, gson: Gson
 private fun gson(): Gson = GsonBuilder()
     .create()
 
+
 private fun isTestingMode(context: Context) = context.javaClass.simpleName != "JataayuApp"
+
+fun hasInternetConnection(context: Context): Boolean {
+
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val network: Network? = connectivityManager.activeNetwork
+    val capabilities = connectivityManager
+        .getNetworkCapabilities(network)
+
+    return (capabilities != null
+            && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))
+}
+
