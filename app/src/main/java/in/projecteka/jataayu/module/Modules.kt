@@ -7,7 +7,10 @@ import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.consent.repository.ConsentRepositoryImpl
 import `in`.projecteka.jataayu.consent.repository.UserVerificationRepository
 import `in`.projecteka.jataayu.consent.repository.UserVerificationRepositoryImpl
-import `in`.projecteka.jataayu.network.createNetworkClient
+import `in`.projecteka.jataayu.core.remote.UserAccountApis
+import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.core.repository.UserAccountsRepositoryImpl
+import `in`.projecteka.jataayu.network.NetworkManager.Companion.createNetworkClient
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.provider.remote.ProviderApis
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
@@ -16,11 +19,8 @@ import `in`.projecteka.jataayu.registration.remote.AuthenticationApis
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepositoryImpl
 import `in`.projecteka.jataayu.user.account.remote.ChangePasswordApis
-import `in`.projecteka.jataayu.core.remote.UserAccountApis
 import `in`.projecteka.jataayu.user.account.repository.ChangePasswordRepository
 import `in`.projecteka.jataayu.user.account.repository.ChangePasswordRepositoryImpl
-import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
-import `in`.projecteka.jataayu.core.repository.UserAccountsRepositoryImpl
 import `in`.projecteka.jataayu.util.repository.*
 import `in`.projecteka.resetpassword.remote.ResetPasswordApis
 import `in`.projecteka.resetpassword.repository.ResetPasswordRepository
