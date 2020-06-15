@@ -11,7 +11,7 @@ import retrofit2.Call
 
 interface UserAccountsRepository {
     fun getUserAccounts(): PayloadLiveData<LinkedAccountsResponse>
-    fun createAccount(createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse>
+    fun createAccount(createAccountRequest: CreateAccountRequest): Call<Void>
     fun getMyProfile(): PayloadLiveData<MyProfile>
     fun logout(refreshToken: String): Call<Void>
     fun getProviderBy(providerIdList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse>
@@ -29,7 +29,7 @@ class UserAccountsRepositoryImpl(private val userAccountApis: UserAccountApis) :
         return liveData
     }
 
-    override fun createAccount(createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse> {
+    override fun createAccount(createAccountRequest: CreateAccountRequest): Call<Void> {
         return userAccountApis.createAccount(createAccountRequest)
     }
 
