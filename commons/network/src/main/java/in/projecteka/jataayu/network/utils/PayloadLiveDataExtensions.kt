@@ -1,8 +1,11 @@
 package `in`.projecteka.jataayu.network.utils
 
+import `in`.projecteka.jataayu.network.NetworkManager
 import `in`.projecteka.jataayu.network.interceptor.NoConnectivityException
 import `in`.projecteka.jataayu.network.model.Error
 import `in`.projecteka.jataayu.network.model.ErrorResponse
+import `in`.projecteka.jataayu.util.startNoInternetConnectionScreen
+import android.content.Intent
 import okhttp3.ResponseBody
 import org.koin.core.context.GlobalContext.get
 import retrofit2.Call
@@ -44,6 +47,9 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {
             if (t is NoConnectivityException) {
                 loading(false)
+                startNoInternetConnectionScreen(NetworkManager.context) {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
             } else {
                 failure(t)
             }
