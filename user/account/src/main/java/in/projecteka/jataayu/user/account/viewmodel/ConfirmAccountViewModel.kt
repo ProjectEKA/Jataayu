@@ -45,7 +45,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val showErrorPassword = ObservableBoolean(false)
     val showErrorConfirmPassword = ObservableBoolean(false)
     val showErrorAyushmanId = ObservableBoolean(false)
-    val createAccountResponse = PayloadLiveData<CreateAccountResponse>()
+    val createAccountResponse = PayloadLiveData<Void>()
     val createSessionResponse = PayloadLiveData<CreateAccountResponse>()
     var inputFullName: String? = ""
     var inputGender: String? = ""
@@ -111,7 +111,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
        return preferenceRepository.mobileIdentifier.orEmpty();
     }
 
-    fun getCreateAccountPayload(): CreateAccountRequest {
+    private fun getCreateAccountPayload(): CreateAccountRequest {
 
         var unverifiedIdentifiers: List<UnverifiedIdentifier>? = null
         if (!inputAyushmanIdLbl.get().isNullOrEmpty()){
