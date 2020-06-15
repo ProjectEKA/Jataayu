@@ -10,7 +10,7 @@ interface UserAccountApis {
     fun getUserAccounts(): Call<LinkedAccountsResponse>
 
     @POST("patients/profile")
-    fun createAccount(@Body createAccountRequest: CreateAccountRequest): Call<CreateAccountResponse>
+    fun createAccount(@Body createAccountRequest: CreateAccountRequest): Call<Void>
 
     @GET("patients/me")
     fun getMyProfile(): Call<MyProfile>
