@@ -9,6 +9,7 @@ import `in`.projecteka.jataayu.consent.ui.activity.CreatePinActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
 import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentDetailsViewModel
 import `in`.projecteka.jataayu.core.ConsentScopeType
+import `in`.projecteka.jataayu.core.ProviderLinkType
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
@@ -19,7 +20,9 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.extension.showSnackbar
+import `in`.projecteka.jataayu.util.startProvider
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
 import android.content.Intent
@@ -65,6 +68,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         const val KEY_EVENT_DENY = "deny"
         const val KEY_SCOPE_TYPE = "scope_type"
         const val KEY_EVENT_EXPIRED = "KEY_CONSENT_EXPIRED"
+        const val KEY_PROVIDER_LINK_TYPE = "provider_link_type"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -200,8 +204,10 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         if (viewModel.preferenceRepository.hasProviders) {
             verifyAction()
         } else {
-            context?.showAlertDialog(getString(R.string.link_provider_title), getString(R.string.link_provider_msg),
-                getString(android.R.string.ok))
+            startProvider(context!!, 3000) {
+                putExtra(KEY_PROVIDER_LINK_TYPE, ProviderLinkType.LINK_WHILE_GRANT.ordinal)
+            }
+            showLongToast(getString(R.string.link_provider_msg))
         }
     }
 
@@ -282,7 +288,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             if (requestCode == 201) {
                 viewModel.preferenceRepository.pinCreated = true
                 grantConsent()
-            }  else if (requestCode == 301){
+            }  else if (requestCode == 301 || requestCode == 3000){
                 grantConsent()
             }
         }

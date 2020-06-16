@@ -34,7 +34,7 @@ fun startRegistration(context: Context, intentDefinition: IntentDefinition? = nu
 
 fun startProvider(context: Context, resultCode: Int? = null, intentDefinition: IntentDefinition? = null) {
     resultCode?.let {
-        context.startActivityForResult(context.classLoader.loadClass(ACTIVITY_REGISTRATION), it)
+        context.startActivityForResult(context.classLoader.loadClass(ACTIVITY_PROVIDER), it)
     } ?: run {
         context.startActivity(defaultIntentDefinition(context, ACTIVITY_PROVIDER, intentDefinition))
     }
