@@ -2,9 +2,11 @@ package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
+import `in`.projecteka.jataayu.util.TestUtils
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.gson.Gson
 import junit.framework.Assert.*
 import org.junit.After
 import org.junit.Before
@@ -12,7 +14,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
@@ -49,8 +51,8 @@ class ConfirmAccountViewModelTest {
 
     @After
     fun tearDown() {
-        Mockito.verifyNoMoreInteractions(repository, createAccountAccountCall)
-        Mockito.validateMockitoUsage()
+        verifyNoMoreInteractions(repository, createAccountAccountCall)
+        validateMockitoUsage()
     }
 
     @Test
@@ -104,5 +106,16 @@ class ConfirmAccountViewModelTest {
         viewModel.showUserAlreadyExistsError()
         assertEquals(`in`.projecteka.jataayu.user.account.R.string.user_already_exits,  viewModel.usernameErrorLbl.get())
         assertEquals(true, viewModel.showErrorUserName.get())
+    }
+
+    @Test
+    fun `should save tokens to shared preferences after login success`() {
+
+        val response = Gson()
+            .fromJson(TestUtils.readFile("create_account_response.json"), CreateAccountResponse::class.java)
+        viewModel.onCreateAccountSuccess(response)
+        verify(credentialsRepository, times(1)).accessToken = "${response.tokenType.capitalize()} ${response.accessToken}"
+        verify(preferenceRepository, times(1)).isUserLoggedIn = true
+        verify(credentialsRepository, times(1)).refreshToken = response.refreshToken
     }
 }
