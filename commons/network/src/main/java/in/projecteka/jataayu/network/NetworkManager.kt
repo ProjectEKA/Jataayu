@@ -47,7 +47,7 @@ class NetworkManager private constructor() {
             return NetworkManager().createNetworkClient(credentialsRepository, debug)
         }
 
-        fun hasInternetConnection(context: Context): Boolean {
+        fun hasInternetConnection(): Boolean {
             val connectivityManager =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val network: Network? = connectivityManager.activeNetwork

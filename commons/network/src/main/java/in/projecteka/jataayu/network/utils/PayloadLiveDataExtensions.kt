@@ -39,8 +39,14 @@ fun <T> PayloadLiveData<T>.isLoading(): Boolean {
 }
 
 
-
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
+
+   if (!NetworkManager.hasInternetConnection()) {
+       NoInternetConnectionActivity.start(NetworkManager.context) {
+            fetch(call)
+       }
+       return this
+   }
 
     call.enqueue(object : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {
@@ -55,6 +61,7 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
         }
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
+
             if (response.isSuccessful) {
                 success(response.body())
             } else {
