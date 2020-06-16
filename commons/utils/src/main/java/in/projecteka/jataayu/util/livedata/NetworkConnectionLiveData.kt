@@ -1,4 +1,4 @@
-package `in`.projecteka.jataayu.network.utils
+package `in`.projecteka.jataayu.util.livedata
 
 import android.annotation.TargetApi
 import android.content.BroadcastReceiver
