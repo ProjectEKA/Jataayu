@@ -1,6 +1,6 @@
 package `in`.projecteka.jataayu.network.interceptor
 
-import `in`.projecteka.jataayu.network.hasInternetConnection
+import `in`.projecteka.jataayu.network.NetworkManager.Companion.hasInternetConnection
 import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.Request

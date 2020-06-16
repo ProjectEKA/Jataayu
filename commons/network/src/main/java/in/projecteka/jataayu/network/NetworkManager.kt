@@ -46,6 +46,16 @@ class NetworkManager private constructor() {
             NetworkManager.context = context
             return NetworkManager().createNetworkClient(credentialsRepository, debug)
         }
+
+        fun hasInternetConnection(context: Context): Boolean {
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val network: Network? = connectivityManager.activeNetwork
+            val capabilities = connectivityManager
+                .getNetworkCapabilities(network)
+            return (capabilities != null
+                    && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))
+        }
     }
 
     private val isTestingMode: Boolean
@@ -171,16 +181,4 @@ class NetworkManager private constructor() {
     }
 }
 
-
-fun hasInternetConnection(context: Context): Boolean {
-
-    val connectivityManager =
-        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val network: Network? = connectivityManager.activeNetwork
-    val capabilities = connectivityManager
-        .getNetworkCapabilities(network)
-
-    return (capabilities != null
-            && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))
-}
 
