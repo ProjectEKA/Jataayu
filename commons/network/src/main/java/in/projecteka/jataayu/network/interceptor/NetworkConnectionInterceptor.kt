@@ -11,7 +11,7 @@ class NetworkConnectionInterceptor(val context: Context) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        if (!hasInternetConnection(context)) {
+        if (!hasInternetConnection()) {
             throw NoConnectivityException()
         }
         val builder: Request.Builder = chain.request().newBuilder()
