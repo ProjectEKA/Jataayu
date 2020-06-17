@@ -4,6 +4,7 @@ import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.PendingAPICallQueue
 import `in`.projecteka.jataayu.network.utils.fetch
+import `in`.projecteka.jataayu.network.utils.loading
 import `in`.projecteka.jataayu.util.constant.NetworkConstants
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.sharedPref.NETWORK_HOST
@@ -16,6 +17,7 @@ import android.net.NetworkCapabilities
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -66,7 +68,6 @@ class PendingAPICallQueueTest {
     private lateinit var cacheDir: File
 
 
-
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
@@ -97,7 +98,11 @@ class PendingAPICallQueueTest {
         doNothing().`when`(context).startActivity(ArgumentMatchers.any())
     }
 
-    
+    @After
+    fun tearDown() {
+        validateMockitoUsage()
+    }
+
     @Test
     fun `test should add live data to pending queue`() {
         pendingAPICallQueue.add(liveData, call)
@@ -114,6 +119,7 @@ class PendingAPICallQueueTest {
     fun `test should clear the queue after executing pending api call`() {
         pendingAPICallQueue.add(liveData, call)
         pendingAPICallQueue.execute<ErrorResponse>()
+        verify(liveData, times(1)).loading(true)
         assertFalse(pendingAPICallQueue.hasPendingAPICall)
     }
 
@@ -122,6 +128,7 @@ class PendingAPICallQueueTest {
         pendingAPICallQueue.add(liveData, call)
         pendingAPICallQueue.execute<ErrorResponse>()
         verify(liveData, times(1)).fetch(call)
+        verify(liveData, times(1)).loading(true)
         assertFalse(pendingAPICallQueue.hasPendingAPICall)
     }
 
