@@ -13,6 +13,8 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
     companion object {
     }
 
+    
+
     var ayushmanId = ""
     var fullName = ""
     var yearOfBirth: Int? = null

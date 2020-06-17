@@ -14,6 +14,7 @@ import org.koin.test.inject
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.times
+import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
 
@@ -36,8 +37,7 @@ class PendingAPICallQueueTest: KoinTest {
     @Before
     fun setUp() {
         pendingAPICallQueue = PendingAPICallQueue()
-
-
+        MockitoAnnotations.initMocks(this)
     }
 
 

@@ -15,9 +15,9 @@ class NoInternetConnectionActivity : BaseActivity<BaseActivityBinding>() {
 
     companion object {
         private var completion: (() -> Unit)? = null
-        @JvmStatic
-        fun start(context: Context, completion: (() -> Unit)?) {
-            NoInternetConnectionActivity.completion = completion
+
+        fun start(context: Context, retryCallback: (() -> Unit)?) {
+            NoInternetConnectionActivity.completion = retryCallback
             startNoInternetConnectionScreen(context) {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }

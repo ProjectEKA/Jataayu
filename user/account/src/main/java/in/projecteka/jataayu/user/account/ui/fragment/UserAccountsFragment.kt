@@ -86,14 +86,14 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
                 }
             }
         })*/
-        viewModel.updateLinks.observe(this, Observer {
+        viewModel.updateLinks.observe(viewLifecycleOwner, Observer {
             listItems = it
             binding.rvUserAccounts.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = ExpandableRecyclerViewAdapter(this@UserAccountsFragment, this@UserAccountsFragment, it
             )}
         })
-        viewModel.userProfileResponse.observe(this, Observer {
+        viewModel.userProfileResponse.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Failure -> {
                     context?.showErrorDialog(it.error.localizedMessage)
@@ -108,7 +108,7 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
                 }
             }
         })
-        viewModel.addProviderEvent.observe(this, Observer {
+        viewModel.addProviderEvent.observe(viewLifecycleOwner, Observer {
             startProvider(context!!)
         })
 
@@ -148,7 +148,7 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
 
     private fun getNamesOfHipList(idList: List<HipHiuIdentifiable>) {
         val hipHiuNameResponse = viewModel.getHipHiuNamesByIdList(idList)
-        hipHiuNameResponse.observe(this, Observer { hipHiuNameResponse ->
+        hipHiuNameResponse.observe(viewLifecycleOwner, Observer { hipHiuNameResponse ->
             if (hipHiuNameResponse.status) {
                 val linkedAccountsResponse = viewModel.linkedAccountsResponse.value
                 linkedAccountsResponse?.forEach { it.hip.name = hipHiuNameResponse.nameMap[it.hip.getId()] ?: "" }
