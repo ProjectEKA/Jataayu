@@ -29,6 +29,7 @@ class ConsentDetailsActivity : BaseActivity<BaseActivityBinding>(), ResponseCall
     override fun layoutId(): Int = R.layout.base_activity
 
     private val viewModel: RequestedListViewModel by viewModel()
+    private val detailsViewModel: RequestedListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

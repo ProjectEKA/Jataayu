@@ -7,7 +7,7 @@ import android.content.Intent
 typealias IntentDefinition = Intent.() -> Unit
 
 private const val ACTIVITY_REGISTRATION = "in.projecteka.jataayu.registration.ui.activity.RegistrationActivity"
-private const val ACTIVITY_PROVIDER = "in.projecteka.jataayu.provider.ui.ProviderActivity"
+const val ACTIVITY_PROVIDER = "in.projecteka.jataayu.provider.ui.ProviderActivity"
 private const val ACTIVITY_ACCOUNT_CREATION = "in.projecteka.jataayu.user.account.ui.activity.AccountCreationActivity"
 private const val ACTIVITY_LOGIN = "in.projecteka.jataayu.registration.ui.activity.LoginActivity"
 private const val ACTIVITY_LAUNCHER = "in.projecteka.jataayu.ui.launcher.LauncherActivity"
@@ -19,7 +19,7 @@ private const val ACTIVITY_CHANGE_PASSWORD = "in.projecteka.jataayu.user.account
 private const val ACTIVITY_RECOVER_CMID = "in.projecteka.jataayu.user.account.ui.activity.RecoverCmidActivity"
 private const val ACTIVITY_INTRO_SCREENS = "in.projecteka.jataayu.presentation.ui.IntroScreensActivity"
 
-private fun defaultIntentDefinition(
+fun defaultIntentDefinition(
     context: Context,
     clazz: String,
     intentDefinition: IntentDefinition? = null
@@ -34,7 +34,7 @@ fun startRegistration(context: Context, intentDefinition: IntentDefinition? = nu
 
 fun startProvider(context: Context, resultCode: Int? = null, intentDefinition: IntentDefinition? = null) {
     resultCode?.let {
-        context.startActivityForResult(context.classLoader.loadClass(ACTIVITY_PROVIDER), it)
+        context.startActivityForResult(defaultIntentDefinition(context, ACTIVITY_PROVIDER, intentDefinition), it)
     } ?: run {
         context.startActivity(defaultIntentDefinition(context, ACTIVITY_PROVIDER, intentDefinition))
     }

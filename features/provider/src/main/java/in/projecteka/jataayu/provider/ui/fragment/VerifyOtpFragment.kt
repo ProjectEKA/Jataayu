@@ -31,7 +31,7 @@ class VerifyOtpFragment : BaseFragment(),
     companion object {
         fun newInstance() = VerifyOtpFragment()
         const val ERROR_CODE_INVALID_OTP = 1003
-//        const val ERROR_CODE_INVALID_OTP = 1003
+        const val ERROR_CODE_GATEWAY_TIMEOUT = 1036
     }
 
     private val viewModel : ProviderSearchViewModel by sharedViewModel()
@@ -97,13 +97,15 @@ class VerifyOtpFragment : BaseFragment(),
             viewModel.otpText.set(null)
 
             viewModel.errorLbl.set(
-                if (errorBody.error?.code == ERROR_CODE_INVALID_OTP) {
+                if (errorBody.error.code == ERROR_CODE_INVALID_OTP) {
                     getString(R.string.invalid_otp)
                 }
                 else
-                    errorBody.error?.message
+                    errorBody.error.message
             )
-        } else {
+        } else if (errorBody.error.code == ERROR_CODE_GATEWAY_TIMEOUT) {
+            binding.errorMessage = getString(R.string.something_went_wrong_try_again)
+        }else {
             binding.errorMessage = errorBody.error.message
         }
     }
