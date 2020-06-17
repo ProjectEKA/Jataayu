@@ -15,6 +15,7 @@ class NoInternetConnectionActivity : BaseActivity<BaseActivityBinding>() {
 
     companion object {
         private var completion: (() -> Unit)? = null
+        @JvmStatic
         fun start(context: Context, completion: (() -> Unit)?) {
             NoInternetConnectionActivity.completion = completion
             startNoInternetConnectionScreen(context) {
@@ -31,6 +32,10 @@ class NoInternetConnectionActivity : BaseActivity<BaseActivityBinding>() {
         retryButton = findViewById(R.id.btn_retry)
         initObserver()
 
+    }
+
+    override fun onBackPressed() {
+        // do not allow press back
     }
 
     private fun initObserver() {

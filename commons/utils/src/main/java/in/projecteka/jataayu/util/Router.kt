@@ -82,7 +82,6 @@ fun startIntroScreens(context: Context){
 }
 
 fun startNoInternetConnectionScreen(context: Context, intentDefinition: IntentDefinition? = null) {
-    context.applicationContext
     context.startActivity(defaultIntentDefinition(context, ACTIVITY_NO_INTERNET_CONNECTION_SCREEN, intentDefinition))
 }
 
