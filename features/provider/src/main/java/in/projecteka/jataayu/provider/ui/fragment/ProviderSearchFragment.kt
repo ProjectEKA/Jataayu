@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.core.model.Hip
 import `in`.projecteka.jataayu.core.model.ProviderInfo
 import `in`.projecteka.jataayu.core.model.Request
 import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
+import `in`.projecteka.jataayu.network.interceptor.NoConnectivityException
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.PartialFailure
@@ -14,6 +15,7 @@ import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
+import `in`.projecteka.jataayu.presentation.ui.activity.NoInternetConnectionActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.callback.TextWatcherCallback
 import `in`.projecteka.jataayu.provider.domain.ProviderNameWatcher
@@ -59,6 +61,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     private lateinit var lastQuery: String
     private lateinit var selectedProvider : ProviderInfo
     private lateinit var providersList: ProviderSearchAdapter
+    private var isNoNetworkScreenShown = false
 
     private val providersObserver = Observer<List<ProviderInfo>> { providerNames ->
         providersList.updateData(lastQuery, providerNames)
@@ -282,7 +285,18 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     override fun onFailure(t: Throwable) {
+
         viewModel.showProgress(false)
-        context?.showErrorDialog(t.localizedMessage)
+        if (t is NoConnectivityException) {
+            if (!isNoNetworkScreenShown) {
+                NoInternetConnectionActivity.start(context!!) {
+                    viewModel.getProviders(lastQuery)
+                    isNoNetworkScreenShown = false
+                }
+                isNoNetworkScreenShown = true
+            }
+        } else {
+            context?.showErrorDialog(t.localizedMessage)
+        }
     }
 }
