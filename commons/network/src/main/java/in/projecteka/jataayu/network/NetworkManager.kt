@@ -36,7 +36,6 @@ class NetworkManager private constructor() {
     companion object {
         lateinit var context: Context
             private set
-
         fun createNetworkClient(
             context: Context,
             credentialsRepository: CredentialsRepository,

@@ -7,18 +7,13 @@ class PendingAPICallQueue {
 
     companion object {
         private val pendingAPICallMap: MutableMap<Any, Any> = mutableMapOf()
-        private val pendingAPICallList: ArrayList<Any> = arrayListOf()
     }
 
     val hasPendingAPICall: Boolean
-    get() = pendingAPICallList.isNotEmpty() || pendingAPICallMap.isNotEmpty()
+    get() = pendingAPICallMap.isNotEmpty()
 
     fun <T> add(liveData: PayloadLiveData<T>, call: Call<T>) {
         pendingAPICallMap[liveData] = call
-    }
-
-    fun <T> add(call: Call<T>) {
-        pendingAPICallList.add(call)
     }
 
     fun <T> execute() {
@@ -30,6 +25,5 @@ class PendingAPICallQueue {
 
     fun clearQueue() {
         pendingAPICallMap.clear()
-        pendingAPICallList.clear()
     }
 }
