@@ -13,12 +13,14 @@ import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue
-import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
@@ -55,7 +57,14 @@ class PendingAPICallQueueTest {
     @Mock
     private lateinit var networkCapabilities: NetworkCapabilities
 
+    @Mock
+    private lateinit var classLoader: ClassLoader
+
+    @get:Rule
+    val taskExecutorRule = InstantTaskExecutorRule()
+
     private lateinit var cacheDir: File
+
 
 
     @Before
@@ -75,7 +84,7 @@ class PendingAPICallQueueTest {
         // create your test retrofit client
         NetworkManager.createNetworkClient(context, credentialsRepository, BuildConfig.DEBUG)
 
-        // mock net connection.
+//        // mock net connection.
         `when`(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(
             connectivityManager
         )
@@ -84,23 +93,11 @@ class PendingAPICallQueueTest {
         `when`(networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)).thenReturn(
             true
         )
+
+        doNothing().`when`(context).startActivity(ArgumentMatchers.any())
     }
 
-    @After
-    fun tearDown() {
-        cacheDir.delete()
-        verifyNoMoreInteractions(
-            call,
-            liveData,
-            credentialsRepository,
-            sharedPreferences,
-            network,
-            connectivityManager,
-            networkCapabilities
-        )
-    }
-
-
+    
     @Test
     fun `test should add live data to pending queue`() {
         pendingAPICallQueue.add(liveData, call)
@@ -126,6 +123,18 @@ class PendingAPICallQueueTest {
         pendingAPICallQueue.execute<ErrorResponse>()
         verify(liveData, times(1)).fetch(call)
         assertFalse(pendingAPICallQueue.hasPendingAPICall)
+    }
+
+    @Test
+    fun `test should start activity when there is no internet`() {
+        `when`(networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)).thenReturn(
+            false
+        )
+        `when`(context.classLoader).thenReturn(classLoader)
+        liveData.fetch(call)
+        verify(context, times(1)).startActivity(ArgumentMatchers.any())
+        verify(call, times(0)).enqueue(ArgumentMatchers.any())
+        assertTrue(pendingAPICallQueue.hasPendingAPICall)
     }
 }
 
