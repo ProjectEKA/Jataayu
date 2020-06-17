@@ -20,11 +20,16 @@ public abstract class RetrofitCallback<T> implements Callback<T> {
     private int DEFAULT_ERROR_CODE = -1;
     private int ERROR_CODE_UNAUTHORIZED = 1017;
 
+    private PendingAPICallQueue pendingAPICallQueue;
+    private boolean isNoNetworkScreenShown = false;
+
     public RetrofitCallback() {
+        pendingAPICallQueue = new PendingAPICallQueue();
     }
 
     public RetrofitCallback(ResponseCallback responseCallback) {
         this.responseCallback = responseCallback;
+        pendingAPICallQueue = new PendingAPICallQueue();
     }
 
     abstract protected MutableLiveData<T> observableLiveData();
@@ -55,6 +60,7 @@ public abstract class RetrofitCallback<T> implements Callback<T> {
 
     @Override
     public void onFailure(@NotNull Call<T> call, @NotNull Throwable t) {
+
         if (responseCallback != null) responseCallback.onFailure(t);
     }
 }

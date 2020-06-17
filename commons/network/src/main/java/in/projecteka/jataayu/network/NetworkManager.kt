@@ -10,7 +10,6 @@ import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.READ_TIM
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.WRITE_TIMEOUT
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
-import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -39,7 +38,7 @@ class NetworkManager private constructor() {
             private set
 
         fun createNetworkClient(
-            context: Application,
+            context: Context,
             credentialsRepository: CredentialsRepository,
             debug: Boolean = false
         ): Retrofit {
@@ -180,5 +179,6 @@ class NetworkManager private constructor() {
             .build()
     }
 }
+
 
 

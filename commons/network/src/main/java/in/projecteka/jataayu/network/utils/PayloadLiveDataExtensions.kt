@@ -39,22 +39,22 @@ fun <T> PayloadLiveData<T>.isLoading(): Boolean {
 }
 
 
+private val pendingAPICallQueue = PendingAPICallQueue()
+private var isNoNetworkScreenShown = false
+
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
 
-   if (!NetworkManager.hasInternetConnection()) {
-       NoInternetConnectionActivity.start(NetworkManager.context) {
-            fetch(call)
-       }
-       return this
-   }
+
+    if (!NetworkManager.hasInternetConnection()) {
+        showNoInternetScreen(call)
+        return this
+    }
 
     call.enqueue(object : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {
             if (t is NoConnectivityException) {
                 loading(false)
-                NoInternetConnectionActivity.start(NetworkManager.context) {
-                    fetch(call.clone())
-                }
+                showNoInternetScreen(call)
             } else {
                 failure(t)
             }
@@ -85,3 +85,17 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
     }
     return this
 }
+
+private fun <T> PayloadLiveData<T>.showNoInternetScreen(call: Call<T>) {
+
+    pendingAPICallQueue.add(this, call)
+    if (!isNoNetworkScreenShown) {
+        NoInternetConnectionActivity.start(NetworkManager.context) {
+            pendingAPICallQueue.execute<T>()
+            isNoNetworkScreenShown = false
+        }
+    }
+    isNoNetworkScreenShown = true
+}
+
+

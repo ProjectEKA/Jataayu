@@ -51,7 +51,7 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
         providerRepository.getPatientAccounts(request).observeOn(patientDiscoveryResponse, responseCallback)
     }
 
-    fun getMyProfile() = userAccountsRepository.getMyProfile()
+    private fun getMyProfile() = userAccountsRepository.getMyProfile()
 
     fun linkPatientAccounts(listCareContexts: List<CareContext>, responseCallback: ResponseCallback) {
 
