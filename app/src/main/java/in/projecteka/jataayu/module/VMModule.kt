@@ -47,6 +47,7 @@ val viewModelModule = module {
     viewModel { GrantedConsentListViewModel(get(), get()) }
     viewModel { RequestedConsentDetailsViewModel(get(), get(), get()) }
     viewModel { GrantedConsentDetailsViewModel(get()) }
+    viewModel { ConsentDetailsActivityViewModel() }
 
     //Provider Search
     viewModel { ProviderSearchViewModel(get(), get(), get(), get()) }

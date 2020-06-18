@@ -5,6 +5,7 @@
     <string name="failure">Failure</string>
     <string name="request_limit_exceeded">Request limit exceeded</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="something_went_wrong_try_again">Something went wrong, Please try again</string>
     <string name="consent_pin_api_integration">Consent pin API integration</string>
     <string name="default_progress_message">Loading...</string>
     <string name="national_cancer_grid">National\nCancer\nGrid</string>

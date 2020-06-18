@@ -39,7 +39,6 @@
                 app:itemIconTint="@drawable/bottom_nav_tab_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:menu="@menu/menu_bottom_nav"
-                app:toggledVisibility="@{viewModel.showRecords}"
                 app:onNavigationItemSelected="@{viewModel}" />
 
         </LinearLayout>

@@ -13,7 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class DashboardActivity : BaseActivity<ActivityDashboardBinding>() {
 
     private val dashboardPagerAdapter by lazy { DashboardPagerAdapter(this, arrayListOf<Fragment>(
-        UserAccountsFragment.newInstance(viewModel), ConsentHostFragment.newInstance())) }
+        UserAccountsFragment.newInstance(), ConsentHostFragment.newInstance())) }
     private val viewModel: DashboardViewModel by viewModel()
     override fun layoutId(): Int = R.layout.activity_dashboard
 
