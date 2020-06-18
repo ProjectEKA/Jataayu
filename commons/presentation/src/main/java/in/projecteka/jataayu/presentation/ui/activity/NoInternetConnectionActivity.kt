@@ -17,7 +17,7 @@ class NoInternetConnectionActivity : BaseActivity<BaseActivityBinding>() {
         private var completion: (() -> Unit)? = null
 
         fun start(context: Context, retryCallback: (() -> Unit)?) {
-            NoInternetConnectionActivity.completion = retryCallback
+            completion = retryCallback
             startNoInternetConnectionScreen(context) {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }

@@ -1,10 +1,8 @@
 package `in`.projecteka.jataayu.network.utils
 
-import `in`.projecteka.jataayu.network.NetworkManager
 import `in`.projecteka.jataayu.network.interceptor.NoConnectivityException
 import `in`.projecteka.jataayu.network.model.Error
 import `in`.projecteka.jataayu.network.model.ErrorResponse
-import `in`.projecteka.jataayu.presentation.ui.activity.NoInternetConnectionActivity
 import okhttp3.ResponseBody
 import org.koin.core.context.GlobalContext.get
 import retrofit2.Call
@@ -44,11 +42,12 @@ private var isNoNetworkScreenShown = false
 
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
 
-
-    if (!NetworkManager.hasInternetConnection()) {
+    if (!networkManager.hasInternetConnection()) {
         showNoInternetScreen(call)
         return this
     }
+
+    // API we need to check internet
 
     call.enqueue(object : Callback<T> {
         override fun onFailure(call: Call<T>, t: Throwable) {
@@ -90,7 +89,7 @@ private fun <T> PayloadLiveData<T>.showNoInternetScreen(call: Call<T>) {
 
     pendingAPICallQueue.add(this, call)
     if (!isNoNetworkScreenShown) {
-        NoInternetConnectionActivity.start(NetworkManager.context) {
+        networkManager.showInternetScreen {
             pendingAPICallQueue.execute<T>()
             isNoNetworkScreenShown = false
         }
