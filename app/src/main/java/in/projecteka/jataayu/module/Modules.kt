@@ -1,6 +1,5 @@
 package `in`.projecteka.jataayu.module
 
-import `in`.projecteka.jataayu.BuildConfig
 import `in`.projecteka.jataayu.consent.remote.ConsentApis
 import `in`.projecteka.jataayu.consent.remote.UserVerificationApis
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
@@ -10,7 +9,8 @@ import `in`.projecteka.jataayu.consent.repository.UserVerificationRepositoryImpl
 import `in`.projecteka.jataayu.core.remote.UserAccountApis
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepositoryImpl
-import `in`.projecteka.jataayu.network.NetworkManager.Companion.createNetworkClient
+import `in`.projecteka.jataayu.network.BuildConfig
+import `in`.projecteka.jataayu.network.NetworkManager
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.provider.remote.ProviderApis
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
@@ -49,7 +49,8 @@ val repositoryModule = module {
 }
 
 val networkModule = module {
-    single { createNetworkClient(get(), get(), BuildConfig.DEBUG) }
+    single { NetworkManager(get()) }
+    single { get<NetworkManager>().createNetworkClient(get(),BuildConfig.DEBUG) }
     single<Converter<ResponseBody, ErrorResponse>> {
         get<Retrofit>().responseBodyConverter(
             ErrorResponse::class.java,

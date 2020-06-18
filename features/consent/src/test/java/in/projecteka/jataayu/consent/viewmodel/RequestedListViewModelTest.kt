@@ -5,8 +5,6 @@ import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.RequestStatus
-import `in`.projecteka.jataayu.network.BuildConfig
-import `in`.projecteka.jataayu.network.NetworkManager
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
@@ -86,22 +84,6 @@ class RequestedConsentListViewModelTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        // mock base URL
-        `when`(context.getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)).thenReturn(
-            sharedPreferences
-        )
-        `when`(sharedPreferences.getString(NETWORK_HOST, NetworkConstants.PROD_URL)).thenReturn(
-            NetworkConstants.PROD_URL
-        )
-        // mock cache directory for interceptor
-        `when`(context.cacheDir).thenReturn(File("text.txt"))
-        // create your test retrofit client
-        NetworkManager.createNetworkClient(context, credentialRepo, BuildConfig.DEBUG)
-
-//        // mock net connection.
-        `when`(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(
-            connectivityManager
-        )
         `when`(connectivityManager.activeNetwork).thenReturn(network)
         `when`(connectivityManager.getNetworkCapabilities(network)).thenReturn(networkCapabilities)
         `when`(networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)).thenReturn(

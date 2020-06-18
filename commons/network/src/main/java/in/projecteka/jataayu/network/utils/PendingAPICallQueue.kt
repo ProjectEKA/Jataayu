@@ -18,7 +18,7 @@ class PendingAPICallQueue {
 
     fun <T> execute() {
         pendingAPICallMap.map {
-            (it.key as PayloadLiveData<T>).fetch(it.value as Call<T>)
+            (it.key as PayloadLiveData<T>).fetch((it.value as Call<T>).clone())
         }
         clearQueue()
     }

@@ -6,23 +6,13 @@ import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.RequestStatus
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.grantedconsent.GrantedConsentDetailsResponse
-import `in`.projecteka.jataayu.network.BuildConfig
-import `in`.projecteka.jataayu.network.NetworkManager
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.util.TestUtils
-import `in`.projecteka.jataayu.util.constant.NetworkConstants
 import `in`.projecteka.jataayu.util.extension.fromJson
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
-import `in`.projecteka.jataayu.util.sharedPref.NETWORK_HOST
-import `in`.projecteka.jataayu.util.sharedPref.NETWORK_PREF
-import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Resources
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
@@ -43,7 +33,6 @@ import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 @RunWith(MockitoJUnitRunner::class)
 class ConsentListViewModelTest {
@@ -59,21 +48,6 @@ class ConsentListViewModelTest {
 
     @Mock
     private lateinit var resources: Resources
-
-    @Mock
-    private lateinit var context: Context
-
-    @Mock
-    private lateinit var sharedPreferences: SharedPreferences
-
-    @Mock
-    private lateinit var network: Network
-
-    @Mock
-    private lateinit var connectivityManager: ConnectivityManager
-
-    @Mock
-    private lateinit var networkCapabilities: NetworkCapabilities
 
     @Mock
     private lateinit var call: Call<ConsentArtifactResponse>
@@ -92,28 +66,6 @@ class ConsentListViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-
-        // mock base URL
-        `when`(context.getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)).thenReturn(
-            sharedPreferences
-        )
-        `when`(sharedPreferences.getString(NETWORK_HOST, NetworkConstants.PROD_URL)).thenReturn(
-            NetworkConstants.PROD_URL
-        )
-        // mock cache directory for interceptor
-        `when`(context.cacheDir).thenReturn(File("text.txt"))
-        // create your test retrofit client
-        NetworkManager.createNetworkClient(context, credentialRepo, BuildConfig.DEBUG)
-
-//        // mock net connection.
-        `when`(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(
-            connectivityManager
-        )
-        `when`(connectivityManager.activeNetwork).thenReturn(network)
-        `when`(connectivityManager.getNetworkCapabilities(network)).thenReturn(networkCapabilities)
-        `when`(networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)).thenReturn(
-            true
-        )
 
         consentViewModel = GrantedConsentListViewModel(repository,credentialRepo)
 

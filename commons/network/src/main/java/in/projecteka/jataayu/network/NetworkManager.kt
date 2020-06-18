@@ -4,6 +4,7 @@ import `in`.projecteka.jataayu.network.interceptor.HostSelectionInterceptor
 import `in`.projecteka.jataayu.network.interceptor.NetworkConnectionInterceptor
 import `in`.projecteka.jataayu.network.interceptor.RequestInterceptor
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
+import `in`.projecteka.jataayu.presentation.ui.activity.NoInternetConnectionActivity
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.CONNECT_TIMEOUT
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCK_WEB_SERVER_TEST_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.READ_TIMEOUT
@@ -19,6 +20,7 @@ import com.google.gson.GsonBuilder
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.KoinComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.SecureRandom
@@ -31,30 +33,7 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class NetworkManager private constructor() {
-
-    companion object {
-        lateinit var context: Context
-            private set
-        fun createNetworkClient(
-            context: Context,
-            credentialsRepository: CredentialsRepository,
-            debug: Boolean = false
-        ): Retrofit {
-            NetworkManager.context = context
-            return NetworkManager().createNetworkClient(credentialsRepository, debug)
-        }
-
-        fun hasInternetConnection(): Boolean {
-            val connectivityManager =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val network: Network? = connectivityManager.activeNetwork
-            val capabilities = connectivityManager
-                .getNetworkCapabilities(network)
-            return (capabilities != null
-                    && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))
-        }
-    }
+class NetworkManager(val context: Context): KoinComponent {
 
     private val isTestingMode: Boolean
         get() = context.javaClass.simpleName != "JataayuApp"
@@ -62,15 +41,23 @@ class NetworkManager private constructor() {
         get() = GsonBuilder().create()
 
 
-    private fun createNetworkClient(
+
+
+    fun hasInternetConnection(): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network: Network? = connectivityManager.activeNetwork
+        val capabilities = connectivityManager
+            .getNetworkCapabilities(network)
+        return (capabilities != null
+                && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))
+    }
+
+    fun createNetworkClient(
         credentialsRepository: CredentialsRepository,
         debug: Boolean = false
     ): Retrofit {
-
-        return buildRetrofitClient(
-            getBaseUrl(),
-            httpClient(debug, context, credentialsRepository)
-        )
+        return buildRetrofitClient(getBaseUrl(), httpClient(debug, context, credentialsRepository))
     }
 
 
@@ -158,7 +145,7 @@ class NetworkManager private constructor() {
         context: Context,
         clientBuilder: OkHttpClient.Builder
     ) {
-        clientBuilder.addInterceptor(NetworkConnectionInterceptor(context))
+        clientBuilder.addInterceptor(NetworkConnectionInterceptor())
     }
 
     private fun addResponseCacheInterceptor(
@@ -176,6 +163,10 @@ class NetworkManager private constructor() {
             .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
+    }
+
+    fun showInternetScreen(retryCompletion: (() -> Unit)?) {
+        NoInternetConnectionActivity.start(context, retryCompletion)
     }
 }
 
