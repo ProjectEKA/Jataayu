@@ -41,11 +41,13 @@ private val pendingAPICallQueue = PendingAPICallQueue()
 private var isNoNetworkScreenShown = false
 
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
-
-    if (!networkManager.hasInternetConnection()) {
-        showNoInternetScreen(call)
-        return this
-    }
+    networkManager?.let {
+        if(it.hasInternetConnection())
+            {
+                showNoInternetScreen(call)
+                return this
+            }
+        }
 
     // API we need to check internet
 
@@ -89,9 +91,11 @@ private fun <T> PayloadLiveData<T>.showNoInternetScreen(call: Call<T>) {
 
     pendingAPICallQueue.add(this, call)
     if (!isNoNetworkScreenShown) {
-        networkManager.showInternetScreen {
-            pendingAPICallQueue.execute<T>()
-            isNoNetworkScreenShown = false
+        networkManager?.let {
+            it.showInternetScreen {
+                pendingAPICallQueue.execute<T>()
+                isNoNetworkScreenShown = false
+            }
         }
     }
     isNoNetworkScreenShown = true
