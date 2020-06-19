@@ -7,8 +7,10 @@ import `in`.projecteka.jataayu.consent.errors.ConsentError.CONSENT_EXPIRED_GRANT
 import `in`.projecteka.jataayu.consent.ui.activity.ConsentDetailsActivity
 import `in`.projecteka.jataayu.consent.ui.activity.CreatePinActivity
 import `in`.projecteka.jataayu.consent.ui.activity.PinVerificationActivity
+import `in`.projecteka.jataayu.consent.viewmodel.ConsentDetailsActivityViewModel
 import `in`.projecteka.jataayu.consent.viewmodel.RequestedConsentDetailsViewModel
 import `in`.projecteka.jataayu.core.ConsentScopeType
+import `in`.projecteka.jataayu.core.ProviderLinkType
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.model.approveconsent.ConsentArtifactResponse
 import `in`.projecteka.jataayu.core.model.approveconsent.HiTypeAndLinks
@@ -19,6 +21,9 @@ import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
+import `in`.projecteka.jataayu.util.ACTIVITY_PROVIDER
+import `in`.projecteka.jataayu.util.defaultIntentDefinition
+import `in`.projecteka.jataayu.util.extension.showLongToast
 import `in`.projecteka.jataayu.util.extension.showSnackbar
 import `in`.projecteka.jataayu.util.ui.DateTimeUtils
 import android.app.Activity
@@ -43,6 +48,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     private lateinit var binding: RequestedConsentDetailsFragmentBinding
 
     private val viewModel: RequestedConsentDetailsViewModel by sharedViewModel()
+    private val parentViewModel: ConsentDetailsActivityViewModel by sharedViewModel()
 
     private lateinit var consent: Consent
 
@@ -65,6 +71,8 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
         const val KEY_EVENT_DENY = "deny"
         const val KEY_SCOPE_TYPE = "scope_type"
         const val KEY_EVENT_EXPIRED = "KEY_CONSENT_EXPIRED"
+        const val KEY_PROVIDER_LINK_TYPE = "provider_link_type"
+        const val REQUEST_CODE_LINK_PROVIDER = 3000
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,6 +96,11 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                             link.careContexts.forEach { careContext ->
                                 careContext.contextChecked = true
                             }
+                        }
+
+                        if (viewModel.grantConsentAfterGettingLinkedAccountsEvent.get()) {
+                            viewModel.grantConsentAfterGettingLinkedAccountsEvent.set(false)
+                            verifyAction()
                         }
                     }
                 }
@@ -152,6 +165,12 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 }
             }
         })
+
+        parentViewModel.grantConsentAfterProviderLinkEvent.observe(this, Observer {
+            if (it) {
+                verifyAction()
+            }
+        })
     }
 
     override fun onCreateView(
@@ -197,7 +216,14 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
     }
 
     override fun onGrantConsent(view: View) {
-        verifyAction()
+        if (viewModel.preferenceRepository.hasProviders) {
+            verifyAction()
+        } else {
+            startActivityForResult(defaultIntentDefinition(context!!, ACTIVITY_PROVIDER) {
+                putExtra(KEY_PROVIDER_LINK_TYPE, ProviderLinkType.LINK_WHILE_GRANT.ordinal)
+            }, 3000)
+            showLongToast(getString(R.string.link_provider_msg))
+        }
     }
 
     private fun verifyAction() {
@@ -279,6 +305,9 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
                 grantConsent()
             }  else if (requestCode == 301){
                 grantConsent()
+            } else if (requestCode == REQUEST_CODE_LINK_PROVIDER) {
+                viewModel.grantConsentAfterGettingLinkedAccountsEvent.set(true)
+                viewModel.getLinkedAccounts()
             }
         }
     }

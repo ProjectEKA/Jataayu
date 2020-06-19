@@ -2,14 +2,13 @@ package `in`.projecteka.jataayu.ui.dashboard
 
 import `in`.projecteka.jataayu.R
 import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
-import `in`.projecteka.jataayu.user.account.listener.UpdateProviderListener
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import android.view.MenuItem
 import androidx.databinding.ObservableBoolean
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class DashboardViewModel(val preferenceRepository: PreferenceRepository) : BaseViewModel(), BottomNavigationView.OnNavigationItemSelectedListener, UpdateProviderListener {
+class DashboardViewModel(val preferenceRepository: PreferenceRepository) : BaseViewModel(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     internal enum class Show {
         USER_ACCOUNT,
@@ -31,9 +30,4 @@ class DashboardViewModel(val preferenceRepository: PreferenceRepository) : BaseV
         }
         else -> false
     }
-
-    override fun updateProvider(hasProvider: Boolean) {
-        showRecords.set(hasProvider)
-    }
-
 }

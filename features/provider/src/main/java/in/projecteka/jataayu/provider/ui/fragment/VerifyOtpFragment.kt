@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.provider.ui.fragment
 
 import `in`.projecteka.featuresprovider.R
 import `in`.projecteka.featuresprovider.databinding.VerityOtpFragmentBinding
+import `in`.projecteka.jataayu.core.ProviderLinkType
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
 import `in`.projecteka.jataayu.network.interceptor.NoConnectivityException
 import `in`.projecteka.jataayu.network.model.ErrorResponse
@@ -11,10 +12,12 @@ import `in`.projecteka.jataayu.presentation.ui.activity.NoInternetConnectionActi
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.model.Otp
 import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
+import `in`.projecteka.jataayu.provider.viewmodel.ProviderActivityViewModel
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.util.extension.setTitle
 import `in`.projecteka.jataayu.util.startDashboard
 import `in`.projecteka.jataayu.util.ui.UiUtils
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,9 +34,11 @@ class VerifyOtpFragment : BaseFragment(),
     companion object {
         fun newInstance() = VerifyOtpFragment()
         const val ERROR_CODE_INVALID_OTP = 1003
+        const val ERROR_CODE_GATEWAY_TIMEOUT = 1036
     }
 
     private val viewModel : ProviderSearchViewModel by sharedViewModel()
+    private val parentViewModel : ProviderActivityViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,10 +68,16 @@ class VerifyOtpFragment : BaseFragment(),
     }
 
     private val observer = Observer<SuccessfulLinkingResponse> {
-        activity?.finish()
         viewModel.preferenceRepository.hasProviders = true
-        startDashboard(activity!!){
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
+        if (parentViewModel.providerLinkType.get() == ProviderLinkType.LINK_WHILE_GRANT) {
+            activity?.setResult(Activity.RESULT_OK)
+            activity?.finish()
+        } else {
+            activity?.finish()
+            startDashboard(activity!!){
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
         }
     }
 
@@ -89,13 +100,15 @@ class VerifyOtpFragment : BaseFragment(),
             viewModel.otpText.set(null)
 
             viewModel.errorLbl.set(
-                if (errorBody.error?.code == ERROR_CODE_INVALID_OTP) {
+                if (errorBody.error.code == ERROR_CODE_INVALID_OTP) {
                     getString(R.string.invalid_otp)
                 }
                 else
-                    errorBody.error?.message
+                    errorBody.error.message
             )
-        } else {
+        } else if (errorBody.error.code == ERROR_CODE_GATEWAY_TIMEOUT) {
+            binding.errorMessage = getString(R.string.something_went_wrong_try_again)
+        }else {
             binding.errorMessage = errorBody.error.message
         }
     }

@@ -34,8 +34,8 @@ fun <T> Fragment.startActivity(clazz: Class<T>) {
     context?.startActivity(Intent(context, clazz))
 }
 
-fun <T> Context.startActivityForResult(clazz: Class<T>, requestCode: Int) {
-    (this as Activity).startActivityForResult(Intent(this, clazz), requestCode)
+fun Context.startActivityForResult(intent: Intent, requestCode: Int) {
+    (this as Activity).startActivityForResult(intent, requestCode)
 }
 
 fun <T> Fragment.startActivityForResult(clazz: Class<T>, requestCode: Int) {

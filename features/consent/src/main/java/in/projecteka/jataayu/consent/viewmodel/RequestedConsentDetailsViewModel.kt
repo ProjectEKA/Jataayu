@@ -12,6 +12,7 @@ import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.util.extension.EMPTY
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MediatorLiveData
 
 class RequestedConsentDetailsViewModel(private val repository: ConsentRepository,
@@ -21,6 +22,7 @@ class RequestedConsentDetailsViewModel(private val repository: ConsentRepository
     val linkedAccountsResponse = PayloadLiveData<LinkedAccountsResponse>()
     val consentArtifactResponse = PayloadLiveData<ConsentArtifactResponse>()
     val consentDenyResponse = PayloadLiveData<Void>()
+    var grantConsentAfterGettingLinkedAccountsEvent = ObservableBoolean(false)
 
     internal var selectedProviderName = String.EMPTY
 
