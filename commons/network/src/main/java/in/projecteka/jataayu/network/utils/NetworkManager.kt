@@ -1,10 +1,9 @@
-package `in`.projecteka.jataayu.network
+package `in`.projecteka.jataayu.network.utils
 
 import `in`.projecteka.jataayu.network.interceptor.HostSelectionInterceptor
 import `in`.projecteka.jataayu.network.interceptor.NetworkConnectionInterceptor
 import `in`.projecteka.jataayu.network.interceptor.RequestInterceptor
 import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
-import `in`.projecteka.jataayu.presentation.ui.activity.NoInternetConnectionActivity
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.CONNECT_TIMEOUT
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCK_WEB_SERVER_TEST_URL
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.READ_TIMEOUT
@@ -35,13 +34,24 @@ import javax.net.ssl.X509TrustManager
 
 class NetworkManager(val context: Context): KoinComponent {
 
+
     private val isTestingMode: Boolean
         get() = context.javaClass.simpleName != "JataayuApp"
     private val gson: Gson
         get() = GsonBuilder().create()
 
+    companion object {
+        var isOffline: Boolean = false
+        private set
+    }
 
 
+    fun createNetworkClient(
+        credentialsRepository: CredentialsRepository,
+        debug: Boolean = false
+    ): Retrofit {
+        return buildRetrofitClient(getBaseUrl(), httpClient(debug, context, credentialsRepository))
+    }
 
     fun hasInternetConnection(): Boolean {
         val connectivityManager =
@@ -51,13 +61,6 @@ class NetworkManager(val context: Context): KoinComponent {
             .getNetworkCapabilities(network)
         return (capabilities != null
                 && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))
-    }
-
-    fun createNetworkClient(
-        credentialsRepository: CredentialsRepository,
-        debug: Boolean = false
-    ): Retrofit {
-        return buildRetrofitClient(getBaseUrl(), httpClient(debug, context, credentialsRepository))
     }
 
 
@@ -117,7 +120,7 @@ class NetworkManager(val context: Context): KoinComponent {
         }
         addInvalidSessionRedirectInterceptor(context, context.getBaseUrl(), clientBuilder)
         addResponseCacheInterceptor(clientBuilder, context)
-        addNoInternetConnectionInterceptor(context, clientBuilder)
+        addNoInternetConnectionInterceptor(clientBuilder)
         return clientBuilder.build()
     }
 
@@ -142,7 +145,6 @@ class NetworkManager(val context: Context): KoinComponent {
     }
 
     private fun addNoInternetConnectionInterceptor(
-        context: Context,
         clientBuilder: OkHttpClient.Builder
     ) {
         clientBuilder.addInterceptor(NetworkConnectionInterceptor())
@@ -163,10 +165,6 @@ class NetworkManager(val context: Context): KoinComponent {
             .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-    }
-
-    fun showInternetScreen(retryCompletion: (() -> Unit)?) {
-        NoInternetConnectionActivity.start(context, retryCompletion)
     }
 }
 

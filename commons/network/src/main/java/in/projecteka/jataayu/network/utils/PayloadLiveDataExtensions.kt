@@ -4,6 +4,7 @@ import `in`.projecteka.jataayu.network.interceptor.NoConnectivityException
 import `in`.projecteka.jataayu.network.model.Error
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import okhttp3.ResponseBody
+import org.greenrobot.eventbus.EventBus
 import org.koin.core.context.GlobalContext.get
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,18 +37,15 @@ fun <T> PayloadLiveData<T>.isLoading(): Boolean {
     } else false
 }
 
-
+// create pending API queue only once at the the package level
 private val pendingAPICallQueue = PendingAPICallQueue()
-private var isNoNetworkScreenShown = false
 
 fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
-    networkManager?.let {
-        if(it.hasInternetConnection())
-            {
-                showNoInternetScreen(call)
-                return this
-            }
-        }
+
+    if(!canFetch()) {
+        showNoInternetScreen(call)
+        return this
+    }
 
     // API we need to check internet
 
@@ -90,15 +88,11 @@ fun <T> PayloadLiveData<T>.fetch(call: Call<T>): PayloadLiveData<T> {
 private fun <T> PayloadLiveData<T>.showNoInternetScreen(call: Call<T>) {
 
     pendingAPICallQueue.add(this, call)
-    if (!isNoNetworkScreenShown) {
-        networkManager?.let {
-            it.showInternetScreen {
-                pendingAPICallQueue.execute<T>()
-                isNoNetworkScreenShown = false
-            }
-        }
+    val noInternetEvent = NoInternetMessage {
+        pendingAPICallQueue.execute<T>()
     }
-    isNoNetworkScreenShown = true
+    EventBus.getDefault().post(noInternetEvent)
 }
 
+data class NoInternetMessage(val retryCallBack: () -> Unit)
 

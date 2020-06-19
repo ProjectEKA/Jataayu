@@ -9,9 +9,8 @@ import `in`.projecteka.jataayu.consent.repository.UserVerificationRepositoryImpl
 import `in`.projecteka.jataayu.core.remote.UserAccountApis
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepositoryImpl
-import `in`.projecteka.jataayu.network.BuildConfig
-import `in`.projecteka.jataayu.network.NetworkManager
 import `in`.projecteka.jataayu.network.model.ErrorResponse
+import `in`.projecteka.jataayu.network.utils.NetworkManager
 import `in`.projecteka.jataayu.provider.remote.ProviderApis
 import `in`.projecteka.jataayu.provider.repository.ProviderRepository
 import `in`.projecteka.jataayu.provider.repository.ProviderRepositoryImpl
@@ -25,6 +24,7 @@ import `in`.projecteka.jataayu.util.repository.*
 import `in`.projecteka.resetpassword.remote.ResetPasswordApis
 import `in`.projecteka.resetpassword.repository.ResetPasswordRepository
 import `in`.projecteka.resetpassword.repository.ResetPasswordRepositoryImpl
+import androidx.databinding.library.BuildConfig
 import okhttp3.ResponseBody
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -50,7 +50,7 @@ val repositoryModule = module {
 
 val networkModule = module {
     single { NetworkManager(get()) }
-    single { get<NetworkManager>().createNetworkClient(get(),BuildConfig.DEBUG) }
+    single { get<NetworkManager>().createNetworkClient(get(), BuildConfig.DEBUG) }
     single<Converter<ResponseBody, ErrorResponse>> {
         get<Retrofit>().responseBodyConverter(
             ErrorResponse::class.java,

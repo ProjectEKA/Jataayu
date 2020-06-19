@@ -1,6 +1,5 @@
-package `in`.projecteka.jataayu.network
+package `in`.projecteka.jataayu.network.interceptor
 
-import `in`.projecteka.jataayu.network.interceptor.UnauthorisedUserRedirectInterceptor
 import android.content.Context
 import com.google.gson.JsonObject
 import okhttp3.OkHttpClient

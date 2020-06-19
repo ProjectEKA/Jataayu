@@ -23,9 +23,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verifyNoInteractions
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
@@ -59,6 +57,7 @@ class ProviderSearchViewModelTest {
     @Mock
     private lateinit var userAccountsRepository: UserAccountsRepository
 
+
     private lateinit var viewModel: ProviderSearchViewModel
 
     @Before
@@ -69,23 +68,23 @@ class ProviderSearchViewModelTest {
 
     @After
     fun tearDown() {
-        Mockito.verifyNoMoreInteractions(repository, providerInfoCall, patientsInfoCall)
-        Mockito.validateMockitoUsage()
+        verifyNoMoreInteractions(repository, providerInfoCall, patientsInfoCall)
+        validateMockitoUsage()
     }
 
     @Test
     fun shouldFetchProvidersIfProvidersListIsEmpty() {
         val query = "Health"
         val providers = getData("health_insurance_providers.json")
-        Mockito.`when`(repository.getProviders(query)).thenReturn(providerInfoCall)
-        Mockito.`when`(providerInfoCall.enqueue(ArgumentMatchers.any()))
+        `when`(repository.getProviders(query)).thenReturn(providerInfoCall)
+        `when`(providerInfoCall.enqueue(ArgumentMatchers.any()))
             .then { invocation ->
                 val callback = invocation.arguments[0] as Callback<List<ProviderInfo>>
                 callback.onResponse(providerInfoCall, Response.success(providers))
             }
-        viewModel.getProviders(query)
-        Mockito.verify(repository).getProviders(query)
-        Mockito.verify(providerInfoCall).enqueue(ArgumentMatchers.any())
+        viewModel.getProviders(query, responseCallback)
+        verify(repository).getProviders(query)
+        verify(providerInfoCall).enqueue(ArgumentMatchers.any())
         assertEquals(providers, viewModel.providers.value)
     }
 
@@ -96,7 +95,7 @@ class ProviderSearchViewModelTest {
         val providers = getData("health_insurance_providers.json")
         viewModel.providersList = ArrayList<ProviderInfo>(providers)
 
-        viewModel.getProviders(query)
+        viewModel.getProviders(query, responseCallback)
         verifyNoInteractions(repository)
     }
 
@@ -133,15 +132,15 @@ class ProviderSearchViewModelTest {
             TestUtils.readFile("patient_info_from_providers.json"),
             PatientDiscoveryResponse::class.java
         )!!
-        Mockito.`when`(repository.getPatientAccounts(request)).thenReturn(patientsInfoCall)
-        Mockito.`when`(patientsInfoCall.enqueue(ArgumentMatchers.any()))
+        `when`(repository.getPatientAccounts(request)).thenReturn(patientsInfoCall)
+        `when`(patientsInfoCall.enqueue(ArgumentMatchers.any()))
             .then { invocation ->
                 val callback = invocation.arguments[0] as Callback<PatientDiscoveryResponse>
                 callback.onResponse(patientsInfoCall, Response.success(patients))
             }
         viewModel.getPatientAccounts(request, responseCallback)
-        Mockito.verify(repository).getPatientAccounts(request)
-        Mockito.verify(patientsInfoCall).enqueue(ArgumentMatchers.any())
+        verify(repository).getPatientAccounts(request)
+        verify(patientsInfoCall).enqueue(ArgumentMatchers.any())
         return patients
     }
 }

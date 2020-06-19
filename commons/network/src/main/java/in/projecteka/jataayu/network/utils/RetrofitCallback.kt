@@ -15,9 +15,7 @@ abstract class RetrofitCallback<T> : Callback<T?> {
     private val ERROR_CODE_UNAUTHORIZED = 1017
 
 
-    constructor() {
 
-    }
 
     constructor(responseCallback: ResponseCallback?) {
         this.responseCallback = responseCallback
