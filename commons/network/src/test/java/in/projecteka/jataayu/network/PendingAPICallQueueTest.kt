@@ -59,7 +59,7 @@ class PendingAPICallQueueTest: KoinTest {
             loadKoinModules(networkModule)
         }
         `when`(call.clone()).thenReturn(call)
-        doNothing().`when`(context).startActivity(ArgumentMatchers.any())
+//          doNothing().`when`(context).startActivity(ArgumentMatchers.any())
     }
 
     @After
@@ -90,11 +90,11 @@ class PendingAPICallQueueTest: KoinTest {
 
     @Test
     fun `test should execute all pending api call when internet connection available`() {
-        `when`(networkManager.hasInternetConnection()).thenReturn(true)
+        //`when`(networkManager.hasInternetConnection()).thenReturn(true)
         pendingAPICallQueue.add(liveData, call)
         pendingAPICallQueue.execute<ErrorResponse>()
         verify(liveData, times(1)).fetch(call)
-        verify(liveData, times(1)).loading(true)
+        verify(liveData, times(2)).loading(true)
         assertFalse(pendingAPICallQueue.hasPendingAPICall)
     }
 

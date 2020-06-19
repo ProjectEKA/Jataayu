@@ -5,6 +5,9 @@ import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.RequestStatus
+import `in`.projecteka.jataayu.network.BuildConfig
+import `in`.projecteka.jataayu.network.NetworkManager
+import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
@@ -24,20 +27,22 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
+import okhttp3.ResponseBody
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.File
+import retrofit2.*
 
 @RunWith(MockitoJUnitRunner::class)
 class RequestedConsentListViewModelTest {
@@ -83,7 +88,9 @@ class RequestedConsentListViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-
+        startKoin {
+            loadKoinModules(networkModule)
+        }
         `when`(connectivityManager.activeNetwork).thenReturn(network)
         `when`(connectivityManager.getNetworkCapabilities(network)).thenReturn(networkCapabilities)
         `when`(networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)).thenReturn(
@@ -103,6 +110,7 @@ class RequestedConsentListViewModelTest {
     @After
     fun tearDown() {
         requestedListViewModel.consentListResponse.removeObserver(consentsFetchObserver)
+        stopKoin()
     }
 
     @Test
@@ -267,4 +275,15 @@ class RequestedConsentListViewModelTest {
             }
     }
 
+}
+
+val networkModule = module {
+    single { NetworkManager(get()) }
+    single { get<NetworkManager>().createNetworkClient(get(), BuildConfig.DEBUG) }
+    single<Converter<ResponseBody, ErrorResponse>> {
+        get<Retrofit>().responseBodyConverter(
+            ErrorResponse::class.java,
+            arrayOfNulls<Annotation>(0)
+        )
+    }
 }

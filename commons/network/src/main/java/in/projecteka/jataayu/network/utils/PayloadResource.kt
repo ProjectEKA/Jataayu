@@ -22,5 +22,5 @@ data class Loading<T>(val isLoading: Boolean, val message: String? = null) : Pay
 
 class ContextLiveData<T>: MutableLiveData<T>(), KoinComponent {
 
-    val networkManager: NetworkManager by inject()
+    val networkManager: NetworkManager? by inject()
 }

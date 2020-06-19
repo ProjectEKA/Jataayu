@@ -69,7 +69,7 @@ fun startPinVerification(context: Context, intentDefinition: IntentDefinition? =
     context.startActivity(defaultIntentDefinition(context, ACTIVITY_PIN_VERIFICATION, intentDefinition))
 }
 
-fun startCreatePin(context: Context, resultCode: Int? = null, intentDefinition: IntentDefinition? = null) {
+fun startCreatePin(context: Context, intentDefinition: IntentDefinition? = null) {
     context.startActivity(defaultIntentDefinition(context, ACTIVITY_CREATE_PIN, intentDefinition))
 }
 
