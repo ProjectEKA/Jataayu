@@ -10,11 +10,3 @@ fun <T> Call<T>.observeOn(mutableLiveData: MutableLiveData<T>, responseCallback:
         }
     })
 }
-
-fun <T> Call<T>.observeOn(mutableLiveData: MutableLiveData<T>) {
-    enqueue(object : RetrofitCallback<T>() {
-        override fun observableLiveData(): MutableLiveData<T> {
-            return mutableLiveData
-        }
-    })
-}

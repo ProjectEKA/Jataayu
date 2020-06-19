@@ -42,8 +42,8 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
         const val OTP_LENGTH = 6
     }
 
-    fun getProviders(query: String) {
-        if (providersList.isEmpty()) providerRepository.getProviders(query).observeOn(providers)
+    fun getProviders(query: String, responseCallback: ResponseCallback) {
+        if (providersList.isEmpty()) providerRepository.getProviders(query).observeOn(providers, responseCallback)
         else providers.postValue(providersList.filter { it.hip.name.contains(query, true) })
     }
 
@@ -72,7 +72,7 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
             null, linkedAccounts, null),
         discoveryResponse.transactionId)
 
-        providerRepository.linkPatientAccounts(selectedAccountsResponse!!).observeOn(linkAccountsResponse, responseCallback)
+        providerRepository.linkPatientAccounts(selectedAccountsResponse).observeOn(linkAccountsResponse, responseCallback)
     }
 
     fun fetchProfileData() {

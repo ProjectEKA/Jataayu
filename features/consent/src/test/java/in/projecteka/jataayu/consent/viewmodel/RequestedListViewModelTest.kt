@@ -5,44 +5,30 @@ import `in`.projecteka.jataayu.consent.model.ConsentsListResponse
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.RequestStatus
-import `in`.projecteka.jataayu.network.BuildConfig
-import `in`.projecteka.jataayu.network.NetworkManager
-import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.util.TestUtils
-import `in`.projecteka.jataayu.util.constant.NetworkConstants
 import `in`.projecteka.jataayu.util.extension.fromJson
-import `in`.projecteka.jataayu.util.repository.CredentialsRepository
-import `in`.projecteka.jataayu.util.sharedPref.NETWORK_HOST
-import `in`.projecteka.jataayu.util.sharedPref.NETWORK_PREF
-import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Resources
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
-import okhttp3.ResponseBody
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.context.loadKoinModules
-import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
-import org.koin.dsl.module
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
-import retrofit2.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
 class RequestedConsentListViewModelTest {
@@ -65,38 +51,10 @@ class RequestedConsentListViewModelTest {
 
     private lateinit var consentsListResponse: ConsentsListResponse
 
-    @Mock
-    private lateinit var context: Context
-
-    @Mock
-    private lateinit var sharedPreferences: SharedPreferences
-
-    @Mock
-    private lateinit var network: Network
-
-    @Mock
-    private lateinit var connectivityManager: ConnectivityManager
-
-    @Mock
-    private lateinit var networkCapabilities: NetworkCapabilities
-
-    @Mock
-    private lateinit var credentialRepo: CredentialsRepository
-
-
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        startKoin {
-            loadKoinModules(networkModule)
-        }
-        `when`(connectivityManager.activeNetwork).thenReturn(network)
-        `when`(connectivityManager.getNetworkCapabilities(network)).thenReturn(networkCapabilities)
-        `when`(networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)).thenReturn(
-            true
-        )
-
         requestedListViewModel = RequestedListViewModel(repository)
         consentsListResponse = Gson()
             .fromJson(
@@ -273,17 +231,5 @@ class RequestedConsentListViewModelTest {
                 consentsListResponse = expectedResponse
                 callback.onResponse(call, Response.success(expectedResponse))
             }
-    }
-
-}
-
-val networkModule = module {
-    single { NetworkManager(get()) }
-    single { get<NetworkManager>().createNetworkClient(get(), BuildConfig.DEBUG) }
-    single<Converter<ResponseBody, ErrorResponse>> {
-        get<Retrofit>().responseBodyConverter(
-            ErrorResponse::class.java,
-            arrayOfNulls<Annotation>(0)
-        )
     }
 }

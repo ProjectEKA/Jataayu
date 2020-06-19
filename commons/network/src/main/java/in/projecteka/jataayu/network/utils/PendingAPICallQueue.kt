@@ -13,14 +13,15 @@ class PendingAPICallQueue {
     get() = pendingAPICallMap.isNotEmpty()
 
     fun <T> add(liveData: PayloadLiveData<T>, call: Call<T>) {
-        pendingAPICallMap[liveData] = call
+        pendingAPICallMap[liveData] = call.clone()
     }
 
     fun <T> execute() {
-        pendingAPICallMap.map {
-            (it.key as PayloadLiveData<T>).fetch((it.value as Call<T>).clone())
+        pendingAPICallMap.forEach() {
+            (it.key as PayloadLiveData<T>).fetch((it.value as Call<T>))
+        }.apply {
+            clearQueue()
         }
-        clearQueue()
     }
 
     fun clearQueue() {

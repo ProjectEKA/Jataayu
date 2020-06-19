@@ -277,7 +277,6 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             if (requestCode == 201) {
                 viewModel.preferenceRepository.pinCreated = true
                 grantConsent()
-                Thread.sleep(3000)
             }  else if (requestCode == 301){
                 grantConsent()
             }

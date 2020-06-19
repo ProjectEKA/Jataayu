@@ -1,6 +1,6 @@
 package `in`.projecteka.jataayu.network.interceptor
 
-import `in`.projecteka.jataayu.network.NetworkManager
+import `in`.projecteka.jataayu.network.utils.NetworkManager
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
