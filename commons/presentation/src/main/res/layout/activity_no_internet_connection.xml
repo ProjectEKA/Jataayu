@@ -69,7 +69,7 @@
 
 
             <com.google.android.material.button.MaterialButton
-                    style="@style/Button.Secondary"
+                    style="@style/Button"
                     android:layout_marginBottom="@dimen/content_margin_48"
                     android:text="@string/button_retry"
                     android:layout_marginLeft="@dimen/content_margin_medium"
@@ -80,7 +80,6 @@
                     android:layout_width="match_parent"
                     android:id="@+id/btn_retry"
                     android:onClick="onRetryClick"
-                    android:enabled="@{isOffline}"
                 />
 
 
