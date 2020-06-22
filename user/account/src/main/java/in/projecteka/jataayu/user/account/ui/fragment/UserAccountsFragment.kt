@@ -1,7 +1,6 @@
 package `in`.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
-import `in`.projecteka.jataayu.core.model.ProviderAddedEvent
 import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.presentation.adapter.ExpandableRecyclerViewAdapter
@@ -10,6 +9,7 @@ import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.ProviderAddedLiveData
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentUserAccountBinding
 import `in`.projecteka.jataayu.user.account.ui.activity.ProfileActivity
@@ -22,15 +22,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserAccountsFragment : BaseFragment(), ItemClickCallback {
     private lateinit var binding: FragmentUserAccountBinding
     private val viewModel: UserAccountsViewModel by viewModel()
     private var listItems: List<IDataBindingModel> = emptyList()
-    private val eventBusInstance = EventBus.getDefault()
 
     companion object {
         fun newInstance(): UserAccountsFragment {
@@ -78,14 +75,6 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
     }
 
     private fun initObservers() {
-        /*viewModel.updateProfile.observe(this, Observer {
-            viewModel.preferenceRepository.pinCreated = it.hasTransactionPin
-            it.verifiedIdentifiers.forEach { identifier ->
-                if (identifier.type == VERIFIED_IDENTIFIER_MOBILE) {
-                    viewModel.preferenceRepository.mobileIdentifier = identifier.value
-                }
-            }
-        })*/
         viewModel.updateLinks.observe(viewLifecycleOwner, Observer {
             listItems = it
             binding.rvUserAccounts.apply {
@@ -116,6 +105,13 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
             val hipList = links.map { it.hip }
             getNamesOfHipList(hipList)
         })
+
+        ProviderAddedLiveData.providerAddedEvent.observe(viewLifecycleOwner, Observer {
+            if (it){
+                ProviderAddedLiveData.providerAddedEvent.value = false
+                viewModel.fetchAll()
+            }
+        })
     }
 
     override fun onItemClick(
@@ -124,27 +120,6 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
     ) {
         viewModel.showProgress(true)
     }
-
-    override fun onDestroy() {
-        eventBusInstance.unregister(this)
-        super.onDestroy()
-    }
-
-    @Subscribe
-    public fun onEvent(providerAddedEvent: ProviderAddedEvent) {
-        when (providerAddedEvent) {
-            ProviderAddedEvent.PROVIDER_ADDED -> {
-                viewModel.getUserAccounts()
-            }
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (!eventBusInstance.isRegistered(this))
-            eventBusInstance.register(this)
-    }
-
 
     private fun getNamesOfHipList(idList: List<HipHiuIdentifiable>) {
         val hipHiuNameResponse = viewModel.getHipHiuNamesByIdList(idList)

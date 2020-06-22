@@ -10,6 +10,7 @@ import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.READ_TIM
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.WRITE_TIMEOUT
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
+import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -32,7 +33,7 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class NetworkManager(val context: Context): KoinComponent {
+class NetworkManager(val context: Application): KoinComponent {
 
 
     private val isTestingMode: Boolean

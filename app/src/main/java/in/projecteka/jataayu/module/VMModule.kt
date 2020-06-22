@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.module
 
 import `in`.projecteka.jataayu.consent.viewmodel.*
 import `in`.projecteka.jataayu.presentation.ui.viewmodel.IntroScreensActivityViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.ProviderAddedLiveData
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderActivityViewModel
 import `in`.projecteka.jataayu.provider.viewmodel.ProviderSearchViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.*
@@ -49,7 +50,7 @@ val viewModelModule = module {
     viewModel { GrantedConsentDetailsViewModel(get()) }
     viewModel { ConsentDetailsActivityViewModel() }
 
-    //Provider Search
+    //Provider
     viewModel { ProviderSearchViewModel(get(), get(), get(), get()) }
     viewModel { ProviderActivityViewModel() }
 

@@ -20,6 +20,7 @@ import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.ProviderAddedLiveData
 import `in`.projecteka.jataayu.provider.ui.handler.ConsentDetailsClickHandler
 import `in`.projecteka.jataayu.util.ACTIVITY_PROVIDER
 import `in`.projecteka.jataayu.util.defaultIntentDefinition
@@ -308,6 +309,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
             } else if (requestCode == REQUEST_CODE_LINK_PROVIDER) {
                 viewModel.grantConsentAfterGettingLinkedAccountsEvent.set(true)
                 viewModel.getLinkedAccounts()
+                ProviderAddedLiveData.providerAddedEvent.value = true
             }
         }
     }
