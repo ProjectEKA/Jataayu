@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewModel"
-            type="in.projecteka.jataayu.presentation.IntroScreensActivityViewModel" />
+            type="in.projecteka.jataayu.presentation.ui.viewmodel.IntroScreensActivityViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"

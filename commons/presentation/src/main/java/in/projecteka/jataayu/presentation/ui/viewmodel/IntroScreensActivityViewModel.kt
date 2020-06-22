@@ -1,5 +1,6 @@
-package `in`.projecteka.jataayu.presentation
+package `in`.projecteka.jataayu.presentation.ui.viewmodel
 
+import `in`.projecteka.jataayu.presentation.R
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import android.widget.ImageView
@@ -14,8 +15,10 @@ class IntroScreensActivityViewModel(val preferenceRepository: PreferenceReposito
     val getStartedEvent = SingleLiveEvent<Void>()
     val setViewpagerCurrentItemEvent = SingleLiveEvent<Int>()
     var layouts: Array<Int>? = null
-    val circleActive = R.drawable.circle_without_border
-    val circleInactive = R.drawable.circle_with_border
+    val circleActive =
+        R.drawable.circle_without_border
+    val circleInactive =
+        R.drawable.circle_with_border
     val next = MutableLiveData<String>()
     val layoutParams = LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -26,7 +29,12 @@ class IntroScreensActivityViewModel(val preferenceRepository: PreferenceReposito
 
     fun initialSetup() {
         layoutParams.setMargins(16, 16, 16, 16)
-        layouts = arrayOf(R.layout.intro_screen1, R.layout.intro_screen2, R.layout.intro_screen3, R.layout.intro_screen4)
+        layouts = arrayOf(
+            R.layout.intro_screen1,
+            R.layout.intro_screen2,
+            R.layout.intro_screen3,
+            R.layout.intro_screen4
+        )
         addBottomDotsEvent.value = 0
         setViewpagerCurrentItemEvent.value = 0
     }

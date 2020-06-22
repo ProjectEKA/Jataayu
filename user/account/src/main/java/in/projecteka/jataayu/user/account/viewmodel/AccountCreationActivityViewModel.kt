@@ -1,7 +1,7 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
-import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
@@ -12,6 +12,8 @@ class AccountCreationActivityViewModel(val repository: UserAccountsRepository,
 
     companion object {
     }
+
+    
 
     var ayushmanId = ""
     var fullName = ""

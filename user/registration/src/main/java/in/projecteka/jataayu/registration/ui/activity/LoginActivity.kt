@@ -1,6 +1,6 @@
 package `in`.projecteka.jataayu.registration.ui.activity
 
-import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.presentation.ui.activity.BaseActivity
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.ActivityLoginBinding
 import `in`.projecteka.jataayu.registration.ui.fragment.ConsentManagerIDInputFragment
 import `in`.projecteka.jataayu.registration.ui.fragment.PasswordInputFragment

@@ -1,6 +1,6 @@
 package `in`.projecteka.resetpassword.viewmodel
 
-import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 
 class ResetPasswordActivityViewModel: BaseViewModel() {

@@ -21,9 +21,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
@@ -88,8 +86,8 @@ class UserVerificationViewModelTest {
 
 
         userVerificationViewModel.verifyUser("1234", ConsentScopeType.SCOPE_GRAND)
-        Mockito.verify(userVerificationRepository).verifyUser(userVerificationRequestForGrand)
-        Mockito.verify(call).enqueue(any())
+        verify(userVerificationRepository).verifyUser(userVerificationRequestForGrand)
+        verify(call).enqueue(any())
     }
 
     @Test
@@ -104,8 +102,8 @@ class UserVerificationViewModelTest {
 
 
         userVerificationViewModel.verifyUser("1234", ConsentScopeType.SCOPE_REVOKE)
-        Mockito.verify(userVerificationRepository).verifyUser(userVerificationRequestForRevoke)
-        Mockito.verify(call).enqueue(any())
+        verify(userVerificationRepository).verifyUser(userVerificationRequestForRevoke)
+        verify(call).enqueue(any())
     }
 
     @Test
@@ -120,16 +118,16 @@ class UserVerificationViewModelTest {
 
 
         userVerificationViewModel.verifyUser("1234", ConsentScopeType.SCOPE_GRAND)
-        Mockito.verify(userVerificationRepository).verifyUser(userVerificationRequestForGrand)
-        Mockito.verify(call).enqueue(any())
-        verify(UserVerificationFetchObserver, Mockito.times(1)).onChanged(Loading(true))
-        verify(UserVerificationFetchObserver, Mockito.times(1)).onChanged(Loading(false))
-        verify(UserVerificationFetchObserver, Mockito.times(3)).onChanged(PartialFailure(any()))
+        verify(userVerificationRepository).verifyUser(userVerificationRequestForGrand)
+        verify(call).enqueue(any())
+        verify(UserVerificationFetchObserver, times(1)).onChanged(Loading(true))
+        verify(UserVerificationFetchObserver, times(1)).onChanged(Loading(false))
+        verify(UserVerificationFetchObserver, times(3)).onChanged(PartialFailure(any()))
     }
 
     @After
     fun tearDown() {
-        Mockito.verifyNoMoreInteractions(userVerificationRepository)
-        Mockito.validateMockitoUsage()
+        verifyNoMoreInteractions(userVerificationRepository)
+        validateMockitoUsage()
     }
 }

@@ -11,7 +11,7 @@ class HostSelectionInterceptor(private val context: Context) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val url = context.getBaseUrl()!!
+        val url = context.getBaseUrl()
         val newRequest = url.toHttpUrlOrNull()?.let {
             val newUrl = chain.request().url.newBuilder()
                     .scheme(it.scheme)

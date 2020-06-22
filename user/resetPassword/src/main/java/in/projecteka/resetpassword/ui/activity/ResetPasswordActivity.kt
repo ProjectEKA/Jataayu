@@ -2,7 +2,7 @@ package `in`.projecteka.resetpassword.ui.activity
 
 import `in`.projecteka.forgotpassword.R
 import `in`.projecteka.forgotpassword.databinding.ActivityResetPasswordBinding
-import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.presentation.ui.activity.BaseActivity
 import `in`.projecteka.resetpassword.ui.fragment.ResetPasswordFragment
 import `in`.projecteka.resetpassword.ui.fragment.ResetPasswordOtpFragment
 import `in`.projecteka.resetpassword.viewmodel.ResetPasswordActivityViewModel

@@ -6,7 +6,7 @@ import androidx.core.content.edit
 
 const val NETWORK_PREF = "NETWORK_PREF_FILE"
 private const val ENVIRONMENT = "ENVIRONMENT"
-private const val NETWORK_HOST = "NETWORK_PREF_HOST"
+const val NETWORK_HOST = "NETWORK_PREF_HOST"
 
 fun Context.setNetworkPref(environmentIndex: Int, endpoint: String) {
     val sharedPreferences = getSharedPreferences(NETWORK_PREF, Context.MODE_PRIVATE)

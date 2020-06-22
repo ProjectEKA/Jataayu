@@ -2,7 +2,7 @@ package `in`.projecteka.jataayu.ui.activity
 
 import `in`.projecteka.jataayu.R
 import `in`.projecteka.jataayu.presentation.databinding.BaseActivityBinding
-import `in`.projecteka.jataayu.presentation.ui.BaseActivity
+import `in`.projecteka.jataayu.presentation.ui.activity.BaseActivity
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.annotation.RestrictTo

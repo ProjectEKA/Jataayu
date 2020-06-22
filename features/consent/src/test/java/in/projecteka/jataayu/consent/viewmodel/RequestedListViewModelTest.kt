@@ -20,6 +20,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.mockito.Mockito.*
@@ -67,6 +68,7 @@ class RequestedConsentListViewModelTest {
     @After
     fun tearDown() {
         requestedListViewModel.consentListResponse.removeObserver(consentsFetchObserver)
+        stopKoin()
     }
 
     @Test
@@ -230,5 +232,4 @@ class RequestedConsentListViewModelTest {
                 callback.onResponse(call, Response.success(expectedResponse))
             }
     }
-
 }

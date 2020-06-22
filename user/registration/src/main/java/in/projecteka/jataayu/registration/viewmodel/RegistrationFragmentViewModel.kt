@@ -1,11 +1,8 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
-import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
-import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.COUNTRY_CODE_SEPARATOR
-import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.INDIA_COUNTRY_CODE
-import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.MOBILE_IDENTIFIER_TYPE
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View

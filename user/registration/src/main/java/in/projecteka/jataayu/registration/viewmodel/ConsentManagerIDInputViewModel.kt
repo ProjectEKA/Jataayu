@@ -5,7 +5,7 @@ import `in`.projecteka.jataayu.core.model.LoginType
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
-import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import android.text.Editable

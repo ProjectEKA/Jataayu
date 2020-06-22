@@ -4,9 +4,11 @@ import `in`.projecteka.featuresprovider.R
 import `in`.projecteka.featuresprovider.databinding.VerityOtpFragmentBinding
 import `in`.projecteka.jataayu.core.ProviderLinkType
 import `in`.projecteka.jataayu.core.handler.OtpSubmissionClickHandler
+import `in`.projecteka.jataayu.network.interceptor.NoConnectivityException
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.ResponseCallback
 import `in`.projecteka.jataayu.presentation.showErrorDialog
+import `in`.projecteka.jataayu.presentation.ui.activity.NoInternetConnectionActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.model.Otp
 import `in`.projecteka.jataayu.provider.model.SuccessfulLinkingResponse
@@ -27,6 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class VerifyOtpFragment : BaseFragment(),
     OtpSubmissionClickHandler, ResponseCallback {
     private lateinit var binding: VerityOtpFragmentBinding
+    private var isNoNetworkScreenShown = false
 
     companion object {
         fun newInstance() = VerifyOtpFragment()
@@ -112,6 +115,17 @@ class VerifyOtpFragment : BaseFragment(),
 
     override fun onFailure(t: Throwable) {
         viewModel.showProgress(false)
+        if (t is NoConnectivityException) {
+            if (!isNoNetworkScreenShown) {
+                NoInternetConnectionActivity.start(context!!) {
+                    onSubmitOtp(View(context))
+                    isNoNetworkScreenShown = false
+                }
+                isNoNetworkScreenShown = true
+            }
+        } else {
+            context?.showErrorDialog(t.localizedMessage)
+        }
         context?.showErrorDialog(t.localizedMessage)
     }
 }

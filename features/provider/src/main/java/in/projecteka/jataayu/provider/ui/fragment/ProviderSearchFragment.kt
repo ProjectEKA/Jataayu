@@ -6,6 +6,7 @@ import `in`.projecteka.jataayu.core.model.Hip
 import `in`.projecteka.jataayu.core.model.ProviderInfo
 import `in`.projecteka.jataayu.core.model.Request
 import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
+import `in`.projecteka.jataayu.network.interceptor.NoConnectivityException
 import `in`.projecteka.jataayu.network.model.ErrorResponse
 import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.PartialFailure
@@ -14,6 +15,7 @@ import `in`.projecteka.jataayu.presentation.callback.IDataBindingModel
 import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.showErrorDialog
+import `in`.projecteka.jataayu.presentation.ui.activity.NoInternetConnectionActivity
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
 import `in`.projecteka.jataayu.provider.callback.TextWatcherCallback
 import `in`.projecteka.jataayu.provider.domain.ProviderNameWatcher
@@ -54,11 +56,13 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         const val UNVERIFIED_IDENTIFIER_MEDICAL_RECORD = "MR"
 
     }
+
     private val viewModel: ProviderSearchViewModel by sharedViewModel()
     private val parentVM: ProviderActivityViewModel by sharedViewModel()
     private lateinit var lastQuery: String
-    private lateinit var selectedProvider : ProviderInfo
+    private lateinit var selectedProvider: ProviderInfo
     private lateinit var providersList: ProviderSearchAdapter
+    private var isNoNetworkScreenShown = false
 
     private val providersObserver = Observer<List<ProviderInfo>> { providerNames ->
         providersList.updateData(lastQuery, providerNames)
@@ -119,7 +123,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         super.onViewCreated(view, savedInstanceState)
         observeProviders()
         initObservers()
-        parentVM.showSnackbarevent.observe(this, Observer{
+        parentVM.showSnackbarevent.observe(this, Observer {
             if (it) {
                 showSnackbar(getString(R.string.registered_successfully))
             }
@@ -131,7 +135,12 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     private fun showSnackbar(message: String) {
         val spannableString = SpannableString(message)
 
-        spannableString.setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(
+            ForegroundColorSpan(Color.WHITE),
+            0,
+            message.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         val snackbar = Snackbar.make(provider_container, spannableString, 2000)
         snackbar.anchorView = btn_search
         snackbar.show()
@@ -163,7 +172,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
         }
 
     override fun onTextChanged(changedText: CharSequence?, clearButtonVisibility: Int) {
-        viewModel.getProviders(changedText.toString())
+        sendProviderSearchRequest(changedText.toString())
         lastQuery = changedText.toString()
         binding.clearButtonVisibility = VISIBLE
     }
@@ -192,11 +201,22 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     }
 
     override fun onSearchButtonClick(view: View) {
-        var unverifiedIdentifiers= ArrayList<UnverifiedIdentifier>()
-        if (binding.etPatientId.text.toString().isNotEmpty()){
-            unverifiedIdentifiers.add(UnverifiedIdentifier(binding.etPatientId.text.toString(), UNVERIFIED_IDENTIFIER_MEDICAL_RECORD))
+        val unverifiedIdentifiers = ArrayList<UnverifiedIdentifier>()
+        if (binding.etPatientId.text.toString().isNotEmpty()) {
+            unverifiedIdentifiers.add(
+                UnverifiedIdentifier(
+                    binding.etPatientId.text.toString(),
+                    UNVERIFIED_IDENTIFIER_MEDICAL_RECORD
+                )
+            )
         }
-        viewModel.getPatientAccounts(Request(viewModel.uuidRepository.generateUUID(), Hip(selectedProvider.hip.getId(), selectedProvider.hip.name), unverifiedIdentifiers), this)
+        viewModel.getPatientAccounts(
+            Request(
+                viewModel.uuidRepository.generateUUID(),
+                Hip(selectedProvider.hip.getId(), selectedProvider.hip.name),
+                unverifiedIdentifiers
+            ), this
+        )
         viewModel.showProgress(true, R.string.looking_up_info)
         observePatients()
     }
@@ -204,10 +224,14 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
     private fun observePatients() =
         viewModel.patientDiscoveryResponse.observe(this, patientAccountsObserver)
 
+    private fun sendProviderSearchRequest(searchText: String) {
+        viewModel.getProviders(searchText, this)
+    }
+
     private fun initObservers() {
 
         binding.viewDetails.setOnClickListener {
-           updateViewDetailsVisibility()
+            updateViewDetailsVisibility()
         }
         viewModel.userProfileResponse.observe(this, Observer {
             when (it) {
@@ -227,7 +251,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
 
         viewModel.myProfile.observe(this, Observer { profile ->
             binding.setGender(
-                if(profile.gender == "M") {
+                if (profile.gender == "M") {
                     getString(R.string.male)
                 } else {
                     getString(R.string.female)
@@ -236,7 +260,7 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
             binding.setFullName(profile.name)
             profile.yearOfBirth?.let {
                 binding.setYearOfBirth(it.toString())
-            }?: kotlin.run {
+            } ?: kotlin.run {
                 binding.yearOfBirth.visibility = GONE
                 binding.yearOfBirthLbl.visibility = GONE
             }
@@ -268,7 +292,12 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
             binding.viewDetails.setCompoundDrawablesWithIntrinsicBounds(null, null, arrowTop, null)
         } else {
             val arrowRight = ContextCompat.getDrawable(context!!, R.drawable.ic_arrow_right)
-            binding.viewDetails.setCompoundDrawablesWithIntrinsicBounds(null, null, arrowRight, null)
+            binding.viewDetails.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                arrowRight,
+                null
+            )
         }
     }
 
@@ -278,11 +307,26 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
 
     override fun onFailure(errorBody: ErrorResponse) {
         viewModel.showProgress(false)
-        context?.showAlertDialog(getString(R.string.failure), errorBody.error.message, getString(android.R.string.ok))
+        context?.showAlertDialog(
+            getString(R.string.failure),
+            errorBody.error.message,
+            getString(android.R.string.ok)
+        )
     }
 
     override fun onFailure(t: Throwable) {
+
         viewModel.showProgress(false)
-        context?.showErrorDialog(t.localizedMessage)
+        if (t is NoConnectivityException) {
+            if (!isNoNetworkScreenShown) {
+                NoInternetConnectionActivity.start(context!!) {
+                    sendProviderSearchRequest(lastQuery)
+                    isNoNetworkScreenShown = false
+                }
+                isNoNetworkScreenShown = true
+            }
+        } else {
+            context?.showErrorDialog(t.localizedMessage)
+        }
     }
 }

@@ -1,6 +1,6 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
-import `in`.projecteka.jataayu.presentation.BaseViewModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.registration.model.RequestVerificationRequest
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import android.text.Editable
