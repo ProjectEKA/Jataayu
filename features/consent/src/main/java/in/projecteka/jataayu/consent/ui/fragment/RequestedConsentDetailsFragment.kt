@@ -185,7 +185,7 @@ class RequestedConsentDetailsFragment : BaseFragment(), ItemClickCallback,
 
         with(binding) {
             this.consent = this@RequestedConsentDetailsFragment.consent
-            this.isBottomButtonsVisible = this@RequestedConsentDetailsFragment.viewModel.canShowBottomButtons(consent!!.status)
+            this.isGrantAndDenyButtonsVisible = this@RequestedConsentDetailsFragment.viewModel.canShowBottomButtons(consent!!.status)
             isGrantedConsent = false
             cgRequestInfoTypes.removeAllViews()
         }
