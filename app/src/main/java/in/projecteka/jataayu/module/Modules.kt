@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.module
 
+import `in`.projecteka.jataayu.BuildConfig
 import `in`.projecteka.jataayu.consent.remote.ConsentApis
 import `in`.projecteka.jataayu.consent.remote.UserVerificationApis
 import `in`.projecteka.jataayu.consent.repository.ConsentRepository
@@ -24,7 +25,6 @@ import `in`.projecteka.jataayu.util.repository.*
 import `in`.projecteka.resetpassword.remote.ResetPasswordApis
 import `in`.projecteka.resetpassword.repository.ResetPasswordRepository
 import `in`.projecteka.resetpassword.repository.ResetPasswordRepositoryImpl
-import androidx.databinding.library.BuildConfig
 import okhttp3.ResponseBody
 import org.koin.core.qualifier.named
 import org.koin.dsl.module

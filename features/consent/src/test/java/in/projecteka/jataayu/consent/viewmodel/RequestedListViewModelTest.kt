@@ -205,6 +205,7 @@ class RequestedConsentListViewModelTest {
     }
 
 
+
     private fun dummyRequestedConsentsList(): List<Consent>? {
         return getData("requested_consents.json")
     }
