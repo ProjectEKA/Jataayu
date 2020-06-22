@@ -33,8 +33,9 @@ class RequestedConsentDetailsViewModel(private val repository: ConsentRepository
         requestId: String,
         consentArtifacts: List<ConsentArtifact>
     ) =
-        consentArtifactResponse.fetch(repository.grantConsent(requestId, ConsentArtifactRequest((consentArtifacts)), credentialsRepository.consentTemporaryToken))
+        consentArtifactResponse.fetch(repository.grantConsent(requestId, getConsentArtifactRequest(consentArtifacts), credentialsRepository.consentTemporaryToken))
 
+    fun getConsentArtifactRequest(consentArtifacts: List<ConsentArtifact>) = ConsentArtifactRequest(consentArtifacts)
 
     fun getConsentArtifact(
         links: List<Links>,
@@ -67,6 +68,13 @@ class RequestedConsentDetailsViewModel(private val repository: ConsentRepository
 
     fun fetchHipHiuNamesOf(idList: List<HipHiuIdentifiable>): MediatorLiveData<HipHiuNameResponse> {
         return repository.getProviderBy(idList)
+    }
+
+    fun canShowBottomButtons(status: RequestStatus): Boolean {
+        return when(status) {
+            RequestStatus.EXPIRED, RequestStatus.DENIED -> false
+            else -> true
+        }
     }
 
     private fun newCareReference(link: Links, it: CareContext) = CareReference(link.referenceNumber, it.referenceNumber)

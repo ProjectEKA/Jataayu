@@ -10,6 +10,7 @@ import `in`.projecteka.jataayu.consent.viewmodel.ConsentHostFragmentViewModel.Co
 import `in`.projecteka.jataayu.consent.viewmodel.RequestedListViewModel
 import `in`.projecteka.jataayu.core.model.Consent
 import `in`.projecteka.jataayu.core.model.HipHiuIdentifiable
+import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.Success
@@ -108,7 +109,13 @@ class RequestedListFragment : BaseFragment(), AdapterView.OnItemSelectedListener
                     parentViewModel.showRefreshing(false)
                 }
                 is PartialFailure -> {
+                    parentViewModel.pullToRefreshEvent.value = false
                     context?.showAlertDialog(getString(R.string.failure), response.error?.message,
+                        getString(android.R.string.ok))
+                }
+                is Failure -> {
+                    parentViewModel.pullToRefreshEvent.value = false
+                    context?.showAlertDialog(getString(R.string.failure), getString(R.string.something_went_wrong),
                         getString(android.R.string.ok))
                 }
             }

@@ -18,7 +18,6 @@ import `in`.projecteka.jataayu.presentation.callback.ItemClickCallback
 import `in`.projecteka.jataayu.presentation.decorator.DividerItemDecorator
 import `in`.projecteka.jataayu.presentation.showAlertDialog
 import `in`.projecteka.jataayu.presentation.ui.fragment.BaseFragment
-import android.R.layout
 import android.R.string
 import android.app.Activity
 import android.content.Intent
@@ -86,7 +85,13 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                     viewModel.showProgress(false)
                 }
                 is PartialFailure -> {
+                    parentViewModel.pullToRefreshEvent.value = false
                     context?.showAlertDialog(getString(R.string.failure), response.error?.message,
+                        getString(string.ok))
+                }
+                is Failure -> {
+                    parentViewModel.pullToRefreshEvent.value = false
+                    context?.showAlertDialog(getString(R.string.failure), getString(R.string.something_went_wrong),
                         getString(string.ok))
                 }
             }
@@ -110,10 +115,8 @@ class ConsentListFragment : BaseFragment(), AdapterView.OnItemSelectedListener,
                     )
                 }
                 is Failure -> {
-                    context?.showAlertDialog(
-                        getString(R.string.failure), it.error.message,
-                        getString(string.ok)
-                    )
+                    context?.showAlertDialog(getString(R.string.failure), getString(R.string.something_went_wrong),
+                        getString(string.ok))
                 }
 
             }
