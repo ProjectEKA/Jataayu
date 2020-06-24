@@ -1,8 +1,10 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.network.model.APIResponse
 import `in`.projecteka.jataayu.network.model.Error
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PayloadResource
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
 import `in`.projecteka.jataayu.registration.ui.activity.R
@@ -37,7 +39,7 @@ class PasswordInputViewModelTest {
     @Mock
     private lateinit var authenticationRepository: AuthenticationRepository
     @Mock
-    private lateinit var loginResponseObserver: Observer<APIResponse<out CreateAccountResponse>?>
+    private lateinit var loginResponseObserver: Observer<PayloadResource<CreateAccountResponse>>
     @Mock
     private lateinit var forgotPasswordClickObserver: Observer<Void>
     @Mock
@@ -77,7 +79,7 @@ class PasswordInputViewModelTest {
         loginViewModel = LoginViewModel()
         loginResponse = Gson()
             .fromJson(TestUtils.readFile("login_response.json"), CreateAccountResponse::class.java)
-        passwordInputViewModel.createAccountResponse.observeForever(loginResponseObserver)
+        passwordInputViewModel.loginByPasswordResponse.observeForever(loginResponseObserver)
         passwordInputViewModel.onClickForgotPasswordEvent.observeForever(forgotPasswordClickObserver)
         passwordInputViewModel.errorDialogEvent.observeForever(errorDialogObserver)
     }
@@ -125,8 +127,9 @@ class PasswordInputViewModelTest {
         passwordInputViewModel.onLoginClicked("vk2704201@ncg")
         verify(authenticationRepository).login(cmId, password, grantType)
         verify(loginCall).enqueue(ArgumentMatchers.any())
-        verify(loginResponseObserver, times(2)).onChanged(null)
-        verify(loginResponseObserver, times(1)).onChanged(APIResponse(loginResponse, null))
+        verify(loginResponseObserver, times(1)).onChanged(Loading(true))
+        verify(loginResponseObserver, times(1)).onChanged(Loading(false))
+        verify(loginResponseObserver, times(1)).onChanged(Success(loginResponse))
     }
 
     @Test
