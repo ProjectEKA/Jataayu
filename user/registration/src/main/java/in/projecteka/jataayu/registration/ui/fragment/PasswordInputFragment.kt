@@ -1,6 +1,11 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
 
+import `in`.projecteka.jataayu.network.utils.Failure
+import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.network.utils.PartialFailure
+import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.presentation.showErrorDialog
+import `in`.projecteka.jataayu.registration.ui.activity.R
 import `in`.projecteka.jataayu.registration.ui.activity.databinding.PasswordInputFragmentBinding
 import `in`.projecteka.jataayu.registration.viewmodel.LoginViewModel
 import `in`.projecteka.jataayu.registration.viewmodel.PasswordInputViewModel
@@ -31,9 +36,13 @@ class PasswordInputFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = PasswordInputFragmentBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         initObserver()
-        return binding.root
     }
 
     private fun initObserver() {
@@ -41,16 +50,20 @@ class PasswordInputFragment : Fragment() {
             viewModel.onLoginClicked(loginViewModel.cmId)
         }
 
-        viewModel.createAccountResponse.observe(viewLifecycleOwner, Observer { response ->
-            response?.let {
-                viewModel.showProgress(false)
-                if (it.hasErrors()) {
-                    viewModel.onLoginFailure(it.error, resources)
-                } else {
-                    viewModel.onLoginSuccess(it.response!!)
-                    loginViewModel.loginResponseSuccessEvent.call()
-                }
-            }
+        viewModel.loginByPasswordResponse.observe(viewLifecycleOwner, Observer {
+          when(it) {
+            is Loading -> viewModel.showProgress(it.isLoading, R.string.logging_in)
+              is Success ->  {
+                  viewModel.onLoginSuccess(it.data!!)
+                  loginViewModel.loginResponseSuccessEvent.call()
+              }
+              is Failure -> {
+                  context?.showErrorDialog(getString(R.string.something_went_wrong))
+              }
+              is PartialFailure -> {
+                  viewModel.onLoginFailure(it.error, resources)
+              }
+          }
         })
 
         viewModel.errorDialogEvent.observe(viewLifecycleOwner, Observer {

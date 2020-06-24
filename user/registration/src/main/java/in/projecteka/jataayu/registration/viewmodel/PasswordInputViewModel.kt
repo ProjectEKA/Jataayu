@@ -1,9 +1,9 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.network.model.APIResponse
 import `in`.projecteka.jataayu.network.model.Error
-import `in`.projecteka.jataayu.network.utils.*
+import `in`.projecteka.jataayu.network.utils.PayloadLiveData
+import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.registration.repository.AuthenticationRepository
 import `in`.projecteka.jataayu.registration.ui.activity.LoginActivity
@@ -17,8 +17,6 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 
 class PasswordInputViewModel(
     private val credentialsRepository: CredentialsRepository,
@@ -34,24 +32,7 @@ class PasswordInputViewModel(
     val onClickForgotPasswordEvent = SingleLiveEvent<Void>()
     val errorDialogEvent = SingleLiveEvent<String>()
 
-    private val loginByPasswordResponse = PayloadLiveData<CreateAccountResponse>()
-    val createAccountResponse: LiveData<APIResponse<out CreateAccountResponse>?> =
-        Transformations.map(loginByPasswordResponse) { response ->
-            when (response) {
-                is Success -> {
-                    APIResponse(response.data, null)
-                }
-                is PartialFailure -> {
-                    APIResponse(null, response.error)
-                }
-                is Failure -> {
-                    APIResponse(null, APIResponse.getError(response.error))
-                }
-                else -> {
-                    null
-                }
-            }
-        }
+    val loginByPasswordResponse = PayloadLiveData<CreateAccountResponse>()
 
     override fun afterTextChanged(s: Editable?) {
         loginEnabled.set(inputPasswordLbl.get()?.isNotEmpty() == true)
