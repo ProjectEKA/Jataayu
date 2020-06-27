@@ -1,9 +1,9 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import junit.framework.Assert.*
+import model.CreateAccountResponse
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

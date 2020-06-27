@@ -52,6 +52,7 @@ dependencies {
     api project(Modules.account)
     api project(Modules.registration)
     api project(Modules.resetPassword)
+    api project(Modules.authorization)
 
     androidTestImplementation Deps.Testing.Helpers.kappuccino
 

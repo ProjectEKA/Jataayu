@@ -58,6 +58,7 @@ object Modules {
     const val account = ":user:account"
     const val registration = ":user:registration"
     const val resetPassword = ":user:resetPassword"
+    const val authorization = ":commons:authorization"
 
 }
 

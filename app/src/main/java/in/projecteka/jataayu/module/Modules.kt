@@ -50,7 +50,7 @@ val repositoryModule = module {
 
 val networkModule = module {
     single { NetworkManager(get()) }
-    single { get<NetworkManager>().createNetworkClient(get(), BuildConfig.DEBUG) }
+    single { get<NetworkManager>().createNetworkClient(get(), get(),BuildConfig.DEBUG) }
     single<Converter<ResponseBody, ErrorResponse>> {
         get<Retrofit>().responseBodyConverter(
             ErrorResponse::class.java,

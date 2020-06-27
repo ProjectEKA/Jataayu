@@ -1,6 +1,5 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.network.model.Error
 import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PayloadResource
@@ -17,6 +16,7 @@ import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
+import model.CreateAccountResponse
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before

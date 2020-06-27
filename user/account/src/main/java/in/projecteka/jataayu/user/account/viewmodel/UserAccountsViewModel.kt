@@ -18,6 +18,7 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
+import model.CreateAccountResponse
 import java.util.regex.Pattern
 
 class UserAccountsViewModel(private val repository: UserAccountsRepository,

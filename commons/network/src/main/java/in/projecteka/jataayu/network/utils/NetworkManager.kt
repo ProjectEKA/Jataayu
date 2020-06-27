@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.network.utils
 
+import `in`.projecteka.jataayu.network.authenticator.TokenAuthenticator
 import `in`.projecteka.jataayu.network.interceptor.HostSelectionInterceptor
 import `in`.projecteka.jataayu.network.interceptor.NetworkConnectionInterceptor
 import `in`.projecteka.jataayu.network.interceptor.RequestInterceptor
@@ -9,6 +10,7 @@ import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.MOCK_WEB
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.READ_TIMEOUT
 import `in`.projecteka.jataayu.util.constant.NetworkConstants.Companion.WRITE_TIMEOUT
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
+import `in`.projecteka.jataayu.util.repository.PreferenceRepository
 import `in`.projecteka.jataayu.util.sharedPref.getBaseUrl
 import android.app.Application
 import android.content.Context
@@ -35,6 +37,12 @@ import javax.net.ssl.X509TrustManager
 
 class NetworkManager(val context: Application): KoinComponent {
 
+    lateinit var credentialsRepository: CredentialsRepository
+        private set
+    lateinit var preferenceRepository: PreferenceRepository
+        private set
+    lateinit var retrofit: Retrofit
+        private set
 
     private val isTestingMode: Boolean
         get() = context.javaClass.simpleName != "JataayuApp"
@@ -49,9 +57,13 @@ class NetworkManager(val context: Application): KoinComponent {
 
     fun createNetworkClient(
         credentialsRepository: CredentialsRepository,
+        preferenceRepository: PreferenceRepository,
         debug: Boolean = false
     ): Retrofit {
-        return buildRetrofitClient(getBaseUrl(), httpClient(debug, context, credentialsRepository))
+        this.preferenceRepository = preferenceRepository
+        this.credentialsRepository = credentialsRepository
+         retrofit = buildRetrofitClient(getBaseUrl(), httpClient(debug, context, credentialsRepository))
+        return retrofit
     }
 
     fun hasInternetConnection(): Boolean {
@@ -114,6 +126,7 @@ class NetworkManager(val context: Application): KoinComponent {
             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
         clientBuilder.addInterceptor(RequestInterceptor(credentialsRepository))
+        clientBuilder.authenticator(TokenAuthenticator(this))
 
         if (debug && !isTestingMode) {
             addRequestResponseLogger(httpLoggingInterceptor, clientBuilder)

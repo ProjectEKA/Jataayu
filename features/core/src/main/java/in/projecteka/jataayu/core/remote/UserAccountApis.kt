@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.core.remote
 
 import `in`.projecteka.jataayu.core.model.*
 import androidx.annotation.NonNull
+import model.CreateAccountResponse
 import retrofit2.Call
 import retrofit2.http.*
 

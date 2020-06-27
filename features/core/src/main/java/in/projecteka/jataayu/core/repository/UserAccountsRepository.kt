@@ -7,6 +7,7 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.Success
 import `in`.projecteka.jataayu.network.utils.fetch
 import androidx.lifecycle.MediatorLiveData
+import model.CreateAccountResponse
 import retrofit2.Call
 
 interface UserAccountsRepository {

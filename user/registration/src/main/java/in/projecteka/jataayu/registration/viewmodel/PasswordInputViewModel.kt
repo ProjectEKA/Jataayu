@@ -1,6 +1,5 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.network.model.Error
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
@@ -17,6 +16,7 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import model.CreateAccountResponse
 
 class PasswordInputViewModel(
     private val credentialsRepository: CredentialsRepository,

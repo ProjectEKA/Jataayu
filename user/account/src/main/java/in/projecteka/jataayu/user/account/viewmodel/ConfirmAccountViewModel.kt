@@ -1,7 +1,7 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
+import model.CreateAccountResponse
 import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData

@@ -17,6 +17,7 @@ buildscript {
         classpath Deps.Tools.jacocoCore
         classpath Deps.Tools.dicemelonJacoco
         classpath Deps.Tools.jacocoPalantir
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
