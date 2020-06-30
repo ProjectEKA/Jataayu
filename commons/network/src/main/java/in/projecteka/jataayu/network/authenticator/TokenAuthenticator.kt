@@ -23,17 +23,28 @@ class TokenAuthenticator(private val networkManger: NetworkManager): Authenticat
     }
 
     override fun authenticate(route: Route?, response: okhttp3.Response): Request? {
-        return getNewToken()?.let {
-            credentialsRepository.accessToken =
-                "${it.tokenType.capitalize()} ${it.accessToken}"
-            credentialsRepository.refreshToken = it.refreshToken
-            return response.request.newBuilder()
-                .header("Authorization", credentialsRepository.accessToken!!)
-                .build()
+        if (credentialsRepository.isAccessTokeExpired()) {
+            return getNewToken()?.let {
+                credentialsRepository.accessToken =
+                    "${it.tokenType.capitalize()} ${it.accessToken}"
+                credentialsRepository.refreshToken = it.refreshToken
+                credentialsRepository.accessTokenExpiresIn = it.accessTokenExpiresIn
+                credentialsRepository.refreshTokenExpiresIn = it.refreshExpiresIn
+                return response.request.newBuilder()
+                    .header("Authorization", credentialsRepository.accessToken!!)
+                    .build()
+            }
+        } else {
+            return null
         }
     }
 
+    /*
+
+    accesstoken expire -> call api
+    accesstoken and refreshtoken both expired- > logout
+    * */
     private fun getRefreshTokenRequestPayload(): RefreshTokenRequest {
-        return RefreshTokenRequest(networkManger.preferenceRepository.consentManagerId!!, "refreshToken", networkManger.credentialsRepository.refreshToken!!)
+        return RefreshTokenRequest(networkManger.preferenceRepository.consentManagerId!!, "refresh_token", networkManger.credentialsRepository.refreshToken!!)
     }
 }

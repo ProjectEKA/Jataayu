@@ -138,12 +138,16 @@ class PasswordInputViewModelTest {
         val accessToken = "${loginResponse.tokenType.capitalize()} ${loginResponse.accessToken}"
         `when`(credentialsRepository.refreshToken).thenReturn(loginResponse.refreshToken)
         `when`(credentialsRepository.accessToken).thenReturn(accessToken)
+        `when` (credentialsRepository.accessTokenExpiresIn).thenReturn(1800)
+        `when` (credentialsRepository.refreshTokenExpiresIn).thenReturn(3600)
         `when`(preferenceRepository.isUserLoggedIn).thenReturn(true)
 
         passwordInputViewModel.onLoginSuccess(loginResponse)
 
         verify(credentialsRepository).accessToken = accessToken
         verify(credentialsRepository).refreshToken = loginResponse.refreshToken
+        verify(credentialsRepository).accessTokenExpiresIn =loginResponse.accessTokenExpiresIn
+        verify(credentialsRepository).refreshTokenExpiresIn= loginResponse.refreshExpiresIn
         verify(preferenceRepository).isUserLoggedIn = true
     }
 

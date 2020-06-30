@@ -62,6 +62,8 @@ class PasswordInputViewModel(
             "${response.tokenType.capitalize()} ${response.accessToken}"
         preferenceRepository.isUserLoggedIn = true
         credentialsRepository.refreshToken = response.refreshToken
+        credentialsRepository.accessTokenExpiresIn = response.accessTokenExpiresIn
+        credentialsRepository.refreshTokenExpiresIn = response.refreshExpiresIn
     }
 
     fun onLoginFailure(error: Error?, resources: Resources) {
