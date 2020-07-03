@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
+import `in`.projecteka.jataayu.core.BuildConfig
 import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.util.repository.PreferenceRepository
@@ -33,6 +34,7 @@ class CreateAccountViewModel : BaseViewModel(), ChipGroup.OnCheckedChangeListene
     val showErrorAyushmanId = ObservableBoolean(false)
     val showErrorGender = ObservableBoolean(false)
     val submitEnabled = ObservableBoolean(false)
+    var showAyushmanId = ObservableBoolean(BuildConfig.is_ncg)
 
 
     fun validateFields(): Boolean {
