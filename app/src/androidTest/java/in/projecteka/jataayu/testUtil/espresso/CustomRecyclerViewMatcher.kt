@@ -1,4 +1,4 @@
-package `in`.projecteka.jataayu.ui.testUtil.espresso
+package `in`.projecteka.jataayu.testUtil.espresso
 
 
 import android.content.res.Resources
