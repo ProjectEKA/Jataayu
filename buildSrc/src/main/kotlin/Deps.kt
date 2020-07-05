@@ -45,6 +45,7 @@ object LibVersions {
     const val otpView = "2.1.0"
     const val swipeRefresh = "1.0.0"
     const val security = "1.0.0-rc01"
+    const val fhir = "5.0.2"
 }
 
 object Modules {
@@ -142,5 +143,10 @@ object Deps {
 
     object OtpView {
         const val main = "com.github.mukeshsolanki:android-otpview-pinview:${LibVersions.otpView}"
+    }
+
+    object FHIR {
+        const val fhirAndroid = "ca.uhn.hapi.fhir:hapi-fhir-android:${LibVersions.fhir}"
+        const val fhirStructure = "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${LibVersions.fhir}"
     }
 }

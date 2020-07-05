@@ -1,4 +1,4 @@
-package `in`.projecteka.jataayu.ui.activity.util
+package `in`.projecteka.jataayu.util
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

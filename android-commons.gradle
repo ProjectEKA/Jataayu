@@ -15,15 +15,14 @@ dependencies {
     api Deps.AndroidX.coreKtx
     api Deps.AndroidX.preferences
     api Deps.AndroidX.swipeRefresh
-    api Deps.AndroidX.coreTesting
-    api Deps.AndroidX.espressoCore
-    api Deps.AndroidX.espressoIntents
-    api Deps.AndroidX.espressoContrib
+    api Deps.AndroidX.material
     api Deps.Rx.Kotlin
     api Deps.Rx.Android
     api Deps.MockWebServer.main
     api Deps.Testing.Helpers.apacheCommonsIo
     api Deps.Logger.timber
+    api Deps.FHIR.fhirStructure
+    api Deps.FHIR.fhirAndroid
 
     testImplementation Deps.Testing.jUnit
     testImplementation Deps.Testing.mockito
@@ -34,4 +33,9 @@ dependencies {
     androidTestImplementation Deps.Testing.espressoIntents
     androidTestImplementation Deps.Testing.espressoContrib
     androidTestImplementation Deps.MockWebServer.main
+
+    configurations {
+        all*.exclude group: 'org.codehaus.woodstox'
+        all*.exclude group: 'org.apache.httpcomponents'
+    }
 }
