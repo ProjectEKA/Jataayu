@@ -257,9 +257,9 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
                     getString(R.string.female)
                 }
             )
-            binding.setFullName(profile.name)
-            profile.yearOfBirth?.let {
-                binding.setYearOfBirth(it.toString())
+            binding.setFullName(profile.name.first)
+            profile.dateOfBirth?.let {
+                binding.setYearOfBirth(it.year.toString())
             } ?: kotlin.run {
                 binding.yearOfBirth.visibility = GONE
                 binding.yearOfBirthLbl.visibility = GONE

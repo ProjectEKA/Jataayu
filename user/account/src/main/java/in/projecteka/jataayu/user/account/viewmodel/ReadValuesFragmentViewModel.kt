@@ -1,9 +1,6 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
-import `in`.projecteka.jataayu.core.model.GenerateOTPResponse
-import `in`.projecteka.jataayu.core.model.Identifier
-import `in`.projecteka.jataayu.core.model.RecoverCmidRequest
-import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
+import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
@@ -26,6 +23,7 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
     companion object {
 
         private const val YOB = "yyyy"
+        private const val EMPTY_STRING = ""
         const val ayushmanIdCriteria =  "^[P|p]([A-Z][0-9])*.{8}$"
         private const val DEFAULT_CHECKED_ID = -1
         private const val LENGTH_MOBILE_NUMBER = 10
@@ -98,9 +96,9 @@ class ReadValuesFragmentViewModel(private val repository: UserAccountsRepository
         }
 
         return RecoverCmidRequest(
-            name = inputFullName.get() ?: "",
+            name = Name(inputFullName.get() ?: "", EMPTY_STRING, EMPTY_STRING),
             gender = getGender(),
-            yearOfBirth = selectedYoB,
+            dateOfBirth = DateOfBirth(null, null, selectedYoB),
             verifiedIdentifiers = verifiedIdentifiers,
             unverifiedIdentifiers = unverifiedIdentifiers)
     }

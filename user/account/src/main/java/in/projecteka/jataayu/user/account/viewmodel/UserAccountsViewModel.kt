@@ -7,8 +7,8 @@ import `in`.projecteka.jataayu.network.utils.Loading
 import `in`.projecteka.jataayu.network.utils.PartialFailure
 import `in`.projecteka.jataayu.network.utils.PayloadResource
 import `in`.projecteka.jataayu.network.utils.Success
-import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.presentation.callback.IGroupDataBindingModel
+import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
 import `in`.projecteka.jataayu.util.extension.liveDataOf
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
@@ -66,7 +66,7 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
                 }
                 is Success -> {
                     saveProfileDetails(it.data)
-                    patientName.set(it.data?.name)
+                    patientName.set(it.data?.name?.first)
                     updateProfile.value = it.data
                 }
                 is PartialFailure -> {
@@ -81,13 +81,15 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
 
     private fun saveProfileDetails(profile: MyProfile?) {
         profile?.let {
-            preferenceRepository.name = it.name
+            preferenceRepository.name = it.name.first
             preferenceRepository.pinCreated = it.hasTransactionPin
             preferenceRepository.gender = it.gender
             preferenceRepository.consentManagerId = it.id
 
-            it.yearOfBirth?.let {yob ->
-                preferenceRepository.yearOfBirth = yob
+            it.dateOfBirth?.let {dob ->
+                dob.year?.let {
+                    preferenceRepository.yearOfBirth = dob.year!!
+                }
             }
 
             it.verifiedIdentifiers?.forEach { identifier ->
