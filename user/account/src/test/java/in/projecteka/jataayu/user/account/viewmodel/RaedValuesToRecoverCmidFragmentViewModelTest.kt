@@ -130,7 +130,7 @@ class RaedValuesToRecoverCmidFragmentViewModelTest {
         viewModel.onCheckedChanged(null, 2)
 
         val recoverCmidRequest = viewModel.getRecoverCmidPayload()
-        assertEquals(fullName, recoverCmidRequest.name)
+        assertEquals(fullName, recoverCmidRequest.name.first)
         assertEquals(viewModel.countryCode.get() + mobile, recoverCmidRequest.verifiedIdentifiers?.get(0)?.value)
         assertEquals(ayushmanId.toUpperCase(), recoverCmidRequest.unverifiedIdentifiers?.get(0)?.value)
         assertEquals("O", recoverCmidRequest.gender)
