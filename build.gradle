@@ -42,12 +42,12 @@ subprojects {
                     ncg {
                         dimension "branding"
                         resValue "string", "application_name", "Jataayu NCG"
-//                        applicationId "com.ncg"
+                        buildConfigField "String", "provider_name", "\"@ncg\""
                     }
                     nhs {
                         dimension "branding"
-                        resValue "string", "application_name", "Jataayu NHS"
-//                        applicationId "com.nhs"
+                        resValue "string", "application_name", "Jataayu NHA"
+                        buildConfigField "String", "provider_name", "\"@nha\""
                     }
                 }
 
@@ -59,7 +59,6 @@ subprojects {
                     targetSdkVersion Config.compileSdkVersion
 
                     testInstrumentationRunner "in.projecteka.jataayu.testUtil.JataayuJUnitRunner"
-                    resValue "string", "cm_config_provider", "@ncg"
                 }
 
                 compileOptions {

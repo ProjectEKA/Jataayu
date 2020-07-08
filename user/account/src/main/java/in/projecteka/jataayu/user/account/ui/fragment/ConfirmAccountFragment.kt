@@ -50,7 +50,6 @@ class ConfirmAccountFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initBindings()
         initObservers()
-        viewModel.initialSetup(getString(R.string.cm_config_provider))
     }
 
     override fun onVisible() {

@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
+import `in`.projecteka.jataayu.core.BuildConfig
 import `in`.projecteka.jataayu.core.model.CreateAccountRequest
 import `in`.projecteka.jataayu.core.model.CreateAccountResponse
 import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
@@ -36,8 +37,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     val inputUsernameLbl = ObservableField<String>()
     val inputPasswordLbl = ObservableField<String>()
     val confirmationInputPasswordLbl = ObservableField<String>()
-    val usernameProviderLbl = ObservableField<String>()
-    val usernameProviderLblId = ObservableField<Int>(R.string.cm_config_provider)
+    val usernameProviderLbl = ObservableField<String>(BuildConfig.provider_name)
     val inputAyushmanIdLbl = ObservableField<String>()
     val usernameErrorLbl = ObservableInt(R.string.username_validation_hint)
     val submitEnabled = ObservableBoolean(false)
@@ -50,10 +50,6 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
     var inputFullName: String? = ""
     var inputGender: String? = ""
     var selectedYoB: Int? = null
-
-    fun initialSetup(label: String) {
-        usernameProviderLbl.set(label)
-    }
 
     fun validatePassword() {
         if(inputPasswordLbl.get()?.isNotEmpty() == true)
