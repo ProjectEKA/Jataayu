@@ -1,6 +1,10 @@
 {
   "id": "user@ncg",
-  "name": "Raj Sharma",
+  "name": {
+    "first":"Raj Sharma",
+    "middle":"",
+    "last":""
+  },
   "gender": "M",
   "hasTransactionPin": true,
   "verifiedIdentifiers": [ {
