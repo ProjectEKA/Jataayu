@@ -134,7 +134,7 @@ class RaedValuesToRecoverCmidFragmentViewModelTest {
         assertEquals(viewModel.countryCode.get() + mobile, recoverCmidRequest.verifiedIdentifiers?.get(0)?.value)
         assertEquals(ayushmanId.toUpperCase(), recoverCmidRequest.unverifiedIdentifiers?.get(0)?.value)
         assertEquals("O", recoverCmidRequest.gender)
-        assertEquals(1977, recoverCmidRequest.yearOfBirth)
+        assertEquals(1977, recoverCmidRequest.dateOfBirth?.year)
     }
 
     @Test

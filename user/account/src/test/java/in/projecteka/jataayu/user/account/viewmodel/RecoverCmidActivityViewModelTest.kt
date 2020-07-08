@@ -1,8 +1,6 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
 
-import `in`.projecteka.jataayu.core.model.GenerateOTPResponse
-import `in`.projecteka.jataayu.core.model.RecoverCmidRequest
-import `in`.projecteka.jataayu.core.model.RecoverCmidResponse
+import `in`.projecteka.jataayu.core.model.*
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import junit.framework.Assert.assertEquals
@@ -60,7 +58,7 @@ class RecoverCmidActivityViewModelTest {
         val generateOtpResponseJson =
             """{"sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6","otpMedium": "MOBILE","otpMediumValue": 9999999999,"expiryInMinutes": 5}"""
         val generateOtpResponse = Gson().fromJson(generateOtpResponseJson, GenerateOTPResponse::class.java)
-        val recovercmIdRequest = RecoverCmidRequest("mabu", "M", 1966, null, null)
+        val recovercmIdRequest = RecoverCmidRequest(Name("mabu", "", ""), "M", DateOfBirth(null, null, 1966), null, null)
         viewModel.onOTPRequest(recovercmIdRequest, generateOtpResponse)
         assertEquals(
             viewModel.redirectTo.value,
