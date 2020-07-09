@@ -47,7 +47,7 @@ subprojects {
                     nhs {
                         dimension "branding"
                         resValue "string", "application_name", "Jataayu NHA"
-                        buildConfigField "String", "provider_name", "\"@nha\""
+                        buildConfigField "String", "provider_name", "\"@pmjay\""
                     }
                 }
 
