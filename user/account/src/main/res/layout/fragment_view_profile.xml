@@ -150,6 +150,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginTop="@dimen/content_margin_extra_extra_large"
                     android:hint="@string/ayushman_id"
+                    app:toggledVisibility="@{viewModel.showAyushmanId}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cg_gender"
                     style="@style/TextInputLayout">

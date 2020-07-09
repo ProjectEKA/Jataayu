@@ -42,11 +42,13 @@ subprojects {
                     ncg {
                         dimension "branding"
                         resValue "string", "application_name", "Jataayu NCG"
+                        buildConfigField "boolean", "is_ncg", "true"
 //                        applicationId "com.ncg"
                     }
                     nhs {
                         dimension "branding"
                         resValue "string", "application_name", "Jataayu NHS"
+                        buildConfigField "boolean", "is_ncg", "false"
 //                        applicationId "com.nhs"
                     }
                 }

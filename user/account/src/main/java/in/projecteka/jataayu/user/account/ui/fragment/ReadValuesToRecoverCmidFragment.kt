@@ -49,6 +49,7 @@ class ReadValuesToRecoverCmidFragment : Fragment(), AdapterView.OnItemSelectedLi
         initSpinner()
     }
 
+
     private fun initSpinner() {
         val arrayAdapter = ArrayAdapter<String>(
             activity!!,

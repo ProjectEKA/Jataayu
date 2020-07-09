@@ -5,6 +5,7 @@ import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
 import `in`.projecteka.jataayu.network.utils.partialFailure
 import `in`.projecteka.jataayu.presentation.ui.viewmodel.BaseViewModel
+import `in`.projecteka.jataayu.user.account.BuildConfig
 import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.util.livedata.SingleLiveEvent
 import `in`.projecteka.jataayu.util.repository.CredentialsRepository
@@ -23,6 +24,7 @@ class ProfileFragmentViewModel(val repository: UserAccountsRepository,
 
     var pinCreateOrEdit = ObservableField<Int>(R.string.create)
     var showPinNotCreated = ObservableBoolean(true)
+    var showAyushmanId = ObservableBoolean(BuildConfig.is_ncg)
 
     companion object {
         private const val INDIA_COUNTRY_CODE = "+91"
@@ -81,4 +83,5 @@ class ProfileFragmentViewModel(val repository: UserAccountsRepository,
             showPinNotCreated.set(false)
         }
     }
+
 }

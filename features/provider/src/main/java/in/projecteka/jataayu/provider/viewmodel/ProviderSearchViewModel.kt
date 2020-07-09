@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.provider.viewmodel
 
+import `in`.projecteka.jataayu.core.BuildConfig
 import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.*
@@ -37,6 +38,8 @@ class ProviderSearchViewModel(private val providerRepository: ProviderRepository
     val otpText = ObservableField<String>()
     val errorLbl = ObservableField<String>()
     val setEnableButton = ObservableBoolean()
+    var showAyushmanId = ObservableBoolean(BuildConfig.is_ncg)
+
 
     companion object {
         const val OTP_LENGTH = 6

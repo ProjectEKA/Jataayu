@@ -2,6 +2,7 @@ package `in`.projecteka.jataayu.user.account.ui.fragment
 
 import `in`.projecteka.jataayu.core.ConsentScopeType
 import `in`.projecteka.jataayu.network.utils.Loading
+import `in`.projecteka.jataayu.user.account.R
 import `in`.projecteka.jataayu.user.account.databinding.FragmentViewProfileBinding
 import `in`.projecteka.jataayu.user.account.viewmodel.ProfileFragmentViewModel
 import `in`.projecteka.jataayu.user.account.viewmodel.ProfileFragmentViewModel.Companion.KEY_SCOPE_TYPE
