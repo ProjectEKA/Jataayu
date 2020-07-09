@@ -1,9 +1,6 @@
 package `in`.projecteka.jataayu.user.account.viewmodel
-
 import `in`.projecteka.jataayu.core.BuildConfig
-import `in`.projecteka.jataayu.core.model.CreateAccountRequest
-import `in`.projecteka.jataayu.core.model.CreateAccountResponse
-import `in`.projecteka.jataayu.core.model.UnverifiedIdentifier
+import `in`.projecteka.jataayu.core.model.*
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
 import `in`.projecteka.jataayu.network.utils.PayloadLiveData
 import `in`.projecteka.jataayu.network.utils.fetch
@@ -15,6 +12,7 @@ import `in`.projecteka.jataayu.util.repository.PreferenceRepository.Companion.TY
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import java.util.*
 import java.util.regex.Pattern
 
 class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
@@ -32,6 +30,7 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
         .{8,}             # anything, at least eight places though
         $                 # end-of-string*/
         private const val passwordCriteria = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,30}\$"
+        private const val EMPTY_STRING = ""
     }
 
     val inputUsernameLbl = ObservableField<String>()
@@ -120,9 +119,9 @@ class ConfirmAccountViewModel(private val repository: UserAccountsRepository,
         return CreateAccountRequest(
             userName = getCmId(),
             password = inputPasswordLbl.get() ?: "",
-            name = inputFullName.orEmpty(),
+            name = Name(inputFullName.orEmpty(), EMPTY_STRING, EMPTY_STRING),
             gender = inputGender.orEmpty(),
-            yearOfBirth = selectedYoB,
+            dateOfBirth = DateOfBirth(null, null,  selectedYoB),
             unverifiedIdentifiers = unverifiedIdentifiers)
     }
 
