@@ -1,5 +1,6 @@
 package `in`.projecteka.jataayu.registration.viewmodel
 
+import `in`.projecteka.jataayu.core.BuildConfig
 import `in`.projecteka.jataayu.core.model.LoginMode
 import `in`.projecteka.jataayu.core.model.LoginType
 import `in`.projecteka.jataayu.core.repository.UserAccountsRepository
@@ -21,7 +22,7 @@ class ConsentManagerIDInputViewModel(private val userAccountsRepository: UserAcc
     val onForgetCMIDButtonClickEvent = SingleLiveEvent<Void>()
 
     val inputUsernameLbl = ObservableField<String>()
-    val providerName = ObservableField<String>()
+    val providerName = ObservableField<String>(BuildConfig.provider_name)
     val nextEnabled = ObservableBoolean(false)
 
     //avoid on change call on back button press

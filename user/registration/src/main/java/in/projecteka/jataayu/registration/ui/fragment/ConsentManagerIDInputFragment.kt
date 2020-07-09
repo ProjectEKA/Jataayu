@@ -1,4 +1,5 @@
 package `in`.projecteka.jataayu.registration.ui.fragment
+import `in`.projecteka.jataayu.core.BuildConfig
 import `in`.projecteka.jataayu.core.model.LoginMode
 import `in`.projecteka.jataayu.network.utils.Failure
 import `in`.projecteka.jataayu.network.utils.Loading
@@ -39,7 +40,6 @@ class ConsentManagerIDInputFragment : Fragment() {
         binding = ConsentManagerIdInputFragmentBinding.inflate(inflater)
         initBindings()
         initObservers()
-        viewModel.init(getString(R.string.cm_config_provider))
         return binding.root
     }
 
@@ -57,7 +57,7 @@ class ConsentManagerIDInputFragment : Fragment() {
         })
 
         viewModel.onNextButtonClickEvent.observe(viewLifecycleOwner, Observer {
-            loginViewModel.updateConsentManagerID(viewModel.inputUsernameLbl.get()!!, resources.getString(R.string.cm_config_provider))
+            loginViewModel.updateConsentManagerID(viewModel.inputUsernameLbl.get()!!, BuildConfig.provider_name)
             viewModel.fetchLoginMode(loginViewModel.cmId)
         })
 
