@@ -257,7 +257,19 @@ class ProviderSearchFragment : BaseFragment(), ItemClickCallback, TextWatcherCal
                     getString(R.string.female)
                 }
             )
-            binding.setFullName(profile.name.first)
+
+            var name = profile.name.first
+
+            if (!profile.name.middle.isNullOrEmpty()) {
+                name = name + " " + profile.name.middle
+            }
+
+            if (!profile.name.last.isNullOrEmpty()) {
+                name = name + " " + profile.name.last
+            }
+
+            binding.setFullName(name)
+
             profile.dateOfBirth?.let {
                 binding.setYearOfBirth(it.year.toString())
             } ?: kotlin.run {

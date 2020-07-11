@@ -66,7 +66,18 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
                 }
                 is Success -> {
                     saveProfileDetails(it.data)
-                    patientName.set(it.data?.name?.first)
+
+                    var name = it.data?.name?.first
+
+                    if (!it.data?.name?.middle.isNullOrEmpty()) {
+                        name += " " + it.data?.name?.middle
+                    }
+
+                    if (!it.data?.name?.last.isNullOrEmpty()) {
+                        name += " " + it.data?.name?.last
+                    }
+
+                    patientName.set(name)
                     updateProfile.value = it.data
                 }
                 is PartialFailure -> {
@@ -81,7 +92,9 @@ class UserAccountsViewModel(private val repository: UserAccountsRepository,
 
     private fun saveProfileDetails(profile: MyProfile?) {
         profile?.let {
-            preferenceRepository.name = it.name.first
+            preferenceRepository.first_name = it.name.first
+            preferenceRepository.middle_name = it.name.middle
+            preferenceRepository.last_name = it.name.last
             preferenceRepository.pinCreated = it.hasTransactionPin
             preferenceRepository.gender = it.gender
             preferenceRepository.consentManagerId = it.id
