@@ -20,7 +20,11 @@ interface PreferenceRepository {
         const val TRANSACTION_PIN_LENGTH = 4
     }
 
-    var name: String?
+    var first_name: String?
+
+    var middle_name: String?
+
+    var last_name: String?
 
     var countryCode: String?
 
@@ -62,7 +66,9 @@ class PreferenceRepositoryImpl(private val sharedPreferences: SharedPreferences)
         private const val REGISTERED = "registered"
         private const val ACCOUNT_CREATED = "account_created"
         private const val PROVIDER_ADDED = "provider_added"
-        private const val NAME = "NAME"
+        private const val FIRST_NAME = "FIRST_NAME"
+        private const val MIDDLE_NAME = "MIDDLE_NAME"
+        private const val LAST_NAME = "LAST_NAME"
         private const val COUNTRY_CODE = "COUNTRY_CODE"
         private const val MOBILE_NUMBER = "MOBILE_NUMBER"
         private const val CONSENT_MANAGER_ID = "CONSENT_MANAGER_ID"
@@ -78,9 +84,17 @@ class PreferenceRepositoryImpl(private val sharedPreferences: SharedPreferences)
         set(value) = sharedPreferences.edit { putBoolean(PIN_CREATED, value) }
         get() = sharedPreferences.getBoolean(PIN_CREATED, false)
 
-    override var name: String?
-        get() = sharedPreferences.getString(NAME, null)
-        set(value) = sharedPreferences.edit { putString(NAME, value) }
+    override var first_name: String?
+        get() = sharedPreferences.getString(FIRST_NAME, null)
+        set(value) = sharedPreferences.edit { putString(FIRST_NAME, value) }
+
+    override var middle_name: String?
+        get() = sharedPreferences.getString(MIDDLE_NAME, null)
+        set(value) = sharedPreferences.edit { putString(MIDDLE_NAME, value) }
+
+    override var last_name: String?
+        get() = sharedPreferences.getString(LAST_NAME, null)
+        set(value) = sharedPreferences.edit { putString(LAST_NAME, value) }
 
     override var isUserLoggedIn: Boolean
         set(value) = sharedPreferences.edit { putBoolean(LOGGED_IN, value) }
@@ -138,7 +152,9 @@ class PreferenceRepositoryImpl(private val sharedPreferences: SharedPreferences)
 
     override fun resetPreferences() {
         pinCreated = false
-        name = null
+        first_name = ""
+        middle_name = ""
+        last_name = ""
         isUserLoggedIn = false
         isUserRegistered = false
         isUserAccountCreated = false

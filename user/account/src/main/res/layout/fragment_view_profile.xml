@@ -47,7 +47,7 @@
                         android:focusable="@{viewModel.isEditMode}"
                         android:singleLine="true"
                         android:cursorVisible="@{viewModel.isEditMode}"
-                        android:text="@{viewModel.preferenceRepository.name}"
+                        android:text="@{viewModel.fullName()}"
                         android:focusableInTouchMode="@{viewModel.isEditMode}"
                         style="@style/TextInputEditText"/>
                 </com.google.android.material.textfield.TextInputLayout>

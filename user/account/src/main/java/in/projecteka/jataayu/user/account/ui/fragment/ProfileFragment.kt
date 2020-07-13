@@ -72,7 +72,7 @@ class ProfileFragment : Fragment(){
             }
         })
 
-        viewModel.redirectTo.observe(this, Observer {
+        viewModel.redirectTo.observe(viewLifecycleOwner, Observer {
             if (it == ProfileFragmentViewModel.RedirectTo.CONSENT_PIN) {
                 if (viewModel.preferenceRepository.pinCreated){
                     startPinVerification(activity!!) {

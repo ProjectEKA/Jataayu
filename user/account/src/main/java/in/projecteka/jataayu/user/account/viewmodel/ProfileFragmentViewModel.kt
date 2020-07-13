@@ -81,4 +81,19 @@ class ProfileFragmentViewModel(val repository: UserAccountsRepository,
             showPinNotCreated.set(false)
         }
     }
+
+    fun fullName(): String {
+        var name = " "
+
+        if (!preferenceRepository.first_name.isNullOrEmpty()) {
+            name = preferenceRepository.first_name!!
+        }
+        if (!preferenceRepository.middle_name.isNullOrEmpty()){
+            name = name + " " + preferenceRepository.middle_name
+        }
+        if (!preferenceRepository.last_name.isNullOrEmpty()){
+            name = name + " " + preferenceRepository.last_name
+        }
+        return name
+    }
 }
