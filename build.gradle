@@ -49,7 +49,7 @@ subprojects {
                         dimension "branding"
                         resValue "string", "application_name", "Jataayu NHA"
                         buildConfigField "String", "provider_name", "\"@pmjay\""
-                        buildConfigField "String", "PROD_URL", "\"http://dev.pmjay.gov.in/cm/\""
+                        buildConfigField "String", "PROD_URL", "\"https://dev.pmjay.gov.in/cm/\""
                     }
                 }
 
