@@ -117,9 +117,7 @@ class UserAccountsFragment : BaseFragment(), ItemClickCallback {
     override fun onItemClick(
         iDataBindingModel: IDataBindingModel,
         itemViewBinding: ViewDataBinding
-    ) {
-        viewModel.showProgress(true)
-    }
+    ) {}
 
     private fun getNamesOfHipList(idList: List<HipHiuIdentifiable>) {
         val hipHiuNameResponse = viewModel.getHipHiuNamesByIdList(idList)
